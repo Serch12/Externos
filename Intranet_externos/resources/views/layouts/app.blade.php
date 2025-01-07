@@ -1,83 +1,140 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+<html
+  lang="en"
+  class="light-style layout-menu-fixed layout-compact"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="style/assets/"
+  data-template="horizontal-menu-template-no-customizer"
+  data-style="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Intranet AMFPro</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{asset('style/logos/icono-blanco1.png')}}" />
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"
+      rel="stylesheet" />
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-</head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+    <!-- Icons -->
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/fonts/remixicon/remixicon.css')}}" />
+    <link rel="stylesheet" href="style/assets/vendor/fonts/flag-icons.css" />
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+    <!-- Menu waves for no-customizer fix -->
+    <link rel="stylesheet" href="style/assets/vendor/libs/node-waves/node-waves.css" />
 
-                    </ul>
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="style/assets/vendor/css/rtl/core.css" />
+    <link rel="stylesheet" href="style/assets/vendor/css/rtl/theme-default.css" />
+    <link rel="stylesheet" href="style/assets/css/demo.css" />
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="style/assets/vendor/libs/typeahead-js/typeahead.css" />
 
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+    <!-- Page CSS -->
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+    <!-- Helpers -->
+    <script src="style/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="style/assets/js/config.js"></script>
+  </head>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+  <body>
+    
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
+      <div class="layout-container">
+        <!-- Navbar -->
+        @include('layouts.nav')
+        <!-- / Navbar -->
+
+        <div id="app">
+          <!-- Layout container -->
+          <div class="layout-page">
+            <!-- Content wrapper -->
+            
+            <div class="content-wrapper">
+              <!-- Menu -->
+              @include('layouts.menu')
+              <!-- / Menu -->
+
+              <!-- Content -->
+
+              <div class="container-xxl flex-grow-1 container-p-y">
+                <!-- Layout Demo -->
+                <div class="layout-demo-wrapper">
+                  <div class="layout-demo-placeholder">
+                    <img
+                      src="style/assets/img/layouts/layout-horizontal-container-light.png"
+                      class="img-fluid"
+                      alt="Layout container"
+                      data-app-light-img="layouts/layout-horizontal-container-light.png"
+                      data-app-dark-img="layouts/layout-horizontal-container-dark.png" />
+                  </div>
+                  <div class="layout-demo-info">
+                    <h4>Layout container</h4>
+                    <p>Container layout sets a <code>max-width</code> at each responsive breakpoint.</p>
+                  </div>
                 </div>
-            </div>
-        </nav>
+                <!--/ Layout Demo -->
+              </div>
+              <!--/ Content -->
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+              <!-- Footer -->
+              @include('layouts.footer')
+              <!-- / Footer -->
+
+              <div class="content-backdrop fade"></div>
+            </div>
+            <!--/ Content wrapper -->
+          </div>
+        </div>
+
+        <!--/ Layout container -->
+      </div>
     </div>
-</body>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+
+    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+    <div class="drag-target"></div>
+
+    <!--/ Layout wrapper -->
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="style/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="style/assets/vendor/libs/popper/popper.js"></script>
+    <script src="style/assets/vendor/js/bootstrap.js"></script>
+    <script src="style/assets/vendor/libs/node-waves/node-waves.js"></script>
+    <script src="style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="style/assets/vendor/libs/hammer/hammer.js"></script>
+    <script src="style/assets/vendor/libs/i18n/i18n.js"></script>
+    <script src="style/assets/vendor/libs/typeahead-js/typeahead.js"></script>
+    <script src="style/assets/vendor/js/menu.js"></script>
+
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+
+    <!-- Main JS -->
+    <script src="style/assets/js/main.js"></script>
+
+    <!-- Page JS -->
+  </body>
 </html>

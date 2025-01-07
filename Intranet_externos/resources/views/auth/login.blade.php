@@ -19,7 +19,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="style/assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{asset('style/assets/img/favicon/favicon.ico')}}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,16 +29,16 @@
       rel="stylesheet" />
 
     <!-- Icons -->
-    <link rel="stylesheet" href="style/assets/vendor/fonts/remixicon/remixicon.css" />
-    <link rel="stylesheet" href="style/assets/vendor/fonts/flag-icons.css" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/fonts/remixicon/remixicon.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/fonts/flag-icons.css')}}" />
 
     <!-- Menu waves for no-customizer fix -->
-    <link rel="stylesheet" href="style/assets/vendor/libs/node-waves/node-waves.css" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/node-waves/node-waves.css')}}" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="style/assets/vendor/css/rtl/core.css" />
-    <link rel="stylesheet" href="style/assets/vendor/css/rtl/theme-default.css" />
-    <link rel="stylesheet" href="style/assets/css/demo.css" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/css/rtl/core.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/css/rtl/theme-default.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/css/demo.css')}}" />
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -68,7 +68,7 @@
             <!-- Logo -->
             <div class="app-brand justify-content-center mt-5">
               <div class="app-brand-link gap-2">
-                <center><img src="style/logos/logo-_amfpro_pro_color.png" alt="" style="max-width: 40%"></center>
+                <center><img src="style/logos/logo-_amfpro_pro_color.png" alt="" style="max-width: 45%"></center>
               </div>
             </div>
             <!-- /Logo -->
@@ -77,25 +77,43 @@
               {{-- <h4 class="mb-1">Welcome to Materialize! 👋</h4>
               <p class="mb-5">Please sign-in to your account and start the adventure</p> --}}
 
-              <form id="formAuthentication" class="mb-5" action="index.html" method="GET">
+              <form id="formAuthentication" class="mb-5" method="POST" class="login-form" action="{{ route('login') }}">
+                @csrf
+                @error('email')
+                <div class="alert alert-solid-danger d-flex align-items-center" role="alert">
+                  <span class="alert-icon rounded">
+                    <i class="ri-error-warning-line ri-22px"></i>
+                  </span>
+                  {{($message)}}
+                </div>
+                @enderror
+                @error('password')
+                <div class="alert alert-solid-danger d-flex align-items-center" role="alert">
+                  <span class="alert-icon rounded">
+                    <i class="ri-error-warning-line ri-22px"></i>
+                  </span>
+                  {{($message)}}
+                </div>
+                @enderror
                 <div class="form-floating form-floating-outline mb-5">
                   <input
                     type="text"
-                    class="form-control"
-                    id="email"
-                    name="email-username"
-                    placeholder="Enter your email or username"
-                    autofocus />
+                    class="form-control @error('email') @enderror"
+                    id="username"
+                    name="email"
+                    value="{{old('email')}}"
+                    placeholder="Ingrese su Correo"/>
                   <label for="email">Email</label>
                 </div>
                 <div class="mb-5">
                   <div class="form-password-toggle">
                     <div class="input-group input-group-merge">
+                      
                       <div class="form-floating form-floating-outline">
                         <input
                           type="password"
                           id="password"
-                          class="form-control"
+                          class="form-control @error('password') @enderror"
                           name="password"
                           placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                           aria-describedby="password" />
@@ -107,8 +125,8 @@
                 </div>
                 <div class="mb-5 d-flex justify-content-between mt-5">
                   <div class="form-check mt-2">
-                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                    <label class="form-check-label" for="remember-me"> Remember Me </label>
+                    <input class="form-check-input" type="checkbox" id="remember" {{ old('remember') ? 'checked' : '' }}/>
+                    <label class="form-check-label" for="remember-me">{{ __('Recordar Credenciales') }}</label>
                   </div>
                   {{-- <a href="auth-forgot-password-basic.html" class="float-end mb-1 mt-2">
                     <span>Forgot Password?</span>
@@ -130,12 +148,12 @@
             </div>
           </div>
           <!-- /Login -->
-          <img
+          {{-- <img
             alt="mask"
             src="style/assets/img/illustrations/auth-basic-login-mask-light.png"
             class="authentication-image d-none d-lg-block"
             data-app-light-img="illustrations/auth-basic-login-mask-light.png"
-            data-app-dark-img="illustrations/auth-basic-login-mask-dark.png" />
+            data-app-dark-img="illustrations/auth-basic-login-mask-dark.png" /> --}}
         </div>
       </div>
     </div>
