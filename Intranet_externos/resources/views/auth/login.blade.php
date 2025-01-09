@@ -80,20 +80,20 @@
               <form id="formAuthentication" class="mb-5" method="POST" class="login-form" action="{{ route('login') }}">
                 @csrf
                 @error('email')
-                <div class="alert alert-solid-danger d-flex align-items-center" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ri-error-warning-line ri-22px"></i>
-                  </span>
-                  {{($message)}}
-                </div>
+                  <div class="alert alert-solid-danger d-flex align-items-center" role="alert">
+                    <span class="alert-icon rounded">
+                      <i class="ri-error-warning-line ri-22px"></i>
+                    </span>
+                    {{($message)}}
+                  </div>
                 @enderror
                 @error('password')
-                <div class="alert alert-solid-danger d-flex align-items-center" role="alert">
-                  <span class="alert-icon rounded">
-                    <i class="ri-error-warning-line ri-22px"></i>
-                  </span>
-                  {{($message)}}
-                </div>
+                  <div class="alert alert-solid-danger d-flex align-items-center" role="alert">
+                    <span class="alert-icon rounded">
+                      <i class="ri-error-warning-line ri-22px"></i>
+                    </span>
+                    {{($message)}}
+                  </div>
                 @enderror
                 <div class="form-floating form-floating-outline mb-5">
                   <input

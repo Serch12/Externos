@@ -18,8 +18,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+//require de rutas de Home
+require(__DIR__ . '/Home/route_home.php');
 //require de rutas de administrador
 require(__DIR__ . '/Administrador/route_administrador.php');
+//require de rutas de permisosroles
+require(__DIR__ . '/PermisosRoles/route_permisosroles.php');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

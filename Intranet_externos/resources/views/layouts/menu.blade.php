@@ -2,82 +2,47 @@
     <div class="container-xxl d-flex h-100">
       <ul class="menu-inner">
         <!-- Dashboards -->
-        <li class="menu-item">
-          <a href="javascript:void(0)" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons ri-home-smile-line"></i>
-            <div data-i18n="Dashboards">Dashboards</div>
+        <li class="menu-item {{ request()->routeIs('home') ? 'active' : '' }}">
+          <a class="menu-link" href="{{ route('home') }}">
+            <i class="menu-icon tf-icons ri-home-4-fill"></i>
+            <div data-i18n="Inicio">Inicio</div>
           </a>
-          <ul class="menu-sub">
-            <li class="menu-item">
-              <a href="app-ecommerce-dashboard.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-shopping-cart-2-line"></i>
-                <div data-i18n="eCommerce">eCommerce</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="dashboards-crm.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-donut-chart-fill"></i>
-                <div data-i18n="CRM">CRM</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="index.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-bar-chart-line"></i>
-                <div data-i18n="Analytics">Analytics</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="app-logistics-dashboard.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-truck-line"></i>
-                <div data-i18n="Logistics">Logistics</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="app-academy-dashboard.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-book-open-line"></i>
-                <div data-i18n="Academy">Academy</div>
-              </a>
-            </li>
-          </ul>
         </li>
+        
 
         <!-- Layouts -->
-        <li class="menu-item active">
-          <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <li class="menu-item {{ request()->routeIs('administrador','access') ? 'active' : '' }}">
+          <a href="{{ route('administrador') }}" class="menu-link menu-toggle ">
             <i class="menu-icon tf-icons ri-layout-2-line"></i>
-            <div data-i18n="Layouts">Layouts</div>
+            <div data-i18n="Administrador">Administrador</div>
           </a>
 
           <ul class="menu-sub">
-            <li class="menu-item">
-              <a href="layouts-without-menu.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-layout-4-line"></i>
-                <div data-i18n="Without menu">Without menu</div>
+            <li class="menu-item {{ request()->routeIs('administrador') ? 'active' : '' }}">
+              <a href="{{ route('administrador') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-user-line"></i>
+                <div data-i18n="Usuarios">Usuarios</div>
               </a>
             </li>
-            <li class="menu-item">
-              <a href="../vertical-menu-template/" class="menu-link" target="_blank">
-                <i class="menu-icon tf-icons ri-layout-left-line"></i>
-                <div data-i18n="Vertical">Vertical</div>
+            <li class="menu-item {{ request()->routeIs('access') ? 'active' : '' }}">
+              <a href="{{ route('access') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-shield-user-line"></i>
+                <div data-i18n="Roles & Permisos">Roles & Permisos</div>
               </a>
-            </li>
-            <li class="menu-item">
-              <a href="layouts-fluid.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-layout-top-line"></i>
-                <div data-i18n="Fluid">Fluid</div>
-              </a>
-            </li>
-            <li class="menu-item active">
-              <a href="layouts-container.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-layout-top-2-line"></i>
-                <div data-i18n="Container">Container</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="layouts-blank.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-square-line"></i>
-                <div data-i18n="Blank">Blank</div>
-              </a>
+              {{-- <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="app-access-roles.html" class="menu-link">
+                    <i class="menu-icon tf-icons ri-circle-fill"></i>
+                    <div data-i18n="Roles">Roles</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="app-access-permission.html" class="menu-link">
+                    <i class="menu-icon tf-icons ri-circle-fill"></i>
+                    <div data-i18n="Permission">Permission</div>
+                  </a>
+                </li>
+              </ul> --}}
             </li>
           </ul>
         </li>

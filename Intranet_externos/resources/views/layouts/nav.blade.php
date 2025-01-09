@@ -1,7 +1,7 @@
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
     <div class="container-xxl">
       <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-6">
-        <a href="index.html" class="app-brand-link gap-2">
+        <a href="{{ route('home') }}" class="app-brand-link gap-2">
           <span class="app-brand-logo demo">
             <span>
               <img src="{{asset('style/logos/logo-_amfpro_pro_color.png')}}" class="mt-2" alt="logo" style="max-width: 15%">
@@ -428,8 +428,8 @@
                       </div>
                     </div>
                     <div class="flex-grow-1">
-                      <span class="fw-medium d-block small">John Doe</span>
-                      <small class="text-muted">Admin</small>
+                      <span class="fw-medium d-block small">{{ auth()->user()->name }}</span>
+                      <small class="text-muted">{{ $rol_usuario }}</small>
                     </div>
                   </div>
                 </a>

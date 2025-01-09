@@ -5,8 +5,19 @@
  */
 
 // require('./bootstrap');
-
+// import Vue from 'vue';
 window.Vue = require('vue').default;
+require('./bootstrap');
+
+import Vue from "vue";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
+Vue.use(Toast, {
+  transition: "Vue-Toastification__bounce",
+  maxToasts: 20,
+  newestOnTop: true
+});
 
 /**
  * The following block of code may be used to automatically register your
@@ -21,7 +32,9 @@ window.Vue = require('vue').default;
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+Vue.component('home-component', require('./components/Home.vue').default);
 Vue.component('administrador-component', require('./components/Administrador.vue').default);
+Vue.component('permisosroles-component', require('./components/PermisosRoles.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

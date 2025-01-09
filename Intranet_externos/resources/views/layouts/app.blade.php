@@ -7,9 +7,9 @@
   data-theme="theme-default"
   data-assets-path="style/assets/"
   data-template="horizontal-menu-template-no-customizer"
-  data-style="light">
+  {{-- data-style="light"> --}}
   <head>
-    <meta charset="utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
@@ -30,27 +30,28 @@
 
     <!-- Icons -->
     <link rel="stylesheet" href="{{asset('style/assets/vendor/fonts/remixicon/remixicon.css')}}" />
-    <link rel="stylesheet" href="style/assets/vendor/fonts/flag-icons.css" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/fonts/flag-icons.css')}}" />
 
     <!-- Menu waves for no-customizer fix -->
-    <link rel="stylesheet" href="style/assets/vendor/libs/node-waves/node-waves.css" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/node-waves/node-waves.css')}}" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="style/assets/vendor/css/rtl/core.css" />
-    <link rel="stylesheet" href="style/assets/vendor/css/rtl/theme-default.css" />
-    <link rel="stylesheet" href="style/assets/css/demo.css" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/css/rtl/core.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/css/rtl/theme-default.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/css/demo.css')}}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="style/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/typeahead-js/typeahead.css')}}" />
 
     <!-- Page CSS -->
 
     <!-- Helpers -->
-    <script src="style/assets/vendor/js/helpers.js"></script>
+    <script src="{{asset('style/assets/vendor/js/helpers.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="style/assets/js/config.js"></script>
+    <script src="{{asset('style/assets/js/config.js')}}"></script>
   </head>
 
   <body>
@@ -73,25 +74,12 @@
               <!-- / Menu -->
 
               <!-- Content -->
-
               <div class="container-xxl flex-grow-1 container-p-y">
                 <!-- Layout Demo -->
-                <div class="layout-demo-wrapper">
-                  <div class="layout-demo-placeholder">
-                    <img
-                      src="style/assets/img/layouts/layout-horizontal-container-light.png"
-                      class="img-fluid"
-                      alt="Layout container"
-                      data-app-light-img="layouts/layout-horizontal-container-light.png"
-                      data-app-dark-img="layouts/layout-horizontal-container-dark.png" />
-                  </div>
-                  <div class="layout-demo-info">
-                    <h4>Layout container</h4>
-                    <p>Container layout sets a <code>max-width</code> at each responsive breakpoint.</p>
-                  </div>
-                </div>
+                @yield('content') 
                 <!--/ Layout Demo -->
-              </div>
+                    </div>
+              
               <!--/ Content -->
 
               <!-- Footer -->
@@ -103,11 +91,10 @@
             <!--/ Content wrapper -->
           </div>
         </div>
-
         <!--/ Layout container -->
       </div>
     </div>
-
+    
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
 
@@ -118,23 +105,25 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="style/assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="style/assets/vendor/libs/popper/popper.js"></script>
-    <script src="style/assets/vendor/js/bootstrap.js"></script>
-    <script src="style/assets/vendor/libs/node-waves/node-waves.js"></script>
-    <script src="style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="style/assets/vendor/libs/hammer/hammer.js"></script>
-    <script src="style/assets/vendor/libs/i18n/i18n.js"></script>
-    <script src="style/assets/vendor/libs/typeahead-js/typeahead.js"></script>
-    <script src="style/assets/vendor/js/menu.js"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{asset('style/assets/vendor/libs/jquery/jquery.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/popper/popper.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/js/bootstrap.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/node-waves/node-waves.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/hammer/hammer.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/i18n/i18n.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/typeahead-js/typeahead.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/js/menu.js')}}"></script>
 
     <!-- endbuild -->
 
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-    <script src="style/assets/js/main.js"></script>
+    <script src="{{asset('style/assets/js/main.js')}}"></script>
 
     <!-- Page JS -->
+    {{-- <script src="{{asset('style/assets/js/app-user-list.js')}}"></script> --}}
   </body>
 </html>
