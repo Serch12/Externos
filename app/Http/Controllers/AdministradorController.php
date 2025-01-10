@@ -35,9 +35,10 @@ class AdministradorController extends Controller
         if (auth()->check()) {
             $info_usuario = $this->AdministradorRepository->rolUsuarioGeneral();
             $rol_usuario = $info_usuario->rol;
+            $permisos = explode(',', $info_usuario->permisos);
             // $imagen = Perfil::select('foto')->where('id_user',auth()->user()->id)->first();
             // return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen]);
-            return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario]);
+            return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario, 'permisos'=>$permisos]);
             // return view('Administrador.principal');
         }else {
             return view('auth.login');
