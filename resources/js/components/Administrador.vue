@@ -108,7 +108,7 @@
                                 <div class="col-12 col-md-6">
                                     <div class="form-floating form-floating-outline">
                                     <select id="roles" name="roles" class="form-select" v-model="registro.rol">
-                                        <option value="Selecciona un Rol">Selecciona un Rol</option>
+                                        <option value="Selecciona un Rol">Selecciona un Role</option>
                                         <option v-for="(rol, index) in Roles" :key="index" v-bind:value="rol.name">{{rol.name}}</option>
                                     </select>
                                     <label for="roles">Roles</label>
