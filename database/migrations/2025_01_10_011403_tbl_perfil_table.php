@@ -21,7 +21,7 @@ class TblPerfilTable extends Migration
             $table->string('apellido_paterno');
             $table->string('apellido_materno');
             $table->text('direccion')->nullable();
-            $table->integer('telefono')->nullable();
+            $table->string('telefono')->nullable();
             $table->integer('sede')->nullable();
             $table->timestamps();
         });
