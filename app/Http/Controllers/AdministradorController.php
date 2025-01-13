@@ -37,6 +37,10 @@ class AdministradorController extends Controller
             $rol_usuario = $info_usuario->rol;
             $permisos = explode(',', $info_usuario->permisos);
             $imagen = Perfil::select('foto')->where('id',auth()->user()->id)->first();
+            if ($imagen == null) {
+                $imagen = new \stdClass();
+                $imagen->foto = 'style/logos/sinfoto.png';
+            }
             return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'permisos'=>$permisos]);
         }else {
             return view('auth.login');

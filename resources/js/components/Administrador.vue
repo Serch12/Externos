@@ -32,10 +32,17 @@
                                         <tr v-for="(user, index) in Usuario" :key="index">
                                             <td>{{ index+1 }}</td>
                                             <td>
-                                                <div class="d-flex justify-content-start align-items-center">
+                                                <div class="d-flex justify-content-start align-items-center" v-if="user.perfil != null">
                                                     <div class="avatar-wrapper">
-                                                        <div class="avatar me-2">
+                                                        <div class="avatar me-2" >
                                                             <img :src="`ArchivosSistema/Documentacion/${user.perfil.foto}`" alt="Avatar" class="rounded-circle">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-start align-items-center" v-else>
+                                                    <div class="avatar-wrapper">
+                                                        <div class="avatar me-2" >
+                                                            <img src="style/logos/sinfoto.png" alt="Avatar" class="rounded-circle">
                                                         </div>
                                                     </div>
                                                 </div>
