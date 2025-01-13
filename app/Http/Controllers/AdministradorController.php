@@ -71,4 +71,18 @@ class AdministradorController extends Controller
     public function createUsuarios(Request $request){
         return $this->AdministradorRepository->createUsuarios($request);
     }
+
+    /**
+     * FUNCION QUE editara LOS USUARIOS CON SU ROL
+     **/
+    public function updateUsuarios(Request $request){
+        return $this->AdministradorRepository->updateUsuarios($request);
+    }
+
+    /**
+     * FUNCION QUE editara LOS USUARIOS CON SU ROL
+     **/
+    public function deleteUsuarios($id){
+        return $this->AdministradorRepository->deleteUsuarios($id);
+    }
 }

@@ -11,7 +11,7 @@
                             </div>
                             <div class="col-12 col-md-6 mt-3">
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Registro" />
+                                    <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Registro" @keyup="buscarUsuario()"/>
                                     <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createUser">Agregar</button>
                                 </div>
                             </div>
@@ -51,12 +51,12 @@
                                                 <i class="ri-more-2-line"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')">
+                                                    <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="muestra(1),infoUsuario(user)">
                                                         <i class="ri-clipboard-line me-1"></i> Vizualizar</a>
                                                     <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
                                                         data-bs-toggle="modal" data-bs-target="#editUser" @click="infoUsuario(user)">
                                                         <i class="ri-pencil-line me-1"></i> Editar</a>
-                                                    <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')">
+                                                    <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')" @click="eliminarPerfil(user.id)">
                                                         <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>
                                                 </div>
                                             </div>
@@ -83,6 +83,166 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div id="main" v-if="this.vista == 1">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card mb-6">
+                            <div class="user-profile-header-banner">
+                                <img src="style/assets/img/pages/profile-banner.png" alt="Banner image" class="rounded-top" />
+                            </div>
+                            <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-5">
+                                <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+                                    <img
+                                    :src="`ArchivosSistema/Documentacion/${this.detalleUsuario.perfil.foto}`"
+                                    alt="user image"
+                                    class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img" />
+                                </div>
+                                <div class="flex-grow-1 mt-4 mt-sm-12">
+                                    <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-6">
+                                        <div class="user-profile-info">
+                                            <h4 class="mb-2">{{this.detalleUsuario.name}}</h4>
+                                            <ul
+                                            class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4">
+                                            <li class="list-inline-item">
+                                                <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.rol_name}}</span>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.perfil.direccion}}</span>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <i class="ri-calendar-line me-2 ri-24px"></i
+                                                ><span class="fw-medium"> Joined April 2021</span>
+                                            </li>
+                                            </ul>
+                                        </div>
+                                        <div class="alert alert-solid-success d-flex align-items-center" role="alert" v-if="this.detalleUsuario.estatus == 1">
+                                            <span class="alert-icon rounded">
+                                            <i class="ri-checkbox-circle-line ri-22px"></i>
+                                            </span>
+                                            ACTIVO
+                                        </div>
+
+                                        <div class="alert alert-solid-danger d-flex align-items-center" role="alert" v-if="this.detalleUsuario.estatus == 2">
+                                            <span class="alert-icon rounded">
+                                            <i class="ri-error-warning-line ri-22px"></i>
+                                            </span>
+                                            INACTIVO
+                                        </div>
+
+                                        <div class="alert alert-solid-warning d-flex align-items-center" role="alert" v-if="this.detalleUsuario.estatus == 0">
+                                            <span class="alert-icon rounded">
+                                            <i class="ri-alert-line ri-22px"></i>
+                                            </span>
+                                            INACTIVO
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navbar pills -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="nav-align-top">
+                            <ul class="nav nav-pills flex-column flex-sm-row mb-6 row-gap-2">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="javascript:void(0);"
+                                ><i class="ri-user-3-line me-2"></i>Perfil</a
+                                >
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="pages-profile-teams.html"><i class="ri-article-line me-2"></i>Documentación</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="pages-profile-projects.html"
+                                ><i class="ri-computer-line me-2"></i>Projects</a
+                                >
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="pages-profile-connections.html"
+                                ><i class="ri-link-m me-2"></i>Connections</a
+                                >
+                            </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--/ Navbar pills -->
+
+                 <!-- User Profile Content -->
+                <div class="row">
+                    <div class="col-xl-6 col-lg-5 col-md-5">
+                        <!-- About User -->
+                        <div class="card mb-6">
+                            <div class="card-body">
+                                <small class="card-text text-uppercase text-muted small">ACERCA DE</small>
+                                <ul class="list-unstyled my-3 py-1" >
+                                    <li class="d-flex align-items-center mb-4">
+                                        <i class="ri-user-3-line ri-24px"></i><span class="fw-medium mx-2">NOMBRE COMPLETO:</span>
+                                        <span>{{this.detalleUsuario.perfil.nombre}} {{ this.detalleUsuario.perfil.apellido_paterno }} {{ this.detalleUsuario.perfil.apellido_materno }}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-4">
+                                        <i class="ri-check-line ri-24px"></i><span class="fw-medium mx-2">Estatus:</span>
+                                        <span class="badge bg-label-success rounded-pill" v-if="this.detalleUsuario.estatus == 1">Activo</span>
+                                        <span class="badge bg-label-warning rounded-pill" v-if="this.detalleUsuario.estatus == 0">Pendiente</span>
+                                        <span class="badge bg-label-danger rounded-pill" v-if="this.detalleUsuario.estatus == 2">Inactivo</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-4">
+                                        <i class="ri-football-fill ri-24px"></i><span class="fw-medium mx-2">Role:</span>
+                                        <span>{{this.detalleUsuario.rol_name}}</span>
+                                    </li>
+                                    <!-- <li class="d-flex align-items-center mb-4">
+                                        <i class="ri-flag-2-line ri-24px"></i><span class="fw-medium mx-2">Country:</span>
+                                        <span>USA</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-2">
+                                        <i class="ri-translate-2 ri-24px"></i><span class="fw-medium mx-2">Languages:</span>
+                                        <span>English</span>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+                        <!--/ About User -->
+                    </div>
+                    <div class="col-xl-6 col-lg-5 col-md-5">
+                        <!-- About User -->
+                        <div class="card mb-6">
+                            <div class="card-body">
+                                <small class="card-text text-uppercase text-muted small">CONTACTOS</small>
+                                <ul class="list-unstyled my-3 py-1">
+                                    <li class="d-flex align-items-center mb-4">
+                                    <i class="ri-phone-line ri-24px"></i><span class="fw-medium mx-2">Tel:</span>
+                                    <span>{{ this.detalleUsuario.perfil.telefono }}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-4">
+                                    <i class="ri-map-pin-line ri-24px"></i><span class="fw-medium mx-2">Dirección:</span>
+                                    <span>{{this.detalleUsuario.perfil.direccion}}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-2">
+                                    <i class="ri-mail-open-line ri-24px"></i><span class="fw-medium mx-2">Email:</span>
+                                    <span>{{this.detalleUsuario.email}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--/ About User -->
+                    </div>
+                    <div class="col-xl-12 col-lg-5 col-md-5">
+                        <div class="card mb-6">
+                            <div class="card-body">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="javascript:void(0)" class="btn btn-danger" @click="muestra(0)">
+                                        <i class="ri-arrow-left-long-fill ri-16px me-2"></i>Regresar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>   
+                    </div>
+                    
+                </div>
+              <!--/ User Profile Content -->
             </div>
             <!-- Moda de alta usuario -->
             <div class="modal fade" id="createUser" tabindex="-1" aria-hidden="true">
@@ -218,7 +378,7 @@
                                         id="nameupdate"
                                         class="form-control"
                                         v-model="detalleUsuario.name"
-                                        placeholder="Nombre" />
+                                        placeholder="Nombre" disabled/>
                                     <label for="nameupdate">Nombre</label>
                                     </div>
                                 </div>
@@ -238,7 +398,7 @@
                                         id="emailupdate"
                                         class="form-control"
                                         v-model="detalleUsuario.email"
-                                        placeholder="ejemplo@gmail.com" />
+                                        placeholder="ejemplo@gmail.com" disabled/>
                                     <label for="emailupdate">Email</label>
                                     </div>
                                 </div>
@@ -274,8 +434,8 @@
                                         type="text"
                                         id="nombreperfil"
                                         class="form-control"
-                                        v-model="newperfil.nombre"
-                                        placeholder="ejemplo@gmail.com" />
+                                        v-model="detalleUsuario.perfil.nombre"
+                                        placeholder="Nombre" />
                                     <label for="nombreperfil">Nombre</label>
                                     </div>
                                 </div>
@@ -283,26 +443,63 @@
                                     <div class="form-floating form-floating-outline">
                                     <input
                                         type="text"
-                                        id="nombreperfil"
+                                        id="apellidoPperfil"
                                         class="form-control"
-                                        v-model="newperfil.ape"
-                                        placeholder="ejemplo@gmail.com" />
-                                    <label for="nombreperfil">Nombre</label>
+                                        v-model="detalleUsuario.perfil.apellido_paterno"
+                                        placeholder="Apellido Paterno" />
+                                    <label for="apellidoPperfil">Apellido Paterno</label>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6" v-if="this.submenu == true">
                                     <div class="form-floating form-floating-outline">
                                     <input
                                         type="text"
-                                        id="nombreperfil"
+                                        id="apellido_materno"
                                         class="form-control"
-                                        v-model="newperfil.nombre"
-                                        placeholder="ejemplo@gmail.com" />
-                                    <label for="nombreperfil">Nombre</label>
+                                        v-model="detalleUsuario.perfil.apellido_materno"
+                                        placeholder="Apellido Materno" />
+                                    <label for="apellido_materno">Apellido Materno</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" v-if="this.submenu == true">
+                                    <div class="form-floating form-floating-outline">
+                                    <input
+                                        type="text"
+                                        id="direccion"
+                                        class="form-control"
+                                        v-model="detalleUsuario.perfil.direccion"
+                                        placeholder="Dirección" />
+                                    <label for="direccion">Dirección</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" v-if="this.submenu == true">
+                                    <div class="form-floating form-floating-outline">
+                                    <input
+                                        type="text"
+                                        id="telefono"
+                                        class="form-control"
+                                        v-model="detalleUsuario.perfil.telefono"
+                                        placeholder="5455545" />
+                                    <label for="telefono">Telefono</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" v-if="this.submenu == true">
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="sede" name="roles" class="form-select" v-model="detalleUsuario.perfil.sede">
+                                            <option value="0">Selecciona una Sede</option>
+                                            
+                                        </select>
+                                        <label for="sede">Sede</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6" v-if="this.submenu == true">
+                                    <div class="form-floating form-floating-outline mb-6">
+                                        <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
+                                        <label for="bs-validation-upload-file">Foto</label>
                                     </div>
                                 </div>
                                 <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                    <button type="button" class="btn btn-primary">Editar</button>
+                                    <button type="button" class="btn btn-primary" @click="updateUsuarios()">Editar</button>
                                     <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                                 </div>
                             </form>
@@ -350,7 +547,7 @@
                     apellido_materno:'',
                     direccion:'',
                     telefono:'',
-                    sede:''
+                    sede:0
                 },
                 pagination: {
                     'total': 0,
@@ -395,6 +592,9 @@
             this.getAdministrador();
         },
         methods: {
+            muestra(valor){
+                this.vista = valor;
+            },
             getAdministrador(page){
                 if (this.search == '') {
                 
@@ -420,6 +620,10 @@
             changePage: function (page) {
                 this.pagination.current_page = page;
                 this.getAdministrador(page);
+            },
+            buscarUsuario() {               
+                clearTimeout(this.tiempoBusqueda)
+                this.tiempoBusqueda = setTimeout(this.getAdministrador, 200)
             },
             agregaUser(){
                 if (this.registro.name == '') {
@@ -454,7 +658,7 @@
                         activacion:false
                     }
                     this.getAdministrador();
-                    $('#editUser').modal('hide');
+                    $('#createUser').modal('hide');
                     Swal.fire({
                         title: 'Exitoso',
                         text: "Se Agrego correctamente!",
@@ -466,7 +670,20 @@
 
             },
             infoUsuario(u){
+                this.submenu = false;
                 this.detalleUsuario = u;
+                if (this.detalleUsuario.perfil == null) {
+                    this.detalleUsuario.bandera = 'activo';
+                    this.detalleUsuario.perfil = {
+                        nombre:'',
+                        apellido_paterno:'',
+                        apellido_materno:'',
+                        direccion:'',
+                        telefono:'',
+                        sede:0,
+                        foto:''
+                    }
+                }
             },
             accionSubmenu(){
                 if (this.submenu == false) {
@@ -474,6 +691,144 @@
                 } else {
                     this.submenu = false;
                 }
+            },
+            updateUsuarios(){
+                if (this.detalleUsuario.name == '') {
+                    this.$toast.error("Ingresa un Nombre", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleUsuario.email == '') {
+                    this.$toast.error("Ingresa un Email", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleUsuario.rol_name == '') {
+                    this.$toast.error("Selecciona un Role", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleUsuario.password == '') {
+                    this.$toast.error("Ingresa una contraseña", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+
+                let formData = new FormData();
+                    formData.append('id',this.detalleUsuario.id);
+                    formData.append('rol_name',this.detalleUsuario.rol_name);
+                    formData.append('password',this.detalleUsuario.password);
+                    formData.append('estatus',this.detalleUsuario.estatus);
+                    formData.append('bandera',this.detalleUsuario.bandera);
+                    formData.append('id_perfil',this.detalleUsuario.perfil.id_perfil);
+                    formData.append('nombre',this.detalleUsuario.perfil.nombre);
+                    formData.append('apellido_paterno',this.detalleUsuario.perfil.apellido_paterno);
+                    formData.append('apellido_materno',this.detalleUsuario.perfil.apellido_materno);
+                    formData.append('direccion',this.detalleUsuario.perfil.direccion);
+                    formData.append('telefono',this.detalleUsuario.perfil.telefono);
+                    formData.append('sede',this.detalleUsuario.perfil.sede);
+                    formData.append('foto',this.detalleUsuario.perfil.foto);
+                axios.post('administrador/updateUsuarios',formData).then(response =>{
+                    this.getAdministrador();
+                    $('#editUser').modal('hide');
+                    this.submenu = false;
+                    Swal.fire({
+                        title: 'Exitoso',
+                        text: "Se Edito correctamente!",
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                })
+            },
+            eliminarPerfil(id){
+            this.id = id
+                Swal.fire({
+                    title: 'Estas seguro?',
+                    text: "Se eliminara permanentemente!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText:'Cancelar',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (this.id_usuario_logeado == this.id) {
+                            Swal.fire({
+                                title: 'Error',
+                                text: "No se puede eliminar por que es el usuario en curso!",
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 2500,
+                            }) 
+                        }else{
+                            axios.post(`administrador/deleteUsuarios/${this.id}`).then(response => {
+                                this.getAdministrador();
+                                
+                                Swal.fire({
+                                    title: 'Eliminado',
+                                    text: "El Usuario ha sido eliminado!",
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 2500,
+                                })
+                            });
+                        }
+                    }
+                })
+            },
+            onChangeFoto(){
+                var fileedit = this.$refs.fileFoto.files[0];
+                this.detalleUsuario.perfil.foto = fileedit
             }
         }
     };

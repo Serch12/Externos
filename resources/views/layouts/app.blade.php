@@ -43,8 +43,12 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
     <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/typeahead-js/typeahead.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css')}}" />
 
     <!-- Page CSS -->
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/css/pages/page-profile.css')}}" />
 
     <!-- Helpers -->
     <script src="{{asset('style/assets/vendor/js/helpers.js')}}"></script>
@@ -124,6 +128,6 @@
     <script src="{{asset('style/assets/js/main.js')}}"></script>
 
     <!-- Page JS -->
-    {{-- <script src="{{asset('style/assets/js/app-user-list.js')}}"></script> --}}
+    <script src="{{asset('style/assets/js/pages-profile-user.js')}}"></script>
   </body>
 </html>
