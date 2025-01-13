@@ -35,7 +35,7 @@
                                                 <div class="d-flex justify-content-start align-items-center">
                                                     <div class="avatar-wrapper">
                                                         <div class="avatar me-2">
-                                                            <img :src="`${user.img}`" alt="Avatar" class="rounded-circle">
+                                                            <img :src="`ArchivosSistema/Documentacion/${user.perfil.foto}`" alt="Avatar" class="rounded-circle">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -89,7 +89,7 @@
                     <div class="col-12">
                         <div class="card mb-6">
                             <div class="user-profile-header-banner">
-                                <img src="style/assets/img/pages/profile-banner.png" alt="Banner image" class="rounded-top" />
+                                <img src="style/logos/fondo5.jpg" alt="Banner image" class="rounded-top" />
                             </div>
                             <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-5">
                                 <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">

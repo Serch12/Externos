@@ -19,7 +19,7 @@ class AdministradorHelper
     public function __construct(AdministradorRepository $AdministradorRepository)
     {
         $this->AdministradorRepository = $AdministradorRepository;
-       
+
     }
 
     /**
@@ -42,12 +42,12 @@ class AdministradorHelper
                 $value -> text = 'Inactivo';
                 $value -> color = 'bg-label-danger';
             }
-            if ($value->rol_name == 'Root') {
-                $value->img = 'style/assets/img/avatars/1.png';
-            }
-            if ($value->rol_name == 'Auxiliar Tecnico') {
-                $value->img = 'style/assets/img/avatars/6.png';
-            }
+            // if ($value->rol_name == 'Root') {
+            //     $value->img = 'style/assets/img/avatars/1.png';
+            // }
+            // if ($value->rol_name == 'Auxiliar Tecnico') {
+            //     $value->img = 'style/assets/img/avatars/6.png';
+            // }
         }
     }
 }

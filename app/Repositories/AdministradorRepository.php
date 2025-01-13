@@ -140,7 +140,7 @@ class AdministradorRepository
                 $file = $request->file('foto');
                 //obtenemos el nombre del archivo
                 $nombre = $file->getClientOriginalName();
-                $url = $id."/".$nombre;
+                $url = $request->id."/".$nombre;
                 //indicamos que queremos guardar un nuevo archivo en el disco local
                 \Storage::disk('perfil')->put($url,  \File::get($file));
                 $perfil->foto = $url; 
