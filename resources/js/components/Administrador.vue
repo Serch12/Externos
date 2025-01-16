@@ -152,90 +152,146 @@
                 <!-- Navbar pills -->
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="nav-align-top">
-                            <ul class="nav nav-pills flex-column flex-sm-row mb-6 row-gap-2">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="javascript:void(0);"
-                                ><i class="ri-user-3-line me-2"></i>Perfil</a
-                                >
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="perfil-tab" data-bs-toggle="pill" data-bs-target="#perfil" type="button" role="tab" aria-controls="perfil" aria-selected="true">
+                                    <i class="ri-user-3-line me-2"></i>
+                                    Perfil
+                                </button>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages-profile-teams.html"><i class="ri-article-line me-2"></i>Documentación</a>
+                            <li class="nav-item" role="presentation" v-if="this.rol_usuario == 'Cuerpo Tecnico'">
+                                <button class="nav-link" id="documentacion-tab" data-bs-toggle="pill" data-bs-target="#documentacion" type="button" role="tab" aria-controls="documentacion" aria-selected="false">
+                                    <i class="ri-article-line me-2"></i>Documentación
+                                </button>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages-profile-projects.html"
-                                ><i class="ri-computer-line me-2"></i>Projects</a
-                                >
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages-profile-connections.html"
-                                ><i class="ri-link-m me-2"></i>Connections</a
-                                >
-                            </li>
-                            </ul>
+                            
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">
+                                <!-- User Profile Content -->
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-5 col-md-5">
+                                            <!-- About User -->
+                                            <div class="card mb-6">
+                                                <div class="card-body">
+                                                    <small class="card-text text-uppercase text-muted small">ACERCA DE</small>
+                                                    <ul class="list-unstyled my-3 py-1" >
+                                                        <li class="d-flex align-items-center mb-4">
+                                                            <i class="ri-user-3-line ri-24px"></i><span class="fw-medium mx-2">NOMBRE COMPLETO:</span>
+                                                            <span>{{this.detalleUsuario.perfil.nombre}} {{ this.detalleUsuario.perfil.apellido_paterno }} {{ this.detalleUsuario.perfil.apellido_materno }}</span>
+                                                        </li>
+                                                        <li class="d-flex align-items-center mb-4">
+                                                            <i class="ri-check-line ri-24px"></i><span class="fw-medium mx-2">Estatus:</span>
+                                                            <span class="badge bg-label-success rounded-pill" v-if="this.detalleUsuario.estatus == 1">Activo</span>
+                                                            <span class="badge bg-label-warning rounded-pill" v-if="this.detalleUsuario.estatus == 0">Pendiente</span>
+                                                            <span class="badge bg-label-danger rounded-pill" v-if="this.detalleUsuario.estatus == 2">Inactivo</span>
+                                                        </li>
+                                                        <li class="d-flex align-items-center mb-4">
+                                                            <i class="ri-football-fill ri-24px"></i><span class="fw-medium mx-2">Role:</span>
+                                                            <span>{{this.detalleUsuario.rol_name}}</span>
+                                                        </li>
+                                                        <!-- <li class="d-flex align-items-center mb-4">
+                                                            <i class="ri-flag-2-line ri-24px"></i><span class="fw-medium mx-2">Country:</span>
+                                                            <span>USA</span>
+                                                        </li>
+                                                        <li class="d-flex align-items-center mb-2">
+                                                            <i class="ri-translate-2 ri-24px"></i><span class="fw-medium mx-2">Languages:</span>
+                                                            <span>English</span>
+                                                        </li> -->
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!--/ About User -->
+                                        </div>
+                                        <div class="col-xl-6 col-lg-5 col-md-5">
+                                            <!-- About User -->
+                                            <div class="card mb-6">
+                                                <div class="card-body">
+                                                    <small class="card-text text-uppercase text-muted small">CONTACTOS</small>
+                                                    <ul class="list-unstyled my-3 py-1">
+                                                        <li class="d-flex align-items-center mb-4">
+                                                        <i class="ri-phone-line ri-24px"></i><span class="fw-medium mx-2">Tel:</span>
+                                                        <span>{{ this.detalleUsuario.perfil.telefono }}</span>
+                                                        </li>
+                                                        <li class="d-flex align-items-center mb-4">
+                                                        <i class="ri-map-pin-line ri-24px"></i><span class="fw-medium mx-2">Dirección:</span>
+                                                        <span>{{this.detalleUsuario.perfil.direccion}}</span>
+                                                        </li>
+                                                        <li class="d-flex align-items-center mb-2">
+                                                        <i class="ri-mail-open-line ri-24px"></i><span class="fw-medium mx-2">Email:</span>
+                                                        <span>{{this.detalleUsuario.email}}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!--/ About User -->
+                                        </div>
+                                    </div>
+                                <!--/ User Profile Content -->
+                            </div>
+                            <div class="tab-pane fade" id="documentacion" role="tabpanel" aria-labelledby="documentacion-tab">
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-5 col-md-5">
+                                        <!-- About User -->
+                                        <div class="card mb-6">
+                                            <div class="card-body">
+                                                <div class="row" v-for="d in documentacion" :key="d.value">
+                                                    <div class="col-12 col-md-12">
+                                                        <div class="form-check form-switch">
+                                                            <input type="checkbox" class="form-check-input" id="ine" :value="d.value"
+                                                             @click="modalArch(d)"/>
+                                                            <label for="ine" class="text-heading">{{d.label}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        <!--/ About User -->
+                                    </div>
+                                    <div class="col-xl-8 col-lg-5 col-md-5">
+                                        <!-- About User -->
+                                        <div class="card mb-6">
+                                            <div class="card-body" style="border-color: #33b2ff;">
+                                                <h5 class="card-header">Documentacion Cargada</h5>
+                                                <div class="table-responsive text-nowrap">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Tipo</th>
+                                                                <th>Archivo</th>
+                                                                <th>Acciones</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-for="(d, index) in this.DetalleDocumentacion" :key="index">
+                                                                <td>
+                                                                    {{index+1}}
+                                                                </td>
+                                                                <td>{{d.tipo}}</td>
+                                                                <td>{{d.archivo}}</td>
+                                                                <td>
+                                                                    <a class="dropdown-item waves-effect" type="button" style="color: red;" @click="deleteDoc(d)">
+                                                                        <i class="ri-delete-bin-7-line me-1"></i> Delete</a>
+
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!--/ About User -->
+                                    </div>
+                                </div>
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!--/ Navbar pills -->
-
-                 <!-- User Profile Content -->
                 <div class="row">
-                    <div class="col-xl-6 col-lg-5 col-md-5">
-                        <!-- About User -->
-                        <div class="card mb-6">
-                            <div class="card-body">
-                                <small class="card-text text-uppercase text-muted small">ACERCA DE</small>
-                                <ul class="list-unstyled my-3 py-1" >
-                                    <li class="d-flex align-items-center mb-4">
-                                        <i class="ri-user-3-line ri-24px"></i><span class="fw-medium mx-2">NOMBRE COMPLETO:</span>
-                                        <span>{{this.detalleUsuario.perfil.nombre}} {{ this.detalleUsuario.perfil.apellido_paterno }} {{ this.detalleUsuario.perfil.apellido_materno }}</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-4">
-                                        <i class="ri-check-line ri-24px"></i><span class="fw-medium mx-2">Estatus:</span>
-                                        <span class="badge bg-label-success rounded-pill" v-if="this.detalleUsuario.estatus == 1">Activo</span>
-                                        <span class="badge bg-label-warning rounded-pill" v-if="this.detalleUsuario.estatus == 0">Pendiente</span>
-                                        <span class="badge bg-label-danger rounded-pill" v-if="this.detalleUsuario.estatus == 2">Inactivo</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-4">
-                                        <i class="ri-football-fill ri-24px"></i><span class="fw-medium mx-2">Role:</span>
-                                        <span>{{this.detalleUsuario.rol_name}}</span>
-                                    </li>
-                                    <!-- <li class="d-flex align-items-center mb-4">
-                                        <i class="ri-flag-2-line ri-24px"></i><span class="fw-medium mx-2">Country:</span>
-                                        <span>USA</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                        <i class="ri-translate-2 ri-24px"></i><span class="fw-medium mx-2">Languages:</span>
-                                        <span>English</span>
-                                    </li> -->
-                                </ul>
-                            </div>
-                        </div>
-                        <!--/ About User -->
-                    </div>
-                    <div class="col-xl-6 col-lg-5 col-md-5">
-                        <!-- About User -->
-                        <div class="card mb-6">
-                            <div class="card-body">
-                                <small class="card-text text-uppercase text-muted small">CONTACTOS</small>
-                                <ul class="list-unstyled my-3 py-1">
-                                    <li class="d-flex align-items-center mb-4">
-                                    <i class="ri-phone-line ri-24px"></i><span class="fw-medium mx-2">Tel:</span>
-                                    <span>{{ this.detalleUsuario.perfil.telefono }}</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-4">
-                                    <i class="ri-map-pin-line ri-24px"></i><span class="fw-medium mx-2">Dirección:</span>
-                                    <span>{{this.detalleUsuario.perfil.direccion}}</span>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-2">
-                                    <i class="ri-mail-open-line ri-24px"></i><span class="fw-medium mx-2">Email:</span>
-                                    <span>{{this.detalleUsuario.email}}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!--/ About User -->
-                    </div>
                     <div class="col-xl-12 col-lg-5 col-md-5">
                         <div class="card mb-6">
                             <div class="card-body">
@@ -247,9 +303,10 @@
                             </div>
                         </div>   
                     </div>
-                    
                 </div>
-              <!--/ User Profile Content -->
+                
+
+                <!--/ Navbar pills -->
             </div>
             <!-- Moda de alta usuario -->
             <div class="modal fade" id="createUser" tabindex="-1" aria-hidden="true">
@@ -514,6 +571,39 @@
                     </div>
                 </div>
             </div>
+            <!-- Modal para cargar los archivos -->
+            <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel1">{{this.doc.name}}</h4>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col mb-6 mt-2">
+                                    <div class="col-12 col-md-12" >
+                                    <div class="form-floating form-floating-outline mb-6">
+                                        <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file" ref="fileDoc" @change="onChangeDoc()" multiple>
+                                        <label for="bs-validation-upload-file">{{this.doc.name}}</label>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
         <br><br><br>
         </div>
     </template>
@@ -555,6 +645,18 @@
                     direccion:'',
                     telefono:'',
                     sede:0
+                },
+                documentacion:[
+                    { label: 'INE', value: 'INE' },
+                    { label: 'COMPROBANTE DE ESTUDIOS', value: 'COMPROBANTE DE ESTUDIOS' },
+                    { label: 'COMPROBANTE DE DOMICILIO', value: 'COMPROBANTE DE DOMICILIO' },
+                    { label: 'CONSTANCIA DE SITUACIÓN FISCAL', value: 'CONSTANCIA DE SITUACIÓN FISCAL' },
+                ],
+                documentacionDate:[],
+                DetalleDocumentacion:[],
+                doc:{
+                    name:'',
+                    active:''
                 },
                 pagination: {
                     'total': 0,
@@ -691,6 +793,9 @@
                         foto:''
                     }
                 }
+                axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
+                    this.DetalleDocumentacion = res.data
+                })
             },
             accionSubmenu(){
                 if (this.submenu == false) {
@@ -836,6 +941,71 @@
             onChangeFoto(){
                 var fileedit = this.$refs.fileFoto.files[0];
                 this.detalleUsuario.perfil.foto = fileedit
+            },
+    
+            modalArch(d){
+                this.doc.name = d.value;
+                
+                $('#basicModal').modal('show');
+            },
+            onChangeDoc(){
+                
+                var file = this.$refs.fileDoc.files;
+
+                for (let index = 0; index < file.length; index++) {
+                    this.documentacionDate.push({
+                        archivo:file[index],
+                        tipo:this.doc.name
+                    });
+                }
+                let formData = new FormData();
+                    formData.append('id',this.detalleUsuario.id);
+                for (let i = 0; i < this.documentacionDate.length; i++) {
+                    formData.append(`documentacionDate[${i}][archivo]`, this.documentacionDate[i].archivo);
+                    formData.append(`documentacionDate[${i}][tipo]`, this.documentacionDate[i].tipo);
+                }
+                axios.post('administrador/Documentacion',formData).then(res=>{
+                    $('#fileDoc').modal('');
+                    $('#basicModal').modal('hide');
+                    axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
+                        this.DetalleDocumentacion = res.data
+                    })
+                    Swal.fire({
+                        title: 'Exitoso',
+                        text: "Se Añadieron correctamente!",
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                })
+            },
+            deleteDoc(d){
+                this.id = d.id_documentacion;
+                Swal.fire({
+                    title: 'Estas seguro?',
+                    text: "Se eliminara permanentemente!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText:'Cancelar',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.post(`administrador/deleteDoc/${this.id}`).then(response => {
+                            axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
+                                this.DetalleDocumentacion = res.data
+                            })
+                            Swal.fire({
+                                title: 'Eliminado',
+                                text: "El Documento ha sido eliminado!",
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 2500,
+                            })
+                        });
+                    }
+                })
             }
         }
     };

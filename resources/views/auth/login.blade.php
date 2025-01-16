@@ -41,14 +41,15 @@
     <link rel="stylesheet" href="{{asset('style/assets/css/demo.css')}}" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="style/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/typeahead-js/typeahead.css')}}" />
     <!-- Vendor -->
     <link rel="stylesheet" href="style/assets/vendor/libs/@form-validation/form-validation.css" />
+    <link rel="stylesheet" type="text/css" href="{{asset('style/assets/login.css')}}">
 
     <!-- Page CSS -->
     <!-- Page -->
-    <link rel="stylesheet" href="style/assets/vendor/css/pages/page-auth.css" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/css/pages/page-auth.css')}}" />
 
     <!-- Helpers -->
     <script src="style/assets/vendor/js/helpers.js"></script>
@@ -57,7 +58,9 @@
     <script src="style/assets/js/config.js"></script>
   </head>
 
-  <body>
+  <body style="background-image: url('style/assets/img/banners/banner1.png');
+    background-repeat: no-repeat;
+    background-size: cover;">
     <!-- Content -->
 
     <div class="position-relative">

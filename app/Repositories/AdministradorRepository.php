@@ -6,6 +6,7 @@ use App\Models\Notificaciones;
 use App\Models\Perfil;
 use App\Models\Usuarios;
 use App\Models\User;
+use App\Models\Documentacion;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Crypt;
@@ -184,5 +185,49 @@ class AdministradorRepository
             //     $elimina->delete();
             // }
         $user->delete();
+    }
+
+    /**
+     * FUNCION QUE GUARDARA LA DOCUMENTACION DE CADA USUARIO
+     **/
+    public function Documentacion($request){
+
+        $documentacion = $request->input('documentacionDate');
+
+        if (isset($documentacion)) {
+            foreach ($documentacion as $index => $evidencia) {
+                $file = $request->file("documentacionDate.{$index}.archivo");
+                $tipo = $evidencia['tipo'];
+
+                if ($file) {
+                    $arch = new Documentacion();
+                    $arch->id_perfil = $request->id;
+                    // Obtenemos el nombre del archivo
+                    $nombre = $file->getClientOriginalName();
+                    $urlimagen = $request->id."/".'Documentacion' . "/" . $nombre;
+                    \Storage::disk('perfil')->put($urlimagen, \File::get($file));
+                    $arch->tipo = $tipo;
+                    $arch->archivo = $nombre;
+                    $arch->estatus = 0;
+                    $arch->save();
+                }
+            }
+        }
+    }
+
+    /**
+     * FUNCION QUE MOSTRARA LA DOCUMENTACION DE CADA USUARIO
+     **/
+    public function detalleDocumentacion($id){
+        return Documentacion::where('id_perfil',$id)->get();
+    }
+
+    /**
+     * FUNCION QUE ELIMINARA LOS DOCUMENTOS
+     **/
+    public function deleteDoc($id){
+        $delete = Documentacion::find($id);
+        \Storage::disk('perfil')->delete($delete->id_perfil.'/'.'Documentacion'.'/'.$delete->archivo);
+        $delete->delete();
     }
 }

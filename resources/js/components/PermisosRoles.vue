@@ -248,7 +248,6 @@
     </div>
 </template>
 <script>
-import { update } from 'lodash';
 
 export default {
     name: '',

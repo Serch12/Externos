@@ -4,6 +4,7 @@ namespace App\Helpers;
 use App\Repositories\AdministradorRepository;
 use App\Administrador;
 use App\Models\Perfil;
+use App\Models\Documentacion;
 use Carbon\Carbon;
 use DB;
 use Hash;
@@ -29,6 +30,7 @@ class AdministradorHelper
 
         foreach ($muestra as $value) {
             $value->perfil = Perfil::where('id',$value->id)->first();
+            // $value->documentacion = Documentacion::where('id_perfil',$value->id)->get();
 
             if ($value->estatus == 0) {
                 $value -> text = 'Pendiente';

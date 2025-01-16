@@ -87,4 +87,25 @@ class AdministradorController extends Controller
     public function deleteUsuarios($id){
         return $this->AdministradorRepository->deleteUsuarios($id);
     }
+
+    /**
+     * FUNCION QUE GUARDARA LA DOCUMENTACION DE CADA USUARIO
+     **/
+    public function Documentacion(Request $request){
+        return $this->AdministradorRepository->Documentacion($request);
+    }
+
+    /**
+     * FUNCION QUE MOSTRARA LA DOCUMENTACION DE CADA USUARIO
+     **/
+    public function detalleDocumentacion($id){
+        return $this->AdministradorRepository->detalleDocumentacion($id);
+    }
+
+    /**
+     * FUNCION QUE ELIMINARA LOS DOCUMENTOS
+     **/
+    public function deleteDoc($id){
+        return $this->AdministradorRepository->deleteDoc($id);
+    }
 }
