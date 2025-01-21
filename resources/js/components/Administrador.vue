@@ -115,7 +115,7 @@
                                                 <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.rol_name}}</span>
                                             </li>
                                             <li class="list-inline-item">
-                                                <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.perfil.direccion}}</span>
+                                                <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.sede[0].nombre}}</span>
                                             </li>
                                             <li class="list-inline-item">
                                                 <i class="ri-calendar-line me-2 ri-24px"></i
@@ -159,7 +159,7 @@
                                     Perfil
                                 </button>
                             </li>
-                            <li class="nav-item" role="presentation" v-if="this.rol_usuario == 'Cuerpo Tecnico'">
+                            <li class="nav-item" role="presentation" v-if="this.detalleUsuario.rol_name == 'Cuerpo Tecnico'">
                                 <button class="nav-link" id="documentacion-tab" data-bs-toggle="pill" data-bs-target="#documentacion" type="button" role="tab" aria-controls="documentacion" aria-selected="false">
                                     <i class="ri-article-line me-2"></i>Documentación
                                 </button>
@@ -368,7 +368,21 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-12 col-md-5">
+                                    <div class="form-floating form-floating-outline">
+                                    <select id="Sedes" name="Sedes" class="form-select" v-model="registro.rol">
+                                        <option value="Selecciona un Rol">Selecciona una Sede</option>
+                                        <option v-for="(rol, index) in Sedes" :key="index" v-bind:value="rol.name">{{rol.name}}</option>
+                                    </select>
+                                    <label for="Sedes">Sedes</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-1">
+                                    <button type="button" class="btn btn-icon btn-outline-whatsapp waves-effect" data-bs-toggle="modal" data-bs-target="#createSede">
+                                        <i class="tf-icons ri-checkbox-circle-fill ri-22px"></i>
+                                    </button>
+                                </div>
+                                <div class="col-12 col-md-6">
                                     <div class="form-check form-switch">
                                     <input type="checkbox" class="form-check-input" id="editBillingAddress" v-model="registro.activacion"/>
                                     <label for="editBillingAddress" class="text-heading">Activar Usuario?</label>
@@ -485,6 +499,20 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 col-md-5" v-if="this.submenu == false">
+                                    <div class="form-floating form-floating-outline">
+                                    <select id="Sedes" name="Sedes" class="form-select" v-model="detalleUsuario.sede">
+                                        <option value="Selecciona una Sede">Selecciona una Sede</option>
+                                        <option v-for="(sed, index) in Sedes" :key="index" v-bind:value="sed.id_sede">{{sed.nombre}}</option>
+                                    </select>
+                                    <label for="Sedes">Sedes</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-1" v-if="this.submenu == false">
+                                    <button type="button" class="btn btn-icon btn-outline-whatsapp waves-effect" data-bs-toggle="modal" data-bs-target="#createSede">
+                                        <i class="tf-icons ri-checkbox-circle-fill ri-22px"></i>
+                                    </button>
+                                </div>
                                 <div class="col-12" v-if="this.submenu == false">
                                     <div class="form-check form-switch">
                                         <input type="checkbox" class="form-check-input" id="editBillingAddressupdate" v-model="detalleUsuario.estatus"/>
@@ -548,15 +576,6 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6" v-if="this.submenu == true">
-                                    <div class="form-floating form-floating-outline">
-                                        <select id="sede" name="roles" class="form-select" v-model="detalleUsuario.perfil.sede">
-                                            <option value="0">Selecciona una Sede</option>
-                                            
-                                        </select>
-                                        <label for="sede">Sede</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6" v-if="this.submenu == true">
                                     <div class="form-floating form-floating-outline mb-6">
                                         <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
                                         <label for="bs-validation-upload-file">Foto</label>
@@ -604,21 +623,110 @@
                     </div>
                 </div>
             </div>
+            <!-- modal para crear las sedes -->
+            <div class="modal fade" id="createSede" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+                    <div class="modal-content">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-body p-0">
+                            <div class="text-center mb-6">
+                                <h4 class="mb-2">Agregar Sede</h4>
+                            </div>
+                            <form id="editUserForm" class="row g-5">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                    <input
+                                        type="text"
+                                        id="sede"
+                                        class="form-control"
+                                        v-model="newSede.nombre"
+                                        placeholder="Sede" />
+                                    <label for="sede">Sede</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                    <input
+                                        type="text"
+                                        id="ubicacion"
+                                        class="form-control"
+                                        v-model="newSede.ubicacion"
+                                        placeholder="Ubicación" />
+                                    <label for="ubicacion">Ubicación</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                    <input
+                                        type="text"
+                                        id="lugar"
+                                        class="form-control"
+                                        v-model="newSede.lugar_entrenamiento"
+                                        placeholder="Lugar Entrenamiento" />
+                                    <label for="lugar">Lugar Entrenamiento</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating form-floating-outline">
+                                    <input
+                                        type="date"
+                                        id="fecha"
+                                        class="form-control"
+                                        v-model="newSede.fecha_registro"
+                                         />
+                                    <label for="fecha">Fecha Registro</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <div style="max-width: 800px; overflow: hidden;">
+                                            <quill-editor
+                                                v-model="newSede.contactos"
+                                                style="height: 150px ;text-align: left;"
+                                                ref="myQuillEditor"
+                                                :options="editorOption"
+                                                @blur="onEditorBlur($event)"
+                                                @focus="onEditorFocus($event)"
+                                                @change="onEditorChange($event)">
+                                            </quill-editor>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                               
+                                
+                                <div class="col-12 text-center d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+                                    <button type="button" class="btn btn-primary" @click="agregaSede()">Guardar</button>
+                                    <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
         <br><br><br>
         </div>
     </template>
     <script>
     import axios from 'axios';
+    import 'quill/dist/quill.core.css'
+    import 'quill/dist/quill.snow.css'
+    import 'quill/dist/quill.bubble.css'
+    import { quillEditor } from 'vue-quill-editor';
     export default {
         name: '',
         components: {
-            
+            quillEditor
         },
         mixins: [],
         props: [
             'id_usuario_logeado',
             'name_usuario_logeado',
             'rol_usuario',
+            'sede',
             'permisos',
             'componente'
         ],
@@ -631,10 +739,12 @@
                     rol:'Selecciona un Rol',
                     email:'',
                     password:'',
+                    sede:'Selecciona una Sede',
                     activacion:false
                 },
                 Usuario:[],
                 Roles:[],
+                Sedes:[],
                 submenu:false,
                 detalleUsuario:[],
                 newperfil:{
@@ -645,6 +755,14 @@
                     direccion:'',
                     telefono:'',
                     sede:0
+                },
+                newSede:{
+                    nombre:'',
+                    ubicacion:'',
+                    lugar_entrenamiento:'',
+                    contactos:'',
+                    fecha_registro:''
+
                 },
                 documentacion:[
                     { label: 'INE', value: 'INE' },
@@ -658,6 +776,7 @@
                     name:'',
                     active:''
                 },
+                editorOption: {},
                 pagination: {
                     'total': 0,
                     'current_page': 0,
@@ -712,6 +831,7 @@
 
                         this.Usuario = response.data.muestra.data,
                         this.Roles = response.data.roles
+                        this.Sedes = response.data.sedes
                         this.pagination = response.data.pagination
                     });
                 } else {
@@ -719,6 +839,8 @@
                     var url = `administrador/Busqueda?buscador=${this.search}&page=`+page;
                     axios.get(url).then(response => {
                         this.Usuario = response.data.muestra.data
+                        this.Roles = response.data.roles
+                        this.Sedes = response.data.sedes
                         this.pagination = response.data.pagination
                     });
                 }
@@ -886,7 +1008,7 @@
                     formData.append('apellido_materno',this.detalleUsuario.perfil.apellido_materno);
                     formData.append('direccion',this.detalleUsuario.perfil.direccion);
                     formData.append('telefono',this.detalleUsuario.perfil.telefono);
-                    formData.append('sede',this.detalleUsuario.perfil.sede);
+                    formData.append('sede',this.detalleUsuario.sede);
                     formData.append('foto',this.detalleUsuario.perfil.foto);
                 axios.post('administrador/updateUsuarios',formData).then(response =>{
                     this.getAdministrador();
@@ -1006,7 +1128,109 @@
                         });
                     }
                 })
-            }
+            },
+            agregaSede(){
+                if (this.newSede.nombre == '') {
+                    this.$toast.error("Ingresa el nombre de la Sede", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.newSede.ubicacion == '') {
+                    this.$toast.error("Ingresa la Ubicación", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.newSede.lugar_entrenamiento == '') {
+                    this.$toast.error("Ingresa el lugar de entrenamiento", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.newSede.fecha_registro == '') {
+                    this.$toast.error("Ingresa la Fecha", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+
+                let formData = new FormData();
+                    formData.append('nombre',this.newSede.nombre);
+                    formData.append('ubicacion',this.newSede.ubicacion);
+                    formData.append('lugar_entrenamiento',this.newSede.lugar_entrenamiento);
+                    formData.append('contactos',this.newSede.contactos);
+                    formData.append('fecha_registro',this.newSede.fecha_registro);
+
+                axios.post('administrador/newSede',formData).then(response =>{
+                    this.getAdministrador();
+                    Swal.fire({
+                        title: 'Perfecto',
+                        text: "La Sede ha sido registrada!",
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    })
+                    $('#createSede').modal('hide');
+                    this.newSede = {
+                        nombre:'',
+                        ubicacion:'',
+                        lugar_entrenamiento:'',
+                        contactos:'',
+                        fecha_registro:''
+
+                    }
+                })
+            },
+            onEditorReady (editor) {}, // prepara el editor
+            onEditorBlur () {}, // Evento de pérdida de foco
+            onEditorFocus () {}, // Obtiene el evento de enfoque
+            onEditorChange () {}, // evento de cambio de contenido
+
         }
     };
     </script>

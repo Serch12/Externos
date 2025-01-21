@@ -8,6 +8,8 @@ Route::post('/administrador/createUser', [AdministradorController::class, 'creat
 Route::post('/administrador/updateUsuarios', [AdministradorController::class, 'updateUsuarios'])->name('administrador/updateUsuarios');
 Route::post('/administrador/deleteUsuarios/{id}', [AdministradorController::class, 'deleteUsuarios'])->name('administrador/deleteUsuarios/{id}');
 
-Route::post('/administrador/Documentacion', [AdministradorController::class, 'Documentacion'])->name('/administrador/Documentacion');
-Route::get('/administrador/detalleDocumentacion/{id}', [AdministradorController::class, 'detalleDocumentacion'])->name('/administrador/detalleDocumentacion/{id}');
-Route::post('/administrador/deleteDoc/{id}', [AdministradorController::class, 'deleteDoc'])->name('/administrador/deleteDoc/{id}');
+Route::post('/administrador/Documentacion', [AdministradorController::class, 'Documentacion'])->name('administrador/Documentacion');
+Route::get('/administrador/detalleDocumentacion/{id}', [AdministradorController::class, 'detalleDocumentacion'])->name('administrador/detalleDocumentacion/{id}');
+Route::post('/administrador/deleteDoc/{id}', [AdministradorController::class, 'deleteDoc'])->name('administrador/deleteDoc/{id}');
+
+Route::post('/administrador/newSede', [AdministradorController::class, 'newSede'])->name('administrador/newSede');

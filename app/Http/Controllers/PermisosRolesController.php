@@ -21,9 +21,9 @@ class PermisosRolesController extends Controller
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
             ->join('role_has_permissions', 'roles.id', '=', 'role_has_permissions.role_id')
             ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
-            ->select('roles.name as rol', 'users.id', 'users.name', 'users.email', DB::raw('GROUP_CONCAT(permissions.name) as permisos'))
+            ->select('roles.name as rol', 'users.id', 'users.name', 'users.email','users.sede', DB::raw('GROUP_CONCAT(permissions.name) as permisos'))
             ->where('users.id', auth()->user()->id)
-            ->groupBy('users.id', 'users.name', 'users.email', 'roles.name')
+            ->groupBy('users.id', 'users.name', 'users.email', 'roles.name','users.sede')
             ->first();
             $rol_usuario = $info_usuario->rol;
             $permisos = explode(',', $info_usuario->permisos);
@@ -32,7 +32,8 @@ class PermisosRolesController extends Controller
                 $imagen = new \stdClass();
                 $imagen->foto = 'style/logos/sinfoto.png';
             }
-            return view('PermisosRoles.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'permisos'=>$permisos]);
+            $sede = Sedes::select('nombre')->where('id_sede',$info_usuario->sede)->first();
+            return view('PermisosRoles.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede->nombre,'permisos'=>$permisos]);
         }else {
             return view('auth.login');
         }

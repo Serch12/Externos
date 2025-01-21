@@ -35,7 +35,7 @@ Vue.use(Toast, {
 Vue.component('home-component', require('./components/Home.vue').default);
 Vue.component('administrador-component', require('./components/Administrador.vue').default);
 Vue.component('permisosroles-component', require('./components/PermisosRoles.vue').default);
-
+Vue.component('jugadores-component', require('./components/Jugadores.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

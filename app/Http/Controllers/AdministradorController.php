@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Helpers\AdministradorHelper;
 use App\Repositories\AdministradorRepository;
 use App\Models\Perfil;
+use App\Models\Sedes;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -41,7 +42,8 @@ class AdministradorController extends Controller
                 $imagen = new \stdClass();
                 $imagen->foto = 'style/logos/sinfoto.png';
             }
-            return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'permisos'=>$permisos]);
+            $sede = Sedes::select('nombre')->where('id_sede',$info_usuario->sede)->first();
+            return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede->nombre,'permisos'=>$permisos]);
         }else {
             return view('auth.login');
         }
@@ -56,8 +58,9 @@ class AdministradorController extends Controller
         $role = $info_usuario->rol;
         $muestra = $this->AdministradorRepository->Usuarios($request,$role);
         $valida = $this->AdministradorHelper->validar($muestra);
-        $roles = Role::select('*')->get();    
-        return response()->json(['roles'=>$roles, 'muestra'=>$muestra,
+        $roles = Role::select('*')->get();
+        $sedes = Sedes ::select('*')->get(); 
+        return response()->json(['roles'=>$roles, 'muestra'=>$muestra,'sedes'=>$sedes,
         'pagination'=>['total' => $muestra->total(),
             'current_page' => $muestra->currentPage(),
             'per_page' => $muestra->perPage(),
@@ -107,5 +110,12 @@ class AdministradorController extends Controller
      **/
     public function deleteDoc($id){
         return $this->AdministradorRepository->deleteDoc($id);
+    }
+
+    /**
+     * Funcion que creara las sedes
+     **/
+    public function newSede(Request $request){
+        return $this->AdministradorRepository->newSede($request);
     }
 }

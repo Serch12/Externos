@@ -5,6 +5,7 @@ use App\Repositories\AdministradorRepository;
 use App\Administrador;
 use App\Models\Perfil;
 use App\Models\Documentacion;
+use App\Models\Sedes;
 use Carbon\Carbon;
 use DB;
 use Hash;
@@ -30,7 +31,7 @@ class AdministradorHelper
 
         foreach ($muestra as $value) {
             $value->perfil = Perfil::where('id',$value->id)->first();
-            // $value->documentacion = Documentacion::where('id_perfil',$value->id)->get();
+            $value->sede = Sedes::where('id_sede',$value->sede)->get();
 
             if ($value->estatus == 0) {
                 $value -> text = 'Pendiente';

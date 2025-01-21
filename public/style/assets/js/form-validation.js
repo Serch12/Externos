@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         formValidationEmail: {
           validators: {
             notEmpty: {
-              message: 'Please enter your email'
+              message: 'Por favor, introduzca su correo electrónico'
             },
             emailAddress: {
               message: 'The value is not a valid email address'
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
         formValidationPass: {
           validators: {
             notEmpty: {
-              message: 'Please enter your password'
+              message: 'Por favor introduzca su contraseña'
             }
           }
         },

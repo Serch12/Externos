@@ -26,6 +26,8 @@
     },
     "dependencies": {
         "sweetalert2": "^11.15.10",
-        "vue-toastification": "^1.7.14"
+        "vue-quill-editor": "^3.0.6",
+        "vue-toastification": "^1.7.14",
+        "vue2-editor": "^2.10.3"
     }
 }

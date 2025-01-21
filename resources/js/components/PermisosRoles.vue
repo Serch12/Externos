@@ -255,9 +255,14 @@ export default {
         
     },
     mixins: [],
-    props: {
-        
-    },
+    props: [
+        'id_usuario_logeado',
+        'name_usuario_logeado',
+        'rol_usuario',
+        'sede',
+        'permisos',
+        'componente'
+    ],
     data() {
         return {
             vista:0,

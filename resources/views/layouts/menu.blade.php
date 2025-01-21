@@ -11,6 +11,7 @@
         
 
         <!-- Layouts -->
+        @hasanyrole('Root|Administrador')
         <li class="menu-item {{ request()->routeIs('administrador','access') ? 'active' : '' }}">
           <a href="{{ route('administrador') }}" class="menu-link menu-toggle ">
             <i class="menu-icon tf-icons ri-layout-2-line"></i>
@@ -29,369 +30,37 @@
                 <i class="menu-icon tf-icons ri-shield-user-line"></i>
                 <div data-i18n="Roles & Permisos">Roles & Permisos</div>
               </a>
-              {{-- <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="app-access-roles.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Roles">Roles</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="app-access-permission.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Permission">Permission</div>
-                  </a>
-                </li>
-              </ul> --}}
+
             </li>
           </ul>
         </li>
+        @else
+        @endhasanyrole
 
         <!-- Apps -->
-        <li class="menu-item">
+        @hasanyrole('Root|Administrador|Cuerpo Tecnico')
+        <li class="menu-item {{ request()->routeIs('jugadores') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
-            <i class="menu-icon tf-icons ri-mail-open-line"></i>
-            <div data-i18n="Apps">Apps</div>
+            <i class="menu-icon tf-icons ri-football-line"></i>
+            <div data-i18n="Modulo Tecnico">Módulo Técnico</div>
           </a>
           <ul class="menu-sub">
             <li class="menu-item">
               <a href="app-email.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-mail-line"></i>
-                <div data-i18n="Email">Email</div>
+                <i class="menu-icon tf-icons ri-shield-star-line"></i>
+                <div data-i18n="Torneos">Torneos</div>
               </a>
             </li>
-            <li class="menu-item">
-              <a href="app-chat.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-message-line"></i>
-                <div data-i18n="Chat">Chat</div>
+            <li class="menu-item {{ request()->routeIs('jugadores') ? 'active' : '' }}">
+              <a href="{{ route('jugadores') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-team-line"></i>
+                <div data-i18n="Jugadores">Jugadores</div>
               </a>
-            </li>
-            <li class="menu-item">
-              <a href="app-calendar.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-calendar-line"></i>
-                <div data-i18n="Calendar">Calendar</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="app-kanban.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-drag-drop-line"></i>
-                <div data-i18n="Kanban">Kanban</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-shopping-cart-2-line"></i>
-                <div data-i18n="eCommerce">eCommerce</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="app-ecommerce-dashboard.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Dashboard">Dashboard</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Products">Products</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="app-ecommerce-product-list.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Product List">Product List</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-ecommerce-product-add.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Add Product">Add Product</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-ecommerce-category-list.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Category List">Category List</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Order">Order</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="app-ecommerce-order-list.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Order List">Order List</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-ecommerce-order-details.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Order Details">Order Details</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Customer">Customer</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="app-ecommerce-customer-all.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="All Customers">All Customers</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Customer Details">Customer Details</div>
-                      </a>
-                      <ul class="menu-sub">
-                        <li class="menu-item">
-                          <a href="app-ecommerce-customer-details-overview.html" class="menu-link">
-                            <i class="menu-icon tf-icons ri-circle-fill"></i>
-                            <div data-i18n="Overview">Overview</div>
-                          </a>
-                        </li>
-                        <li class="menu-item">
-                          <a href="app-ecommerce-customer-details-security.html" class="menu-link">
-                            <i class="menu-icon tf-icons ri-circle-fill"></i>
-                            <div data-i18n="Security">Security</div>
-                          </a>
-                        </li>
-                        <li class="menu-item">
-                          <a href="app-ecommerce-customer-details-billing.html" class="menu-link">
-                            <i class="menu-icon tf-icons ri-circle-fill"></i>
-                            <div data-i18n="Address & Billing">Address & Billing</div>
-                          </a>
-                        </li>
-                        <li class="menu-item">
-                          <a href="app-ecommerce-customer-details-notifications.html" class="menu-link">
-                            <i class="menu-icon tf-icons ri-circle-fill"></i>
-                            <div data-i18n="Notifications">Notifications</div>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu-item">
-                  <a href="app-ecommerce-manage-reviews.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Manage Reviews">Manage Reviews</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="app-ecommerce-referral.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Referrals">Referrals</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Settings">Settings</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="app-ecommerce-settings-detail.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Store Details">Store Details</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-ecommerce-settings-payments.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Payments">Payments</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-ecommerce-settings-checkout.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Checkout">Checkout</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-ecommerce-settings-shipping.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Shipping & Delivery">Shipping & Delivery</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-ecommerce-settings-locations.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Locations">Locations</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-ecommerce-settings-notifications.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Notifications">Notifications</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-book-open-line"></i>
-                <div data-i18n="Academy">Academy</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="app-academy-dashboard.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Dashboard">Dashboard</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="app-academy-course.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="My Course">My Course</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="app-academy-course-details.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Course Details">Course Details</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-truck-line"></i>
-                <div data-i18n="Logistics">Logistics</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="app-logistics-dashboard.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Dashboard">Dashboard</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="app-logistics-fleet.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Fleet">Fleet</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-article-line"></i>
-                <div data-i18n="Invoice">Invoice</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="app-invoice-list.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="List">List</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="app-invoice-preview.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Preview">Preview</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="app-invoice-edit.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Edit">Edit</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="app-invoice-add.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Add">Add</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-user-line"></i>
-                <div data-i18n="Users">Users</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="app-user-list.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="List">List</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="View">View</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="app-user-view-account.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Account">Account</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-user-view-security.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Security">Security</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-user-view-billing.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Billing & Plans">Billing & Plans</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-user-view-notifications.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Notifications">Notifications</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="app-user-view-connections.html" class="menu-link">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Connections">Connections</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-shield-user-line"></i>
-                <div data-i18n="Roles & Permissions">Roles & Permission</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="app-access-roles.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Roles">Roles</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="app-access-permission.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Permission">Permission</div>
-                  </a>
-                </li>
-              </ul>
             </li>
           </ul>
         </li>
+        @else
+        @endhasanyrole
 
         <!-- Pages -->
         <li class="menu-item">
@@ -402,14 +71,14 @@
           <ul class="menu-sub">
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-checkbox-multiple-blank-line"></i>
-                <div data-i18n="Front Pages">Front Pages</div>
+                <i class="menu-icon tf-icons ri-shield-star-line"></i>
+                <div data-i18n="Torneos">Torneos</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
                   <a href="../front-pages/landing-page.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Landing">Landing</div>
+                    <i class="menu-icon tf-icons ri-team-line"></i>
+                    <div data-i18n="Jugadores">Jugadores</div>
                   </a>
                 </li>
                 <li class="menu-item">
