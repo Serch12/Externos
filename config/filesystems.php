@@ -59,6 +59,11 @@ return [
             'root' => public_path().'/ArchivosSistema/Documentacion',
             'visibility' => 'public', 
         ],
+        'jugadores' => [
+            'driver' => 'local',
+            'root' => public_path().'/ArchivosSistema/Jugadores',
+            'visibility' => 'public', 
+        ],
 
         's3' => [
             'driver' => 's3',

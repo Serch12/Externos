@@ -370,9 +370,9 @@
                                 </div>
                                 <div class="col-12 col-md-5">
                                     <div class="form-floating form-floating-outline">
-                                    <select id="Sedes" name="Sedes" class="form-select" v-model="registro.rol">
-                                        <option value="Selecciona un Rol">Selecciona una Sede</option>
-                                        <option v-for="(rol, index) in Sedes" :key="index" v-bind:value="rol.name">{{rol.name}}</option>
+                                    <select id="Sedes" name="Sedes" class="form-select" v-model="registro.sede">
+                                        <option value="Selecciona una Sede">Selecciona una Sede</option>
+                                        <option v-for="(rol, index) in Sedes" :key="index" v-bind:value="rol.id_sede">{{rol.nombre}}</option>
                                     </select>
                                     <label for="Sedes">Sedes</label>
                                     </div>
@@ -501,7 +501,7 @@
                                 </div>
                                 <div class="col-12 col-md-5" v-if="this.submenu == false">
                                     <div class="form-floating form-floating-outline">
-                                    <select id="Sedes" name="Sedes" class="form-select" v-model="detalleUsuario.sede">
+                                    <select id="Sedes" name="Sedes" class="form-select" v-model="detalleUsuario.id_sede">
                                         <option value="Selecciona una Sede">Selecciona una Sede</option>
                                         <option v-for="(sed, index) in Sedes" :key="index" v-bind:value="sed.id_sede">{{sed.nombre}}</option>
                                     </select>
@@ -879,6 +879,7 @@
                     formData.append('rol',this.registro.rol);
                     formData.append('email',this.registro.email);
                     formData.append('password',this.registro.password);
+                    formData.append('sede',this.registro.sede);
                     formData.append('estatus',this.registro.activacion);
                 axios.post('administrador/createUser',formData).then(res =>{
                     this.registro ={
@@ -903,6 +904,7 @@
             infoUsuario(u){
                 this.submenu = false;
                 this.detalleUsuario = u;
+                this.detalleUsuario.id_sede = this.detalleUsuario.sede[0].id_sede
                 if (this.detalleUsuario.perfil == null) {
                     this.detalleUsuario.bandera = 'activo';
                     this.detalleUsuario.perfil = {
@@ -1008,7 +1010,7 @@
                     formData.append('apellido_materno',this.detalleUsuario.perfil.apellido_materno);
                     formData.append('direccion',this.detalleUsuario.perfil.direccion);
                     formData.append('telefono',this.detalleUsuario.perfil.telefono);
-                    formData.append('sede',this.detalleUsuario.sede);
+                    formData.append('sede',this.detalleUsuario.id_sede);
                     formData.append('foto',this.detalleUsuario.perfil.foto);
                 axios.post('administrador/updateUsuarios',formData).then(response =>{
                     this.getAdministrador();

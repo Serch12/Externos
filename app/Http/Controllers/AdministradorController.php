@@ -42,8 +42,13 @@ class AdministradorController extends Controller
                 $imagen = new \stdClass();
                 $imagen->foto = 'style/logos/sinfoto.png';
             }
-            $sede = Sedes::select('nombre')->where('id_sede',$info_usuario->sede)->first();
-            return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede->nombre,'permisos'=>$permisos]);
+            if ($info_usuario->sede !=0) {
+                $info = Sedes::select('nombre')->where('id_sede',$info_usuario->sede)->first();
+                $sede = $info->nombre;
+            }else{
+                $sede = 'Proceso';
+            }
+            return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos]);
         }else {
             return view('auth.login');
         }

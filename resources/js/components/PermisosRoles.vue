@@ -139,7 +139,7 @@
                                             <!-- <td class="text-nowrap fw-medium">{{this.role.nombre}}</td> -->
                                                 <td>
                                                     <div class="d-flex justify-content-end">
-                                                        <div class="form-check mb-0 mt-1 me-4 me-lg-12" v-for="(p, index) in Permissions" :key="index">
+                                                        <div class="form-check mb-0 mt-1 me-3" v-for="(p, index) in Permissions" :key="index">
                                                             <input class="form-check-input" type="checkbox" :id="`date${index}`" @change="checkPermiso(index,p.id,p.name)"/>
                                                             <label class="form-check-label" for="date"> {{ p.name }} </label>
                                                         </div>
@@ -215,7 +215,7 @@
                                             <!-- <td class="text-nowrap fw-medium">{{this.role.nombre}}</td> -->
                                                 <td>
                                                     <div class="d-flex justify-content-end">
-                                                        <div class="form-check mb-0 mt-1 me-4 me-lg-12" v-for="(p, index) in this.detallePermisos" :key="index">
+                                                        <div class="form-check mb-0 mt-1 me-3" v-for="(p, index) in this.detallePermisos" :key="index">
                                                             <input class="form-check-input" type="checkbox" :id="`dateUpdate${index}`" @change="checkPermisoUpdate(index,p.id,p.name)"/>
                                                             <label class="form-check-label" for="date"> {{ p.name }} </label>
                                                         </div>
@@ -289,6 +289,9 @@ export default {
                 {
                     id:'',
                     name:'Vizualizar'
+                },{
+                    id:'',
+                    name:'Permisos'
                 },
             ],
             newpermisosUpdate:[],

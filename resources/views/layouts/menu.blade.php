@@ -11,7 +11,7 @@
         
 
         <!-- Layouts -->
-        @hasanyrole('Root|Administrador')
+        {{-- @hasanyrole('Root|Administrador') --}}
         <li class="menu-item {{ request()->routeIs('administrador','access') ? 'active' : '' }}">
           <a href="{{ route('administrador') }}" class="menu-link menu-toggle ">
             <i class="menu-icon tf-icons ri-layout-2-line"></i>
@@ -34,8 +34,8 @@
             </li>
           </ul>
         </li>
-        @else
-        @endhasanyrole
+        {{-- @else
+        @endhasanyrole --}}
 
         <!-- Apps -->
         @hasanyrole('Root|Administrador|Cuerpo Tecnico')

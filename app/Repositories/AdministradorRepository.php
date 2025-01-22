@@ -89,6 +89,7 @@ class AdministradorRepository
         }else {
             $user -> estatus = 0;
         }
+        $user -> sede = $request -> sede;
         $user->save();
 
         $rol = User::find($user->id);
