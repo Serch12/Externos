@@ -13,20 +13,32 @@ class RolesAndPermissionsSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
-        // Crear permisos
-        Permission::create(['name' => 'Crear']);
-        Permission::create(['name' => 'Editar']);
-        Permission::create(['name' => 'Eliminar']);
-        Permission::create(['name' => 'Vizualizar']);
-        Permission::create(['name' => 'Permisos']);
+    public function run() {
 
-        // Crear roles y asignar permisos
-        $admin = Role::create(['name' => 'Root']);
-        $admin->givePermissionTo(['Crear', 'Editar', 'Eliminar','Vizualizar','Permisos']);
+        // Lista de permisos a agregar
+        $newPermissions = [
+            'Crear',
+            'Editar',
+            'Eliminar',
+            'Vizualizar',
+            'Permisos',
+        ];
 
-        // $editor = Role::create(['name' => 'Administrador']);
-        // $admin->givePermissionTo(['vizualizar', 'editar', 'eliminar']);
+        // Crear permisos si no existen
+        foreach ($newPermissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
+
+        // Asignar todos los permisos al rol "Root"
+        $admin = Role::where('name', 'Root')->first();
+
+        if ($admin) {
+            $admin->syncPermissions($newPermissions); // Sincroniza permisos sin duplicar
+        } else {
+            // Si el rol "Root" no existe, puedes crearlo y asignarle permisos
+            $admin = Role::create(['name' => 'Root']);
+            $admin->syncPermissions($newPermissions);
+        }
+
     }
 }
