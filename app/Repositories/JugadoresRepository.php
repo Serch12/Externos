@@ -134,4 +134,66 @@ class JugadoresRepository
 
         return $new;
     }
+
+    /**
+     *FUNCION QUE EDITARA EL JUGADOR
+     **/
+    public function updateJugador($request){
+        $editar = Jugadores::find($request->id_jugador);
+        $file = $request->file('foto');
+        if(isset($file)){
+            \Storage::disk('jugadores')->delete($request->id_jugador."/".$editar->foto);
+            $file = $request->file('foto');
+            $nombre = $file->getClientOriginalName();
+            $url = $request->id_jugador."/".$nombre;
+            \Storage::disk('jugadores')->put($url, \File::get($file));
+            $editar->foto = $nombre;
+        }
+        $editar -> nombre = $request->nombre;
+        $editar -> edad = $request->edad;
+        $editar -> fecha_nacimiento = $request->fecha_nacimiento;
+        $editar -> posicion = $request->posicion;
+        $editar -> sexo = $request->sexo;
+        $editar -> categoria = $request->categoria;
+        // $editar -> sede = $request->sede;
+        $editar -> save();
+
+        $archivos = $request->input('documentacion');
+
+        if (isset($archivos)) {
+            foreach ($archivos as $index => $value) {
+                $file = $request->file("documentacion.{$index}.archivo");
+                $tipo = $value['tipo'];
+
+                if ($file) {
+                    $arch = new DocumentosJugadores();
+                    $arch->id_jugador = $request->id_jugador;
+                    // Obtenemos el nombre del archivo
+                    $nombre = $file->getClientOriginalName();
+                    $urlimagen = $request->id_jugador."/".$nombre;
+                    \Storage::disk('jugadores')->put($urlimagen, \File::get($file));
+                    $arch->archivo = $nombre;
+                    $arch->tipo = $tipo;
+                    $arch->save();
+                }
+            }
+        }
+    }
+
+   /**
+     * FUNCION QUE ELIMINA LOS ARCHIVOS DE LOS JUGADORES
+     **/
+    public function deleteArchivo($id){
+        $delete = DocumentosJugadores::find($id);
+        $elimina = $delete->id_jugador."/".$delete->archivo; 
+        \Storage::disk('jugadores')->delete($elimina);
+        $delete->delete();
+    }
+
+    /**
+     * FUNCION QUE GUARDARA LA INFORMACION DE TUTOR
+     **/
+    public function createTutor($request){
+        $editar = Jugadores::find($request->id_jugador);
+    }
 }
