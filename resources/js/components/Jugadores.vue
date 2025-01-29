@@ -11,7 +11,7 @@
               <div class="col-12 col-md-6 mt-3">
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                       <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Jugadores" @keyup="buscarJugador()"/>
-                      <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createJugador">Agregar</button>
+                      <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createJugador" v-if="include('Crear')">Agregar</button>
                   </div>
               </div>
             </div>
@@ -1242,9 +1242,10 @@ export default {
         formData.append('direccion',this.detalleJugador.direccion);
         formData.append('telefono',this.detalleJugador.telefono);
       axios.post('jugadores/createTutor',formData).then(response =>{
+        this.showCard(null);
         Swal.fire({
           title: 'Exitoso',
-          text: "Se Edito correctamente!",
+          text: "Se Guardo correctamente!",
           icon: 'success',
           showConfirmButton: false,
           timer: 2500,

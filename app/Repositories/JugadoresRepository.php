@@ -194,6 +194,13 @@ class JugadoresRepository
      * FUNCION QUE GUARDARA LA INFORMACION DE TUTOR
      **/
     public function createTutor($request){
+
         $editar = Jugadores::find($request->id_jugador);
+        $editar -> tutor = $request -> tutor;
+        $editar -> correo = $request -> correo;
+        $editar -> direccion = $request -> direccion;
+        $editar -> telefono = $request -> telefono;
+        $editar -> save ();
+        return $editar;
     }
 }

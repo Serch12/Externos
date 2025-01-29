@@ -50,4 +50,27 @@ class TorneoController extends Controller
             return view('auth.login');
         }
     }
+
+    /**
+     * FUNCION QUE MUESTRA LOS JUGADORES
+     **/
+    public function getTorneo(Request $request){
+        $muestra = $this->TorneoRepository->getTorneo($request);
+        $valida = $this->TorneoHelper->validaTorneo($muestra);
+        return response()->json(['muestra'=>$muestra,
+        'pagination'=>['total' => $muestra->total(),
+            'current_page' => $muestra->currentPage(),
+            'per_page' => $muestra->perPage(),
+            'last_page' => $muestra->lastPage(),
+            'from' => $muestra->firstItem(),
+            'to' => $muestra->lastPage()
+            ]]);
+    }
+
+    /**
+     * Funcion que creara el torneo
+     **/
+    public function createTorneo(Request $request){
+        return $this->TorneoRepository->createTorneo($request);
+    }
 }

@@ -2,7 +2,7 @@
 
 
 namespace App\Repositories;
-use App\Models\Jugadores;
+use App\Models\Torneo;
 use App\Models\DocumentosJugadores;
 use Carbon\Carbon;
 use Mail;
@@ -27,5 +27,50 @@ class TorneoRepository
         ->groupBy('users.id', 'users.name', 'users.email', 'roles.name','users.sede')
         ->first();
 
+    }
+
+    /**
+     * FUNCION QUE MUESTRA LOS JUGADORES
+     **/
+    public function getTorneo($request){
+        $rol = $request->rol;
+        $sede = $request->sede;
+        $parametro = $request->buscador;
+        if ($rol == 'Root'||$rol == 'Administrador') {
+            $respuesta = Torneo::select('*')
+            ->where(function($query) use ($parametro) {
+                $query->where('torneo','LIKE','%'.$parametro.'%');
+            })
+            ->orderBy('id_torneo','DESC')
+            ->paginate(10); 
+        }else{
+            $respuesta = Torneo::select('*')
+            ->where(function($query) use ($parametro) {
+                $query->where('torneo','LIKE','%'.$parametro.'%');
+            })
+            ->where('sede',$sede)
+            ->where('estatus',0)
+            ->orderBy('id_torneo','DESC')
+            ->paginate(10); 
+        }
+        return $respuesta;
+    }
+
+    
+    /**
+     * Funcion que creara el torneo
+     **/
+    public function createTorneo($request){
+        $new = new Torneo();
+        $new -> creacion = $request -> creacion;
+        $new -> torneo = $request -> torneo;
+        $new -> categoria = $request -> categoria;
+        $new -> sede = $request -> sede;
+        $new -> direccion = $request -> direccion;
+        $new -> fecha_inicia = $request -> fecha_inicia;
+        $new -> fecha_fin = $request -> fecha_fin;
+        $new -> contacto = $request -> contacto;
+        $new -> save ();
+        return $new;
     }
 }

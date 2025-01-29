@@ -58,7 +58,7 @@
     <script src="style/assets/js/config.js"></script>
   </head>
 
-  <body style="background-image: url('style/assets/img/banners/banner1.png');
+  <body style="background-image: url('style/assets/img/banners/loginbanner.svg');
     background-repeat: no-repeat;
     background-size: cover;">
     <!-- Content -->
@@ -67,7 +67,7 @@
       <div class="authentication-wrapper authentication-basic container-p-y p-4 p-sm-0">
         <div class="authentication-inner py-6">
           <!-- Login -->
-          <div class="card p-md-7 p-1">
+          <div class="card p-md-7 p-1" style="background: rgba(0, 0, 0, 0.62)">
             <!-- Logo -->
             <div class="app-brand justify-content-center mt-5">
               <div class="app-brand-link gap-2">
@@ -101,7 +101,7 @@
                 <div class="form-floating form-floating-outline mb-5">
                   <input
                     type="text"
-                    class="form-control @error('email') @enderror"
+                    class="form-control @error('email') @enderror text-white"
                     id="username"
                     name="email"
                     value="{{old('email')}}"
@@ -116,20 +116,20 @@
                         <input
                           type="password"
                           id="password"
-                          class="form-control @error('password') @enderror"
+                          class="form-control @error('password') @enderror text-white"
                           name="password"
                           placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                           aria-describedby="password" />
                         <label for="password">Password</label>
                       </div>
-                      <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
+                      <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line text5-white"></i></span>
                     </div>
                   </div>
                 </div>
                 <div class="mb-5 d-flex justify-content-between mt-5">
                   <div class="form-check mt-2">
                     <input class="form-check-input" type="checkbox" id="remember" {{ old('remember') ? 'checked' : '' }}/>
-                    <label class="form-check-label" for="remember-me">{{ __('Recordar Credenciales') }}</label>
+                    <label class="form-check-label text-white" for="remember-me">{{ __('Recordar Credenciales') }}</label>
                   </div>
                   {{-- <a href="auth-forgot-password-basic.html" class="float-end mb-1 mt-2">
                     <span>Forgot Password?</span>
