@@ -26,5 +26,7 @@ require(__DIR__ . '/Administrador/route_administrador.php');
 require(__DIR__ . '/PermisosRoles/route_permisosroles.php');
 //require de rutas de jugadores
 require(__DIR__ . '/Jugadores/route_jugadores.php');
+//require de rutas de torneo
+require(__DIR__ . '/Torneo/route_torneo.php');
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

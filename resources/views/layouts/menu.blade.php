@@ -11,7 +11,7 @@
         
 
         <!-- Layouts -->
-        {{-- @hasanyrole('Root|Administrador') --}}
+        @hasanyrole('Root|Administrador')
         <li class="menu-item {{ request()->routeIs('administrador','access') ? 'active' : '' }}">
           <a href="{{ route('administrador') }}" class="menu-link menu-toggle ">
             <i class="menu-icon tf-icons ri-layout-2-line"></i>
@@ -34,19 +34,19 @@
             </li>
           </ul>
         </li>
-        {{-- @else
-        @endhasanyrole --}}
+        @else
+        @endhasanyrole
 
         <!-- Apps -->
         @hasanyrole('Root|Administrador|Cuerpo Tecnico')
-        <li class="menu-item {{ request()->routeIs('jugadores') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->routeIs('jugadores','torneo') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-football-line"></i>
             <div data-i18n="Modulo Tecnico">Módulo Técnico</div>
           </a>
           <ul class="menu-sub">
-            <li class="menu-item">
-              <a href="app-email.html" class="menu-link">
+            <li class="menu-item {{ request()->routeIs('torneo') ? 'active' : '' }}">
+              <a href="{{ route('torneo') }}" class="menu-link">
                 <i class="menu-icon tf-icons ri-shield-star-line"></i>
                 <div data-i18n="Torneos">Torneos</div>
               </a>

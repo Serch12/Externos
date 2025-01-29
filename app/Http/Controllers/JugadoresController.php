@@ -74,4 +74,26 @@ class JugadoresController extends Controller
     public function createJugador(Request $request){
         return $this->JugadoresRepository->createJugador($request);
     }
+    
+
+    /**
+     * FUNCION QUE EDITARA EL JUGADOR
+     **/
+    public function updateJugador(Request $request){
+        return $this->JugadoresRepository->updateJugador($request);
+    }
+
+    /**
+     * FUNCION QUE ELIMINA LOS ARCHIVOS DE LOS JUGADORES
+     **/
+    public function deleteArchivo($id){
+        return $this->JugadoresRepository->deleteArchivo($id);
+    }
+
+    /**
+     * FUNCION QUE GUARDARA LA INFORMACION DE TUTOR
+     **/
+    public function createTutor(Request $request){
+        return $this->JugadoresRepository->createTutor($request);
+    }
 }
