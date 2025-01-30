@@ -46,6 +46,9 @@
     <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}" />
     <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css')}}" />
     <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css')}}" />
+    <link rel="stylesheet" href="style/assets/vendor/libs/bs-stepper/bs-stepper.css" />
+    <link rel="stylesheet" href="style/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
+    <link rel="stylesheet" href="style/assets/vendor/libs/select2/select2.css" />
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{asset('style/assets/vendor/css/pages/page-profile.css')}}" />
@@ -123,11 +126,15 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
+    <script src="{{asset('style/assets/vendor/libs/bs-stepper/bs-stepper.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/select2/select2.js')}}"></script>
 
     <!-- Main JS -->
     <script src="{{asset('style/assets/js/main.js')}}"></script>
 
     <!-- Page JS -->
     <script src="{{asset('style/assets/js/pages-profile-user.js')}}"></script>
+    <script src="{{asset('style/assets/js/form-wizard-icons.js')}}"></script>
   </body>
 </html>

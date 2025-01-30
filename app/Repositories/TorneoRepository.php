@@ -3,7 +3,8 @@
 
 namespace App\Repositories;
 use App\Models\Torneo;
-use App\Models\DocumentosJugadores;
+use App\Models\Jugadores;
+use App\Models\PlantillaJugador;
 use Carbon\Carbon;
 use Mail;
 use DB;
@@ -71,6 +72,74 @@ class TorneoRepository
         $new -> fecha_fin = $request -> fecha_fin;
         $new -> contacto = $request -> contacto;
         $new -> save ();
+        return $new;
+    }
+
+     /**
+     * Funcion que creara el torneo
+     **/
+    public function updateTorneo($request){
+        $edit = Torneo::find($request->id_torneo);
+        $edit -> torneo = $request -> torneo;
+        $edit -> categoria = $request -> categoria;
+        $edit -> sede = $request -> sede;
+        $edit -> direccion = $request -> direccion;
+        $edit -> fecha_inicia = $request -> fecha_inicia;
+        $edit -> fecha_fin = $request -> fecha_fin;
+        $edit -> contacto = $request -> contacto;
+        $edit -> save ();
+        return $edit;
+    }
+
+    /**
+     * FUNCION QUE MOSTRARA LOS JUGADORES DE LA SEDE Y CATEGORIA
+     **/
+    public function plantillaJugador($categoria,$sede){
+        $respuesta = Jugadores::select('*')
+            ->where('categoria',$categoria)
+            ->where('sede',$sede)
+            ->where('estatus',0)
+            ->orderBy('id_jugador','DESC')
+            ->get(); 
+        return $respuesta;
+    }
+
+    /**
+     * FUNCION QUE MOSTRARA LOS JUGADORES DE LA CATEGORIA A PRESTAMO
+     **/
+    public function prestamoJugador($categoria,$sede){
+        $respuesta = Jugadores::select('*')
+            ->where('categoria',$categoria)
+            ->where('sede','!=',$sede)
+            ->where('estatus',0)
+            ->orderBy('id_jugador','DESC')
+            ->get(); 
+        return $respuesta;
+    }
+
+    /**
+     * FUNCION QUE MOSTRARA LOS JUGADORES SELECCIONADOS DE ESE TORNEO
+     **/
+    public function detalleSeleccionado($id){
+        $note = PlantillaJugador::where('id_torneo',$id)
+        ->select('*')
+        ->get();
+    }
+
+    /**
+     * FUNCION QUE AGREGA LOS JUGADORES SELCCIONADOS
+     **/
+    public function seleccionadosJugador($request){
+        dd($request);
+        $new = new PlantillaJugador();
+        $new -> id_torneo = $request -> id_torneo;
+        $new -> folio = $request -> folio;
+        $new -> nombre = $request -> nombre;
+        $new -> posicion = $request -> posicion;
+        $new -> sexo = $request -> sexo;
+        $new -> edad = $request -> edad;
+        $new -> categoria = $request -> categoria;
+        $new -> save();
         return $new;
     }
 }

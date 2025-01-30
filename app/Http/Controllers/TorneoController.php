@@ -73,4 +73,44 @@ class TorneoController extends Controller
     public function createTorneo(Request $request){
         return $this->TorneoRepository->createTorneo($request);
     }
+
+    /**
+     * Funcion que update el torneo
+     **/
+    public function updateTorneo(Request $request){
+        return $this->TorneoRepository->updateTorneo($request);
+    }
+
+    /**
+     * FUNCION QUE VIZUALIZARA LOS JUGADORES DE ESA SEDE Y CATEGORIA COMO TAMBIEN LOS DE PRESTAMO
+     **/
+    public function plantillaJugador(Request $request){
+        $categoria = $request->categoria;
+        $sede = $request->sede;
+        $plantilla = $this->TorneoRepository->plantillaJugador($categoria,$sede);
+        $prestamo = $this->TorneoRepository->prestamoJugador($categoria,$sede);
+       return response()->json(['plantilla' =>$plantilla,'prestamo'=>$prestamo]);
+    }
+
+
+    /**
+     * FUNCION QUE AGREGA LOS JUGADORES SELECCIONADOS
+     **/
+    public function seleccionadosJugador(Request $request){
+        return $this->TorneoRepository->seleccionadosJugador($request);
+    }
+
+    /**
+     * FUNCION QUE MOSTRARA LOS JUGADORES SELECCIONADOS DE ESE TORNEO
+     **/
+    public function detalleSeleccionado($id){
+        return $this->TorneoRepository->detalleSeleccionado($id);
+    }
+
+    /**
+     * funcion que elimina los selecccionados
+     **/
+    public function deleteJugador(Request $request){
+        return $this->TorneoRepository->deleteJugador($request);
+    }
 }

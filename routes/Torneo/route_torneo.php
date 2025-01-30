@@ -5,3 +5,7 @@ use App\Http\Controllers\TorneoController;
 Route::get('/torneo', [TorneoController::class, 'index'])->name('torneo');
 Route::get('/torneo/getTorneo', [TorneoController::class, 'getTorneo'])->name('torneo/getTorneo');
 Route::post('/torneo/createTorneo', [TorneoController::class, 'createTorneo'])->name('torneo/createTorneo');
+Route::post('/torneo/updateTorneo', [TorneoController::class, 'updateTorneo'])->name('torneo/updateTorneo');
+Route::get('/torneo/plantillaJugador', [TorneoController::class, 'plantillaJugador'])->name('torneo/plantillaJugador');
+Route::post('/torneo/seleccionadosJugador', [TorneoController::class, 'seleccionadosJugador'])->name('torneo/seleccionadosJugador');
+Route::get('/torneo/detalleSeleccionado/{id}', [TorneoController::class, 'detalleSeleccionado'])->name('torneo/detalleSeleccionado/{id}');

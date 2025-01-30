@@ -31,12 +31,15 @@ class TorneoHelper
             /* estatus de copa */
             if ($value -> copa == 0) {
                 $value -> color_copa = 'dark';
+                $value -> img = 'style/assets/img/copas/trofeo_gris.png';
             }
             if ($value -> copa == 1) {
                 $value -> color_copa = 'warning';
+                $value -> img = 'style/assets/img/copas/trofeo_dorado.png';
             }
             if ($value -> copa == 2) {
                 $value -> color_copa = 'danger';
+                $value -> img = 'style/assets/img/copas/trofeo_rojo.png';
             }
 
             /* estatus de procesos */

@@ -33,12 +33,12 @@ class JugadoresHelper
             if ($value->sede == 'GUADALAJARA') {
                 $value -> color = 'danger';
             }
-            // if ($value->estatus == 1) {
-            //     $value -> color = 'bg-label-success ';
-            // }
-            // if ($value->estatus == 2) {
-            //     $value -> color = 'bg-label-danger';
-            // }
+            if ($value->sede == 'TOLUCA') {
+                $value -> color = 'info';
+            }
+            if ($value->sede == 'LEON') {
+                $value -> color = 'success';
+            }
         }
     }
 
