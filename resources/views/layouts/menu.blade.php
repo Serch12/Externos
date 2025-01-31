@@ -42,7 +42,7 @@
         <li class="menu-item {{ request()->routeIs('jugadores','torneo') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-football-line"></i>
-            <div data-i18n="Modulo Tecnico">Módulo Técnico</div>
+            <div data-i18n="Módulo Técnico">Módulo Técnico</div>
           </a>
           <ul class="menu-sub">
             <li class="menu-item {{ request()->routeIs('torneo') ? 'active' : '' }}">
