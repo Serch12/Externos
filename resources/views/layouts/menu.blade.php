@@ -61,7 +61,7 @@
         </li>
         @else
         @endhasanyrole
-        @hasanyrole('Root|Administrador|Cuerpo Tecnico')
+        @hasanyrole('Root|Administrador|CM')
         <!-- Comunicación y Medios -->
         <li class="menu-item  {{ request()->routeIs('post') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
