@@ -43,7 +43,7 @@ class HomeController extends Controller
             $imagen = Perfil::select('foto')->where('id',auth()->user()->id)->first();
             if ($imagen == null) {
                 $imagen = new \stdClass();
-                $imagen->foto = 'style/logos/sinfoto.png';
+                $imagen->foto = 'sinfoto';
             }
             if ($info_usuario->sede !=0) {
                 $info = Sedes::select('nombre')->where('id_sede',$info_usuario->sede)->first();
