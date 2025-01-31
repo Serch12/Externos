@@ -32,7 +32,7 @@
 
           <!-- Notification -->
           <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-4 me-xl-1">
-            <a
+            {{-- <a
               class="nav-link btn btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow"
               href="javascript:void(0);"
               data-bs-toggle="dropdown"
@@ -41,7 +41,7 @@
               <i class="ri-notification-2-line ri-22px"></i>
               <span
                 class="position-absolute top-0 start-50 translate-middle-y badge badge-dot bg-danger mt-2 border"></span>
-            </a>
+            </a> --}}
             <ul class="dropdown-menu dropdown-menu-end py-0">
               <li class="dropdown-menu-header border-bottom py-50">
                 <div class="dropdown-header d-flex align-items-center py-2">
@@ -309,11 +309,11 @@
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="pages-profile-user.html">
-                  <i class="ri-user-3-line ri-22px me-3"></i><span class="align-middle">My Profile</span>
+                <a class="dropdown-item" href="#!">
+                  <i class="ri-user-3-line ri-22px me-3"></i><span class="align-middle">Mi Perfil</span>
                 </a>
               </li>
-              <li>
+              {{-- <li>
                 <a class="dropdown-item" href="pages-account-settings-account.html">
                   <i class="ri-settings-4-line ri-22px me-3"></i><span class="align-middle">Settings</span>
                 </a>
@@ -340,7 +340,7 @@
                 <a class="dropdown-item" href="pages-faq.html">
                   <i class="ri-question-line ri-22px me-3"></i><span class="align-middle">FAQ</span>
                 </a>
-              </li>
+              </li> --}}
               <li>
                 <div class="d-grid px-4 pt-2 pb-1">
                   <a class="btn btn-sm btn-danger d-flex" href="{{ route('logout') }}"
