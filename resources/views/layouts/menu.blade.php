@@ -61,345 +61,36 @@
         </li>
         @else
         @endhasanyrole
-
-        <!-- Pages -->
-        <li class="menu-item">
+        @hasanyrole('Root|Administrador|Cuerpo Tecnico')
+        <!-- Comunicación y Medios -->
+        <li class="menu-item  {{ request()->routeIs('post') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-article-line"></i>
-            <div data-i18n="Pages">Pages</div>
+            <div data-i18n="Comunicación y Medios">Comunicación y Medios</div>
           </a>
           <ul class="menu-sub">
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-shield-star-line"></i>
-                <div data-i18n="Torneos">Torneos</div>
+            <li class="menu-item {{ request()->routeIs('post') ? 'active' : '' }}">
+              <a href="{{ route('post') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-window-2-fill"></i>
+                <div data-i18n="Post">Post</div>
               </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="../front-pages/landing-page.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-team-line"></i>
-                    <div data-i18n="Jugadores">Jugadores</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="../front-pages/pricing-page.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Pricing">Pricing</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="../front-pages/payment-page.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Payment">Payment</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="../front-pages/checkout-page.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Checkout">Checkout</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="../front-pages/help-center-landing.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Help Center">Help Center</div>
-                  </a>
-                </li>
-              </ul>
             </li>
 
-            <li class="menu-item">
+            {{-- <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ri-account-circle-line"></i>
                 <div data-i18n="User Profile">User Profile</div>
               </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="pages-profile-user.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Profile">Profile</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-profile-teams.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Teams">Teams</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-profile-projects.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Projects">Projects</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-profile-connections.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Connections">Connections</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-settings-2-line"></i>
-                <div data-i18n="Account Settings">Account Settings</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="pages-account-settings-account.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Account">Account</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-account-settings-security.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Security">Security</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-account-settings-billing.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Billing & Plans">Billing & Plans</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-account-settings-notifications.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Notifications">Notifications</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-account-settings-connections.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Connections">Connections</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="pages-faq.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-question-line"></i>
-                <div data-i18n="FAQ">FAQ</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="pages-pricing.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-money-dollar-circle-line"></i>
-                <div data-i18n="Pricing">Pricing</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-file-line"></i>
-                <div data-i18n="Misc">Misc</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="pages-misc-error.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Error">Error</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-misc-under-maintenance.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Under Maintenance">Under Maintenance</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-misc-comingsoon.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Coming Soon">Coming Soon</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-misc-not-authorized.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Not Authorized">Not Authorized</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="pages-misc-server-error.html" class="menu-link" target="_blank">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Server Error">Server Error</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-lock-line"></i>
-                <div data-i18n="Authentications">Authentications</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Login">Login</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="auth-login-basic.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Basic">Basic</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="auth-login-cover.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Cover">Cover</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Register">Register</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="auth-register-basic.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Basic">Basic</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="auth-register-cover.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Cover">Cover</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="auth-register-multisteps.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Multi-steps">Multi-steps</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Verify Email">Verify Email</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="auth-verify-email-basic.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Basic">Basic</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="auth-verify-email-cover.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Cover">Cover</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Reset Password">Reset Password</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="auth-reset-password-basic.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Basic">Basic</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="auth-reset-password-cover.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Cover">Cover</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Forgot Password">Forgot Password</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Basic">Basic</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="auth-forgot-password-cover.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Cover">Cover</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu-item">
-                  <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Two Steps">Two Steps</div>
-                  </a>
-                  <ul class="menu-sub">
-                    <li class="menu-item">
-                      <a href="auth-two-steps-basic.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Basic">Basic</div>
-                      </a>
-                    </li>
-                    <li class="menu-item">
-                      <a href="auth-two-steps-cover.html" class="menu-link" target="_blank">
-                        <i class="menu-icon tf-icons ri-circle-fill"></i>
-                        <div data-i18n="Cover">Cover</div>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ri-git-commit-line"></i>
-                <div data-i18n="Wizard Examples">Wizard Examples</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="wizard-ex-checkout.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Checkout">Checkout</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="wizard-ex-property-listing.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Property Listing">Property Listing</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="wizard-ex-create-deal.html" class="menu-link">
-                    <i class="menu-icon tf-icons ri-circle-fill"></i>
-                    <div data-i18n="Create Deal">Create Deal</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="menu-item">
-              <a href="modal-examples.html" class="menu-link">
-                <i class="menu-icon tf-icons ri-tv-2-line"></i>
-                <div data-i18n="Modal Examples">Modal Examples</div>
-              </a>
-            </li>
+              
+            </li> --}}
+            
           </ul>
         </li>
+        @else
+        @endhasanyrole
 
         <!-- Components -->
-        <li class="menu-item">
+        {{-- <li class="menu-item">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-archive-line"></i>
             <div data-i18n="Components">Components</div>
@@ -675,10 +366,10 @@
               </a>
             </li>
           </ul>
-        </li>
+        </li> --}}
 
         <!-- Forms -->
-        <li class="menu-item">
+        {{-- <li class="menu-item">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-pages-line"></i>
             <div data-i18n="Forms">Forms</div>
@@ -805,10 +496,10 @@
               </a>
             </li>
           </ul>
-        </li>
+        </li> --}}
 
         <!-- Tables -->
-        <li class="menu-item">
+        {{-- <li class="menu-item">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-table-line"></i>
             <div data-i18n="Tables">Tables</div>
@@ -848,10 +539,10 @@
               </ul>
             </li>
           </ul>
-        </li>
+        </li> --}}
 
         <!-- Charts & Maps -->
-        <li class="menu-item">
+        {{-- <li class="menu-item">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-donut-chart-line"></i>
             <div data-i18n="Charts & Maps">Charts & Maps</div>
@@ -884,7 +575,7 @@
               </a>
             </li>
           </ul>
-        </li>
+        </li> --}}
       </ul>
     </div>
   </aside>

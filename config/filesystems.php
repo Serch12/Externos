@@ -64,6 +64,11 @@ return [
             'root' => public_path().'/ArchivosSistema/Jugadores',
             'visibility' => 'public', 
         ],
+        'post' => [
+            'driver' => 'local',
+            'root' => public_path().'/ArchivosSistema/Post',
+            'visibility' => 'public', 
+        ],
 
         's3' => [
             'driver' => 's3',

@@ -38,6 +38,8 @@ Vue.component('administrador-component', require('./components/Administrador.vue
 Vue.component('permisosroles-component', require('./components/PermisosRoles.vue').default);
 Vue.component('jugadores-component', require('./components/Jugadores.vue').default);
 Vue.component('torneo-component', require('./components/Torneos.vue').default);
+Vue.component('post-component', require('./components/Post.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
