@@ -52,10 +52,10 @@
     <link rel="stylesheet" href="{{asset('style/assets/vendor/css/pages/page-auth.css')}}" />
 
     <!-- Helpers -->
-    <script src="style/assets/vendor/js/helpers.js"></script>
+    <script src="{{asset('style/assets/vendor/js/helpers.js')}}"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="style/assets/js/config.js"></script>
+    <script src="{{asset('style/assets/js/config.js')}}"></script>
   </head>
 
   <body style="background-image: url('style/assets/img/banners/loginbanner.svg');
@@ -71,7 +71,7 @@
             <!-- Logo -->
             <div class="app-brand justify-content-center mt-5">
               <div class="app-brand-link gap-2">
-                <center><img src="style/logos/logo-_amfpro_pro_color.png" alt="" style="max-width: 45%"></center>
+                <center><img src="{{asset('style/logos/logo-_amfpro_pro_color.png')}}" alt="" style="max-width: 45%"></center>
               </div>
             </div>
             <!-- /Logo -->
@@ -131,12 +131,12 @@
                     <input class="form-check-input" type="checkbox" id="remember" {{ old('remember') ? 'checked' : '' }}/>
                     <label class="form-check-label text-white" for="remember-me">{{ __('Recordar Credenciales') }}</label>
                   </div>
-                  {{-- <a href="auth-forgot-password-basic.html" class="float-end mb-1 mt-2">
-                    <span>Forgot Password?</span>
-                  </a> --}}
+                  <a href="{{ route('reset') }}" class="float-end mb-1 mt-2">
+                    <span>Olvidó la contraseña?</span>
+                  </a>
                 </div>
                 <div class="mb-5">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Ingresar</button>
+                  <button class="btn btn-success d-grid w-100" type="submit">Ingresar</button>
                 </div>
               </form>
 

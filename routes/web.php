@@ -17,7 +17,13 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+
+
+
+
 Auth::routes();
+//require de rutas de post
+require(__DIR__ . '/Password_Reset/route_password.php');
 //require de rutas de Home
 require(__DIR__ . '/Home/route_home.php');
 //require de rutas de administrador
