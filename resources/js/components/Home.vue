@@ -30,9 +30,22 @@
                     <div class="modal-body">
                         <p class="ml-4">Hola! <b>{{this.name_usuario_logeado}}</b> para poder continuar tienes que cambiar tu contraseña!</p>
                         <div class="mb-3">
-                            <label for="" class="form-label">Nuevo Password</label>
-                            <input type="text" class="form-control"  name="password" id="password" aria-describedby="helpId" placeholder="" v-model="cambio.password"/>
-                            
+                            <div class="form-password-toggle">
+                                <div class="input-group input-group-merge">
+                                
+                                <div class="form-floating form-floating-outline">
+                                    <input
+                                    type="password"
+                                    id="password"
+                                    class="form-control"
+                                     v-model="cambio.password"
+                                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                    aria-describedby="password" />
+                                    <label for="password">Password</label>
+                                </div>
+                                <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
+                                </div>
+                            </div>                            
                         </div>
                         
                     </div>
