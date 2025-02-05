@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Usuarios;
 use App\Models\Perfil;
 use App\Models\Sedes;
 use Mail;
@@ -38,6 +40,8 @@ class HomeController extends Controller
             ->where('users.id', auth()->user()->id)
             ->groupBy('users.id', 'users.name', 'users.email', 'roles.name','users.sede')
             ->first();
+            $contraseña = Usuarios::select('acceso')->where('id',auth()->user()->id)->first();
+            $password = $contraseña->acceso;
             $rol_usuario = $info_usuario->rol;
             $permisos = explode(',', $info_usuario->permisos);
             $imagen = Perfil::select('foto')->where('id',auth()->user()->id)->first();
@@ -51,9 +55,20 @@ class HomeController extends Controller
             }else{
                 $sede = 'Proceso';
             }
-            return view('home')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos]);
+            return view('home')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'password'=>$password]);
         }else {
             return view('auth.login');
         }
+    }
+
+    /**
+     * FUNCION QUE ACTUALIZARA LA CONTRASEÑA DEL PERFIL
+     **/
+    public function cambioPassword(Request $request){
+        $user = User::find($request->id);
+        $user -> password = Hash::make($request->password);
+        $user -> acceso = 1;
+        $user->save();      
+        return $user;
     }
 }

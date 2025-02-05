@@ -10,5 +10,5 @@ class Usuarios extends Model
     use HasFactory;
     protected $table='users';
     protected $primaryKey = 'id';
-    protected $fillable= ['id','name', 'email','email_verified_at','password','estatus_user', 'remember_token'];
+    protected $fillable= ['id','name', 'email','email_verified_at','password','sede','acceso','estatus','remember_token'];
 }
