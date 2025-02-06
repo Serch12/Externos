@@ -295,7 +295,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <a class="dropdown-item" href="pages-account-settings-account.html">
+                <a class="dropdown-item" href="#!">
                   <div class="d-flex">
                     <div class="flex-shrink-0 me-2">
                       <div class="avatar avatar-online">
@@ -317,7 +317,7 @@
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="#!">
+                <a class="dropdown-item" href="{{route('perfil')}}">
                   <i class="ri-user-3-line ri-22px me-3"></i><span class="align-middle">Mi Perfil</span>
                 </a>
               </li>

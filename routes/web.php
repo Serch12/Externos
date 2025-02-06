@@ -36,5 +36,7 @@ require(__DIR__ . '/Jugadores/route_jugadores.php');
 require(__DIR__ . '/Torneo/route_torneo.php');
 //require de rutas de post
 require(__DIR__ . '/Post/route_post.php');
+//require de rutas de Perfil
+require(__DIR__ . '/Perfil/route_perfil.php');
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

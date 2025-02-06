@@ -39,6 +39,7 @@ Vue.component('permisosroles-component', require('./components/PermisosRoles.vue
 Vue.component('jugadores-component', require('./components/Jugadores.vue').default);
 Vue.component('torneo-component', require('./components/Torneos.vue').default);
 Vue.component('post-component', require('./components/Post.vue').default);
+Vue.component('perfil-component', require('./components/Perfil.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
