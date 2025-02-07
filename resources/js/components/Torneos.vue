@@ -323,15 +323,15 @@
                     <!-- User Tabs -->
                         <div class="nav-align-top">
                             <ul class="nav nav-pills flex-column flex-md-row mb-6 row-gap-2">
-                            <li class="nav-item">
-                                <a class="nav-link" :class="{ 'active': activeView === null }" type="button" @click="showCard(null)"><i class="ri-user-fill me-2"></i>Información</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" :class="{ 'active': activeView === 'plantilla' }" type="button"  @click="showCard('plantilla')"><i class="ri-team-fill me-2"></i>Plantilla</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" :class="{ 'active': activeView === 'pago' }" type="button"  @click="showCard('pago')"><i class="ri-todo-fill me-2"></i>Forma de Pago</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" :class="{ 'active': activeView === null }" type="button" @click="showCard(null)"><i class="ri-user-fill me-2"></i>Información</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" :class="{ 'active': activeView === 'plantilla' }" type="button"  @click="showCard('plantilla')"><i class="ri-team-fill me-2"></i>Plantilla</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" :class="{ 'active': activeView === 'pago' }" type="button"  @click="showCard('pago')"><i class="ri-todo-fill me-2"></i>Forma de Pago</a>
+                                </li>
                             </ul>
                         </div>
                     <!--/ User Tabs -->
@@ -363,7 +363,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Documentación -->
+                    <!-- Plantilla -->
                     <div class="card mb-6" v-if="this.activeView == 'plantilla'">
                         <h5 class="card-header">Plantilla</h5>
                         <div class="card-body">
@@ -371,24 +371,25 @@
                                 <div class="col-lg-12">
                                     <div class="demo-inline-spacing mt-4">
                                         <div class="list-group list-group-horizontal-md text-md-center">
-                                        <a class="list-group-item list-group-item-action active"
-                                            id="home-list-item"
-                                            data-bs-toggle="list"
-                                            href="#horizontal-home"
-                                            ><i class="ri-team-fill ri-20px me-2"></i> Jugadores</a>
-                                        <a class="list-group-item list-group-item-action"
-                                            id="profile-list-item"
-                                            data-bs-toggle="list"
-                                            href="#horizontal-profile"
-                                            ><i class="ri-group-2-fill ri-20px me-2"></i> Jugadores Prestamo</a>
-                                        <a class="list-group-item list-group-item-action"
-                                            id="messages-list-item"
-                                            data-bs-toggle="list"
-                                            href="#horizontal-messages"
-                                            ><i class="ri-shield-star-fill ri-20px me-2"></i> Seleccionados</a>
+                                            <a class="list-group-item list-group-item-action active"
+                                                id="messages-list-item"
+                                                data-bs-toggle="list"
+                                                href="#horizontal-messages">
+                                                <i class="ri-shield-star-fill ri-20px me-2"></i> Seleccionados</a>
+                                            <a class="list-group-item list-group-item-action"
+                                                id="home-list-item"
+                                                data-bs-toggle="list"
+                                                href="#horizontal-home">
+                                                <i class="ri-team-fill ri-20px me-2"></i> Jugadores</a>
+                                            <a class="list-group-item list-group-item-action"
+                                                id="profile-list-item"
+                                                data-bs-toggle="list"
+                                                href="#horizontal-profile">
+                                                <i class="ri-group-2-fill ri-20px me-2"></i> Jugadores Prestamo</a>
+                                           
                                         </div>
                                         <div class="tab-content px-0 mt-0">
-                                            <div class="tab-pane fade show active" id="horizontal-home">
+                                            <div class="tab-pane fade " id="horizontal-home">
                                                 <div class="table-responsive text-nowrap mt-2">
                                                     <table class="table">
                                                         <thead>
@@ -406,7 +407,7 @@
                                                         <tbody class="table-border-bottom-0">
                                                             <tr v-for="(t, index) in this.PlantillaJugador" :key="index">
                                                                 <td>
-                                                                    <input class="form-check-input" type="checkbox" :id="`check2${index}`" 
+                                                                    <input class="form-check-input" type="checkbox" :id="`check2${index}`" v-model="seleccionJugador[t.folio]"
                                                                         @change="activaJugador(index,t.folio,t.nombre,t.posicion,t.sexo,t.edad,t.categoria,t.sede)">
                                                                 </td>
                                                                 <td>
@@ -444,7 +445,7 @@
                                                         <tbody class="table-border-bottom-0">
                                                             <tr v-for="(t, index) in this.PlantillaPrestamo" :key="index">
                                                                 <td>
-                                                                    <input class="form-check-input" type="checkbox" value="" :id="`checkpres${index}`" 
+                                                                    <input class="form-check-input" type="checkbox" value="" :id="`checkpres${index}`" v-model="seleccionPrestamo[t.folio]"
                                                                     @change="activaPrestamo(index,t.folio,t.nombre,t.posicion,t.sexo,t.edad,t.categoria,t.sede)">
                                                                 </td>
                                                                 <td>
@@ -466,7 +467,7 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane fade" id="horizontal-messages">
+                                            <div class="tab-pane fade show active" id="horizontal-messages">
                                                 <div class="table-responsive text-nowrap mt-2">
                                                     <table class="table">
                                                         <thead>
@@ -493,7 +494,9 @@
                                                                 <td>{{ t.edad }}</td>
                                                                 <td>{{ t.sede }}</td>
                                                                 <td>
-                                                                    <a type="button" class="btn btn-outline-danger btn-icon waves-effect"><i class="ri-delete-bin-2-fill ri-22px"></i></a>
+                                                                    <button type="button" class="btn btn-icon btn-outline-danger waves-effect" @click="deleteSelect(t.id_plantilla)">
+                                                                        <i class="tf-icons ri-delete-bin-fill ri-22px"></i>
+                                                                    </button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -700,7 +703,9 @@
                 detalleTorneo:[],
                 DocumentacionTorneo:[],
                 PlantillaJugador:[],
+                seleccionJugador:{},
                 PlantillaPrestamo:[],
+                seleccionPrestamo:{},
                 JugadorSeleccionado:[],
                 cargaSeleccionado:[],
                 pagination: {
@@ -917,6 +922,25 @@
                     this.PlantillaJugador = response.data.plantilla;
                     this.PlantillaPrestamo = response.data.prestamo;
                 })
+                axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response =>{
+                    this.JugadorSeleccionado = response.data
+                    this.JugadorSeleccionado.map(jugador => {
+                        this.PlantillaJugador.map(j =>{
+                            if (j.folio === jugador.folio) {        
+                                this.seleccionJugador[j.folio] = true;
+                            }
+                        });
+                        this.PlantillaPrestamo.map(p =>{
+                            if (p.folio === jugador.folio) {
+                                this.seleccionPrestamo[p.folio] = true;
+                            }
+                        });
+                    
+                    });
+                })
+                
+                
+                
             },
             updateTorneo(){
                 if (this.detalleTorneo.torneo == '') {
@@ -1086,7 +1110,7 @@
                 var num = $(`#check2${index}`).prop('checked');
 
                 if (num == true) {
-                    this.JugadorSeleccionado.push({
+                    var nuevoJugador = {
                         folio: folio,
                         nombre: nombre,
                         posicion: posicion,
@@ -1094,12 +1118,26 @@
                         edad: edad,
                         categoria: categoria,
                         sede: sede,
-                    });
+                    };
+                    let formData = new FormData();
+                        formData.append('bandera','individual');
+                        formData.append('id_torneo',this.detalleTorneo.id_torneo);
+                        formData.append('selecccion',JSON.stringify(nuevoJugador));
+                    axios.post('torneo/seleccionadosJugador',formData).then(response =>{
+                        axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response =>{
+                            this.JugadorSeleccionado = response.data
+                        })
+                    })
                 }
                 if (num == false) {
                     this.JugadorSeleccionado.forEach(function(p, index, object) {
                         if (p.folio === folio) {
-                            object.splice(index, 1);
+                            let formData = new FormData();
+                            formData.append('bandera','unico');
+                            formData.append('id_plantilla',p.id_plantilla);
+                            axios.post('torneo/deleteJugador',formData).then(response =>{
+                                object.splice(index, 1);
+                            })
                         }
                     });
                 }
@@ -1108,7 +1146,7 @@
                 var num = $(`#checkpres${index}`).prop('checked');
 
                 if (num == true) {
-                    this.JugadorSeleccionado.push({
+                    var jugadorPrestamo = {
                         folio: folio,
                         nombre: nombre,
                         posicion: posicion,
@@ -1116,15 +1154,61 @@
                         edad: edad,
                         categoria: categoria,
                         sede: sede,
-                    });
+                    };
+                    let formData = new FormData();
+                        formData.append('bandera','individual');
+                        formData.append('id_torneo',this.detalleTorneo.id_torneo);
+                        formData.append('selecccion',JSON.stringify(jugadorPrestamo));
+                    axios.post('torneo/seleccionadosJugador',formData).then(response =>{
+                        axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response =>{
+                            this.JugadorSeleccionado = response.data
+                        })
+                    })
                 }
                 if (num == false) {
                     this.JugadorSeleccionado.forEach(function(p, index, object) {
                         if (p.folio === folio) {
-                            object.splice(index, 1);
+                            let formData = new FormData();
+                            formData.append('bandera','unico');
+                            formData.append('id_plantilla',p.id_plantilla);
+                            axios.post('torneo/deleteJugador',formData).then(response =>{
+                                object.splice(index, 1);
+                            })
                         }
                     });
                 }
+            },
+            deleteSelect(value){
+                this.id_plantilla = value;
+                Swal.fire({
+                    title: "Estas seguro?",
+                    text: "Se eliminara definitivamente!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Eliminar",
+                    cancelButtonColor: "#d33",
+                    cancelButtonText: "Cancelar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let formData = new FormData();
+                            formData.append('bandera','unico');
+                            formData.append('id_plantilla',this.id_plantilla);
+                        axios.post('torneo/deleteJugador',formData).then(response =>{
+                            axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response =>{
+                                this.JugadorSeleccionado = response.data
+                            })
+                            Swal.fire({
+                                title: 'Exitoso',
+                                text: "Se Elimino correctamente!",
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                        })
+                        
+                    }
+                });
             },
             onEditorReady (editor) {}, // prepara el editor
             onEditorBlur () {}, // Evento de pérdida de foco

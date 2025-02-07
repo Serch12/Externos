@@ -9,3 +9,4 @@ Route::post('/torneo/updateTorneo', [TorneoController::class, 'updateTorneo'])->
 Route::get('/torneo/plantillaJugador', [TorneoController::class, 'plantillaJugador'])->name('torneo/plantillaJugador');
 Route::post('/torneo/seleccionadosJugador', [TorneoController::class, 'seleccionadosJugador'])->name('torneo/seleccionadosJugador');
 Route::get('/torneo/detalleSeleccionado/{id}', [TorneoController::class, 'detalleSeleccionado'])->name('torneo/detalleSeleccionado/{id}');
+Route::post('/torneo/deleteJugador', [TorneoController::class, 'deleteJugador'])->name('torneo/deleteJugador');

@@ -124,22 +124,55 @@ class TorneoRepository
         $note = PlantillaJugador::where('id_torneo',$id)
         ->select('*')
         ->get();
+        return $note;
     }
 
     /**
      * FUNCION QUE AGREGA LOS JUGADORES SELCCIONADOS
      **/
     public function seleccionadosJugador($request){
-        dd($request);
-        $new = new PlantillaJugador();
-        $new -> id_torneo = $request -> id_torneo;
-        $new -> folio = $request -> folio;
-        $new -> nombre = $request -> nombre;
-        $new -> posicion = $request -> posicion;
-        $new -> sexo = $request -> sexo;
-        $new -> edad = $request -> edad;
-        $new -> categoria = $request -> categoria;
-        $new -> save();
+        $seleccion = json_decode($request->selecccion);
+        if ($request->bandera === 'individual') {
+           
+            $new = new PlantillaJugador();
+            $new -> id_torneo = $request -> id_torneo;
+            $new -> folio = $seleccion -> folio;
+            $new -> nombre = $seleccion -> nombre;
+            $new -> posicion = $seleccion -> posicion;
+            $new -> sexo = $seleccion -> sexo;
+            $new -> edad = $seleccion -> edad;
+            $new -> categoria = $seleccion -> categoria;
+            $new -> sede = $seleccion -> sede;
+            $new -> save();
+        }
+        if ($request->bandera === 'multiple') {
+            foreach ($seleccion as $value) {
+
+                $new = new PlantillaJugador();
+                $new -> id_torneo = $request -> id_torneo;
+                $new -> folio = $value -> folio;
+                $new -> nombre = $value -> nombre;
+                $new -> posicion = $value -> posicion;
+                $new -> sexo = $value -> sexo;
+                $new -> edad = $value -> edad;
+                $new -> categoria = $value -> categoria;
+                $new -> sede = $value -> sede;
+                $new -> save();
+            } 
+        }
+        
         return $new;
+    }
+    /**
+     * FUNCIION QUE ELIMINARA LOS JUGADORES 
+     **/
+    public function deleteJugador($request){
+        if ($request->bandera === 'multi') {
+            # code...
+        }
+        if ($request->bandera === 'unico') {
+            $delete = PlantillaJugador::find($request->id_plantilla);
+            $delete -> delete();
+        }
     }
 }
