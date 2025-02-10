@@ -175,4 +175,14 @@ class TorneoRepository
             $delete -> delete();
         }
     }
+
+    /**
+     * Mostrara informacion externa del torneo
+     **/
+    public function Bancarios($id){
+       $bancario = DatosBancarios::where('id_torneo',$id)
+       ->select('*')
+       ->get();
+       return $bancario;
+    }
 }

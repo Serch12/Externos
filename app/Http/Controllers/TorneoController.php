@@ -113,4 +113,12 @@ class TorneoController extends Controller
     public function deleteJugador(Request $request){
         return $this->TorneoRepository->deleteJugador($request);
     }
+
+    /**
+     * MOSTRARA IFNFOMACION EXTERNA AL TORNEO
+     **/
+    public function InfoExterna($id){
+        $bancarios = $this->TorneoRepository->Bancarios($id);
+        return response()->json(['bancarios'=>$bancarios]);
+    }
 }
