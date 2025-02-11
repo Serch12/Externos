@@ -625,7 +625,7 @@
 
                         </div>
                         <!-- Info pago -->
-                        <div class="card mb-6" v-if="this.activeView == 'pago' && this.DatosBancarios.length == 0">
+                        <div class="card mb-6" v-if="this.activeView == 'pago' && this.ProveedoresIntranet.length == 0">
                             <h5 class="card-header">Forma de Pago</h5>
                             <div class="card-body">
                                 <form id="addNewAddressForm" class="row g-5">
@@ -638,6 +638,17 @@
                                                 v-model="newDatosbancarios.nombre"
                                                 placeholder="Nombre"/>
                                             <label for="nameupdate">Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="text"
+                                                id="rfc"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.rfc"
+                                                placeholder="RFC"/>
+                                            <label for="rfc">RFC</label>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
@@ -687,11 +698,79 @@
                                         <div class="form-floating form-floating-outline">
                                             <input
                                                 type="text"
-                                                id="numerotarjeta"
+                                                id="direccion"
                                                 class="form-control"
-                                                v-model="newDatosbancarios.numero_tarjeta"
-                                                placeholder="Numero de tarjeta"/>
-                                            <label for="numerotarjeta"> Numero de tarjeta</label>
+                                                v-model="newDatosbancarios.direccion"
+                                                placeholder="Dirección"/>
+                                            <label for="direccion"> Dirección</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="number"
+                                                id="telefono"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.telefono"
+                                                placeholder="Telefono"/>
+                                            <label for="telefono"> Telefono</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="email"
+                                                id="mail"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.mail"
+                                                placeholder="Email"/>
+                                            <label for="mail"> Email</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="text"
+                                                id="ejecutivo"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.ejecutivo"
+                                                placeholder="Ejecutivo"/>
+                                            <label for="ejecutivo"> Ejecutivo</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="number"
+                                                id="Subtotal"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.subtotal"
+                                                step="0.01"
+                                                placeholder="Subtotal"/>
+                                            <label for="Subtotal"> Subtotal</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="number"
+                                                id="total"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.total"
+                                                step="0.01"
+                                                placeholder="total"/>
+                                            <label for="total"> Total</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <select id="tipopersona" name="roles" class="form-select" v-model="newDatosbancarios.tipo_persona">
+                                                <option value="Seleccionar">Seleccionar</option>
+                                                <option value="Persona Fisica">Persona Fisica</option>
+                                                <option value="Persona Moral">Persona Moral</option>
+                                               
+                                            </select>
+                                            <label for="tipopersona">¿Persona Física ó Persona Moral?</label>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
@@ -708,7 +787,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="card mb-6" v-if="this.activeView == 'pago' && this.DatosBancarios.length != 0">
+                        <div class="card mb-6" v-if="this.activeView == 'pago' && this.ProveedoresIntranet.length != 0">
                             <div class="row">
                                 <div class="col-12 col-md-6">
                                     <h5 class="card-header">Forma de Pago</h5>
@@ -727,14 +806,25 @@
                                                 type="text"
                                                 id="nameupdate"
                                                 class="form-control"
-                                                v-model="DatosBancarios[0].nombre"
+                                                v-model="ProveedoresIntranet[0].nombre"
                                                 placeholder="Nombre" :disabled="activacion" style="color: black;"/>
                                             <label for="nameupdate">Nombre</label>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            <select id="banco" name="roles" class="form-select" v-model="DatosBancarios[0].banco" :disabled="activacion" style="color: black;">
+                                            <input
+                                                type="text"
+                                                id="rfc"
+                                                class="form-control"
+                                                v-model="ProveedoresIntranet[0].rfc"
+                                                placeholder="RFC" :disabled="activacion" style="color: black;"/>
+                                            <label for="rfc">RFC</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <select id="banco" name="roles" class="form-select" v-model="ProveedoresIntranet[0].banco" :disabled="activacion" style="color: black;">
                                                 <option value="Seleccionar Banco">Seleccionar Banco</option>
                                                 <option value="BBVA BANCOMER">BBVA BANCOMER</option>
                                                 <option value="BANORTE">BANORTE</option>
@@ -756,10 +846,10 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             <input
-                                                type="number"
+                                                type="text"
                                                 id="cuentabancaria"
                                                 class="form-control"
-                                                v-model="DatosBancarios[0].cuenta_bancaria"
+                                                v-model="ProveedoresIntranet[0].ctaBanc"
                                                 placeholder="Cuenta Bancaria" :disabled="activacion" style="color: black;"/>
                                             <label for="cuentabancaria">Cuenta Bancaria</label>
                                         </div>
@@ -767,10 +857,10 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             <input
-                                                type="number"
+                                                type="text"
                                                 id="clabebancaria"
                                                 class="form-control"
-                                                v-model="DatosBancarios[0].clabe_bancaria"
+                                                v-model="ProveedoresIntranet[0].cbeBanc"
                                                 placeholder="Clabe Bancaria" :disabled="activacion" style="color: black;"/>
                                             <label for="clabebancaria">Clabe Bancaria</label>
                                         </div>
@@ -778,17 +868,83 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             <input
-                                                type="number"
-                                                id="numerotarjeta"
+                                                type="text"
+                                                id="direccion"
                                                 class="form-control"
-                                                v-model="DatosBancarios[0].numero_tarjeta"
-                                                placeholder="Numero de tarjeta" :disabled="activacion" style="color: black;"/>
-                                            <label for="numerotarjeta"> Numero de tarjeta</label>
+                                                v-model="ProveedoresIntranet[0].direccion"
+                                                placeholder="Dirección" :disabled="activacion" style="color: black;"/>
+                                            <label for="direccion"> Dirección</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="number"
+                                                id="telefono"
+                                                class="form-control"
+                                                v-model="ProveedoresIntranet[0].telefono"
+                                                placeholder="Telefono" :disabled="activacion" style="color: black;"/>
+                                            <label for="telefono"> Telefono</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="email"
+                                                id="mail"
+                                                class="form-control"
+                                                v-model="ProveedoresIntranet[0].mail"
+                                                placeholder="Email" :disabled="activacion" style="color: black;"/>
+                                            <label for="mail"> Email</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="text"
+                                                id="ejecutivo"
+                                                class="form-control"
+                                                v-model="ProveedoresIntranet[0].ejecutivo"
+                                                placeholder="Ejecutivo" :disabled="activacion" style="color: black;"/>
+                                            <label for="ejecutivo"> Ejecutivo</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="number"
+                                                id="Subtotal"
+                                                class="form-control"
+                                                v-model="detalleTorneo.subtotal"
+                                                placeholder="Subtotal" :disabled="activacion" style="color: black;" step="0.01"/>
+                                            <label for="Subtotal"> Subtotal</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="number"
+                                                id="total"
+                                                class="form-control"
+                                                v-model="detalleTorneo.total"
+                                                placeholder="total" :disabled="activacion" style="color: black;" step="0.01"/>
+                                            <label for="total"> Total</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <select id="tipopersona" name="roles" class="form-select" v-model="ProveedoresIntranet[0].tipo_persona" :disabled="activacion" style="color: black;">
+                                                <option value="Seleccionar">Seleccionar</option>
+                                                <option value="Persona Fisica">Persona Fisica</option>
+                                                <option value="Persona Moral">Persona Moral</option>
+                                               
+                                            </select>
+                                            <label for="tipopersona">¿Persona Física ó Persona Moral?</label>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6" v-if="this.activacion">
                                         <p>Formato de Inscripción: 
-                                            <a type="button" class="btn btn-warning" :href="`ArchivosSistema/DatoBancario/${this.DatosBancarios[0].id_datos_bancarios}/${this.DatosBancarios[0].archivo}`" 
+                                            <a type="button" class="btn btn-warning" :href="`ArchivosSistema/DatoBancario/${this.detalleTorneo.id_torneo}/${this.detalleTorneo.archivo}`" 
                                             target="_blank" onclick="window.open(this.href, this.target, 'width=650,height=650'); return false;">
                                                 <i class="ri-file-pdf-2-fill ri-2test0px me-2"></i>
                                             </a>
@@ -915,11 +1071,15 @@ export default {
             },
             newDatosbancarios:{
                 nombre:'',
+                rfc:'',
                 banco:'Seleccionar Banco',
                 cuenta_bancaria:'',
                 clabe_bancaria:'',
-                numero_tarjeta:'',
-                tipo_tarjeta:'',
+                direccion:'',
+                telefono:'',
+                mail:'',
+                ejecutivo:'',
+                tipo_persona:'Seleccionar',
                 archivo:''
             },
             activeView: null,
@@ -934,7 +1094,7 @@ export default {
             seleccionPrestamo: {},
             JugadorSeleccionado: [],
             cargaSeleccionado: [],
-            DatosBancarios:[],
+            ProveedoresIntranet:[],
             pagination: {
                 'total': 0,
                 'current_page': 0,
@@ -1173,8 +1333,8 @@ export default {
 
                 });
             })
-            axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_torneo}`).then(response =>{
-                this.DatosBancarios = response.data.bancarios;
+            axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_proveedor}`).then(response =>{
+                this.ProveedoresIntranet = response.data.bancarios;
             })
 
 
@@ -1544,7 +1704,7 @@ export default {
         },
         onChangeIncripcionUpdate(){
             var fileedit = this.$refs.fileInscripcionUpdate.files[0];
-            this.DatosBancarios[0].archivo = fileedit
+            this.detalleTorneo.archivo = fileedit
         },
         createPago(){
             if (this.newDatosbancarios.nombre == '') {
@@ -1635,15 +1795,21 @@ export default {
             let formData = new FormData();
                 formData.append('id_torneo',this.detalleTorneo.id_torneo);
                 formData.append('nombre',this.newDatosbancarios.nombre);
+                formData.append('rfc',this.newDatosbancarios.rfc);
                 formData.append('banco',this.newDatosbancarios.banco);
                 formData.append('cuenta_bancaria',this.newDatosbancarios.cuenta_bancaria);
                 formData.append('clabe_bancaria',this.newDatosbancarios.clabe_bancaria);
-                formData.append('numero_tarjeta',this.newDatosbancarios.numero_tarjeta);
-                formData.append('tipo_tarjeta',this.newDatosbancarios.tipo_tarjeta);
+                formData.append('direccion',this.newDatosbancarios.direccion);
+                formData.append('telefono',this.newDatosbancarios.telefono);
+                formData.append('mail',this.newDatosbancarios.mail);
+                formData.append('ejecutivo',this.newDatosbancarios.ejecutivo);
+                formData.append('tipo_persona',this.newDatosbancarios.tipo_persona);
+                formData.append('subtotal',this.newDatosbancarios.subtotal);
+                formData.append('total',this.newDatosbancarios.total);
                 formData.append('archivo',this.newDatosbancarios.archivo);
             axios.post('torneo/createDatoBancario',formData).then(response =>{
-                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_torneo}`).then(response =>{
-                    this.DatosBancarios = response.data.bancarios;
+                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_proveedor}`).then(response =>{
+                    this.ProveedoresIntranet = response.data.bancarios;
                 })
                 this.newDatosbancarios = {
                     nombre:'',
@@ -1673,7 +1839,7 @@ export default {
             }
         },
         updatePago(){
-            if (this.DatosBancarios[0].nombre == '') {
+            if (this.ProveedoresIntranet[0].nombre == '') {
                 this.$toast.error("Ingresa el Nombre", {
                     position: "top-center",
                     timeout: 1270,
@@ -1690,7 +1856,7 @@ export default {
                 });
                 return;
             }
-            if (this.DatosBancarios[0].banco == '') {
+            if (this.ProveedoresIntranet[0].banco == '') {
                 this.$toast.error("Selecciona un Banco", {
                     position: "top-center",
                     timeout: 1270,
@@ -1707,7 +1873,7 @@ export default {
                 });
                 return;
             }
-            if (this.DatosBancarios[0].cuenta_bancaria == '') {
+            if (this.ProveedoresIntranet[0].cuenta_bancaria == '') {
                 this.$toast.error("Ingresa una Cuenta Bancaria", {
                     position: "top-center",
                     timeout: 1270,
@@ -1724,7 +1890,7 @@ export default {
                 });
                 return;
             }
-            if (this.DatosBancarios[0].clabe_bancaria == '') {
+            if (this.ProveedoresIntranet[0].clabe_bancaria == '') {
                 this.$toast.error("Ingresa una Clabe Bancaria", {
                     position: "top-center",
                     timeout: 1270,
@@ -1741,7 +1907,7 @@ export default {
                 });
                 return;
             }
-            if (this.DatosBancarios[0].archivo == '') {
+            if (this.ProveedoresIntranet[0].archivo == '') {
                 this.$toast.error("Ingresa Formato de Inscripción", {
                     position: "top-center",
                     timeout: 1270,
@@ -1759,17 +1925,24 @@ export default {
                 return;
             }
             let formData = new FormData();
-                formData.append('id_datos_bancarios',this.DatosBancarios[0].id_datos_bancarios);
-                formData.append('nombre',this.DatosBancarios[0].nombre);
-                formData.append('banco',this.DatosBancarios[0].banco);
-                formData.append('cuenta_bancaria',this.DatosBancarios[0].cuenta_bancaria);
-                formData.append('clabe_bancaria',this.DatosBancarios[0].clabe_bancaria);
-                formData.append('numero_tarjeta',this.DatosBancarios[0].numero_tarjeta);
-                formData.append('tipo_tarjeta',this.DatosBancarios[0].tipo_tarjeta);
-                formData.append('archivo',this.DatosBancarios[0].archivo);
+                formData.append('id_torneo',this.detalleTorneo.id_torneo);
+                formData.append('id_pro',this.ProveedoresIntranet[0].id_pro);
+                formData.append('nombre',this.ProveedoresIntranet[0].nombre);
+                formData.append('rfc',this.ProveedoresIntranet[0].rfc);
+                formData.append('banco',this.ProveedoresIntranet[0].banco);
+                formData.append('ctaBanc',this.ProveedoresIntranet[0].ctaBanc);
+                formData.append('cbeBanc',this.ProveedoresIntranet[0].cbeBanc);
+                formData.append('direccion',this.ProveedoresIntranet[0].direccion);
+                formData.append('telefono',this.ProveedoresIntranet[0].telefono);
+                formData.append('mail',this.ProveedoresIntranet[0].mail);
+                formData.append('ejecutivo',this.ProveedoresIntranet[0].ejecutivo);
+                formData.append('tipo_persona',this.ProveedoresIntranet[0].tipo_persona);
+                formData.append('subtotal',this.detalleTorneo.subtotal);
+                formData.append('total',this.detalleTorneo.total);
+                formData.append('archivo',this.detalleTorneo.archivo);
             axios.post('torneo/updateDatoBancario',formData).then(response =>{
-                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_torneo}`).then(response =>{
-                    this.DatosBancarios = response.data.bancarios;
+                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_proveedor}`).then(response =>{
+                    this.ProveedoresIntranet = response.data.bancarios;
                 })
                 this.activacion = true;
                 

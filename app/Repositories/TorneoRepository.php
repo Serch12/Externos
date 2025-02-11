@@ -5,7 +5,8 @@ namespace App\Repositories;
 use App\Models\Torneo;
 use App\Models\Jugadores;
 use App\Models\PlantillaJugador;
-USE App\Models\DatosBancarios;
+use App\Models\ProveedoresIntranet;
+use App\Models\NotificacionIntranet;
 use Carbon\Carbon;
 use Mail;
 use DB;
@@ -181,7 +182,7 @@ class TorneoRepository
      * Mostrara informacion externa del torneo
      **/
     public function Bancarios($id){
-       $bancario = DatosBancarios::where('id_torneo',$id)
+       $bancario = ProveedoresIntranet::where('id_pro',$id)
        ->select('*')
        ->get();
        return $bancario;
@@ -191,51 +192,69 @@ class TorneoRepository
      * FUNCION QUE AGREGARA EL DATO BANCARIO
      **/
     public function createDatoBancario($request){
-        $new = new DatosBancarios();
-        $new -> id_torneo = $request -> id_torneo;
+        $new = new ProveedoresIntranet();
         $new -> nombre = $request -> nombre;
+        $new -> id_user = 5;
+        $new -> rfc = $request -> rfc;
         $new -> banco = $request -> banco;
-        $new -> cuenta_bancaria = $request -> cuenta_bancaria;
-        $new -> clabe_bancaria = $request -> clabe_bancaria;
-        $new -> numero_tarjeta = $request -> numero_tarjeta;
-        $new -> tipo_tarjeta = $request -> tipo_tarjeta;
+        $new -> ctaBanc = $request -> cuenta_bancaria;
+        $new -> cbeBanc = $request -> clabe_bancaria;
+        $new -> direccion = $request -> direccion;
+        $new -> telefono = $request -> telefono;
+        $new -> mail = $request -> mail;
+        $new -> ejecutivo = $request -> ejecutivo;
+        $new -> tipo_persona = $request -> tipo_persona;
+        $new -> estatus = 1;
         $new ->save();
 
-        $new = DatosBancarios::find($new->id_datos_bancarios);
+        $edit = Torneo::find($request->id_torneo);
         $file = $request->file('archivo');
         if(isset($file)){
             $file = $request->file('archivo');
             $nombre = $file->getClientOriginalName();
-            $urlimagen = $new->id_datos_bancarios."/".$nombre;
+            $urlimagen = $request->id_torneo."/".$nombre;
             \Storage::disk('datobancario')->put($urlimagen, \File::get($file));
-            $new->archivo = $nombre;
+            $edit->archivo = $nombre;
         }
-        $new -> estatus = 0;
-        $new -> save();
-        return $new;
+        $edit -> id_proveedor = $new -> id_pro;
+        $edit -> subtotal = $request -> subtotal;
+        $edit -> total = $request -> total;
+        $edit -> save();
+        return $edit;
     }
 
     /**
      * FUNCION QUE EDITARA LA FORMA DE PAGO DEL TORNEO
      **/
     public function updateDatoBancario($request){
-        $new = DatosBancarios::find($request->id_datos_bancarios);
+
+        $new = ProveedoresIntranet::find($request->id_pro);
         $new -> nombre = $request -> nombre;
+        $new -> id_user = 5;
+        $new -> rfc = $request -> rfc;
         $new -> banco = $request -> banco;
-        $new -> cuenta_bancaria = $request -> cuenta_bancaria;
-        $new -> clabe_bancaria = $request -> clabe_bancaria;
-        $new -> numero_tarjeta = $request -> numero_tarjeta;
-        $new -> tipo_tarjeta = $request -> tipo_tarjeta;
+        $new -> ctaBanc = $request -> ctaBanc;
+        $new -> cbeBanc = $request -> cbeBanc;
+        $new -> direccion = $request -> direccion;
+        $new -> telefono = $request -> telefono;
+        $new -> mail = $request -> mail;
+        $new -> ejecutivo = $request -> ejecutivo;
+        $new -> tipo_persona = $request -> tipo_persona;
+        $new ->save();
+
+        $edit = Torneo::find($request->id_torneo);
         $file = $request->file('archivo');
         if(isset($file)){
-            \Storage::disk('datobancario')->delete($request->id_datos_bancarios.'/'.$new->archivo);
+            \Storage::disk('datobancario')->delete($request->id_torneo.'/'.$edit->archivo);
             $file = $request->file('archivo');
             $nombre = $file->getClientOriginalName();
-            $urlimagen = $new->id_datos_bancarios."/".$nombre;
+            $urlimagen = $request->id_torneo."/".$nombre;
             \Storage::disk('datobancario')->put($urlimagen, \File::get($file));
-            $new->archivo = $nombre;
+            $edit->archivo = $nombre;
         }
-        $new -> save();
+        $edit -> subtotal = $request -> subtotal;
+        $edit -> total = $request -> total;
+        $edit -> save();
         return $new;
     }
     /**
