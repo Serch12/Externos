@@ -58,11 +58,14 @@
                                                         v-if="include('Vizualizar')" @click="muestra(3), infoTorneo(t)">
                                                         <i class="ri-clipboard-line me-1"></i> Vizualizar</a>
                                                     <a class="dropdown-item" type="button" style="color: #33b2ff;"
-                                                        v-if="include('Editar')" @click="muestra(2), infoTorneo(t)">
+                                                        v-if="include('Editar') && t.estatus == 0" @click="muestra(2), infoTorneo(t)">
                                                         <i class="ri-pencil-line me-1"></i> Editar</a>
                                                     <a class="dropdown-item" type="button" style="color: red;"
-                                                        v-if="include('Eliminar')" @click="eliminarTorneo(t.id)">
+                                                        v-if="include('Eliminar') && t.estatus == 0" @click="eliminarTorneo(t.id)">
                                                         <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>
+                                                    <a class="dropdown-item" type="button" style="color: orangered;"
+                                                         v-if="t.estatus == 0" @click="estatusTorneo(t)">
+                                                        <i class="ri-verified-badge-fill me-1"></i> Revisión</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -622,68 +625,192 @@
 
                         </div>
                         <!-- Info pago -->
-                        <div class="card mb-6" v-if="this.activeView == 'pago'">
-                            <h5 class="card-header">Expendiente</h5>
+                        <div class="card mb-6" v-if="this.activeView == 'pago' && this.DatosBancarios.length == 0">
+                            <h5 class="card-header">Forma de Pago</h5>
                             <div class="card-body">
-                                <form>
-                                    <div class="input-group input-group-merge mb-6">
-                                        <span id="basic-icon-default-fullname2" class="input-group-text">
-                                            <i class="ri-user-line"></i>
-                                        </span>
+                                <form id="addNewAddressForm" class="row g-5">
+                                    <div class="col-12 col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            <input type="text" id="basic-icon-default-company" class="form-control"
-                                                placeholder="Nombre" aria-label="Nombre" v-model="detalleTorneo.tutor"
-                                                aria-describedby="basic-icon-default-fullname2" />
-                                            <label for="basic-icon-default-fullname">Nombre Tutor</label>
+                                            <input
+                                                type="text"
+                                                id="nameupdate"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.nombre"
+                                                placeholder="Nombre"/>
+                                            <label for="nameupdate">Nombre</label>
                                         </div>
                                     </div>
-                                    <div class="input-group input-group-merge mb-6">
-                                        <span id="basic-icon-default-company2" class="input-group-text">
-                                            <i class="ri-map-pin-line"></i>
-                                        </span>
+                                    <div class="col-12 col-md-6">
                                         <div class="form-floating form-floating-outline">
-                                            <input type="text" id="basic-icon-default-company" class="form-control"
-                                                placeholder="Dirección" aria-label="Dirección"
-                                                v-model="detalleTorneo.direccion"
-                                                aria-describedby="basic-icon-default-company2" />
-                                            <label for="basic-icon-default-company">Dirección</label>
+                                            <select id="banco" name="roles" class="form-select" v-model="newDatosbancarios.banco">
+                                                <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                                <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                                <option value="BANORTE">BANORTE</option>
+                                                <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                                <option value="SANTANDER">SANTANDER</option>
+                                                <option value="HSBC">HSBC</option>
+                                                <option value="INBURSA">INBURSA</option>
+                                                <option value="MIFEL">MIFEL</option>
+                                                <option value="SCOTIABANK">SCOTIABANK</option>
+                                                <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                                <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                                <option value="BANCOPPEL">BANCOPPEL</option>
+                                                <option value="AFIRME">AFIRME</option>
+                                            </select>
+                                            <label for="banco">Banco</label>
                                         </div>
                                     </div>
-                                    <div class="mb-6">
-                                        <div class="input-group input-group-merge">
-                                            <span class="input-group-text"><i class="ri-mail-line"></i></span>
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="email" id="basic-icon-default-email" class="form-control"
-                                                    placeholder="john.doe" aria-label="john.doe"
-                                                    v-model="detalleTorneo.correo"
-                                                    aria-describedby="basic-icon-default-email2" />
-                                                <label for="basic-icon-default-email">Email</label>
-                                            </div>
-                                            <span id="basic-icon-default-email2"
-                                                class="input-group-text">@example.com</span>
+                                   
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="text"
+                                                id="cuentabancaria"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.cuenta_bancaria"
+                                                placeholder="Cuenta Bancaria"/>
+                                            <label for="cuentabancaria">Cuenta Bancaria</label>
                                         </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="text"
+                                                id="clabebancaria"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.clabe_bancaria"
+                                                placeholder="Clabe Bancaria"/>
+                                            <label for="clabebancaria">Clabe Bancaria</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="text"
+                                                id="numerotarjeta"
+                                                class="form-control"
+                                                v-model="newDatosbancarios.numero_tarjeta"
+                                                placeholder="Numero de tarjeta"/>
+                                            <label for="numerotarjeta"> Numero de tarjeta</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline mb-6">
+                                            <input type="file"  accept="image/png,image/jpeg,.pdf" class="form-control" id="bs-validation-upload-file" ref="fileInscripcion" @change="onChangeIncripcion()">
+                                            <label for="bs-validation-upload-file">Formato de Inscripción</label>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+                                        <button type="button" class="btn btn-primary" @click="createPago()">Guardar</button>
+                                        <!-- <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button> -->
                                     </div>
-                                    <div class="input-group input-group-merge mb-6">
-                                        <span id="basic-icon-default-phone2" class="input-group-text">
-                                            <i class="ri-phone-fill"></i>
-                                        </span>
-                                        <div class="form-floating form-floating-outline">
-                                            <input type="number" id="basic-icon-default-phone"
-                                                class="form-control phone-mask" placeholder="658 799 8941"
-                                                aria-label="658 799 8941" v-model="detalleTorneo.telefono"
-                                                aria-describedby="basic-icon-default-phone2" />
-                                            <label for="basic-icon-default-phone">Telefono</label>
-                                        </div>
-                                    </div>
-
-                                    <button type="button" class="btn btn-primary" @click="newTutor()">Guardar</button>
                                 </form>
                             </div>
                         </div>
-                        <!-- /Activity Timeline -->
+                        <div class="card mb-6" v-if="this.activeView == 'pago' && this.DatosBancarios.length != 0">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <h5 class="card-header">Forma de Pago</h5>
+                                </div>
+                                <div class="col-12 col-md-6 mt-3" >
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);">
+                                        <button type="button" class="btn btn-outline-info waves-effect" @click="modoUpdate()" v-if="this.activacion ==  true">Editar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="addNewAddressForm" class="row g-5">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="text"
+                                                id="nameupdate"
+                                                class="form-control"
+                                                v-model="DatosBancarios[0].nombre"
+                                                placeholder="Nombre" :disabled="activacion" style="color: black;"/>
+                                            <label for="nameupdate">Nombre</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <select id="banco" name="roles" class="form-select" v-model="DatosBancarios[0].banco" :disabled="activacion" style="color: black;">
+                                                <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                                <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                                <option value="BANORTE">BANORTE</option>
+                                                <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                                <option value="SANTANDER">SANTANDER</option>
+                                                <option value="HSBC">HSBC</option>
+                                                <option value="INBURSA">INBURSA</option>
+                                                <option value="MIFEL">MIFEL</option>
+                                                <option value="SCOTIABANK">SCOTIABANK</option>
+                                                <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                                <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                                <option value="BANCOPPEL">BANCOPPEL</option>
+                                                <option value="AFIRME">AFIRME</option>
+                                            </select>
+                                            <label for="banco">Banco</label>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="number"
+                                                id="cuentabancaria"
+                                                class="form-control"
+                                                v-model="DatosBancarios[0].cuenta_bancaria"
+                                                placeholder="Cuenta Bancaria" :disabled="activacion" style="color: black;"/>
+                                            <label for="cuentabancaria">Cuenta Bancaria</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="number"
+                                                id="clabebancaria"
+                                                class="form-control"
+                                                v-model="DatosBancarios[0].clabe_bancaria"
+                                                placeholder="Clabe Bancaria" :disabled="activacion" style="color: black;"/>
+                                            <label for="clabebancaria">Clabe Bancaria</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating form-floating-outline">
+                                            <input
+                                                type="number"
+                                                id="numerotarjeta"
+                                                class="form-control"
+                                                v-model="DatosBancarios[0].numero_tarjeta"
+                                                placeholder="Numero de tarjeta" :disabled="activacion" style="color: black;"/>
+                                            <label for="numerotarjeta"> Numero de tarjeta</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6" v-if="this.activacion">
+                                        <p>Formato de Inscripción: 
+                                            <a type="button" class="btn btn-warning" :href="`ArchivosSistema/DatoBancario/${this.DatosBancarios[0].id_datos_bancarios}/${this.DatosBancarios[0].archivo}`" 
+                                            target="_blank" onclick="window.open(this.href, this.target, 'width=650,height=650'); return false;">
+                                                <i class="ri-file-pdf-2-fill ri-2test0px me-2"></i>
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-md-6"v-else>
+                                        <div class="form-floating form-floating-outline mb-6">
+                                            <input type="file"  accept="image/png,image/jpeg,.pdf" class="form-control" id="bs-validation-upload-file" ref="fileInscripcionUpdate" @change="onChangeIncripcionUpdate()">
+                                            <label for="bs-validation-upload-file">Formato de Inscripción</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4"  v-if="this.activacion ==  false">
+                                        <button type="button" class="btn btn-primary" @click="updatePago()">Editar</button>
+                                        <button type="reset" class="btn btn-outline-danger" @click="modoUpdate()">Cancelar</button>
+                                    </div>
+
+                                   
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <!--/ User Content -->
                 </div>
             </div>
 
@@ -786,6 +913,15 @@ export default {
                 fecha_fin: '',
                 contacto: ''
             },
+            newDatosbancarios:{
+                nombre:'',
+                banco:'Seleccionar Banco',
+                cuenta_bancaria:'',
+                clabe_bancaria:'',
+                numero_tarjeta:'',
+                tipo_tarjeta:'',
+                archivo:''
+            },
             activeView: null,
             editorOption: {},
             detalleTorneo: [],
@@ -798,6 +934,7 @@ export default {
             seleccionPrestamo: {},
             JugadorSeleccionado: [],
             cargaSeleccionado: [],
+            DatosBancarios:[],
             pagination: {
                 'total': 0,
                 'current_page': 0,
@@ -811,6 +948,7 @@ export default {
             cargando2: false,
             noMasDatos2: false,
             busy:false,
+            activacion:true,
             offset: 2,
         }
     },
@@ -1035,6 +1173,10 @@ export default {
 
                 });
             })
+            axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_torneo}`).then(response =>{
+                this.DatosBancarios = response.data.bancarios;
+            })
+
 
 
 
@@ -1395,9 +1537,283 @@ export default {
                 console.error("Error al cargar los datos:", error);
                 $state.complete();
             });
+        },
+        onChangeIncripcion(){
+            var fileedit = this.$refs.fileInscripcion.files[0];
+            this.newDatosbancarios.archivo = fileedit
+        },
+        onChangeIncripcionUpdate(){
+            var fileedit = this.$refs.fileInscripcionUpdate.files[0];
+            this.DatosBancarios[0].archivo = fileedit
+        },
+        createPago(){
+            if (this.newDatosbancarios.nombre == '') {
+                this.$toast.error("Ingresa el Nombre", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newDatosbancarios.banco == '') {
+                this.$toast.error("Selecciona un Banco", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newDatosbancarios.cuenta_bancaria == '') {
+                this.$toast.error("Ingresa una Cuenta Bancaria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newDatosbancarios.clabe_bancaria == '') {
+                this.$toast.error("Ingresa una Clabe Bancaria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newDatosbancarios.archivo == '') {
+                this.$toast.error("Ingresa Formato de Inscripción", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            let formData = new FormData();
+                formData.append('id_torneo',this.detalleTorneo.id_torneo);
+                formData.append('nombre',this.newDatosbancarios.nombre);
+                formData.append('banco',this.newDatosbancarios.banco);
+                formData.append('cuenta_bancaria',this.newDatosbancarios.cuenta_bancaria);
+                formData.append('clabe_bancaria',this.newDatosbancarios.clabe_bancaria);
+                formData.append('numero_tarjeta',this.newDatosbancarios.numero_tarjeta);
+                formData.append('tipo_tarjeta',this.newDatosbancarios.tipo_tarjeta);
+                formData.append('archivo',this.newDatosbancarios.archivo);
+            axios.post('torneo/createDatoBancario',formData).then(response =>{
+                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_torneo}`).then(response =>{
+                    this.DatosBancarios = response.data.bancarios;
+                })
+                this.newDatosbancarios = {
+                    nombre:'',
+                    banco:'Seleccionar Banco',
+                    cuenta_bancaria:'',
+                    clabe_bancaria:'',
+                    numero_tarjeta:'',
+                    tipo_tarjeta:'',
+                    archivo:''
+                }
+                Swal.fire({
+                    title: 'Exitoso',
+                    text: "Se Agrego correctamente!",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            })
+        },
+        modoUpdate(){
+            if (this.activacion == true) {
+                
+                this.activacion = false;
+            }else{
+              
+                this.activacion = true;
+            }
+        },
+        updatePago(){
+            if (this.DatosBancarios[0].nombre == '') {
+                this.$toast.error("Ingresa el Nombre", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.DatosBancarios[0].banco == '') {
+                this.$toast.error("Selecciona un Banco", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.DatosBancarios[0].cuenta_bancaria == '') {
+                this.$toast.error("Ingresa una Cuenta Bancaria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.DatosBancarios[0].clabe_bancaria == '') {
+                this.$toast.error("Ingresa una Clabe Bancaria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.DatosBancarios[0].archivo == '') {
+                this.$toast.error("Ingresa Formato de Inscripción", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            let formData = new FormData();
+                formData.append('id_datos_bancarios',this.DatosBancarios[0].id_datos_bancarios);
+                formData.append('nombre',this.DatosBancarios[0].nombre);
+                formData.append('banco',this.DatosBancarios[0].banco);
+                formData.append('cuenta_bancaria',this.DatosBancarios[0].cuenta_bancaria);
+                formData.append('clabe_bancaria',this.DatosBancarios[0].clabe_bancaria);
+                formData.append('numero_tarjeta',this.DatosBancarios[0].numero_tarjeta);
+                formData.append('tipo_tarjeta',this.DatosBancarios[0].tipo_tarjeta);
+                formData.append('archivo',this.DatosBancarios[0].archivo);
+            axios.post('torneo/updateDatoBancario',formData).then(response =>{
+                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_torneo}`).then(response =>{
+                    this.DatosBancarios = response.data.bancarios;
+                })
+                this.activacion = true;
+                
+                Swal.fire({
+                    title: 'Exitoso',
+                    text: "Se Edito correctamente!",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            })
+        },
+        estatusTorneo(t){
+            this.id_torneo = t.id_torneo;
 
-            
-           
+            if (t.estatus == 0) {
+                Swal.fire({
+                    title: "Estas seguro?",
+                    text: "Se mandara a Revisón!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Aceptar",
+                    cancelButtonColor: "#d33",
+                    cancelButtonText: "Cancelar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let formData = new FormData();
+                        formData.append('id_torneo', this.id_torneo);
+                        formData.append('bandera', 'revision');
+                        axios.post('torneo/estatusTorneo', formData).then(response => {
+                          this.getTorneo();
+                            Swal.fire({
+                                title: 'Exitoso',
+                                text: "Se Cambio el estatus correctamente!",
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                        })
+
+                    }
+                });
+            }
         },
 
   

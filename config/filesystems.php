@@ -69,6 +69,11 @@ return [
             'root' => public_path().'/ArchivosSistema/Post',
             'visibility' => 'public', 
         ],
+        'datobancario' => [
+            'driver' => 'local',
+            'root' => public_path().'/ArchivosSistema/DatoBancario',
+            'visibility' => 'public', 
+        ],
 
         's3' => [
             'driver' => 's3',

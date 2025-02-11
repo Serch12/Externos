@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Torneo;
 use App\Models\Jugadores;
 use App\Models\PlantillaJugador;
+USE App\Models\DatosBancarios;
 use Carbon\Carbon;
 use Mail;
 use DB;
@@ -184,5 +185,70 @@ class TorneoRepository
        ->select('*')
        ->get();
        return $bancario;
+    }
+
+    /**
+     * FUNCION QUE AGREGARA EL DATO BANCARIO
+     **/
+    public function createDatoBancario($request){
+        $new = new DatosBancarios();
+        $new -> id_torneo = $request -> id_torneo;
+        $new -> nombre = $request -> nombre;
+        $new -> banco = $request -> banco;
+        $new -> cuenta_bancaria = $request -> cuenta_bancaria;
+        $new -> clabe_bancaria = $request -> clabe_bancaria;
+        $new -> numero_tarjeta = $request -> numero_tarjeta;
+        $new -> tipo_tarjeta = $request -> tipo_tarjeta;
+        $new ->save();
+
+        $new = DatosBancarios::find($new->id_datos_bancarios);
+        $file = $request->file('archivo');
+        if(isset($file)){
+            $file = $request->file('archivo');
+            $nombre = $file->getClientOriginalName();
+            $urlimagen = $new->id_datos_bancarios."/".$nombre;
+            \Storage::disk('datobancario')->put($urlimagen, \File::get($file));
+            $new->archivo = $nombre;
+        }
+        $new -> estatus = 0;
+        $new -> save();
+        return $new;
+    }
+
+    /**
+     * FUNCION QUE EDITARA LA FORMA DE PAGO DEL TORNEO
+     **/
+    public function updateDatoBancario($request){
+        $new = DatosBancarios::find($request->id_datos_bancarios);
+        $new -> nombre = $request -> nombre;
+        $new -> banco = $request -> banco;
+        $new -> cuenta_bancaria = $request -> cuenta_bancaria;
+        $new -> clabe_bancaria = $request -> clabe_bancaria;
+        $new -> numero_tarjeta = $request -> numero_tarjeta;
+        $new -> tipo_tarjeta = $request -> tipo_tarjeta;
+        $file = $request->file('archivo');
+        if(isset($file)){
+            \Storage::disk('datobancario')->delete($request->id_datos_bancarios.'/'.$new->archivo);
+            $file = $request->file('archivo');
+            $nombre = $file->getClientOriginalName();
+            $urlimagen = $new->id_datos_bancarios."/".$nombre;
+            \Storage::disk('datobancario')->put($urlimagen, \File::get($file));
+            $new->archivo = $nombre;
+        }
+        $new -> save();
+        return $new;
+    }
+    /**
+     * FUNCION QUE ACTUALIZARA LOS ESTTAUS DEL TORNEO
+     **/
+    public function estatusTorneo($request) {
+
+        $bandera = $request-> bandera;
+        if ($bandera == 'revision') {
+            $t = Torneo::find($request->id_torneo);
+            $t -> estatus = 1;
+            $t ->save();
+        }
+        return $t;
     }
 }

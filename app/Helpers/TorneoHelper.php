@@ -47,6 +47,10 @@ class TorneoHelper
                 $value -> color = 'info';
                 $value -> text = 'Editar';
             }
+            if ($value->estatus == 1) {
+                $value -> color = 'warning';
+                $value -> text = 'Revision';
+            }
         }
     }
 }

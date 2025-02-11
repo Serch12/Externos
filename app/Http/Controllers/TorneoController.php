@@ -121,4 +121,25 @@ class TorneoController extends Controller
         $bancarios = $this->TorneoRepository->Bancarios($id);
         return response()->json(['bancarios'=>$bancarios]);
     }
+
+    /**
+     * FUNCION QUE AGREGARA LA FORMA DE PAGO DE ESE TORNEO
+     **/
+    public function createDatoBancario(Request $request){
+        return $this->TorneoRepository->createDatoBancario($request);
+    }
+
+    /**
+     * FUNCION QUE EDITARA LA FORMA DE PAGO DEL TORNEO
+     **/
+    public function updateDatoBancario(Request $request){
+        return $this->TorneoRepository->updateDatoBancario($request);
+    }
+
+    /**
+     * FUNCION QUE ACTUALIZARA EL ESTATUS DEL TORNEO
+     **/
+    public function estatusTorneo(Request $request){
+        return $this->TorneoRepository->estatusTorneo($request);
+    }
 }

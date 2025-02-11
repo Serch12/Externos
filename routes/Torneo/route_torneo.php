@@ -10,4 +10,8 @@ Route::get('/torneo/plantillaJugador', [TorneoController::class, 'plantillaJugad
 Route::post('/torneo/seleccionadosJugador', [TorneoController::class, 'seleccionadosJugador'])->name('torneo/seleccionadosJugador');
 Route::get('/torneo/detalleSeleccionado/{id}', [TorneoController::class, 'detalleSeleccionado'])->name('torneo/detalleSeleccionado/{id}');
 Route::post('/torneo/deleteJugador', [TorneoController::class, 'deleteJugador'])->name('torneo/deleteJugador');
-Route::get('/torneo/InfoExterna', [TorneoController::class, 'InfoExterna'])->name('torneo/InfoExterna'); 
+Route::get('/torneo/InfoExterna/{id}', [TorneoController::class, 'InfoExterna'])->name('torneo/InfoExterna/{id}'); 
+Route::post('/torneo/createDatoBancario', [TorneoController::class, 'createDatoBancario'])->name('torneo/createDatoBancario');
+Route::post('/torneo/updateDatoBancario', [TorneoController::class, 'updateDatoBancario'])->name('torneo/updateDatoBancario');
+
+Route::post('/torneo/estatusTorneo', [TorneoController::class, 'estatusTorneo'])->name('/torneo/estatusTorneo');
