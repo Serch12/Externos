@@ -66,11 +66,10 @@
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
       <div class="layout-container">
-        <!-- Navbar -->
-        @include('layouts.nav')
-        <!-- / Navbar -->
-
         <div id="app">
+          <!-- Navbar -->
+          @include('layouts.nav')
+          <!-- / Navbar -->
           <!-- Layout container -->
           <div class="layout-page">
             <!-- Content wrapper -->

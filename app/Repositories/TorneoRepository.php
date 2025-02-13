@@ -52,7 +52,6 @@ class TorneoRepository
                 $query->where('torneo','LIKE','%'.$parametro.'%');
             })
             ->where('sede',$sede)
-            ->where('estatus',0)
             ->orderBy('id_torneo','DESC')
             ->paginate(10); 
         }

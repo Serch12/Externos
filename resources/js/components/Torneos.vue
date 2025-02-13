@@ -58,10 +58,10 @@
                                                         v-if="include('Vizualizar')" @click="muestra(3), infoTorneo(t)">
                                                         <i class="ri-clipboard-line me-1"></i> Vizualizar</a>
                                                     <a class="dropdown-item" type="button" style="color: #33b2ff;"
-                                                        v-if="include('Editar') && t.estatus == 0" @click="muestra(2), infoTorneo(t)">
+                                                        v-if="include('Editar') && (t.estatus == 0||t.estatus == 3)" @click="muestra(2), infoTorneo(t)">
                                                         <i class="ri-pencil-line me-1"></i> Editar</a>
                                                     <a class="dropdown-item" type="button" style="color: red;"
-                                                        v-if="include('Eliminar') && t.estatus == 0" @click="eliminarTorneo(t.id)">
+                                                        v-if="include('Eliminar') && (t.estatus == 0||t.estatus == 3)" @click="eliminarTorneo(t.id)">
                                                         <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>
                                                     <a class="dropdown-item" type="button" style="color: orangered;"
                                                          v-if="t.estatus == 0" @click="estatusTorneo(t)">

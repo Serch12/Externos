@@ -51,6 +51,15 @@ class TorneoHelper
                 $value -> color = 'warning';
                 $value -> text = 'Revision';
             }
+
+            if ($value->estatus == 2) {
+                $value -> color = 'success';
+                $value -> text = 'Aprobado';
+            }
+            if ($value->estatus == 3) {
+                $value -> color = 'danger';
+                $value -> text = 'Rechazado';
+            }
         }
     }
 }
