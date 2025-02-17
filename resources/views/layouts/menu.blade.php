@@ -72,7 +72,7 @@
             <li class="menu-item {{ request()->routeIs('post') ? 'active' : '' }}">
               <a href="{{ route('post') }}" class="menu-link">
                 <i class="menu-icon tf-icons ri-window-2-fill"></i>
-                <div data-i18n="Post">Post</div>
+                <div data-i18n="Parrilla">Parrilla</div>
               </a>
             </li>
 
