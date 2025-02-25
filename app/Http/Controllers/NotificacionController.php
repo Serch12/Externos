@@ -47,12 +47,14 @@ class NotificacionController extends Controller
         ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
         ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
         ->select('roles.name as rol','users.*')
-        ->where('roles.name', 'Root')
+        ->where('roles.name', 'Administrador')
         ->first();
-        $torneo = Torneo::where('estatus','!=',0)->first();
+        $torneo = Torneo::where('estatus', '!=', 0)
+        ->orderBy('created_at', 'desc')
+        ->first();
+    
         if ($torneo != null) {
-            $estatus = $torneo->estatus;
-            if ($estatus == 3) {
+            if ($torneo->estatus == 3) {
                 $new = new Notificacion();
                 $new -> descripcion = 'Se rechazo el pago del Torneo'.' '. $torneo->torneo;
                 $new -> id_user_de = $admin->id;
@@ -64,6 +66,18 @@ class NotificacionController extends Controller
                 $new -> save();
                 event(new TorneoChangedEvent($torneo));
             }
+            // if ($torneo->estatus == 2 ) {
+            //     $new = new Notificacion();
+            //     $new -> descripcion = 'Se realizo el pago del Torneo'.' '. $torneo->torneo;
+            //     $new -> id_user_de = $admin->id;
+            //     $new -> id_user_para = $torneo->creacion;
+            //     $new -> modulo = 'Torneos';
+            //     $new -> detalle_notificacion = 'Aprobado';
+            //     $new -> url = 'torneo';
+            //     $new -> estatus = 1;
+            //     $new -> save();
+            //     event(new TorneoChangedEvent($torneo));
+            // }
         }
     }
 

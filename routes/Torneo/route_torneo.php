@@ -13,5 +13,5 @@ Route::post('/torneo/deleteJugador', [TorneoController::class, 'deleteJugador'])
 Route::get('/torneo/InfoExterna/{id}', [TorneoController::class, 'InfoExterna'])->name('torneo/InfoExterna/{id}'); 
 Route::post('/torneo/createDatoBancario', [TorneoController::class, 'createDatoBancario'])->name('torneo/createDatoBancario');
 Route::post('/torneo/updateDatoBancario', [TorneoController::class, 'updateDatoBancario'])->name('torneo/updateDatoBancario');
-
 Route::post('/torneo/estatusTorneo', [TorneoController::class, 'estatusTorneo'])->name('/torneo/estatusTorneo');
+Route::get('/torneo/NotasDetalle/{id}', [TorneoController::class, 'NotasDetalle'])->name('torneo/NotasDetalle/{id}');

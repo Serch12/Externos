@@ -142,4 +142,12 @@ class TorneoController extends Controller
     public function estatusTorneo(Request $request){
         return $this->TorneoRepository->estatusTorneo($request);
     }
+
+    /**
+     * Funcion que muestra las notas de rechazo
+     **/
+    public function NotasDetalle($id){
+        $notas = $this->TorneoRepository->NotasDetalle($id);
+        return response()->json(['notas'=>$notas]);
+    }
 }

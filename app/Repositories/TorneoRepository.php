@@ -7,6 +7,7 @@ use App\Models\Jugadores;
 use App\Models\PlantillaJugador;
 use App\Models\ProveedoresIntranet;
 use App\Models\NotificacionIntranet;
+use App\Models\Notas;
 use Carbon\Carbon;
 use Mail;
 use DB;
@@ -188,6 +189,16 @@ class TorneoRepository
     }
 
     /**
+     * Funcion que muestra las notas de rechazo
+     **/
+    public function NotasDetalle($id) {
+        $notas = Notas::where('id_modulo',$id)
+        ->select('*')
+        ->first();
+        return $notas;
+    }
+
+    /**
      * FUNCION QUE AGREGARA EL DATO BANCARIO
      **/
     public function createDatoBancario($request){
@@ -253,6 +264,7 @@ class TorneoRepository
         }
         $edit -> subtotal = $request -> subtotal;
         $edit -> total = $request -> total;
+        $edit -> estatus = 0;
         $edit -> save();
         return $new;
     }

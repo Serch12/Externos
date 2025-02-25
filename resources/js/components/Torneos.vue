@@ -44,8 +44,7 @@
                                         <td>
                                             <center>{{ t.fecha_inicia }} a {{ t.fecha_fin }}</center>
                                         </td>
-                                        <td><span :class="`badge rounded-pill bg-label-${t.color} me-1`">{{ t.text
-                                                }}</span>
+                                        <td><span :class="`badge rounded-pill bg-label-${t.color} me-1`">{{ t.text}}</span>
                                         </td>
                                         <td>
                                             <div class="dropdown">
@@ -338,7 +337,19 @@
                                             <span style="font-size: 14px;">{{ this.detalleTorneo.fecha_fin }}</span>
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="col-xl-12"  v-if="this.detalleTorneo.estatus == 3">
+                                    <div class="d-flex align-items-center gap-4">
+                                        <div class="avatar">
+                                            <div class="avatar-initial bg-label-danger rounded-3">
+                                                <i class="ri-close-circle-fill ri-24px"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0">Motivo Rechazo:</h5>
+                                            <span style="font-size: 14px;">{{ this.Notas.descripcion }}</span>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -405,12 +416,12 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Plantilla -->
                         <div class="row" v-if="this.activeView == 'plantilla'">
-                            <!-- Plantilla -->
                             <div class="card col-lg-12 me-5">
                                 <h5 class="card-header">Plantilla</h5>
                                 <div class="card-body">
-                                    <div class="row">
+                                    <div class="row" v-if="this.detalleTorneo.estatus == 0||this.detalleTorneo.estatus == 3">
                                         <div class="col-lg-6">
                                             <div class="row">
                                                 <div class="col-md mb-12 mb-md-2">
@@ -620,6 +631,47 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row" v-else>
+                                        <div class="col-lg-12">
+                                            <h5>Jugadores Seleccionados</h5>
+                                            <div class="table-responsive text-nowrap mt-2">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <!-- <th>Folio</th> -->
+                                                            <th>Nombre</th>
+                                                            <th>Posición</th>
+                                                            <th>Sexo</th>
+                                                            <th>Edad</th>
+                                                            <th>Sede</th>
+                                                            
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-border-bottom-0">
+                                                        <tr v-for="(t, index) in this.JugadorSeleccionado" :key="index">
+                                                            <td>
+                                                                {{ index + 1 }}
+                                                            </td>
+                                                            <!-- <td>{{ t.folio }}</td> -->
+                                                            <td>{{ t.nombre }}</td>
+                                                            <td>{{ t.posicion }}</td>
+                                                            <td>{{ t.sexo }}</td>
+                                                            <td>{{ t.edad }}</td>
+                                                            <td>{{ t.sede }}</td>
+                                                            <!-- <td>
+                                                                <button type="button"
+                                                                    class="btn btn-icon btn-outline-danger waves-effect"
+                                                                    @click="deleteSelect(t.id_plantilla)">
+                                                                    <i class="tf-icons ri-delete-bin-fill ri-22px"></i>
+                                                                </button>
+                                                            </td> -->
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -794,7 +846,7 @@
                                 </div>
                                 <div class="col-12 col-md-6 mt-3" >
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);">
-                                        <button type="button" class="btn btn-outline-info waves-effect" @click="modoUpdate()" v-if="this.activacion ==  true">Editar</button>
+                                        <button type="button" class="btn btn-outline-info waves-effect" @click="modoUpdate()" v-if="this.activacion ==  true && (this.detalleTorneo.estatus == 0||this.detalleTorneo.estatus == 3)">Editar</button>
                                     </div>
                                 </div>
                             </div>
@@ -949,6 +1001,13 @@
                                                 <i class="ri-file-pdf-2-fill ri-2test0px me-2"></i>
                                             </a>
                                         </p>
+                                        <p>Recibo de Pago: 
+                                            <a type="button" class="btn btn-danger" :href="`${this.detalleTorneo.archivo_pago}`"  target="_blank" 
+                                                onclick="window.open(this.href, this.target, 'width=650,height=650'); return false;" v-if="this.detalleTorneo.estatus == 2">
+                                                <i class="ri-file-pdf-2-fill ri-2test0px me-2"></i>
+                                            </a>
+                                            <span class="badge rounded-pill bg-label-info me-1" v-else>En Proceso</span>
+                                        </p>
                                     </div>
                                     <div class="col-12 col-md-6"v-else>
                                         <div class="form-floating form-floating-outline mb-6">
@@ -1095,6 +1154,7 @@ export default {
             JugadorSeleccionado: [],
             cargaSeleccionado: [],
             ProveedoresIntranet:[],
+            Notas:[],
             pagination: {
                 'total': 0,
                 'current_page': 0,
@@ -1335,6 +1395,9 @@ export default {
             })
             axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_proveedor}`).then(response =>{
                 this.ProveedoresIntranet = response.data.bancarios;
+            })
+            axios.get(`torneo/NotasDetalle/${this.detalleTorneo.id_torneo}`).then(response =>{
+                this.Notas = response.data.notas
             })
 
 
@@ -1945,6 +2008,7 @@ export default {
                     this.ProveedoresIntranet = response.data.bancarios;
                 })
                 this.activacion = true;
+                this.getTorneo();
                 
                 Swal.fire({
                     title: 'Exitoso',

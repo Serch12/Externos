@@ -38,7 +38,7 @@
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar">
-                                        <span class="avatar-initial rounded-circle bg-label-danger ri-alert-fill ri-20px"></span>
+                                        <span :class="`avatar-initial rounded-circle bg-label-${noti.color} ${noti.icon} ri-20px`"></span>
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
@@ -105,10 +105,28 @@ export default {
             for (const [key, value] of Object.entries(torneo)) {
                     var id_usuario = value.creacion
                     var name_torneo = value.torneo
+                    var estatus = value.estatus;
                 }
                 
-            if (this.id_usuario_logeado == id_usuario) {
+            if (this.id_usuario_logeado == id_usuario && estatus == 3) {
                 this.$toast.error(`Se rechazo el Pago del Torneo ${name_torneo}`, {
+                    position: "top-right",
+                    timeout: 5000,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: true,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                
+            }
+            if (this.id_usuario_logeado == id_usuario && estatus == 2) {
+                this.$toast.success(`Se realizo el Pago del Torneo ${name_torneo}`, {
                     position: "top-right",
                     timeout: 5000,
                     closeOnClick: true,

@@ -13,6 +13,16 @@ class NotificacionHelper
      * Muestra el estatus de la notificacion
      **/
     public function estatusNoti($noti){
-        # code...
+        foreach ($noti as $n) {
+            if ($n->detalle_notificacion == 'Aprobado') {
+                $n->color = 'success';
+                $n->icon = 'ri-checkbox-circle-fill';
+
+            }
+            if ($n->detalle_notificacion == 'Rechazada') {
+                $n->color = 'danger';
+                $n->icon = 'ri-alert-fill';
+            }
+        }
     }
 }

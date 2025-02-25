@@ -60,6 +60,10 @@ class TorneoHelper
                 $value -> color = 'danger';
                 $value -> text = 'Rechazado';
             }
+            if ($value->estatus == 4) {
+                $value -> color = 'info';
+                $value -> text = 'En Proceso';
+            }
         }
     }
 }
