@@ -30,7 +30,12 @@
                 <i class="menu-icon tf-icons ri-shield-user-line"></i>
                 <div data-i18n="Roles & Permisos">Roles & Permisos</div>
               </a>
-
+            </li>
+            <li class="menu-item {{ request()->routeIs('sede') ? 'active' : '' }}">
+              <a href="{{ route('sede') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-pin-distance-fill"></i>
+                <div data-i18n="Sedes">Sedes</div>
+              </a>
             </li>
           </ul>
         </li>

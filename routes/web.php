@@ -40,5 +40,7 @@ require(__DIR__ . '/Post/route_post.php');
 require(__DIR__ . '/Perfil/route_perfil.php');
 //require de rutas de Notificacion
 require(__DIR__ . '/Notificaciones/route_notificacion.php');
+//require de rutas de Sede
+require(__DIR__ . '/Sedes/route_sedes.php');
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
