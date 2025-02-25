@@ -7,7 +7,7 @@
                 
                     <div class="row">
                         <div class="col-12 col-md-6">
-                            <h5 class="card-header">Post</h5>
+                            <h5 class="card-header">Parrilla</h5>
                         </div>
                         <div class="col-12 col-md-6 mt-3">
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
