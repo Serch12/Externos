@@ -42,6 +42,7 @@ Vue.component('post-component', require('./components/Post.vue').default);
 Vue.component('perfil-component', require('./components/Perfil.vue').default);
 Vue.component('notificaciones-component', require('./components/Notificaciones.vue').default);
 Vue.component('sede-component', require('./components/Sedes.vue').default);
+Vue.component('cuerpotecnico-component', require('./components/CuerpoTecnico.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

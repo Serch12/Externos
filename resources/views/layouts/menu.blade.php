@@ -44,7 +44,7 @@
 
         <!-- Apps -->
         @hasanyrole('Root|Administrador|Cuerpo Tecnico')
-        <li class="menu-item {{ request()->routeIs('jugadores','torneo') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->routeIs('jugadores','torneo','cuerpo_tecnico') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-football-line"></i>
             <div data-i18n="Módulo Técnico">Módulo Técnico</div>
@@ -60,6 +60,12 @@
               <a href="{{ route('jugadores') }}" class="menu-link">
                 <i class="menu-icon tf-icons ri-team-line"></i>
                 <div data-i18n="Jugadores">Jugadores</div>
+              </a>
+            </li>
+            <li class="menu-item {{ request()->routeIs('cuerpo_tecnico') ? 'active' : '' }}">
+              <a href="{{ route('cuerpo_tecnico') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-group-3-line"></i>
+                <div data-i18n="Cuerpo Técnico">Cuerpo Técnico</div>
               </a>
             </li>
           </ul>

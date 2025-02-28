@@ -48,7 +48,7 @@
                                         <p class="mb-0">Editar Sede</p>
                                     </a>
                                     </div>
-                                    <a type="button" class="text-danger" @click="deleteRole(r)"><i class="ri-delete-bin-6-fill ri-22px"></i></a>
+                                    <a type="button" class="text-danger" @click="deleteSede(r)"><i class="ri-delete-bin-6-fill ri-22px"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -470,7 +470,9 @@ export default {
                 this.detalleSede = [];
             })
         },
-
+        deleteSede(r){
+            this.id = r.id_sede;
+        },
 
 
 

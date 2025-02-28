@@ -74,6 +74,11 @@ return [
             'root' => public_path().'/ArchivosSistema/DatoBancario',
             'visibility' => 'public', 
         ],
+        'cuerpotecnico' => [
+            'driver' => 'local',
+            'root' => public_path().'/ArchivosSistema/CuerpoTecnico',
+            'visibility' => 'public', 
+        ],
 
         's3' => [
             'driver' => 's3',

@@ -52,7 +52,8 @@
                   </ul>
                 </div>
                 <div class="mx-auto my-6">
-                  <img  :src="`ArchivosSistema/Jugadores/${jur.id_jugador}/${jur.foto}`" alt="Avatar Image" style="width: 70px;"/>
+                  <img :src="`ArchivosSistema/Jugadores/${jur.id_jugador}/${jur.foto}`" alt="Avatar Image" style="width: 40%;" v-if="jur.foto != null" class="rounded-circle w-px-100" />
+                  <img src="style/logos/sinfoto.png" alt="" style="width: 40%;" class="rounded-circle w-px-100"  v-else>
                 </div>
                 <h5 class="mb-0 card-title">{{jur.nombre}}</h5>
                 <span>{{jur.categoria}}</span>
@@ -436,7 +437,7 @@
                       <label for="edad">Edad</label>
                     </div>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
+                  <!-- <div class="col-12 col-md-6" v-if="this.submenu == false">
                     <div class="form-floating form-floating-outline">
                       <input
                         type="text"
@@ -444,6 +445,18 @@
                         class="form-control"
                         v-model="newjugador.posicion"/>
                       <label for="posicion">Posición</label>
+                    </div>
+                  </div> -->
+                  <div class="col-12 col-md-6" v-if="this.submenu == false">
+                    <div class="form-floating form-floating-outline">
+                      <select id="posicion" name="posicion" class="form-select" v-model="newjugador.posicion">
+                        <option value="Selecciona una Posición">Selecciona una Posición</option>
+                        <option value="Delantero">Delantero</option>
+                        <option value="Medio">Medio</option>
+                        <option value="Defensa">Defensa</option>
+                        <option value="Portero">Portero</option>
+                      </select>
+                    <label for="posicion">Posición</label>
                     </div>
                   </div>
                   <div class="col-12 col-md-6" v-if="this.submenu == false">
@@ -603,14 +616,16 @@
                       <label for="edad">Edad</label>
                     </div>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
+                  <div class="col-12 col-md-6" v-if="this.submenu == false">
                     <div class="form-floating form-floating-outline">
-                      <input
-                        type="text"
-                        id="posicion"
-                        class="form-control"
-                        v-model="detalleJugador.posicion"/>
-                      <label for="posicion">Posición</label>
+                      <select id="posicion" name="posicion" class="form-select" v-model="detalleJugador.posicion">
+                        <option value="Selecciona una Posición">Selecciona una Posición</option>
+                        <option value="Delantero">Delantero</option>
+                        <option value="Medio">Medio</option>
+                        <option value="Defensa">Defensa</option>
+                        <option value="Portero">Portero</option>
+                      </select>
+                    <label for="posicion">Posición</label>
                     </div>
                   </div>
                   <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
@@ -746,7 +761,7 @@ export default {
         nombre:'',
         fecha_nacimiento:'',
         edad:'',
-        posicion:'',
+        posicion:'Selecciona una Posición',
         sexo:'Selecciona el Sexo',
         apodo:'',
         categoria:'Selecciona una Categoria',
