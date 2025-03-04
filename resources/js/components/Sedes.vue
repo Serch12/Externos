@@ -461,17 +461,39 @@ export default {
                 this.getSede();
                 Swal.fire({
                     title: 'Perfecto',
-                    text: "La Sede se odifico correctamente!",
+                    text: "La Sede se modifico correctamente!",
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 2500,
-                })
+                });
                 $('#updateSedeModal').modal('hide');
                 this.detalleSede = [];
             })
         },
         deleteSede(r){
-            this.id = r.id_sede;
+
+            if (r.total_usuarios != 0) {
+                Swal.fire({
+                    title: 'Error',
+                    text: `La Sede ${r.nombre} no se puede eliminar por que esta en uso`,
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });  
+            }else{
+                this.id = r.id_sede;
+
+                axios.delete(`sede/deleteSede/${this.id}`).then(response=>{
+                    this.getSede();
+                    Swal.fire({
+                        title: 'Perfecto',
+                        text: "Se Elimino Correctamente!",
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                })
+            }
         },
 
 

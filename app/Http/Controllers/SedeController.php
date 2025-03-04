@@ -92,8 +92,8 @@ class SedeController extends Controller
     /**
      * FUNCION QUE ELIMINARA LA SEDE
      **/
-    public function deleteSede(Request $request) {
-        $delete = Sedes::find($request->id_sede);
+    public function deleteSede($id) {
+        $delete = Sedes::find($id);
         $delete -> delete();
     }
 
