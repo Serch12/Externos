@@ -16,7 +16,15 @@
               </div>
             </div>
           </div>
-          <div class="col-xl-4 col-lg-6 col-md-6" v-for="(jur, index) in Jugadores" :key="index">
+          <div class="col-xl-12 col-lg-12 col-md-12" v-if="this.Jugadores.length == 0">
+            <div class="card">
+                <center>
+                  <h5 class="card-header text-success">Sin Información</h5>
+                  <img src="style/logos/img_no hay datos.png" alt="img_sindato" style="width: 200px;">
+                </center>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-6 col-md-6" v-for="(jur, index) in Jugadores" :key="index" v-else>
             <div class="card">
               <div class="card-body text-center">
                 <div class="dropdown btn-pinned">

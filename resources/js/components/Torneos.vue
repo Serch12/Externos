@@ -2,7 +2,8 @@
     <div>
         <!-- vista de torneos -->
         <div id="main" v-if="this.vista == 0">
-            <div class="row g-6">
+            
+            <div class="row g-6" >
                 <div class="card">
                     <div class="row">
                         <div class="col-12 col-md-6">
@@ -17,7 +18,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12" v-if="this.Torneo.length == 0">
+                        <center>
+                            <h5 class="card-header text-success">Sin Información</h5>
+                            <img src="style/logos/img_no hay datos.png" alt="img_sindato" style="width: 200px;">
+                        </center>
+                    </div>
+                    <div class="row" v-else>
                         <div class="table-responsive text-nowrap mt-2">
                             <table class="table">
                                 <thead>
