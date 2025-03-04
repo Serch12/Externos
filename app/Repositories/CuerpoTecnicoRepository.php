@@ -74,7 +74,6 @@ class CuerpoTecnicoRepository
      * funcion que editara el registro
      **/
     public function updateRegistro($request){
-        dd($request);
         $edit = CuerpoTecnico::find($request->id_cuerpo_tecnico);
         $edit -> nombre = $request -> nombre;
         $edit -> fecha_nacimiento = $request -> fecha_nacimiento;

@@ -438,10 +438,10 @@
                                                 <thead>
                                                     <tr>
                                                         <th>
-                                                            <input class="form-check-input"
+                                                            <!-- <input class="form-check-input"
                                                                 type="checkbox"
                                                                 v-model="value"
-                                                                @change="TodoTecnico()">
+                                                                @change="TodoTecnico()"> -->
                                                         </th>
                                                         <th>Foto</th>
                                                         <th>Nombre</th>
@@ -1287,6 +1287,7 @@ export default {
             TecnicoSeleccionado:[],
             cargaTecnico:[],
             Tecnicocheck:{},
+            eliminacionTecnico:[],
             Notas:[],
             pagination: {
                 'total': 0,
@@ -2226,6 +2227,13 @@ export default {
             if (this.value == false) {
                 for (let index = 0; index < this.PlantillaTecnico.length; index++) {
                     $(`#checktecnico${index}`).prop('checked', false);
+                    for (let index = 0; index < this.TecnicoSeleccionado.length; index++) {
+                        const id = this.TecnicoSeleccionado[index].id_plantilla_tecnico;
+                        this.eliminacionTecnico.push({
+                            id_plantilla_tecnico:id
+                        });
+                        
+                    }
                 }
                 this.cargaTecnico = [];
             }

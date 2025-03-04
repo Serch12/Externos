@@ -349,8 +349,15 @@ class TorneoRepository
      * funcion que 
      **/
     public function deleteTecnico($request){
-        $data = PlantillaCuerpoTecnico::find($request -> id_plantilla_tecnico);
-        $data -> delete();
+
+        if ($request->bandera === 'unico') {
+            $data = PlantillaCuerpoTecnico::find($request -> id_plantilla_tecnico);
+            $data -> delete();
+        }
+        if ($request->bandera === 'multiple') {
+            # code...
+        }
+        
  
         return $data;
     }
