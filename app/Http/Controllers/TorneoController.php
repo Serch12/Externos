@@ -89,6 +89,7 @@ class TorneoController extends Controller
         $sede = $request->sede;
         $plantilla = $this->TorneoRepository->plantillaJugador($categoria,$sede);
         $prestamo = $this->TorneoRepository->prestamoJugador($categoria,$sede);
+
        return response()->json(['plantilla' =>$plantilla,'prestamo'=>$prestamo]);
     }
 
@@ -119,6 +120,7 @@ class TorneoController extends Controller
      **/
     public function InfoExterna($id){
         $bancarios = $this->TorneoRepository->Bancarios($id);
+        
         return response()->json(['bancarios'=>$bancarios]);
     }
 
@@ -146,8 +148,25 @@ class TorneoController extends Controller
     /**
      * Funcion que muestra las notas de rechazo
      **/
-    public function NotasDetalle($id){
+    public function NotasDetalle($id,$sede){
         $notas = $this->TorneoRepository->NotasDetalle($id);
-        return response()->json(['notas'=>$notas]);
+        $tecnico = $this->TorneoRepository->plantillaTecnico($sede);
+        $tecnicoselect = $this->TorneoRepository->selectTecnico($id);
+        return response()->json(['notas'=>$notas,'tecnico'=>$tecnico,'tecnicoselect'=>$tecnicoselect]);
+    }
+
+
+    /**
+     * funcion que agrega los tecnicos seleccionados para el torneo
+     **/
+    public function seleccionTecnico(Request $request){
+        return $this->TorneoRepository->seleccionTecnico($request);
+    }
+
+    /**
+     * funcion que elimina el cuerpo tecnico
+     **/
+    public function deleteTecnico(Request $request){
+        return $this->TorneoRepository->deleteTecnico($request);
     }
 }

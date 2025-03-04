@@ -5,8 +5,10 @@ namespace App\Repositories;
 use App\Models\Torneo;
 use App\Models\Jugadores;
 use App\Models\PlantillaJugador;
+use App\Models\PlantillaCuerpoTecnico;
 use App\Models\ProveedoresIntranet;
 use App\Models\NotificacionIntranet;
+use App\Models\CuerpoTecnico;
 use App\Models\Notas;
 use Carbon\Carbon;
 use Mail;
@@ -115,6 +117,19 @@ class TorneoRepository
             ->where('sede','!=',$sede)
             ->where('estatus',0)
             ->orderBy('id_jugador','DESC')
+            ->get(); 
+        return $respuesta;
+    }
+
+    /**
+     * FUNCION QUE MOSTRARA EL CUERPO TECNICO
+     **/
+    public function plantillaTecnico($sede){
+
+        $respuesta = CuerpoTecnico::select('*')
+            ->where('sede','=',$sede)
+            ->where('estatus',0)
+            ->orderBy('id_cuerpo_tecnico','DESC')
             ->get(); 
         return $respuesta;
     }
@@ -280,5 +295,63 @@ class TorneoRepository
             $t ->save();
         }
         return $t;
+    }
+
+    /**
+     * funcion que agrega los tecnicos seleccionados para el torneo
+     **/
+    public function seleccionTecnico($request){
+        $seleccion = json_decode($request->selecccion);
+
+        if ($request->bandera === 'individual') {
+           
+            $new = new PlantillaCuerpoTecnico();
+            $new -> id_torneo = $request -> id_torneo;
+            $new -> folio = $seleccion -> folio;
+            $new -> nombre = $seleccion -> nombre;
+            $new -> puesto = $seleccion -> puesto;
+            $new -> sexo = $seleccion -> sexo;
+            $new -> edad = $seleccion -> edad;
+            $new -> sede = $seleccion -> sede;
+            $new -> save();
+        }
+        if ($request->bandera === 'multiple') {
+            foreach ($seleccion as $value) {
+
+                $new = new PlantillaCuerpoTecnico();
+                $new -> id_torneo = $request -> id_torneo;
+                $new -> folio = $value -> folio;
+                $new -> nombre = $value -> nombre;
+                $new -> puesto = $value -> puesto;
+                $new -> sexo = $value -> sexo;
+                $new -> edad = $value -> edad;
+                $new -> sede = $value -> sede;
+                $new -> save();
+            } 
+        }
+        
+        return $new;
+    }
+
+    /**
+     * funcion que mostrara los tecnicos seleccionados
+     **/
+    public function selectTecnico($id){
+
+        $data = PlantillaCuerpoTecnico::where('id_torneo',$id)
+       ->select('*')
+       ->get();
+
+       return $data;
+    }
+
+    /**
+     * funcion que 
+     **/
+    public function deleteTecnico($request){
+        $data = PlantillaCuerpoTecnico::find($request -> id_plantilla_tecnico);
+        $data -> delete();
+ 
+        return $data;
     }
 }

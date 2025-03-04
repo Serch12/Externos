@@ -368,6 +368,10 @@
                                         @click="showCard(null)"><i class="ri-user-fill me-2"></i>Información</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" :class="{ 'active': activeView === 'cuerpo_tecnico' }" type="button"
+                                        @click="showCard('cuerpo_tecnico')"><i class="ri-group-3-line me-2"></i>Cuerpo Técnico</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" :class="{ 'active': activeView === 'plantilla' }" type="button"
                                         @click="showCard('plantilla')"><i class="ri-team-fill me-2"></i>Plantilla</a>
                                 </li>
@@ -416,6 +420,124 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card mb-6" v-if="this.activeView === 'cuerpo_tecnico'">
+                            <h5 class="card-header">Cuerpo Técnico</h5>
+                            <div class="card-body pt-0">
+                                <div class="row" v-if="this.detalleTorneo.estatus == 0||this.detalleTorneo.estatus == 3">
+                                    <div class="col-lg-12">
+                                        <!-- <h5>Cuerpo Tecnico</h5> -->
+                                        <div class="table-responsive text-nowrap mt-2">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <input class="form-check-input"
+                                                                type="checkbox"
+                                                                v-model="value"
+                                                                @change="TodoTecnico()">
+                                                        </th>
+                                                        <th>Foto</th>
+                                                        <th>Nombre</th>
+                                                        <th>Puesto</th>
+                                                        <th>Sexo</th>
+                                                        <th>Edad</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-border-bottom-0">
+                                                    <tr v-for="(t, index) in this.PlantillaTecnico"
+                                                        :key="index"  style="overflow: scroll;">
+                                                        <td>
+                                                            <input class="form-check-input"
+                                                                type="checkbox"
+                                                                :id="`checktecnico${index}`"
+                                                                v-model="Tecnicocheck[t.folio]"
+                                                                @change="activaTecnico(index, t.folio, t.nombre, t.puesto, t.sexo, t.edad, t.sede)">
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                class="d-flex justify-content-start align-items-center">
+                                                                <div class="avatar-wrapper">
+                                                                    <div
+                                                                        class="avatar me-2">
+                                                                        <img :src="`ArchivosSistema/CuerpoTecnico/${t.id_cuerpo_tecnico}/${t.foto}`"
+                                                                            alt="Avatar"
+                                                                            class="rounded-circle">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{ t.nombre }}</td>
+                                                        <td>{{ t.puesto }}</td>
+                                                        <td>{{ t.sexo }}</td>
+                                                        <td>{{ t.edad }} años</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!-- <infinite-loading force-use-infinite-wrapper=".infinite-wrapper" @infinite="consultaJugador">
+                                                <div slot="no-more">
+                                                    <div class="chip green z-depth-4 white-text">
+                                                        <strong>No existen mas datos para cargar.</strong>
+                                                    </div>
+                                                </div>
+                                                <div slot="spinner">
+                                                    <div class="chip yellow z-depth-4 white-text">
+                                                        <strong>Cargando...</strong>
+                                                    </div>
+                                                </div>
+                                                <div slot="no-results">
+                                                    <div class="chip red z-depth-4 white-text">
+                                                        <strong>Sin resultados</strong>
+                                                    </div>
+                                                </div>
+                                            </infinite-loading> -->
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                <div class="row" v-else>
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive text-nowrap mt-2">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <!-- <th>Folio</th> -->
+                                                        <th>Nombre</th>
+                                                        <th>Posición</th>
+                                                        <th>Sexo</th>
+                                                        <th>Edad</th>
+                                                        <th>Sede</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-border-bottom-0">
+                                                    <tr v-for="(t, index) in this.TecnicoSeleccionado" :key="index">
+                                                        <td>
+                                                            {{ index + 1 }}
+                                                        </td>
+                                                        <!-- <td>{{ t.folio }}</td> -->
+                                                        <td>{{ t.nombre }}</td>
+                                                        <td>{{ t.puesto }}</td>
+                                                        <td>{{ t.sexo }}</td>
+                                                        <td>{{ t.edad }}</td>
+                                                        <td>{{ t.sede }}</td>
+                                                        <!-- <td>
+                                                            <button type="button"
+                                                                class="btn btn-icon btn-outline-danger waves-effect"
+                                                                @click="deleteSelect(t.id_plantilla)">
+                                                                <i class="tf-icons ri-delete-bin-fill ri-22px"></i>
+                                                            </button>
+                                                        </td> -->
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <!-- Plantilla -->
                         <div class="row" v-if="this.activeView == 'plantilla'">
                             <div class="card col-lg-12 me-5">
@@ -1154,6 +1276,10 @@ export default {
             JugadorSeleccionado: [],
             cargaSeleccionado: [],
             ProveedoresIntranet:[],
+            PlantillaTecnico:[],
+            TecnicoSeleccionado:[],
+            cargaTecnico:[],
+            Tecnicocheck:{},
             Notas:[],
             pagination: {
                 'total': 0,
@@ -1396,8 +1522,18 @@ export default {
             axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_proveedor}`).then(response =>{
                 this.ProveedoresIntranet = response.data.bancarios;
             })
-            axios.get(`torneo/NotasDetalle/${this.detalleTorneo.id_torneo}`).then(response =>{
+            axios.get(`torneo/NotasDetalle/${this.detalleTorneo.id_torneo}/${this.sede}`).then(response =>{
                 this.Notas = response.data.notas
+                this.PlantillaTecnico = response.data.tecnico;
+                this.TecnicoSeleccionado = response.data.tecnicoselect;
+
+                this.TecnicoSeleccionado.map(tecnico =>{
+                    this.PlantillaTecnico.map(t =>{
+                        if (t.folio === tecnico.folio) {
+                            this.Tecnicocheck[t.folio] = true;
+                        }
+                    })
+                })
             })
 
 
@@ -2048,6 +2184,76 @@ export default {
                             });
                         })
 
+                    }
+                });
+            }
+        },
+
+        TodoTecnico(){
+            this.cargaTecnico = [];
+
+            if (this.value == true) {
+                for (let index = 0; index < this.PlantillaTecnico.length; index++) {
+                    $(`#checktecnico${index}`).prop('checked', true);
+                    this.cargaTecnico.push({
+                        folio: this.PlantillaTecnico[index].folio,
+                        nombre: this.PlantillaTecnico[index].nombre,
+                        puesto: this.PlantillaTecnico[index].puesto,
+                        sexo: this.PlantillaTecnico[index].sexo,
+                        edad: this.PlantillaTecnico[index].edad,
+                        sede: this.PlantillaTecnico[index].sede,
+                    });
+
+                }
+                let formData = new FormData();
+                formData.append('bandera', 'multiple');
+                formData.append('id_torneo', this.detalleTorneo.id_torneo);
+                formData.append('selecccion', JSON.stringify(this.cargaTecnico));
+                axios.post('torneo/seleccionTecnico', formData).then(response => {
+                    axios.get(`torneo/NotasDetalle/${this.detalleTorneo.id_torneo}/${this.sede}`).then(response => {
+                        this.TecnicoSeleccionado = response.data.tecnicoselect
+                    })
+                })
+            }
+
+            if (this.value == false) {
+                for (let index = 0; index < this.PlantillaTecnico.length; index++) {
+                    $(`#checktecnico${index}`).prop('checked', false);
+                }
+                this.cargaTecnico = [];
+            }
+        },
+        activaTecnico(index, folio, nombre, puesto, sexo, edad, sede){
+            var num = $(`#checktecnico${index}`).prop('checked');
+
+            if (num == true) {
+                var nuevoTecnico = {
+                    folio: folio,
+                    nombre: nombre,
+                    puesto: puesto,
+                    sexo: sexo,
+                    edad: edad,
+                    sede: sede,
+                };
+                let formData = new FormData();
+                formData.append('bandera', 'individual');
+                formData.append('id_torneo', this.detalleTorneo.id_torneo);
+                formData.append('selecccion', JSON.stringify(nuevoTecnico));
+                axios.post('torneo/seleccionTecnico', formData).then(response => {
+                    axios.get(`torneo/NotasDetalle/${this.detalleTorneo.id_torneo}/${this.sede}`).then(response => {
+                        this.TecnicoSeleccionado = response.data.tecnicoselect
+                    })
+                })
+            }
+            if (num == false) {
+                this.TecnicoSeleccionado.forEach(function (p, index, object) {
+                    if (p.folio === folio) {
+                        let formData = new FormData();
+                        formData.append('bandera', 'unico');
+                        formData.append('id_plantilla_tecnico', p.id_plantilla_tecnico);
+                        axios.post('torneo/deleteTecnico', formData).then(response => {
+                            object.splice(index, 1);
+                        })
                     }
                 });
             }
