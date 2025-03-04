@@ -475,7 +475,7 @@ export default {
             if (r.total_usuarios != 0) {
                 Swal.fire({
                     title: 'Error',
-                    text: `La Sede ${r.nombre} no se puede eliminar por que esta en uso`,
+                    html: `La Sede <b>${r.nombre}</b> no se puede eliminar por que esta en uso`,
                     icon: 'error',
                     showConfirmButton: false,
                     timer: 2500,

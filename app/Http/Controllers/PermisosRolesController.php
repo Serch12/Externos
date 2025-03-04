@@ -51,9 +51,11 @@ class PermisosRolesController extends Controller
     public function Muestra(){
         $roles = Role::with('permissions')->get();
         $permissions = Permission::select('*')->get();
-        // foreach ($roles as $r) {
-        //     $r->total_usuarios = Usuarios::where('sede', $s->id_sede)->count();
-        // }
+        $roles = $roles->map(function($role) {
+            $role->user_count = $role->users->count();
+            return $role;
+        });
+       
         return response()->json(['roles' => $roles,'permisos'=>$permissions]);
     }
 

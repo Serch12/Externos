@@ -39,42 +39,8 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <p class="mb-0">Total 4 usuarios</p>
-                                    <!-- <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
-                                        <li
-                                            data-bs-toggle="tooltip"
-                                            data-popup="tooltip-custom"
-                                            data-bs-placement="top"
-                                            title="Vinnie Mostowy"
-                                            class="avatar pull-up">
-                                            <img class="rounded-circle" src="style/assets/img/avatars/5.png" alt="Avatar" />
-                                        </li>
-                                        <li
-                                            data-bs-toggle="tooltip"
-                                            data-popup="tooltip-custom"
-                                            data-bs-placement="top"
-                                            title="Allen Rieske"
-                                            class="avatar pull-up">
-                                            <img class="rounded-circle" src="style/assets/img/avatars/12.png" alt="Avatar" />
-                                        </li>
-                                        <li
-                                            data-bs-toggle="tooltip"
-                                            data-popup="tooltip-custom"
-                                            data-bs-placement="top"
-                                            title="Julee Rossignol"
-                                            class="avatar pull-up">
-                                            <img class="rounded-circle" src="style/assets/img/avatars/6.png" alt="Avatar" />
-                                        </li>
-                                        <li class="avatar">
-                                            <span
-                                            class="avatar-initial rounded-circle pull-up bg-lighter text-body"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="3 more"
-                                            >+3</span
-                                            >
-                                        </li>
-                                    </ul> -->
+                                    <p class="mb-0">Total {{r.user_count}} usuarios</p>
+                                    
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="role-heading">
@@ -519,32 +485,43 @@ export default {
         },
         deleteRole(r){
             this.id_role = r.id;
-            Swal.fire({
-                title: "Estas seguro?",
-                text: "Se eliminara definitivamente!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Eliminar",
-                cancelButtonColor: "#d33",
-                cancelButtonText: "Cancelar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    let formData = new FormData();
-                        formData.append('id',this.id_role);
-                    axios.post('access/deleteRole',formData).then(response =>{
-                        this.getPermisosRoles();
-                        Swal.fire({
-                            title: 'Exitoso',
-                            text: "Se Elimino Correctamente!",
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 2500,
-                        });
-                    })
-                    
-                }
-            });
+            if (r.user_count != 0) {
+                Swal.fire({
+                    title: 'Error',
+                    html: `El Role <b>${r.name}</b> no se puede eliminar por que esta en uso`,
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });  
+            }else{
+                Swal.fire({
+                    title: "Estas seguro?",
+                    text: "Se eliminara definitivamente!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Eliminar",
+                    cancelButtonColor: "#d33",
+                    cancelButtonText: "Cancelar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let formData = new FormData();
+                            formData.append('id',this.id_role);
+                        axios.post('access/deleteRole',formData).then(response =>{
+                            this.getPermisosRoles();
+                            Swal.fire({
+                                title: 'Exitoso',
+                                text: "Se Elimino Correctamente!",
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                        })
+                        
+                    }
+                });
+            }
+           
         }
     }
 };
