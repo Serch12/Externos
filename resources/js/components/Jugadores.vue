@@ -46,15 +46,15 @@
                         <i class="ri-pencil-line me-1"></i> Editar</a>  
                     </li>
                     <li v-if="jur.estatus == 1">
-                      <a class="dropdown-item" type="button" style="color: green;" v-if="include('Permisos')" @click="infoJugador(jur)">
+                      <a class="dropdown-item" type="button" style="color: green;" v-if="include('Permisos')" @click="cambioEstatus(jur)">
                         <i class="ri-checkbox-circle-fill me-1"></i> Activar</a>  
                     </li>
                     <li v-if="jur.estatus == 0">
-                      <a class="dropdown-item" type="button" style="color: red;" v-if="include('Permisos')" @click="infoJugador(jur)">
+                      <a class="dropdown-item" type="button" style="color: red;" v-if="include('Permisos')" @click="cambioEstatus(jur)">
                         <i class="ri-close-circle-fill me-1"></i> Desactivar</a>  
                     </li>
                     <li>
-                      <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')">
+                      <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')" @click="deleteJugador(jur)">
                       <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>
                     </li>
                   </ul>
@@ -544,13 +544,13 @@
                       <div class="row g-5">
                           <div class="col-md mb-md-0">
                               <div class="form-check custom-option custom-option-basic">
-                                  <label class="form-check-label custom-option-content" for="customRadioHome">
+                                  <label class="form-check-label custom-option-content" for="customRadioHome12">
                                   <input
                                       name="customRadioTemp"
                                       class="form-check-input"
                                       type="radio"
                                       value=""
-                                      id="customRadioHome"
+                                      id="customRadioHome12"
                                       checked @click="accionSubmenuUpdate()"/>
                                   <span class="custom-option-header">
                                       <span class="h6 mb-0 d-flex align-items-center"><i class="ri-account-box-fill ri-20px me-1"></i>Datos</span>
@@ -563,13 +563,13 @@
                           </div>
                           <div class="col-md mb-md-0">
                               <div class="form-check custom-option custom-option-basic">
-                                  <label class="form-check-label custom-option-content" for="customRadioOffice">
+                                  <label class="form-check-label custom-option-content" for="customRadioOffice12">
                                   <input
                                       name="customRadioTemp"
                                       class="form-check-input"
                                       type="radio"
                                       value=""
-                                      id="customRadioOffice" @click="accionSubmenuUpdate()"/>
+                                      id="customRadioOffice12" @click="accionSubmenuUpdate()"/>
                                   <span class="custom-option-header">
                                       <span class="h6 mb-0 d-flex align-items-center"><i class="ri-id-card-fill ri-20px me-1"></i>Documentación</span>
                                   </span>
@@ -624,7 +624,7 @@
                       <label for="edad">Edad</label>
                     </div>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
+                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
                     <div class="form-floating form-floating-outline">
                       <select id="posicion" name="posicion" class="form-select" v-model="detalleJugador.posicion">
                         <option value="Selecciona una Posición">Selecciona una Posición</option>
@@ -1273,6 +1273,69 @@ export default {
           showConfirmButton: false,
           timer: 2500,
         });
+      })
+    },
+    cambioEstatus(jur){
+      
+      this.id_jugador = jur.id_jugador;
+      this.estatus = jur.estatus;
+      Swal.fire({
+        title: 'Estas seguro?',
+        text: "Se cambiara de estatus!",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText:'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let formData = new FormData();
+            if (this.estatus == 0) {
+                this.estatus = 1;
+            } else {
+                this.estatus = 0;
+            }
+            formData.append('id_jugador', this.id_jugador);
+            formData.append('estatus',this.estatus);
+          axios.post('jugadores/cambioEstatus',formData).then(response=>{
+            this.getJugador();
+            Swal.fire({
+              title: 'Exitoso',
+              text: "Se cambio el estatus correctamente!",
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          })
+        }
+      })
+    },
+    deleteJugador(j){
+      Swal.fire({
+        title: 'Estas seguro?',
+        html: `Se eliminara el Jugador <b> ${j.nombre}</b>`,
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText:'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          let formData = new FormData();
+              formData.append('id_jugador', j.id_jugador);
+          axios.post('jugadores/deleteJugador',formData).then(response=>{
+            this.getJugador();
+            Swal.fire({
+              title: 'Exitoso',
+              text: "Se Elimino correctamente!",
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          })
+        }
       })
     }
 

@@ -203,4 +203,35 @@ class JugadoresRepository
         $editar -> save ();
         return $editar;
     }
+
+    /**
+     * funcion que cambiara de estatus a los jugadores
+     **/
+    public function cambioEstatus($request){
+
+        $edit = Jugadores::find($request->id_jugador);
+        $edit -> estatus = $request -> estatus; 
+        $edit -> save();
+        return $edit;
+    }
+
+    /**
+     * funcion que eliminara el jugador
+     **/
+    public function deleteJugador($request){
+        $edit = Jugadores::find($request->id_jugador);
+            $foto = $request->id_jugador."/".$edit->foto; 
+            \Storage::disk('jugadores')->delete($foto);
+            $delete = DocumentosJugadores::where('id_jugador',$request->id_jugador)->get();
+
+            foreach ($delete as $d) {
+                $dpor = DocumentosJugadores::find($d->id_docu_jugador);
+                $elimina = $request->id_jugador."/".$dpor->archivo; 
+                    \Storage::disk('jugadores')->delete($elimina);
+                $dpor->delete();
+            }
+           
+        $edit -> delete();
+        return $edit;
+    }
 }

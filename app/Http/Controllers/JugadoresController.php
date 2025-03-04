@@ -96,4 +96,19 @@ class JugadoresController extends Controller
     public function createTutor(Request $request){
         return $this->JugadoresRepository->createTutor($request);
     }
+
+    /**
+     * funcion que cambiara de estatus al jugador 
+     **/
+    public function cambioEstatus(Request $request){
+        return $this->JugadoresRepository->cambioEstatus($request);
+    }
+
+
+    /**
+     * funcion que eliminara el jugador
+     **/
+    public function deleteJugador(Request $request){
+        return $this->JugadoresRepository->deleteJugador($request);
+    }
 }
