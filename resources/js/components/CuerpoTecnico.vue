@@ -981,6 +981,7 @@ export default {
                 formData.append('sexo',this.DetalleTecnico.sexo);
                 formData.append('sede',this.DetalleTecnico.sede);
             axios.post('cuerpo_tecnico/updaterRegistro',formData).then(response =>{
+                $('#updateTecnico').modal('hide');
                 this.getCuerpoTecnico();
                 Swal.fire({
                     title: 'Exitoso',
