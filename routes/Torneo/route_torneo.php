@@ -18,3 +18,6 @@ Route::get('/torneo/NotasDetalle/{id}/{sede}', [TorneoController::class, 'NotasD
 
 Route::post('/torneo/seleccionTecnico', [TorneoController::class, 'seleccionTecnico'])->name('torneo/seleccionTecnico');
 Route::post('/torneo/deleteTecnico', [TorneoController::class, 'deleteTecnico'])->name('torneo/deleteTecnico');
+
+Route::post('/torneo/createTalentos', [TorneoController::class, 'createTalentos'])->name('torneo/createTalentos');
+Route::get('/torneo/detalleTalento/{id}', [TorneoController::class, 'detalleTalento'])->name('torneo/detalleTalento/{id}');

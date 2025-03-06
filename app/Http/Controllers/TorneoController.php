@@ -169,4 +169,22 @@ class TorneoController extends Controller
     public function deleteTecnico(Request $request){
         return $this->TorneoRepository->deleteTecnico($request);
     }
+
+    /* Funciones que agregara la galeria de imagenes de cada torneo */
+
+    /**
+     * funcion que creara el create de talentos
+     **/
+    public function createTalentos(Request $request) {
+        return $this->TorneoRepository->createTalentos($request);
+    }
+
+    /**
+     * funcion que nos mostrara la informacion de talentos de dicho torneo
+     **/
+    public function detalleTalento($id) {
+        $date =  $this->TorneoRepository->detalleTalento($id);
+        $galeria =  $this->TorneoRepository->galeriaTalento($id);
+        return response()->json(['date'=>$date,'galeria'=>$galeria]);
+    }
 }

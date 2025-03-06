@@ -79,6 +79,11 @@ return [
             'root' => public_path().'/ArchivosSistema/CuerpoTecnico',
             'visibility' => 'public', 
         ],
+        'talentos' => [
+            'driver' => 'local',
+            'root' => public_path().'/ArchivosSistema/Talentos',
+            'visibility' => 'public', 
+        ],
 
         's3' => [
             'driver' => 's3',

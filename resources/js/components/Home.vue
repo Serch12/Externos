@@ -15,13 +15,8 @@
                 </div>
             </div>
         </div>
-        <br><br>
-        <div class="modal fade" id="basicModal" 
-            tabindex="-1" aria-labelledby="modalTitleId"
-            aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
-                role="document">
+        <div class="modal fade" id="basicModal" data-bs-backdrop="static" tabindex="-1">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalTitleId"> Cambio de Contraseña </h5>
@@ -50,12 +45,13 @@
                         
                     </div>
                     <div class="modal-footer">
-                        
                         <button type="button" class="btn btn-primary" @click="cambiarPassword()">Guardar</button>
                     </div>
                 </div>
             </div>
         </div>
+        <br><br>
+        
     </div>
 </template>
 <script>
@@ -123,11 +119,12 @@ export default {
             const pass = this.cambio;
             axios.post('home/cambioPassword',pass).then(res =>{
                 Swal.fire({
-                    icon: 'success',
-                    text: `Se cambio la contraseña correctamente!.`,
+                    title: "Exelente!",
+                    text: "Se cambio la contraseña correctamente!.",
+                    icon: "success",
                     showConfirmButton: false,
-                    timer: 2500,
-                })
+                    timer: 2500
+                });
                 this.cambio = {
                     password:''
                 }

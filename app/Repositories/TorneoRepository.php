@@ -10,7 +10,10 @@ use App\Models\ProveedoresIntranet;
 use App\Models\NotificacionIntranet;
 use App\Models\CuerpoTecnico;
 use App\Models\Notas;
+use App\Models\Talentos;
+use App\Models\IMGTalentos;
 use Carbon\Carbon;
+use DateTime;
 use Mail;
 use DB;
 use Hash;
@@ -42,6 +45,7 @@ class TorneoRepository
         $rol = $request->rol;
         $sede = $request->sede;
         $parametro = $request->buscador;
+        
         if ($rol == 'Root'||$rol == 'Administrador') {
             $respuesta = Torneo::select('*')
             ->where(function($query) use ($parametro) {
@@ -57,6 +61,21 @@ class TorneoRepository
             ->where('sede',$sede)
             ->orderBy('id_torneo','DESC')
             ->paginate(10); 
+        }
+        if ($rol == 'CM') {
+            $respuesta = Torneo::select('*')
+            ->where(function($query) use ($parametro) {
+                $query->where('torneo','LIKE','%'.$parametro.'%');
+            })
+            ->where('estatus','=',2)
+            ->orderBy('id_torneo','DESC')
+            ->paginate(10);
+            
+            foreach ($respuesta as $t) {
+                $fecha = new DateTime($t->fecha_fin);  
+                $t->año = $fecha->format('Y'); 
+                $t->num_jugadores = PlantillaJugador::where('id_torneo',$t->id_torneo)->count();
+            }      
         }
         return $respuesta;
     }
@@ -141,6 +160,7 @@ class TorneoRepository
         $note = PlantillaJugador::where('id_torneo',$id)
         ->select('*')
         ->get();
+        
         return $note;
     }
 
@@ -358,7 +378,80 @@ class TorneoRepository
             # code...
         }
         
- 
+        return $data;
+    }
+
+     /* Funciones que agregara la galeria de imagenes de cada torneo */
+
+
+     /**
+      *  funcion que creara el create de talentos
+      **/
+    public function createTalentos($request){
+
+        $new = new Talentos();
+        $hidder = $request->file('hidder');
+        if (isset($hidder)) {
+            $file = $request->file('hidder');
+            //obtenemos el nombre del archivo
+            $nombre = $file->getClientOriginalName();
+            $url = $request->copa."-".$request->year."-".$nombre;
+            //indicamos que queremos guardar un nuevo archivo en el disco local
+            \Storage::disk('talentos')->put($url,  \File::get($file));
+            $new->hidder = $url;
+        }
+        $new -> fecha = $request -> fecha;
+        $new -> year = $request -> year;
+        $new -> copa = $request -> copa;
+        $new -> fase = $request -> fase;
+        $new -> categoria = $request -> categoria;
+        $new -> num_jugadores = $request -> num_jugadores;
+        $new -> descripcion = $request -> descripcion;
+        $new -> estatus = 0;
+        $new -> save();
+
+        $imagenes = $request->file('imagenes');
+        if (isset($imagenes)) {
+            foreach ($imagenes as $img) {
+                $i = new IMGTalentos();
+                    // Obtener el nombre original del archivo
+                    $nombre = $img->getClientOriginalName();
+                    $url = $request->copa."-".$request->year."-".$nombre;
+                    //indicamos que queremos guardar un nuevo archivo en el disco local
+                    \Storage::disk('talentos')->put($url, \File::get($img));
+                $i ->talento_id = $new -> id_talento;
+                $i ->img = $url;
+                $i -> estatus_img = 0;
+                $i -> save();
+            }
+        }
+
+        if ($request->campeonato == 'Si') {
+            $edit = Torneo::find($request->id_torneo);
+            $edit -> copa = 1;
+            $edit -> id_talento = $new -> id_talento;
+            $edit -> save();
+        }else {
+            $edit = Torneo::find($request->id_torneo);
+            $edit -> copa = 2;
+            $edit -> id_talento = $new -> id_talento;
+            $edit -> save();
+        }
+        return $new;
+    }
+
+    /**
+     * funcion que nos mostrara la informacion de talentos de dicho torneo
+     **/
+    public function detalleTalento($id){
+        $data = Talentos::find($id);
+        return $data;
+    }
+    /**
+     * funcion que nos mostrara la informacion de talentos de dicho torneo
+     **/
+    public function galeriaTalento($id){
+        $data = IMGTalentos::where('talento_id',$id)->get();
         return $data;
     }
 }

@@ -43,19 +43,22 @@
         @endhasanyrole
 
         <!-- Apps -->
-        @hasanyrole('Root|Administrador|Cuerpo Tecnico')
+        @hasanyrole('Root|Administrador|Cuerpo Tecnico|CM')
         <li class="menu-item {{ request()->routeIs('jugadores','torneo','cuerpo_tecnico') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-football-line"></i>
             <div data-i18n="Módulo Técnico">Módulo Técnico</div>
           </a>
           <ul class="menu-sub">
+            
             <li class="menu-item {{ request()->routeIs('torneo') ? 'active' : '' }}">
               <a href="{{ route('torneo') }}" class="menu-link">
                 <i class="menu-icon tf-icons ri-shield-star-line"></i>
                 <div data-i18n="Torneos">Torneos</div>
               </a>
             </li>
+           
+            @hasanyrole('Root|Administrador|Cuerpo Tecnico')
             <li class="menu-item {{ request()->routeIs('jugadores') ? 'active' : '' }}">
               <a href="{{ route('jugadores') }}" class="menu-link">
                 <i class="menu-icon tf-icons ri-team-line"></i>
@@ -68,6 +71,8 @@
                 <div data-i18n="Cuerpo Técnico">Cuerpo Técnico</div>
               </a>
             </li>
+            @else
+            @endhasanyrole
           </ul>
         </li>
         @else

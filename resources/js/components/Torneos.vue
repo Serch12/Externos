@@ -1,8 +1,7 @@
 <template>
     <div>
         <!-- vista de torneos -->
-        <div id="main" v-if="this.vista == 0">
-            
+        <div id="main" v-if="this.vista == 0"> 
             <div class="row g-6" >
                 <div class="card">
                     <div class="row">
@@ -14,7 +13,7 @@
                                 <input type="search" id="email" class="form-control" v-model="search"
                                     placeholder="Buscar Torneos" @keyup="buscarJugador()" />
                                 <button type="button" class="btn btn-outline-success waves-effect" @click="muestra(1)"
-                                    v-if="include('Crear')">Agregar</button>
+                                    v-if="include('Crear') && this.rol_usuario != 'CM'">Agregar</button>
                             </div>
                         </div>
                     </div>
@@ -55,8 +54,7 @@
                                         </td>
                                         <td>
                                             <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                                     <i class="ri-more-2-line"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
@@ -72,6 +70,9 @@
                                                     <a class="dropdown-item" type="button" style="color: orangered;"
                                                          v-if="t.estatus == 0" @click="estatusTorneo(t)">
                                                         <i class="ri-verified-badge-fill me-1"></i> Revisión</a>
+                                                    <a class="dropdown-item" type="button" style="color: green;"
+                                                        v-if="t.estatus == 2 && rol_usuario == 'CM'" @click="muestra(4),infoTorneo(t),dateTalento(t)">
+                                                        <i class="ri-pages-fill me-1"></i> Talentos AMFPRO</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -282,8 +283,7 @@
                                         <img class="img-fluid rounded-3 mb-4" :src="`${this.detalleTorneo.img}`"
                                             height="120" width="120" alt="User avatar" style="width: 70px;" />
                                         <div class="user-info text-center">
-                                            <span class="badge bg-label-dark rounded-pill">{{ this.detalleTorneo.torneo
-                                                }}</span>
+                                            <span class="badge bg-label-dark rounded-pill">{{ this.detalleTorneo.torneo}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -382,7 +382,7 @@
                                     <a class="nav-link" :class="{ 'active': activeView === 'plantilla' }" type="button"
                                         @click="showCard('plantilla')"><i class="ri-team-fill me-2"></i>Plantilla</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" v-if="this.rol_usuario != 'CM'">
                                     <a class="nav-link" :class="{ 'active': activeView === 'pago' }" type="button"
                                         @click="showCard('pago')"><i class="ri-todo-fill me-2"></i>Forma de Pago</a>
                                 </li>
@@ -404,8 +404,7 @@
                                             {{ this.detalleTorneo.sede }}</span>
                                     </div>
                                     <div class="col-12 col-md-6 mt-2">
-                                        <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">{{
-                                            this.detalleTorneo.categoria }}</span>
+                                        <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">{{ this.detalleTorneo.categoria }}</span>
                                     </div>
                                     <div class="col-12 col-md-6 mt-2">
                                         <i class="ri-calendar-fill me-2 ri-24px"></i><span class="fw-medium">Fechas:
@@ -1172,7 +1171,260 @@
                 </div>
             </div>
         </div>
+        <!-- VISTA QUE AGREGARA LA GALERIA DE TALENTOS DE DICHA COPA -->
+        <div id="main" v-if="this.vista == 4">
+            <div class="card mb-6" v-if="this.detalleTorneo.id_talento == 0">
+                <h5 class="card-header" style="color: green;">Nuevo Registro Talentos</h5>
+                <form class="card-body">
+                    <!-- <h6>Datos del Torneo</h6> -->
+                    <div class="row g-6">
+                        <div class="col-md-4">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="Copa" class="form-control"  style="color: green;" v-model="new_registro.copa" disabled/>
+                                <label for="Copa">Copa</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="Fecha" class="form-control"  style="color: green;" v-model="new_registro.fecha" disabled/>
+                                <label for="Fecha">Fecha</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="number" id="year" class="form-control" 
+                                        style="color: green;" aria-label="year" v-model="new_registro.year" disabled />
+                                    <label for="year">Año</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="text" id="categoria" class="form-control" 
+                                        style="color: green;" aria-label="categoria" v-model="new_registro.categoria" disabled />
+                                    <label for="categoria">Categoria</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="number" id="num_jugadores" class="form-control" 
+                                        style="color: green;" aria-label="num_jugadores" v-model="new_registro.num_jugadores" disabled />
+                                    <label for="num_jugadores">Número Jugadores</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating form-floating-outline">
+                                <select id="fase" name="fase" class="form-select" v-model="new_registro.fase" @change="questionCopa(new_registro.fase)">
+                                    <option value="Selecciona una Fase">Selecciona una Fase</option>
+                                    <option value="Fase de Grupos">Fase de Grupos</option>
+                                    <option value="Octavos de Final">Octavos de Final</option>
+                                    <option value="Cuartos de Final">Cuartos de Final</option>
+                                    <option value="Semifinal">Semifinal</option>
+                                    <option value="Final">Final</option>
+                                </select>
+                                <label for="fase">Fase</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline mb-6">
+                                <textarea class="form-control h-px-75" id="bs-validation-bio" name="bs-validation-bio" rows="3" placeholder="Escribe una Descripción" v-model="new_registro.descripcion"></textarea>
+                                <label for="bs-validation-bio">Descripción</label>
+                            </div>
+                        </div>
+                       
 
+                        <div class="col-md-6">
+                            <ul class="list-group mb-4">
+                                <li class="list-group-item p-5">
+                                    <div class="d-flex gap-4 flex-sm-row flex-column align-items-center">
+                                        <div class="flex-shrink-0 d-flex align-items-center">
+                                            <img :src="imagenMiniatura" alt="google home" class="w-px-100" v-if="imagenMiniatura != ''">
+                                            <img src="style/logos/sin_img.png" class="w-px-100" alt="sin_img" v-else>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="row text-center text-sm-start">
+                                                <div class="col-md-12">
+                                                    <div class="form-floating form-floating-outline">
+                                                        <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file" ref="fileBanner" @change="onChangeBanner()">
+                                                        <label for="bs-validation-upload-file">Banner</label>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <hr class="mt-0" style="color:black">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <h5 class="card-header">Galeria</h5>
+                                </div>
+                                <div class="col-12 col-md-6 mt-3">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button type="button" class="btn btn-outline-success waves-effect" v-if="include('Crear')" for="file-upload"  onclick="document.getElementById('file-upload').click()">Agregar</button>
+                                        <input type="file" id="file-upload" ref="escudo" accept="image/*" style="display: none;" @change="imgEscudo()" multiple/>
+                                    </div>
+                                </div>
+                            </div>
+                            <center v-if="this.IMGTalento.length == 0">
+                                <h5 class="card-header text-success">Sin Imagenes</h5>
+                                <img src="style/logos/img_no hay datos.png" alt="img_sindato" style="width: 150px;">
+                            </center>
+                            <div class="table-responsive text-nowrap mt-2" v-else>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>IMG</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0">
+                                        <tr v-for="(img, index) in IMGTalento" :key="index">
+                                            <td>{{ index+1 }}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-start align-items-center">
+                                                    <div class="avatar-wrapper">
+                                                        <div class="avatar me-2" >
+                                                            <img :src="img.url" alt="Avatar" class="w-px-100">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            
+                                            <td>
+                                                <button class="btn btn-outline-danger btn-icon waves-effect"  @click="eliminarImagen(index)">
+                                                    <i class="ri-delete-bin-line ri-22px"></i>
+                                                </button>
+                                            </td>
+                                            
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="pt-6 mt-2">
+                        <button type="button" class="btn btn-primary me-4" @click="createTalentos()">Guardar</button>
+                        <button type="reset" class="btn btn-danger" @click="muestra(0)">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row" v-else>
+                <div class="col-12">
+                    <div class="card mb-6">
+                        <div class="user-profile-header-banner">
+                            <img :src="`ArchivosSistema/Talentos/${this.detalleTalento.hidder}`" alt="Banner image" class="rounded-top" />
+                        </div>
+                        <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-5">
+                            <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+                                <img
+                                :src="`${this.detalleTorneo.img}`"
+                                alt="torneo"
+                                class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img" style="width: 80px;"/>
+                            </div>
+                            <div class="flex-grow-1 mt-4 mt-sm-12">
+                                <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-6">
+                                    <div class="user-profile-info">
+                                        <h4 class="mb-2">{{this.detalleTalento.copa}}</h4>
+                                        <ul
+                                        class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4">
+                                        <li class="list-inline-item">
+                                            <i class="ri-user-fill ri-24px"></i><span class="fw-medium">{{this.detalleTalento.categoria}}</span>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleTorneo.sede}}</span>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <i class="ri-calendar-line me-2 ri-24px"></i
+                                            ><span class="fw-medium"> {{this.detalleTalento.fecha}}</span>
+                                        </li>
+                                        </ul>
+                                    </div>
+                                    <!-- <a href="javascript:void(0)" class="btn btn-primary">
+                                        <i class="ri-user-follow-line ri-16px me-2"></i>Connected
+                                    </a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 col-lg-5 col-md-5">
+                        <!-- About User -->
+                        <div class="card mb-6">
+                            <div class="card-body">
+                                <small class="card-text text-uppercase text-muted small">About</small>
+                                <ul class="list-unstyled my-3 py-1">
+                                    <li class="d-flex align-items-center mb-4">
+                                    <i class="ri-trophy-fill ri-24px"></i><span class="fw-medium mx-2">Copa:</span>
+                                    <span>{{this.detalleTalento.copa}}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-4">
+                                    <i class="ri-medal-fill ri-24px"></i><span class="fw-medium mx-2">Categoria:</span>
+                                    <span>{{this.detalleTalento.categoria}}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-4">
+                                    <i class="ri-medal-2-fill ri-24px"></i><span class="fw-medium mx-2">Fase:</span>
+                                    <span>{{ this.detalleTalento.fase }}</span>
+                                    </li>
+                                    <li class="d-flex align-items-center mb-4">
+                                    <i class="ri-article-line ri-24px"></i><span class="fw-medium mx-2">Descripción:</span>
+                                    <span>{{this.detalleTalento.descripcion}}</span>
+                                    </li>
+                                    
+                                </ul>
+
+                            </div>
+                        </div>
+                        <!--/ About User -->
+                    </div>
+                    <div class="col-xl-8 col-lg-7 col-md-7">
+
+                        <!-- Projects table -->
+                        <swiper-container
+                                pagination="true"
+                                centered-slides="true"
+                                effect="cube"
+                                grab-cursor="true"
+                                cube-effect-shadow="true"
+                                cube-effect-slide-shadows="true"
+                                cube-effect-shadow-scale="0.94"
+                                events-prefix="swiper-">
+                                <swiper-slide v-for="(t, index) in galeriaTalento" :key="index">
+                                    <center>
+                                        <img :src="`ArchivosSistema/Talentos/${t.img}`" alt="imagen"style="width: 100px;" />
+                                    </center>
+                                </swiper-slide>
+                            </swiper-container>
+                        <!--/ Projects table -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-5 col-md-5">
+                        <div class="card mb-6">
+                            <div class="card-body">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="javascript:void(0)" class="btn btn-danger" @click="muestra(0)">
+                                        <i class="ri-arrow-left-long-fill ri-16px me-2"></i>Regresar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal Body -->
         <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -1227,11 +1479,13 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import { quillEditor } from 'vue-quill-editor';
 import InfiniteLoading from 'vue-infinite-loading';
+import { register } from 'swiper/element/bundle'
+register()
 export default {
     name: '',
     components: {
         quillEditor,
-        InfiniteLoading
+        InfiniteLoading,
     },
     mixins: [],
     props: [
@@ -1247,6 +1501,7 @@ export default {
             vista: 0,
             search: '',
             value: '',
+            imagenMiniatura:'',
             Torneo: [],
             newtorneo: {
                 torneo: '',
@@ -1270,6 +1525,18 @@ export default {
                 tipo_persona:'Seleccionar',
                 archivo:''
             },
+            new_registro:{
+                fecha:'',
+                year:'Selecciona un Año',
+                copa:'',
+                fase:'Selecciona una Fase',
+                categoria:'Selecciona una Categoria',
+                hidder:'',
+                url_hidder:'',
+                num_jugadores:'',
+                descripcion:'',
+                campeonato:''
+            },
             activeView: null,
             editorOption: {},
             detalleTorneo: [],
@@ -1289,6 +1556,9 @@ export default {
             Tecnicocheck:{},
             eliminacionTecnico:[],
             Notas:[],
+            IMGTalento:[],
+            detalleTalento:[],
+            galeriaTalento:[],
             pagination: {
                 'total': 0,
                 'current_page': 0,
@@ -1503,13 +1773,10 @@ export default {
                 });
             })
         },
+
         infoTorneo(t) {
             this.detalleTorneo = t;
-            // axios.get(`torneo/plantillaJugador?sede=${this.detalleTorneo.sede}&categoria=${this.detalleTorneo.categoria}`).then(response => {
-            //     this.PlantillaJugador = response.data.plantilla;
-            //     this.PlantillaPrestamo = response.data.prestamo;
-            // })
-            // this.consultaJugador($state);
+
             axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response => {
                 this.JugadorSeleccionado = response.data
                 
@@ -1544,8 +1811,12 @@ export default {
                 })
             })
 
-
-
+            if (this.detalleTorneo.id_talento != 0) {
+                axios.get(`torneo/detalleTalento/${this.detalleTorneo.id_talento}`).then(response=>{
+                    this.detalleTalento = response.data.date
+                    this.galeriaTalento = response.data.galeria;
+                })
+            }
 
         },
         updateTorneo() {
@@ -2273,7 +2544,198 @@ export default {
                 });
             }
         },
+        dateTalento(t){
+            
+            this.new_registro = {
+                fecha:t.fecha_inicia+' '+ 'al'+' '+ t.fecha_fin,
+                year:t.año,
+                copa:t.torneo,
+                fase:'Selecciona una Fase',
+                categoria:t.categoria,
+                hidder:'',
+                url_hidder:'',
+                num_jugadores:t.num_jugadores,
+                descripcion:''
+            }
+        },
+        onChangeBanner() {
+            this.file = this.$refs.fileBanner.files[0];
+            
+            this.new_registro.hidder = this.file
+            this.loadingHidden(this.file);
+        },
+        loadingHidden(file){
+            let reader = new FileReader();
 
+            reader.onload = (e) => {
+                this.imagenMiniatura = e.target.result
+            }
+            reader.readAsDataURL(file)
+        },
+        imgEscudo(){
+            const archivos = this.$refs.escudo.files;
+            for (let index = 0; index < archivos.length; index++) {
+                const archivo = archivos[index];
+                this.IMGTalento.push({
+                    archivo: archivo,
+                    url: URL.createObjectURL(archivo)
+                });
+            }
+        },
+        eliminarImagen(index) {
+            URL.revokeObjectURL(this.IMGTalento[index].url); 
+            this.IMGTalento.splice(index, 1);
+        },
+        createTalentos(){
+            if (this.new_registro.fecha == '') {
+                this.$toast.error("Ingresa una Fecha", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.new_registro.fase == 'Selecciona una Fase') {
+                this.$toast.error("Selecciona una Fase", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.new_registro.descripcion == '') {
+                this.$toast.error("Ingresa una Descripción", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.new_registro.hidder == '') {
+                this.$toast.error("Carga un Banner", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.IMGTalento.length == 0) {
+                this.$toast.error("Agrega imagenes a la Galeria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+
+            let formData = new FormData();
+                formData.append('id_torneo',this.detalleTorneo.id_torneo);
+                formData.append('copa',this.new_registro.copa);
+                formData.append('fecha',this.new_registro.fecha);
+                formData.append('year',this.new_registro.year);
+                formData.append('categoria',this.new_registro.categoria);
+                formData.append('num_jugadores',this.new_registro.num_jugadores);
+                formData.append('fase',this.new_registro.fase);
+                formData.append('descripcion',this.new_registro.descripcion);
+                formData.append('hidder',this.new_registro.hidder);
+                formData.append('campeonato',this.new_registro.campeonato);
+                this.IMGTalento.forEach((item, index) => {
+                    if (item.archivo) {
+                        formData.append('imagenes[]', item.archivo);
+                    }
+                });
+            axios.post('torneo/createTalentos',formData).then(response =>{
+                this.new_registro={
+                    fecha:'',
+                    year:'Selecciona un Año',
+                    copa:'Selecciona una Copa',
+                    fase:'Selecciona una Fase',
+                    categoria:'Selecciona una Categoria',
+                    hidder:'',
+                    url_hidder:'',
+                    num_jugadores:'',
+                    descripcion:''
+                }
+                this.vista = 0;
+                this.getTorneo();
+                Swal.fire({
+                    title: "Perfecto!",
+                    text: "Agregado Correctamente.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            })
+        },
+        questionCopa(value){
+            this.respuesta = value;
+            if (this.respuesta == 'Final') {
+                Swal.fire({
+                    html: `¿Se gano el Campeonato<i class="ri-trophy-fill ri-30px text-warning me-1"></i>?`,
+                    // text: "Se mandara a Revisón!",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Si",
+                    cancelButtonColor: "#d33",
+                    cancelButtonText: "No",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.new_registro.campeonato = 'Si';
+                    }else{
+                        this.new_registro.campeonato = 'No'
+                    }
+                });
+            }else{
+                this.new_registro.campeonato = 'No';
+            }
+            
+        },
   
         onEditorReady(editor) { }, // prepara el editor
         onEditorBlur() { }, // Evento de pérdida de foco
@@ -2288,5 +2750,17 @@ export default {
     height: 500px; /* Ajusta según necesidad */
     overflow: auto;
     border: 1px solid #ccc; /* Opcional: solo para visualizar */
+}
+swiper-slide {
+  background-position: center;
+  background-size: cover;
+  block-size: 250px;
+  inline-size: 250px;
+}
+
+swiper-container {
+  margin: auto;
+  block-size: 250px;
+  inline-size: 250px;
 }
 </style>
