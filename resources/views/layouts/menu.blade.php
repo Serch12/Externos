@@ -79,7 +79,7 @@
         @endhasanyrole
         @hasanyrole('Root|Administrador|CM')
         <!-- Comunicación y Medios -->
-        <li class="menu-item  {{ request()->routeIs('post') ? 'active' : '' }}">
+        <li class="menu-item  {{ request()->routeIs('post','talentos') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-article-line"></i>
             <div data-i18n="Comunicación y Medios">Comunicación y Medios</div>
@@ -92,13 +92,13 @@
               </a>
             </li>
 
-            {{-- <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <li class="menu-item {{ request()->routeIs('talentos') ? 'active' : '' }}">
+              <a href="{{ route('talentos') }}" class="menu-link">
                 <i class="menu-icon tf-icons ri-account-circle-line"></i>
-                <div data-i18n="User Profile">User Profile</div>
+                <div data-i18n="Talentos AMFpro">Talentos AMFpro</div>
               </a>
               
-            </li> --}}
+            </li>
             
           </ul>
         </li>

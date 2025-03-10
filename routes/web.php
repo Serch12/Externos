@@ -44,6 +44,8 @@ require(__DIR__ . '/Notificaciones/route_notificacion.php');
 require(__DIR__ . '/Sedes/route_sedes.php');
 //require de rutas de Cuerpo Tecnico
 require(__DIR__ . '/Cuerpo Tecnico/route_cuerpotecnico.php');
+//require de rutas de Talentos
+require(__DIR__ . '/Talentos/route_talentos.php');
 
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

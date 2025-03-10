@@ -64,7 +64,7 @@ class TorneoController extends Controller
             'last_page' => $muestra->lastPage(),
             'from' => $muestra->firstItem(),
             'to' => $muestra->lastPage()
-            ]]);
+        ]]);
     }
 
     /**

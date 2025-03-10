@@ -29,7 +29,7 @@ class JugadoresRepository
         ->first();
 
     }
-
+    
     /**
      * FUNCION QUE MUESTRA LOS JUGADORES
      **/
