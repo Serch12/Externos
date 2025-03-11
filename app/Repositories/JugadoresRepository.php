@@ -64,9 +64,23 @@ class JugadoresRepository
     }
 
     /**
+     * funcion que veririficara si el numero del dorsal esta en uso
+     */
+    public function verificaDorsal($request){
+
+        $respuesta = Jugadores::select('num_dorsal','nombre')->where('num_dorsal',$request->num_dorsal)->first();
+        if ($respuesta) {
+            return response()->json(['jugador' => $respuesta->nombre]);
+        }else {
+            return response()->json(['jugador' => false]);
+        }
+    }
+
+    /**
      * FUNCION QUE CREARA LOS JUGADORES
      **/
     public function createJugador($request){
+
         $new = new Jugadores();
         $new -> creacion = $request->creacion;
         $new -> nombre = $request->nombre;
@@ -76,6 +90,12 @@ class JugadoresRepository
         $new -> sexo = $request->sexo;
         $new -> categoria = $request->categoria;
         $new -> sede = $request->sede;
+        if ($request->prestamo == true) {
+            $new -> prestamo = 1;
+        } else {
+            $new -> prestamo = 0;
+        }
+        
         $new -> save();
 
         $edit = Jugadores::find($new->id_jugador);
@@ -155,7 +175,11 @@ class JugadoresRepository
         $editar -> posicion = $request->posicion;
         $editar -> sexo = $request->sexo;
         $editar -> categoria = $request->categoria;
-        // $editar -> sede = $request->sede;
+        if ($request->prestamo == true) {
+            $editar -> prestamo = 1;
+        } else {
+            $editar -> prestamo = 0;
+        }
         $editar -> save();
 
         $archivos = $request->input('documentacion');

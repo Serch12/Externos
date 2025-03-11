@@ -340,41 +340,7 @@
                             <h4 class="address-title mb-2">Agregar Cuerpo Técnico</h4>
                         </div>
                         <form id="addNewAddressForm" class="row g-5">
-                            <div class="col-12">
-                                <div class="row g-5">
-                                    <div class="col-md mb-md-0">
-                                        <div class="form-check custom-option custom-option-basic">
-                                            <label class="form-check-label custom-option-content" for="customRadioHome">
-                                            <input
-                                                name="customRadioTemp"
-                                                class="form-check-input"
-                                                type="radio"
-                                                value=""
-                                                id="customRadioHome"
-                                                checked @click="accionSubmenu()"/>
-                                            <span class="custom-option-header">
-                                                <span class="h6 mb-0 d-flex align-items-center"><i class="ri-account-box-fill ri-20px me-1"></i>Datos</span>
-                                            </span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col-md mb-md-0">
-                                        <div class="form-check custom-option custom-option-basic">
-                                            <label class="form-check-label custom-option-content" for="customRadioOffice">
-                                            <input
-                                                name="customRadioTemp"
-                                                class="form-check-input"
-                                                type="radio"
-                                                value=""
-                                                id="customRadioOffice" @click="accionSubmenu()"/>
-                                            <span class="custom-option-header">
-                                                <span class="h6 mb-0 d-flex align-items-center"><i class="ri-id-card-fill ri-20px me-1"></i>Documentación</span>
-                                            </span>
-                                            </label>
-                                        </div>
-                                    </div> -->
-                                </div>
-                            </div>
+
                             <!-- campos de acceso -->
                             <div class="col-12 col-md-6" v-if="this.submenu == false">
                                 <div class="form-floating form-floating-outline">

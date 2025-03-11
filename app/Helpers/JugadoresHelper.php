@@ -38,6 +38,15 @@ class JugadoresHelper
                 $value -> text = 'Activo';
                 $value -> color = 'bg-label-success';
             }
+
+            if ($value->tutor == null) {
+                $value -> text_info = 'Incompleto';
+                $value -> color_info = 'bg-label-danger';
+            }
+            if ($value->tutor != null) {
+                $value -> text_info = 'Completo';
+                $value -> color_info = 'bg-label-success';
+            }
         }
     }
 

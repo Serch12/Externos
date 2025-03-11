@@ -14,7 +14,7 @@
                     <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createJugador" v-if="include('Crear')">Agregar</button>
                   </div>
               </div>
-              <div class="table-responsive text-nowrap mt-2">
+              <div class="table-responsive text-nowrap mt-2" style="font-size: 13px;">
                 <table class="table">
                     <thead>
                         <tr>
@@ -25,6 +25,7 @@
                             <th>Posición</th>
                             <th>Sexo</th>
                             <th>Sede</th>
+                            <th>Información</th>
                             <th>Estatus</th>
                             <th>Acciones</th>
                         </tr>
@@ -47,6 +48,7 @@
                             <td>{{ jur.posicion }}</td>
                             <td>{{ jur.sexo }}</td>
                             <td>{{ jur.sede }}</td>
+                            <td><span :class="`badge rounded-pill ${jur.color_info} me-1`">{{jur.text_info}}</span></td>
                             <td><span :class="`badge rounded-pill ${jur.color} me-1`">{{jur.text}}</span></td>
                             <td>
                               <div class="dropdown">
@@ -206,6 +208,9 @@
                     </div>
                     <div class="col-12 col-md-6 mt-2">
                       <i class="ri-phone-fill me-2 ri-24px"></i><span class="fw-medium">Telefono: {{this.detalleJugador.telefono}}</span>
+                    </div>
+                    <div class="col-12 col-md-6 mt-2">
+                      <i class="ri-open-arm-fill me-2 ri-24px"></i><span class="fw-medium">Prestamo: <b v-if="this.detalleJugador.prestamo == 1">Si</b><b v-else>No</b></span>
                     </div>
                   </div>
                 </div>
@@ -417,7 +422,7 @@
                     <label for="sexo">Sexo</label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-7">
+                <div class="col-12 col-lg-6">
                   <div class="form-floating form-floating-outline">
                     <select id="categoria" name="categoria" class="form-select" v-model="newjugador.categoria">
                       <option value="Selecciona una Categoria">Selecciona una Categoria</option>
@@ -429,7 +434,7 @@
                     <label for="categoria">Categoria</label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-5">
+                <div class="col-12 col-lg-6">
                   <div class="form-floating form-floating-outline">
                     <input
                       type="text"
@@ -438,6 +443,19 @@
                       v-model="newjugador.sede" disabled/>
                     <label for="sede">Sede</label>
                   </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-check form-switch mt-2">
+                    <input type="checkbox" class="form-check-input" id="prestamo4545" v-model="newjugador.prestamo"/>
+                    <label for="prestamo4545" class="text-heading">Opción a Prestamo?</label>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <input type="number" id="num_dorsal" class="form-control" v-model="newjugador.num_dorsal" @input="verificaDorsal()"/>
+                    <label for="num_dorsal">Número Dorsal</label>
+                  </div>
+                  <p style="color: red;" v-if="this.NombreJugador != false">El Dorsal <b>{{ this.newjugador.num_dorsal }}</b> ya fue asignado al Jugador: <b>{{this.NombreJugador}}</b></p>
                 </div>
                 <div class="col-12 d-flex justify-content-between mt-6">
                   <button class="btn btn-outline-secondary btn-prev" disabled>
@@ -456,24 +474,28 @@
                     <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
                     <label for="bs-validation-upload-file">Foto</label>
                   </div>
+                  <p style="color: red;">*** Solo se permiten archivos PNG Y JPEG ***</p>
                 </div>
                 <div class="col-12">
                   <div class="form-floating form-floating-outline">
                     <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_acta" ref="fileActa" @change="onChangeActa()">
                     <label for="bs-validation-upload-file_acta">Acta de Nacimiento</label>
                   </div>
+                  <p style="color: red;">*** Solo se permiten archivos PNG Y JPEG ***</p>
                 </div>
                 <div class="col-12">
                   <div class="form-floating form-floating-outline">
                     <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_curp" ref="fileCurp" @change="onChangeCurp()">
                     <label for="bs-validation-upload-file_curp">Curp</label>
                   </div>
+                  <p style="color: red;">*** Solo se permiten archivos PNG Y JPEG ***</p>
                 </div>
                 <div class="col-12">
                   <div class="form-floating form-floating-outline">
                     <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_ident" ref="fileIdent" @change="onChangeIdentificacion()">
                     <label for="bs-validation-upload-file_ident">Identificación</label>
                   </div>
+                  <p style="color: red;">*** Solo se permiten archivos PNG Y JPEG ***</p>
                 </div>
                 <div class="col-12 d-flex justify-content-between mt-6">
                   <button class="btn btn-outline-secondary" @click="goPrevStep()">
@@ -555,7 +577,7 @@
                     <label for="sexo">Sexo</label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-7">
+                <div class="col-12 col-lg-6">
                   <div class="form-floating form-floating-outline">
                     <select id="categoria" name="categoria" class="form-select" v-model="detalleJugador.categoria">
                       <option value="Selecciona una Categoria">Selecciona una Categoria</option>
@@ -567,7 +589,7 @@
                     <label for="categoria">Categoria</label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-5">
+                <div class="col-12 col-lg-6">
                   <div class="form-floating form-floating-outline">
                     <input
                       type="text"
@@ -576,6 +598,19 @@
                       v-model="detalleJugador.sede" disabled/>
                     <label for="sede">Sede</label>
                   </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-check form-switch mt-2">
+                    <input type="checkbox" class="form-check-input" id="prestamo4578" v-model="detalleJugador.prestamo"/>
+                    <label for="prestamo4578" class="text-heading">Opción a Prestamo?</label>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <input type="number" id="num_dorsal" class="form-control" v-model="detalleJugador.num_dorsal" @input="verificaDorsalUpdate()"/>
+                    <label for="num_dorsal">Número Dorsal</label>
+                  </div>
+                  <p style="color: red;" v-if="this.NombreJugador != false">El Dorsal <b>{{ this.detalleJugador.num_dorsal }}</b> ya fue asignado al Jugador: <b>{{this.NombreJugador}}</b></p>
                 </div>
                 <div class="col-12 d-flex justify-content-between mt-6">
                   <button class="btn btn-outline-secondary btn-prev" disabled>
@@ -688,6 +723,7 @@ export default {
         edad:0,
         posicion:'Selecciona una Posición',
         sexo:'Selecciona el Sexo',
+        prestamo:false,
         apodo:'',
         categoria:'Selecciona una Categoria',
         sede:this.sede,
@@ -700,6 +736,8 @@ export default {
       stepUpdate:0,
       detalleJugador:[],
       activeView:null,
+      DorsalExistente:false,
+      NombreJugador:'',
       pagination: {
         'total': 0,
         'current_page': 0,
@@ -917,6 +955,23 @@ export default {
           });
           return;
         }
+        if (this.newjugador.num_dorsal != false) {
+          this.$toast.error("Tienes que poner otro numero de dorsal", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
         this.goNextStep();
       }
       
@@ -1000,6 +1055,7 @@ export default {
         formData.append('sexo',this.newjugador.sexo);
         formData.append('categoria',this.newjugador.categoria);
         formData.append('sede',this.newjugador.sede);
+        formData.append('prestamo',this.newjugador.prestamo);
         formData.append('acta_nacimiento',this.newjugador.acta_nacimiento);
         formData.append('curp',this.newjugador.curp);
         formData.append('identificacion',this.newjugador.identificacion);
@@ -1048,6 +1104,18 @@ export default {
     },
     infoJugador(jur){
       this.detalleJugador = jur;
+      this.detalleJugador.dorsal_antiguo = jur.num_dorsal;
+      if (this.detalleJugador.tutor == null) {
+        Swal.fire({
+          title: "Atencion!",
+          html: `Completa la Información del Jugador <b>${this.detalleJugador.nombre}</b> en Info Tutor`,
+          icon: "error"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.showCard('tutor');
+          }
+        });
+      }
     },
     EditarJugador(){
       if (this.detalleJugador.foto == '') {
@@ -1182,6 +1250,7 @@ export default {
           formData.append(`documentacion[${i}][archivo]`, this.detalleJugador.documentacion[i].archivo);
           formData.append(`documentacion[${i}][tipo]`, this.detalleJugador.documentacion[i].tipo);
         }
+        formData.append('prestamo',this.detalleJugador.prestamo);
       axios.post('jugadores/updateJugador',formData).then(response=>{
         this.getJugador();
         this.submenuUpdate = false;
@@ -1236,6 +1305,7 @@ export default {
         formData.append('telefono',this.detalleJugador.telefono);
       axios.post('jugadores/createTutor',formData).then(response =>{
         this.showCard(null);
+        this.getJugador();
         Swal.fire({
           title: 'Exitoso',
           text: "Se Guardo correctamente!",
@@ -1307,6 +1377,23 @@ export default {
           })
         }
       })
+    },
+    verificaDorsal(){
+      this.NombreJugador = false;
+      axios.post('jugadores/verificaDorsal',{ num_dorsal: this.newjugador.num_dorsal }).then(response=>{
+        this.NombreJugador = response.data.jugador;  
+      
+      })
+    },
+    verificaDorsalUpdate(){
+      if (this.detalleJugador.num_dorsal != this.detalleJugador.dorsal_antiguo) {
+        this.NombreJugador = false;
+        axios.post('jugadores/verificaDorsal',{ num_dorsal: this.detalleJugador.num_dorsal }).then(response=>{
+          this.NombreJugador = response.data.jugador;  
+        
+        })
+        
+      }
     }
 
   }

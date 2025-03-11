@@ -69,6 +69,13 @@ class JugadoresController extends Controller
     }
 
     /**
+     * verifica si el numero del dorsal esta en uso
+     **/
+    public function verificaDorsal(Request $request){
+        return $this->JugadoresRepository->verificaDorsal($request);
+    }
+
+    /**
      * FUNCION QUE CREARA LOS JUGADORES
      **/
     public function createJugador(Request $request){
