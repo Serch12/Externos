@@ -61,7 +61,8 @@
                     </div>
                     <div class="flex-grow-1">
                       <span class="fw-medium d-block small">{{ auth()->user()->name }}</span>
-                      <small class="text-muted">{{ $rol_usuario }}</small>
+                      <small class="text-muted">{{ $rol_usuario }}</small><br>
+                      <small class="text-muted">{{ $sede }}</small>
                     </div>
                   </div>
                 </a>
@@ -74,34 +75,7 @@
                   <i class="ri-user-3-line ri-22px me-3"></i><span class="align-middle">Mi Perfil</span>
                 </a>
               </li>
-              {{-- <li>
-                <a class="dropdown-item" href="pages-account-settings-account.html">
-                  <i class="ri-settings-4-line ri-22px me-3"></i><span class="align-middle">Settings</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="pages-account-settings-billing.html">
-                  <span class="d-flex align-items-center align-middle">
-                    <i class="flex-shrink-0 ri-file-text-line ri-22px me-3"></i>
-                    <span class="flex-grow-1 align-middle">Billing</span>
-                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger">4</span>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <div class="dropdown-divider"></div>
-              </li>
-              <li>
-                <a class="dropdown-item" href="pages-pricing.html">
-                  <i class="ri-money-dollar-circle-line ri-22px me-3"></i
-                  ><span class="align-middle">Pricing</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="pages-faq.html">
-                  <i class="ri-question-line ri-22px me-3"></i><span class="align-middle">FAQ</span>
-                </a>
-              </li> --}}
+              
               <li>
                 <div class="d-grid px-4 pt-2 pb-1">
                   <a class="btn btn-sm btn-danger d-flex" href="{{ route('logout') }}"

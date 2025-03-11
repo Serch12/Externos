@@ -127,6 +127,9 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
+    <script src="{{asset('style/assets/vendor/libs/cleavejs/cleave.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/tagify/tagify.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/cleavejs/cleave-phone.js')}}"></script>
     <script src="{{asset('style/assets/vendor/libs/bs-stepper/bs-stepper.js')}}"></script>
     <script src="{{asset('style/assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
     <script src="{{asset('style/assets/vendor/libs/select2/select2.js')}}"></script>
@@ -136,6 +139,7 @@
     <script src="{{asset('style/assets/js/main.js')}}"></script>
 
     <!-- Page JS -->
+    <script src="{{asset('style/assets/js/modal-create-app.js')}}"></script>
     <script src="{{asset('style/assets/js/pages-profile-user.js')}}"></script>
     <script src="{{asset('style/assets/js/form-wizard-icons.js')}}"></script>
     <script src="{{asset('style/assets/js/ui-carousel.js')}}"></script>

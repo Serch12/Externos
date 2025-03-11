@@ -30,14 +30,13 @@ class JugadoresHelper
         foreach ($muestra as $value) {
             $value->documentacion = DocumentosJugadores::where('id_jugador',$value->id_jugador)->get();
 
-            if ($value->sede == 'GUADALAJARA') {
-                $value -> color = 'danger';
+            if ($value->estatus == 1) {
+                $value -> text = 'Inactivo';
+                $value -> color = 'bg-label-danger';
             }
-            if ($value->sede == 'TOLUCA') {
-                $value -> color = 'info';
-            }
-            if ($value->sede == 'LEON') {
-                $value -> color = 'success';
+            if ($value->estatus == 0) {
+                $value -> text = 'Activo';
+                $value -> color = 'bg-label-success';
             }
         }
     }

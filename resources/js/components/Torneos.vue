@@ -417,6 +417,11 @@
                                             :href="`${this.detalleTorneo.direccion}`">{{ this.detalleTorneo.direccion
                                             }}</a>
                                     </div>
+                                    <div class="col-12 col-md-12 mt-2">
+                                        <iframe :src="`${this.detalleTorneo.direccion}`" title="description"></iframe>
+                                              
+                                    </div>
+
                                     <h6 class="mt-2">Datos de Contacto</h6>
                                     <div class="col-12 col-md-12 mt-2">
                                         <span class="fw-medium">
@@ -1625,6 +1630,15 @@ export default {
                     this.pagination = response.data.pagination
                 });
             }
+        },
+        generateEmbedUrl(link) {
+            
+            const mapId = link.split("/").pop();
+            console.log(mapId);
+            
+            
+            // Generar la URL embebida
+            return `https://www.google.com/maps?q=${mapId}&output=embed`;
         },
         muestra(valor) {
             this.vista = valor;

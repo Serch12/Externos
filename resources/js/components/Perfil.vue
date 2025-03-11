@@ -23,9 +23,9 @@
                                         <li class="list-inline-item">
                                             <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">{{this.Perfil.rol}}</span>
                                         </li>
-                                        <!-- <li class="list-inline-item">
-                                            <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">{{this.Perfil.sede[0].nombre}}</span>
-                                        </li> -->
+                                        <li class="list-inline-item">
+                                            <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">{{this.sede}}</span>
+                                        </li>
                                         <li class="list-inline-item">
                                             <i class="ri-calendar-line me-2 ri-24px"></i
                                             ><span class="fw-medium">{{this.Perfil.cumpleaños}}</span>
@@ -99,11 +99,11 @@
                                                         <i class="ri-football-fill ri-24px"></i><span class="fw-medium mx-2">Role:</span>
                                                         <span>{{this.Perfil.rol}}</span>
                                                     </li>
-                                                    <!-- <li class="d-flex align-items-center mb-4">
-                                                        <i class="ri-flag-2-line ri-24px"></i><span class="fw-medium mx-2">Country:</span>
-                                                        <span>USA</span>
+                                                    <li class="d-flex align-items-center mb-4">
+                                                        <i class="ri-map-pin-line ri-24px"></i><span class="fw-medium mx-2">Sede:</span>
+                                                        <span>{{ this.sede }}</span>
                                                     </li>
-                                                    <li class="d-flex align-items-center mb-2">
+                                                    <!-- <li class="d-flex align-items-center mb-2">
                                                         <i class="ri-translate-2 ri-24px"></i><span class="fw-medium mx-2">Languages:</span>
                                                         <span>English</span>
                                                     </li> -->
@@ -196,7 +196,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-xl-12 col-lg-5 col-md-5">
                     <div class="card mb-6">
                         <div class="card-body">
@@ -208,7 +208,7 @@
                         </div>
                     </div>   
                 </div>
-            </div>
+            </div> -->
         </div>
         <div id="main" v-if="this.vista == 1">
             <div class="card mb-6">

@@ -43,7 +43,7 @@
         @endhasanyrole
 
         <!-- Apps -->
-        @hasanyrole('Root|Administrador|Cuerpo Tecnico|CM')
+        @hasanyrole('Root|Administrador|Cuerpo Tecnico|CM|Auxiliar Técnico')
         <li class="menu-item {{ request()->routeIs('jugadores','torneo','cuerpo_tecnico') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-football-line"></i>
@@ -58,7 +58,7 @@
               </a>
             </li>
            
-            @hasanyrole('Root|Administrador|Cuerpo Tecnico')
+            @hasanyrole('Root|Administrador|Cuerpo Tecnico|Auxiliar Técnico')
             <li class="menu-item {{ request()->routeIs('jugadores') ? 'active' : '' }}">
               <a href="{{ route('jugadores') }}" class="menu-link">
                 <i class="menu-icon tf-icons ri-team-line"></i>

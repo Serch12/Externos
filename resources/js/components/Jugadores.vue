@@ -10,96 +10,91 @@
               </div>
               <div class="col-12 col-md-6 mt-3">
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                      <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Jugadores" @keyup="buscarJugador()"/>
-                      <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createJugador" v-if="include('Crear')">Agregar</button>
+                    <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Jugadores" @keyup="buscarJugador()"/>
+                    <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createJugador" v-if="include('Crear')">Agregar</button>
                   </div>
               </div>
-            </div>
-          </div>
-          <div class="col-xl-12 col-lg-12 col-md-12" v-if="this.Jugadores.length == 0">
-            <div class="card">
-                <center>
-                  <h5 class="card-header text-success">Sin Información</h5>
-                  <img src="style/logos/img_no hay datos.png" alt="img_sindato" style="width: 200px;">
-                </center>
-            </div>
-          </div>
-          <div class="col-xl-4 col-lg-6 col-md-6" v-for="(jur, index) in Jugadores" :key="index" v-else>
-            <div class="card">
-              <div class="card-body text-center">
-                <div class="dropdown btn-pinned">
-                  <button
-                    type="button"
-                    class="btn dropdown-toggle hide-arrow p-4"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="ri-more-2-line ri-22px text-muted"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="infoJugador(jur),muestra(1)">
-                        <i class="ri-clipboard-line me-1"></i> Vizualizar</a>  
+              <div class="table-responsive text-nowrap mt-2">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Foto</th>
+                            <th>Nombre</th>
+                            <th>Categoria</th>
+                            <th>Posición</th>
+                            <th>Sexo</th>
+                            <th>Sede</th>
+                            <th>Estatus</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        <tr v-for="(jur, index) in Jugadores" :key="index">
+                            <td>{{ index+1 }}</td>
+                            <td>
+                                <div class="d-flex justify-content-start align-items-center">
+                                    <div class="avatar-wrapper">
+                                        <div class="avatar me-2" >
+                                          <img :src="`ArchivosSistema/Jugadores/${jur.id_jugador}/${jur.foto}`" alt="Avatar"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </td>
+                            <td>{{ jur.nombre }}</td>
+                            <td>{{ jur.categoria }}</td>
+                            <td>{{ jur.posicion }}</td>
+                            <td>{{ jur.sexo }}</td>
+                            <td>{{ jur.sede }}</td>
+                            <td><span :class="`badge rounded-pill ${jur.color} me-1`">{{jur.text}}</span></td>
+                            <td>
+                              <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                  <i class="ri-more-2-line"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="infoJugador(jur),muestra(1)">
+                                    <i class="ri-clipboard-line me-1"></i> Vizualizar
+                                  </a>  
+                                  <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
+                                    data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugador(jur)">
+                                    <i class="ri-pencil-line me-1"></i> Editar
+                                  </a> 
+                                  <a class="dropdown-item" type="button" style="color: green;" v-if="include('Permisos'),jur.estatus == 1" @click="cambioEstatus(jur)">
+                                    <i class="ri-checkbox-circle-fill me-1"></i> Activar
+                                  </a> 
+                                  <a class="dropdown-item" type="button" style="color: red;" v-if="include('Permisos'),jur.estatus == 0" @click="cambioEstatus(jur)">
+                                    <i class="ri-close-circle-fill me-1"></i> Desactivar
+                                  </a>  
+                                  <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')" @click="deleteJugador(jur)">
+                                    <i class="ri-delete-bin-7-line me-1"></i> Eliminar
+                                  </a>
+                                </div>
+                              </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example mt-3">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled" v-if="pagination.current_page > 1">
+                        <a @click.prevent="changePage(pagination.current_page -1)" class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
                     </li>
-                    <li>
-                      <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
-                        data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugador(jur)">
-                        <i class="ri-pencil-line me-1"></i> Editar</a>  
+                    <li class="page-item" v-for="(page, index) in pageNumber"
+                        :key="index" @click.prevent="changePage(page)"
+                        v-bind:class="[ page == isActived ? 'active' : 'waves-effect']">
+                        <a class="page-link" href="#">{{ page }}</a>
                     </li>
-                    <li v-if="jur.estatus == 1">
-                      <a class="dropdown-item" type="button" style="color: green;" v-if="include('Permisos')" @click="cambioEstatus(jur)">
-                        <i class="ri-checkbox-circle-fill me-1"></i> Activar</a>  
-                    </li>
-                    <li v-if="jur.estatus == 0">
-                      <a class="dropdown-item" type="button" style="color: red;" v-if="include('Permisos')" @click="cambioEstatus(jur)">
-                        <i class="ri-close-circle-fill me-1"></i> Desactivar</a>  
-                    </li>
-                    <li>
-                      <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')" @click="deleteJugador(jur)">
-                      <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>
+                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                        <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link" href="#">Next</a>
                     </li>
                   </ul>
-                </div>
-                <div class="mx-auto my-6">
-                  <img :src="`ArchivosSistema/Jugadores/${jur.id_jugador}/${jur.foto}`" alt="Avatar Image" style="width: 40%;" v-if="jur.foto != null" class="rounded-circle w-px-100" />
-                  <img src="style/logos/sinfoto.png" alt="" style="width: 40%;" class="rounded-circle w-px-100"  v-else>
-                </div>
-                <h5 class="mb-0 card-title">{{jur.nombre}}</h5>
-                <span>{{jur.categoria}}</span>
-                <div class="d-flex align-items-center justify-content-center my-6 gap-2">
-                  <span :class="`badge bg-label-${jur.color} rounded-pill`">Sede: {{ jur.sede }}</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-around mb-6">
-                  <div>
-                    <h5 class="mb-0">Posición</h5>
-                    <span>{{jur.posicion}}</span>
-                  </div>
-                  <div>
-                    <h5 class="mb-0">Sexo</h5>
-                    <span>{{jur.sexo}}</span>
-                  </div>
-                  <!-- <div>
-                    <h5 class="mb-0">2.14k</h5>
-                    <span>Connections</span>
-                  </div> -->
-                </div>
+                </nav>
               </div>
             </div>
           </div>
-          <nav aria-label="Page navigation example mt-3">
-            <ul class="pagination justify-content-center">
-              <li class="page-item disabled" v-if="pagination.current_page > 1">
-                <a @click.prevent="changePage(pagination.current_page -1)" class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-              </li>
-              <li class="page-item" v-for="(page, index) in pageNumber"
-                :key="index" @click.prevent="changePage(page)"
-                v-bind:class="[ page == isActived ? 'active' : 'waves-effect']">
-                <a class="page-link" href="#">{{ page }}</a>
-              </li>
-              <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
+
         </div>
       </div>
       <!-- vista de detalle jugador-->
@@ -357,6 +352,7 @@
         </div>
       </div>
       <!-- MODAL QUE CREA EL JUGADOR -->
+
       <div class="modal fade" id="createJugador" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
           <div class="modal-content">
@@ -365,67 +361,20 @@
               <div class="text-center mb-6">
                 <h4 class="address-title mb-2">Agregar Jugador</h4>
               </div>
-              <form id="addNewAddressForm" class="row g-5">
-                  <div class="col-12">
-                      <div class="row g-5">
-                          <div class="col-md mb-md-0">
-                              <div class="form-check custom-option custom-option-basic">
-                                  <label class="form-check-label custom-option-content" for="customRadioHome">
-                                  <input
-                                      name="customRadioTemp"
-                                      class="form-check-input"
-                                      type="radio"
-                                      value=""
-                                      id="customRadioHome"
-                                      checked @click="accionSubmenu()"/>
-                                  <span class="custom-option-header">
-                                      <span class="h6 mb-0 d-flex align-items-center"><i class="ri-account-box-fill ri-20px me-1"></i>Datos</span>
-                                  </span>
-                                  <!-- <span class="custom-option-body">
-                                      <small>Delivery time (9am – 9pm)</small>
-                                  </span> -->
-                                  </label>
-                              </div>
-                          </div>
-                          <div class="col-md mb-md-0">
-                              <div class="form-check custom-option custom-option-basic">
-                                  <label class="form-check-label custom-option-content" for="customRadioOffice">
-                                  <input
-                                      name="customRadioTemp"
-                                      class="form-check-input"
-                                      type="radio"
-                                      value=""
-                                      id="customRadioOffice" @click="accionSubmenu()"/>
-                                  <span class="custom-option-header">
-                                      <span class="h6 mb-0 d-flex align-items-center"><i class="ri-id-card-fill ri-20px me-1"></i>Documentación</span>
-                                  </span>
-                                  <!-- <span class="custom-option-body">
-                                      <small>Delivery time (9am – 5pm) </small>
-                                  </span> -->
-                                  </label>
-                              </div>
-                          </div>
-                      </div>
+              <form id="addNewAddressForm" class="row g-5" onsubmit="return false" v-show="this.step == 0">
+                <div class="col-12">
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="text"
+                      id="name"
+                      class="form-control"
+                      v-model="newjugador.nombre"
+                      placeholder="Nombre"/>
+                    <label for="name">Nombre</label>
                   </div>
-                  <!-- campos de acceso -->
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
-                    <div class="form-floating form-floating-outline">
-                      <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
-                      <label for="bs-validation-upload-file">Foto</label>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
-                    <div class="form-floating form-floating-outline">
-                      <input
-                        type="text"
-                        id="name"
-                        class="form-control"
-                        v-model="newjugador.nombre"
-                        placeholder="Nombre"/>
-                      <label for="name">Nombre</label>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="input-group input-group-merge">
                     <div class="form-floating form-floating-outline">
                       <input
                         type="date"
@@ -435,96 +384,107 @@
                       <label for="fecha">Fecha de Nacimiento</label>
                     </div>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
-                    <div class="form-floating form-floating-outline">
-                      <input
-                        type="number"
-                        id="edad"
-                        class="form-control"
-                        v-model="newjugador.edad" disabled/>
-                      <label for="edad">Edad</label>
-                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="number"
+                      id="edad"
+                      class="form-control"
+                      v-model="newjugador.edad" disabled/>
+                    <label for="edad">Edad</label>
                   </div>
-                  <!-- <div class="col-12 col-md-6" v-if="this.submenu == false">
-                    <div class="form-floating form-floating-outline">
-                      <input
-                        type="text"
-                        id="posicion"
-                        class="form-control"
-                        v-model="newjugador.posicion"/>
-                      <label for="posicion">Posición</label>
-                    </div>
-                  </div> -->
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
-                    <div class="form-floating form-floating-outline">
-                      <select id="posicion" name="posicion" class="form-select" v-model="newjugador.posicion">
-                        <option value="Selecciona una Posición">Selecciona una Posición</option>
-                        <option value="Delantero">Delantero</option>
-                        <option value="Medio">Medio</option>
-                        <option value="Defensa">Defensa</option>
-                        <option value="Portero">Portero</option>
-                      </select>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <select id="posicion" name="posicion" class="form-select" v-model="newjugador.posicion">
+                      <option value="Selecciona una Posición">Selecciona una Posición</option>
+                      <option value="Delantero">Delantero</option>
+                      <option value="Medio">Medio</option>
+                      <option value="Defensa">Defensa</option>
+                      <option value="Portero">Portero</option>
+                    </select>
                     <label for="posicion">Posición</label>
-                    </div>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
-                    <div class="form-floating form-floating-outline">
-                      <select id="sexo" name="sexo" class="form-select" v-model="newjugador.sexo">
-                        <option value="Selecciona el Sexo">Selecciona el Sexo</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Femenino">Femenino</option>
-                      </select>
-                      <label for="sexo">Sexo</label>
-                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <select id="sexo" name="sexo" class="form-select" v-model="newjugador.sexo">
+                      <option value="Selecciona el Sexo">Selecciona el Sexo</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
+                    </select>
+                    <label for="sexo">Sexo</label>
                   </div>
-                 
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
-                    <div class="form-floating form-floating-outline">
-                      <select id="categoria" name="categoria" class="form-select" v-model="newjugador.categoria">
-                        <option value="Selecciona una Categoria">Selecciona una Categoria</option>
-                        <option value="Categoria 2009">Categoria 2009</option>
-                        <option value="Categoria 2010">Categoria 2010</option>
-                        <option value="Categoria 2011">Categoria 2011</option>
-                        <option value="Categoria 2012">Categoria 2012</option>
-                      </select>
-                      <label for="categoria">Categoria</label>
-                    </div>
+                </div>
+                <div class="col-12 col-lg-7">
+                  <div class="form-floating form-floating-outline">
+                    <select id="categoria" name="categoria" class="form-select" v-model="newjugador.categoria">
+                      <option value="Selecciona una Categoria">Selecciona una Categoria</option>
+                      <option value="Categoria 2009">Categoria 2009</option>
+                      <option value="Categoria 2010">Categoria 2010</option>
+                      <option value="Categoria 2011">Categoria 2011</option>
+                      <option value="Categoria 2012">Categoria 2012</option>
+                    </select>
+                    <label for="categoria">Categoria</label>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenu == false">
-                    <div class="form-floating form-floating-outline">
-                      <input
-                        type="text"
-                        id="sede"
-                        class="form-control"
-                        v-model="newjugador.sede" disabled/>
-                      <label for="sede">Sede</label>
-                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="text"
+                      id="sede"
+                      class="form-control"
+                      v-model="newjugador.sede" disabled/>
+                    <label for="sede">Sede</label>
                   </div>
-
-                  <!-- campos de informacion -->
-                 
-                  <div class="col-12 col-md-6" v-if="this.submenu == true">
-                    <div class="form-floating form-floating-outline">
-                      <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_acta" ref="fileActa" @change="onChangeActa()">
-                      <label for="bs-validation-upload-file_acta">Acta de Nacimiento</label>
-                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-between mt-6">
+                  <button class="btn btn-outline-secondary btn-prev" disabled>
+                    <i class="ri-arrow-left-line ri-16px"></i>
+                    <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                  </button>
+                  <button class="btn btn-primary" @click="validacionAltaJugador(0)">
+                    <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
+                    <i class="ri-arrow-right-line ri-16px"></i>
+                  </button>
+                </div>
+              </form>
+              <form id="addNewAddressForm" class="row g-5" onsubmit="return false" v-show="this.step == 1">
+                <div class="col-12">
+                  <div class="form-floating form-floating-outline">
+                    <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
+                    <label for="bs-validation-upload-file">Foto</label>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenu == true">
-                    <div class="form-floating form-floating-outline">
-                      <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_curp" ref="fileCurp" @change="onChangeCurp()">
-                      <label for="bs-validation-upload-file_curp">Curp</label>
-                    </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-floating form-floating-outline">
+                    <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_acta" ref="fileActa" @change="onChangeActa()">
+                    <label for="bs-validation-upload-file_acta">Acta de Nacimiento</label>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenu == true">
-                    <div class="form-floating form-floating-outline">
-                      <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_ident" ref="fileIdent" @change="onChangeIdentificacion()">
-                      <label for="bs-validation-upload-file_ident">Identificación</label>
-                    </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-floating form-floating-outline">
+                    <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_curp" ref="fileCurp" @change="onChangeCurp()">
+                    <label for="bs-validation-upload-file_curp">Curp</label>
                   </div>
-                  <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                      <button type="button" class="btn btn-primary" @click="agregaJugador()">Guardar</button>
-                      <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
+                </div>
+                <div class="col-12">
+                  <div class="form-floating form-floating-outline">
+                    <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_ident" ref="fileIdent" @change="onChangeIdentificacion()">
+                    <label for="bs-validation-upload-file_ident">Identificación</label>
                   </div>
+                </div>
+                <div class="col-12 d-flex justify-content-between mt-6">
+                  <button class="btn btn-outline-secondary" @click="goPrevStep()">
+                    <i class="ri-arrow-left-line ri-16px"></i>
+                    <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                  </button>
+                  <button class="btn btn-primary" @click="agregaJugador()">
+                    <span class="align-middle d-sm-block d-none me-2">Guardar</span>
+                    <i class="ri-save-3-fill ri-16px"></i>
+                  </button>
+                </div>
               </form>
             </div>
           </div>
@@ -539,72 +499,20 @@
               <div class="text-center mb-6">
                 <h4 class="address-title mb-2">Editar Jugador</h4>
               </div>
-              <form id="addNewAddressForm" class="row g-5">
-                  <div class="col-12">
-                      <div class="row g-5">
-                          <div class="col-md mb-md-0">
-                              <div class="form-check custom-option custom-option-basic">
-                                  <label class="form-check-label custom-option-content" for="customRadioHome12">
-                                  <input
-                                      name="customRadioTemp"
-                                      class="form-check-input"
-                                      type="radio"
-                                      value=""
-                                      id="customRadioHome12"
-                                      checked @click="accionSubmenuUpdate()"/>
-                                  <span class="custom-option-header">
-                                      <span class="h6 mb-0 d-flex align-items-center"><i class="ri-account-box-fill ri-20px me-1"></i>Datos</span>
-                                  </span>
-                                  <!-- <span class="custom-option-body">
-                                      <small>Delivery time (9am – 9pm)</small>
-                                  </span> -->
-                                  </label>
-                              </div>
-                          </div>
-                          <div class="col-md mb-md-0">
-                              <div class="form-check custom-option custom-option-basic">
-                                  <label class="form-check-label custom-option-content" for="customRadioOffice12">
-                                  <input
-                                      name="customRadioTemp"
-                                      class="form-check-input"
-                                      type="radio"
-                                      value=""
-                                      id="customRadioOffice12" @click="accionSubmenuUpdate()"/>
-                                  <span class="custom-option-header">
-                                      <span class="h6 mb-0 d-flex align-items-center"><i class="ri-id-card-fill ri-20px me-1"></i>Documentación</span>
-                                  </span>
-                                  <!-- <span class="custom-option-body">
-                                      <small>Delivery time (9am – 5pm) </small>
-                                  </span> -->
-                                  </label>
-                              </div>
-                          </div>
-                      </div>
+              <form id="addNewAddressForm" class="row g-5" onsubmit="return false" v-show="this.stepUpdate == 0">
+                <div class="col-12">
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="text"
+                      id="name"
+                      class="form-control"
+                      v-model="detalleJugador.nombre"
+                      placeholder="Nombre"/>
+                    <label for="name">Nombre</label>
                   </div>
-                  <!-- campos de acceso -->
-                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
-                    <div class="form-floating form-floating-outline">
-                      <!-- <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
-                      <label for="bs-validation-upload-file">Foto</label> -->
-                      <a type="button" for="file-img"  onclick="document.getElementById('file-img').click()">
-                        <img src="style/logos/imgcarga.png" alt="Upload Image" v-if="this.detalleJugador.foto == ''"/>
-                        <img :src="`ArchivosSistema/Jugadores/${detalleJugador.id_jugador}/${detalleJugador.foto}`" alt="Foto" style="width: 80px;" v-else>
-                      </a>
-                      <input type="file" id="file-img" ref="fileFotoupdates" accept="image/*" style="display: none;"  @change="onChangeFotoUpdate()" />
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
-                    <div class="form-floating form-floating-outline">
-                      <input
-                        type="text"
-                        id="name"
-                        class="form-control"
-                        v-model="detalleJugador.nombre"
-                        placeholder="Nombre"/>
-                      <label for="name">Nombre</label>
-                    </div>
-                  </div>
-                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="input-group input-group-merge">
                     <div class="form-floating form-floating-outline">
                       <input
                         type="date"
@@ -614,133 +522,142 @@
                       <label for="fecha">Fecha de Nacimiento</label>
                     </div>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
-                    <div class="form-floating form-floating-outline">
-                      <input
-                        type="number"
-                        id="edad"
-                        class="form-control"
-                        v-model="detalleJugador.edad" disabled/>
-                      <label for="edad">Edad</label>
-                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="number"
+                      id="edad"
+                      class="form-control"
+                      v-model="detalleJugador.edad" disabled/>
+                    <label for="edad">Edad</label>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
-                    <div class="form-floating form-floating-outline">
-                      <select id="posicion" name="posicion" class="form-select" v-model="detalleJugador.posicion">
-                        <option value="Selecciona una Posición">Selecciona una Posición</option>
-                        <option value="Delantero">Delantero</option>
-                        <option value="Medio">Medio</option>
-                        <option value="Defensa">Defensa</option>
-                        <option value="Portero">Portero</option>
-                      </select>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <select id="posicion" name="posicion" class="form-select" v-model="detalleJugador.posicion">
+                      <option value="Selecciona una Posición">Selecciona una Posición</option>
+                      <option value="Delantero">Delantero</option>
+                      <option value="Medio">Medio</option>
+                      <option value="Defensa">Defensa</option>
+                      <option value="Portero">Portero</option>
+                    </select>
                     <label for="posicion">Posición</label>
-                    </div>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
-                    <div class="form-floating form-floating-outline">
-                      <select id="sexo" name="sexo" class="form-select" v-model="detalleJugador.sexo">
-                        <option value="Selecciona el Sexo">Selecciona el Sexo</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Femenino">Femenino</option>
-                      </select>
-                      <label for="sexo">Sexo</label>
-                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <select id="sexo" name="sexo" class="form-select" v-model="detalleJugador.sexo">
+                      <option value="Selecciona el Sexo">Selecciona el Sexo</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
+                    </select>
+                    <label for="sexo">Sexo</label>
                   </div>
-                 
-                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
-                    <div class="form-floating form-floating-outline">
-                      <select id="categoria" name="categoria" class="form-select" v-model="detalleJugador.categoria">
-                        <option value="Selecciona una Categoria">Selecciona una Categoria</option>
-                        <option value="Categoria 2009">Categoria 2009</option>
-                        <option value="Categoria 2010">Categoria 2010</option>
-                        <option value="Categoria 2011">Categoria 2011</option>
-                        <option value="Categoria 2012">Categoria 2012</option>
-                      </select>
-                      <label for="categoria">Categoria</label>
-                    </div>
+                </div>
+                <div class="col-12 col-lg-7">
+                  <div class="form-floating form-floating-outline">
+                    <select id="categoria" name="categoria" class="form-select" v-model="detalleJugador.categoria">
+                      <option value="Selecciona una Categoria">Selecciona una Categoria</option>
+                      <option value="Categoria 2009">Categoria 2009</option>
+                      <option value="Categoria 2010">Categoria 2010</option>
+                      <option value="Categoria 2011">Categoria 2011</option>
+                      <option value="Categoria 2012">Categoria 2012</option>
+                    </select>
+                    <label for="categoria">Categoria</label>
                   </div>
-                  <div class="col-12 col-md-6" v-if="this.submenuUpdate == false">
-                    <div class="form-floating form-floating-outline">
-                      <input
-                        type="text"
-                        id="sede"
-                        class="form-control"
-                        v-model="detalleJugador.sede" disabled/>
-                      <label for="sede">Sede</label>
-                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="text"
+                      id="sede"
+                      class="form-control"
+                      v-model="detalleJugador.sede" disabled/>
+                    <label for="sede">Sede</label>
                   </div>
+                </div>
+                <div class="col-12 d-flex justify-content-between mt-6">
+                  <button class="btn btn-outline-secondary btn-prev" disabled>
+                    <i class="ri-arrow-left-line ri-16px"></i>
+                    <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                  </button>
+                  <button class="btn btn-primary" @click="goNextStepUp()">
+                    <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
+                    <i class="ri-arrow-right-line ri-16px"></i>
+                  </button>
+                </div>
+              </form>
+              <form id="addNewAddressForm" class="row g-5" onsubmit="return false" v-show="this.stepUpdate == 1">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button type="button" class="btn btn-outline-success waves-effect" @click="newArch()">Agregar</button>
+                </div>
+                <div class="table-responsive text-nowrap mt-2">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Archivo</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                      <tr v-for="(arch, index) in detalleJugador.documentacion" :key="index">
+                        <td>{{ index + 1 }}</td>
+                        <td v-if="arch.archivo == ''">
+                          <div class="form-floating form-floating-outline">
+                            <input type="file"  accept="image/png,image/jpeg" class="form-control" :id="`bs-validation-upload-fileupdate${index}`" :ref="`fileArch${index}`" @change="onChangeArchivoUpdate(index,arch)">
+                            <label :for="`bs-validation-upload-fileupdate${index}`">Archivo</label>
+                          </div>
+                        </td>
+                        <td v-else>
+                          <img
+                              :src="`ArchivosSistema/Jugadores/${arch.id_jugador}/${arch.archivo}`"
+                              alt="Archivo"
+                              style="width: 80px;"
+                            />
+                        </td>
+                        <td v-if="arch.id_docu_jugador == ''">
+                          <div class="form-floating form-floating-outline">
+                            <select :id="`tipo${index}`" :name="`tipo${index}`" class="form-select" v-model="arch.tipo">
+                              <option value="Selecciona una Opción">Selecciona una Opción</option>
+                              <option value="Acta de Nacimiento">Acta de Nacimiento</option>
+                              <option value="Curp">Curp</option>
+                              <option value="Identificación">Identificación</option>
+                            </select>
+                            <label :for="`tipo${index}`">Tipo</label>
+                          </div>
+                        </td>
+                        <td v-else>{{ arch.tipo }}</td>
+                        
+                        <td>
+                          <a class="dropdown-item" type="button" style="color: red;" @click="deleteArchivo(index,arch)">
+                            <i class="ri-delete-bin-7-line me-1"></i> Eliminar
+                          </a>
+                        </td>
+                      </tr>
 
-                  <!-- campos de informacion -->
-                 
-                  <div class="col-12 col-md-" v-if="this.submenuUpdate == true">
-                    <!-- <div class="form-floating form-floating-outline">
-                      <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file_acta" ref="fileActaupdate" @change="onChangeActaUpdate()">
-                      <label for="bs-validation-upload-file_acta">Acta de Nacimiento</label>
-                    </div> -->
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                      <!-- <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Jugadores" @keyup="buscarJugador()"/> -->
-                      <button type="button" class="btn btn-outline-success waves-effect" @click="newArch()">Agregar</button>
-                  </div>
-                    <div class="table-responsive text-nowrap mt-2">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Archivo</th>
-                            <th scope="col">Tipo</th>
-                            <th scope="col">Opciones</th>
-                          </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                          <tr v-for="(arch, index) in detalleJugador.documentacion" :key="index">
-                            <td>{{ index + 1 }}</td>
-                            <td v-if="arch.archivo == ''">
-                              <div class="form-floating form-floating-outline">
-                                <input type="file"  accept="image/png,image/jpeg" class="form-control" :id="`bs-validation-upload-fileupdate${index}`" :ref="`fileArch${index}`" @change="onChangeArchivoUpdate(index,arch)">
-                                <label :for="`bs-validation-upload-fileupdate${index}`">Archivo</label>
-                              </div>
-                            </td>
-                            <td v-else>
-                              <img
-                                  :src="`ArchivosSistema/Jugadores/${arch.id_jugador}/${arch.archivo}`"
-                                  alt="Archivo"
-                                  style="width: 80px;"
-                                />
-                            </td>
-                            <td v-if="arch.id_docu_jugador == ''">
-                              <div class="form-floating form-floating-outline">
-                                <select :id="`tipo${index}`" :name="`tipo${index}`" class="form-select" v-model="arch.tipo">
-                                  <option value="Selecciona una Opción">Selecciona una Opción</option>
-                                  <option value="Acta de Nacimiento">Acta de Nacimiento</option>
-                                  <option value="Curp">Curp</option>
-                                  <option value="Identificación">Identificación</option>
-                                </select>
-                                <label :for="`tipo${index}`">Tipo</label>
-                              </div>
-                            </td>
-                            <td v-else>{{ arch.tipo }}</td>
-                            
-                            <td>
-                              <a class="dropdown-item" type="button" style="color: red;" @click="deleteArchivo(index,arch)">
-                                <i class="ri-delete-bin-7-line me-1"></i> Eliminar
-                              </a>
-                            </td>
-                          </tr>
-
-                        </tbody>
-                      </table>
-                    </div>
-                    
-                  </div>
-                  <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                      <button type="button" class="btn btn-primary" @click="EditarJugador()">Editar</button>
-                      <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
-                  </div>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-12 d-flex justify-content-between mt-6">
+                  <button class="btn btn-outline-secondary" @click="goPrevStepUp()">
+                    <i class="ri-arrow-left-line ri-16px"></i>
+                    <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                  </button>
+                  <button class="btn btn-primary" @click="EditarJugador()">
+                    <span class="align-middle d-sm-block d-none me-2">Editar</span>
+                    <i class="ri-save-3-fill ri-16px"></i>
+                  </button>
+                </div>
               </form>
             </div>
           </div>
         </div>
       </div>
+
+      
       <br><br><br>
     </div>
 </template>
@@ -768,7 +685,7 @@ export default {
         foto:'',
         nombre:'',
         fecha_nacimiento:'',
-        edad:'',
+        edad:0,
         posicion:'Selecciona una Posición',
         sexo:'Selecciona el Sexo',
         apodo:'',
@@ -779,8 +696,8 @@ export default {
         identificacion:''
       },
       Jugadores:[],
-      submenu:false,
-      submenuUpdate:false,
+      step:0,
+      stepUpdate:0,
       detalleJugador:[],
       activeView:null,
       pagination: {
@@ -901,60 +818,112 @@ export default {
         this.submenuUpdate = false;
       }
     },
-    agregaJugador(){
+    goPrevStep() {
+      this.step--;
+    },
+    goNextStep() {
+      this.step++;
+    },
+    goPrevStepUp() {
+      this.stepUpdate--;
+    },
+    goNextStepUp() {
+      this.stepUpdate++;
+    },
+    validacionAltaJugador(value){
+      if (value == 0) {
+        if (this.newjugador.nombre == '') {
+          this.$toast.error("Ingresa el Nombre", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
+        if (this.newjugador.fecha_nacimiento == '') {
+          this.$toast.error("Ingresa la Fecha de Nacimiento", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
+        if (this.newjugador.posicion == 'Selecciona una Posición') {
+          this.$toast.error("Selecciona una Posición", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
+        if (this.newjugador.sexo == 'Selecciona el Sexo') {
+          this.$toast.error("Selecciona el Sexo", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
+        if (this.newjugador.categoria == '') {
+          this.$toast.error("Selecciona una Categoria", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
+        this.goNextStep();
+      }
+      
+    },
+    agregaJugador(){  
       if (this.newjugador.foto == '') {
         this.$toast.error("Añade una Fotografia", {
-          position: "top-center",
-          timeout: 1270,
-          closeOnClick: true,
-          pauseOnFocusLoss: true,
-          pauseOnHover: true,
-          draggable: true,
-          draggablePercent: 0.6,
-          showCloseButtonOnHover: false,
-          hideProgressBar: true,
-          closeButton: "button",
-          icon: true,
-          rtl: false
-        });
-        return;
-      }
-      if (this.newjugador.nombre == '') {
-        this.$toast.error("Ingresa el Nombre", {
-          position: "top-center",
-          timeout: 1270,
-          closeOnClick: true,
-          pauseOnFocusLoss: true,
-          pauseOnHover: true,
-          draggable: true,
-          draggablePercent: 0.6,
-          showCloseButtonOnHover: false,
-          hideProgressBar: true,
-          closeButton: "button",
-          icon: true,
-          rtl: false
-        });
-        return;
-      }
-      if (this.newjugador.fecha_nacimiento == '') {
-        this.$toast.error("Ingresa la Fecha de Nacimiento", {
-          position: "top-center",
-          timeout: 1270,
-          closeOnClick: true,
-          pauseOnFocusLoss: true,
-          pauseOnHover: true,
-          draggable: true,
-          draggablePercent: 0.6,
-          showCloseButtonOnHover: false,
-          hideProgressBar: true,
-          closeButton: "button",
-          icon: true,
-          rtl: false
-        });
-        return;
-      }
-      if (this.newjugador.categoria == '') {
-        this.$toast.error("Selecciona una Categoria", {
           position: "top-center",
           timeout: 1270,
           closeOnClick: true,
@@ -1037,13 +1006,14 @@ export default {
       axios.post('jugadores/createJugador',formData).then(response=>{
         this.getJugador();
         $('#createJugador').modal('hide');
+        this.step = 0;
         this.newjugador = {
           foto:'',
           nombre:'',
           fecha_nacimiento:'',
-          edad:'',
-          posicion:'',
-          sexo:'',
+          edad:0,
+          posicion:'Selecciona una Posición',
+          sexo:'Selecciona el Sexo',
           apodo:'',
           categoria:'Selecciona una Categoria',
           sede:this.sede,
@@ -1216,7 +1186,7 @@ export default {
         this.getJugador();
         this.submenuUpdate = false;
         $('#editJugador').modal('hide');
-    
+        this.stepUpdate = 0;  
         Swal.fire({
           title: 'Exitoso',
           text: "Se Edito correctamente!",
