@@ -7,6 +7,8 @@ use App\Helpers\CuerpoTecnicoHelper;
 use App\Repositories\CuerpoTecnicoRepository;
 use App\Models\Perfil;
 use App\Models\Sedes;
+use App\Models\Jugadores;
+
 use DB;
 use Hash;
 
@@ -55,7 +57,8 @@ class CuerpoTecnicoController extends Controller
             }else{
                 $sede = 'Proceso';
             }
-            return view('Cuerpo Tecnico.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos]);
+            $existJugador = Jugadores::count() > 0;
+            return view('Cuerpo Tecnico.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'existJugador'=>$existJugador]);
         }else {
             return view('auth.login');
         }

@@ -7,6 +7,7 @@ use App\Helpers\JugadoresHelper;
 use App\Repositories\JugadoresRepository;
 use App\Models\Perfil;
 use App\Models\Sedes;
+use App\Models\Jugadores;
 
 class JugadoresController extends Controller
 {
@@ -46,7 +47,8 @@ class JugadoresController extends Controller
             }else{
                 $sede = 'Proceso';
             }
-            return view('Jugadores.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos]);
+            $existJugador = Jugadores::count() > 0;
+            return view('Jugadores.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'existJugador'=>$existJugador]);
         }else {
             return view('auth.login');
         }

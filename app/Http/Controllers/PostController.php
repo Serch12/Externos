@@ -10,6 +10,7 @@ use App\Models\Perfil;
 use App\Models\Sedes;
 use App\Models\Post;
 use App\Models\ImagenesComunicado;
+use App\Models\Jugadores;
 use DB;
 use Hash;
 use Cookie;
@@ -44,7 +45,8 @@ class PostController extends Controller
             }else{
                 $sede = 'Proceso';
             }
-            return view('Post.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos]);
+            $existJugador = Jugadores::count() > 0;
+            return view('Post.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'existJugador'=>$existJugador]);
         }else {
             return view('auth.login');
         }

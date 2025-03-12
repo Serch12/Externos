@@ -7,6 +7,7 @@ use App\Helpers\AdministradorHelper;
 use App\Repositories\AdministradorRepository;
 use App\Models\Perfil;
 use App\Models\Sedes;
+use App\Models\Jugadores;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -48,7 +49,8 @@ class AdministradorController extends Controller
             }else{
                 $sede = 'Proceso';
             }
-            return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos]);
+            $existJugador = Jugadores::count() > 0;
+            return view('Administrador.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'existJugador'=>$existJugador]);
         }else {
             return view('auth.login');
         }

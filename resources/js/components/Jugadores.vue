@@ -19,6 +19,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Dorsal</th>
                             <th>Foto</th>
                             <th>Nombre</th>
                             <th>Categoria</th>
@@ -33,6 +34,7 @@
                     <tbody class="table-border-bottom-0">
                         <tr v-for="(jur, index) in Jugadores" :key="index">
                             <td>{{ index+1 }}</td>
+                            <td>{{ jur.num_dorsal }}</td>
                             <td>
                                 <div class="d-flex justify-content-start align-items-center">
                                     <div class="avatar-wrapper">
@@ -1380,7 +1382,11 @@ export default {
     },
     verificaDorsal(){
       this.NombreJugador = false;
-      axios.post('jugadores/verificaDorsal',{ num_dorsal: this.newjugador.num_dorsal }).then(response=>{
+      const datos = {
+        num_dorsal: this.newjugador.num_dorsal,
+        sede: this.sede
+      }
+      axios.post('jugadores/verificaDorsal',datos).then(response=>{
         this.NombreJugador = response.data.jugador;  
       
       })

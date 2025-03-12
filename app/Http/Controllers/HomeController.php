@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Usuarios;
 use App\Models\Perfil;
 use App\Models\Sedes;
+use App\Models\Jugadores;
 use Mail;
 use DB;
 use Hash;
@@ -55,7 +56,8 @@ class HomeController extends Controller
             }else{
                 $sede = 'Proceso';
             }
-            return view('home')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'password'=>$password]);
+            $existJugador = Jugadores::count() > 0;
+            return view('home')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'password'=>$password,'existJugador'=>$existJugador]);
         }else {
             return view('auth.login');
         }

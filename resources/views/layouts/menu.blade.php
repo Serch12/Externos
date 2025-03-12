@@ -51,12 +51,14 @@
           </a>
           <ul class="menu-sub">
             
+           @if ($existJugador == true)
             <li class="menu-item {{ request()->routeIs('torneo') ? 'active' : '' }}">
               <a href="{{ route('torneo') }}" class="menu-link">
                 <i class="menu-icon tf-icons ri-shield-star-line"></i>
                 <div data-i18n="Torneos">Torneos</div>
               </a>
             </li>
+           @endif
            
             @hasanyrole('Root|Administrador|Cuerpo Tecnico|Auxiliar Técnico')
             <li class="menu-item {{ request()->routeIs('jugadores') ? 'active' : '' }}">

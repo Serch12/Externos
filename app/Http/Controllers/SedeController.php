@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Sedes;
 use App\Models\Perfil;
 use App\Models\Usuarios;
+use App\Models\Jugadores;
 use DB;
 use Hash;
 
@@ -38,7 +39,8 @@ class SedeController extends Controller
             }else{
                 $sede = 'Proceso';
             }
-            return view('Sedes.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos]);
+            $existJugador = Jugadores::count() > 0;
+            return view('Sedes.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'existJugador'=>$existJugador]);
         }else {
             return view('auth.login');
         }

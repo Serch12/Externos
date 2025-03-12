@@ -7,6 +7,7 @@ use App\Repositories\TalentosRepository;
 use App\Helpers\TalentosHelper;
 use App\Models\Perfil;
 use App\Models\Sedes;
+use App\Models\Jugadores;
 
 class TalentosControllers extends Controller
 {
@@ -45,7 +46,8 @@ class TalentosControllers extends Controller
             }else{
                 $sede = 'Proceso';
             }
-            return view('TalentosAMFpro.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos]);
+            $existJugador = Jugadores::count() > 0;
+            return view('TalentosAMFpro.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'existJugador'=>$existJugador]);
         }else {
             return view('auth.login');
         }

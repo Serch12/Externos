@@ -66,18 +66,6 @@ class NotificacionController extends Controller
                 $new -> save();
                 event(new TorneoChangedEvent($torneo));
             }
-            // if ($torneo->estatus == 2 ) {
-            //     $new = new Notificacion();
-            //     $new -> descripcion = 'Se realizo el pago del Torneo'.' '. $torneo->torneo;
-            //     $new -> id_user_de = $admin->id;
-            //     $new -> id_user_para = $torneo->creacion;
-            //     $new -> modulo = 'Torneos';
-            //     $new -> detalle_notificacion = 'Aprobado';
-            //     $new -> url = 'torneo';
-            //     $new -> estatus = 1;
-            //     $new -> save();
-            //     event(new TorneoChangedEvent($torneo));
-            // }
         }
     }
 

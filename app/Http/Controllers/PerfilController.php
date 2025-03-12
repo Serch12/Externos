@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Perfil;
 use App\Models\Sedes;
+use App\Models\Jugadores;
 use DB;
 use Cookie;
 
@@ -37,7 +38,8 @@ class PerfilController extends Controller
             }else{
                 $sede = 'Proceso';
             }
-            return view('Perfil.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos]);
+            $existJugador = Jugadores::count() > 0;
+            return view('Perfil.principal')->with(['rol_usuario' => $rol_usuario,'imagen' => $imagen,'sede'=>$sede,'permisos'=>$permisos,'existJugador'=>$existJugador]);
         }else {
             return view('auth.login');
         }

@@ -68,7 +68,10 @@ class JugadoresRepository
      */
     public function verificaDorsal($request){
 
-        $respuesta = Jugadores::select('num_dorsal','nombre')->where('num_dorsal',$request->num_dorsal)->first();
+        $respuesta = Jugadores::select('num_dorsal','nombre')
+        ->where('num_dorsal',$request->num_dorsal)
+        ->where('sede',$request->sede)
+        ->first();
         if ($respuesta) {
             return response()->json(['jugador' => $respuesta->nombre]);
         }else {
