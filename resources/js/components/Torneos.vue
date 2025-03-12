@@ -431,6 +431,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- cuerpo tecnico -->
                         <div class="card mb-6" v-if="this.activeView === 'cuerpo_tecnico'">
                             <h5 class="card-header">Cuerpo Técnico</h5>
                             <div class="card-body pt-0">
@@ -442,10 +443,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>
-                                                            <!-- <input class="form-check-input"
-                                                                type="checkbox"
-                                                                v-model="value"
-                                                                @change="TodoTecnico()"> -->
+
                                                         </th>
                                                         <th>Foto</th>
                                                         <th>Nombre</th>
@@ -550,229 +548,98 @@
                         </div>
                         
                         <!-- Plantilla -->
+
                         <div class="row" v-if="this.activeView == 'plantilla'">
                             <div class="card col-lg-12 me-5">
                                 <h5 class="card-header">Plantilla</h5>
                                 <div class="card-body">
                                     <div class="row" v-if="this.detalleTorneo.estatus == 0||this.detalleTorneo.estatus == 3">
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="col-md mb-12 mb-md-2">
-                                                    <div class="accordion mt-4" id="accordionExample">
-                                                        <div class="accordion-item active">
-                                                            <h2 class="accordion-header" id="headingOne">
-                                                                <button type="button" class="accordion-button"
-                                                                    data-bs-toggle="collapse"
-                                                                    data-bs-target="#accordionOne" aria-expanded="true"
-                                                                    aria-controls="accordionOne">
-                                                                    Jugadores
-                                                                </button>
-                                                            </h2>
-
-                                                            <div id="accordionOne"
-                                                                class="accordion-collapse collapse show"
-                                                                data-bs-parent="#accordionExample">
-                                                                <div class="accordion-body">
-                                                                    <div class="table-responsive text-nowrap mt-2">
-                                                                        <table class="table">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th>
-                                                                                        <input class="form-check-input"
-                                                                                            type="checkbox"
-                                                                                            v-model="value"
-                                                                                            @change="TodoJugador()">
-                                                                                    </th>
-                                                                                    <th>Foto</th>
-                                                                                    <th>Nombre</th>
-                                                                                    <th>Posición</th>
-                                                                                    <th>Sexo</th>
-                                                                                    <th>Edad</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody class="table-border-bottom-0">
-                                                                                <tr v-for="(t, index) in this.PlantillaJugador"
-                                                                                    :key="index"  style="overflow: scroll;">
-                                                                                    <td>
-                                                                                        <input class="form-check-input"
-                                                                                            type="checkbox"
-                                                                                            :id="`check2${index}`"
-                                                                                            v-model="seleccionJugador[t.folio]"
-                                                                                            @change="activaJugador(index, t.folio, t.nombre, t.posicion, t.sexo, t.edad, t.categoria, t.sede)">
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <div
-                                                                                            class="d-flex justify-content-start align-items-center">
-                                                                                            <div class="avatar-wrapper">
-                                                                                                <div
-                                                                                                    class="avatar me-2">
-                                                                                                    <img :src="`ArchivosSistema/Jugadores/${t.id_jugador}/${t.foto}`"
-                                                                                                        alt="Avatar"
-                                                                                                        class="rounded-circle">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>{{ t.nombre }}</td>
-                                                                                    <td>{{ t.posicion }}</td>
-                                                                                    <td>{{ t.sexo }}</td>
-                                                                                    <td>{{ t.edad }}</td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        <infinite-loading force-use-infinite-wrapper=".infinite-wrapper" @infinite="consultaJugador">
-                                                                            <div slot="no-more">
-                                                                                <div class="chip green z-depth-4 white-text">
-                                                                                    <strong>No existen mas datos para cargar.</strong>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div slot="spinner">
-                                                                                <div class="chip yellow z-depth-4 white-text">
-                                                                                    <strong>Cargando...</strong>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div slot="no-results">
-                                                                                <div class="chip red z-depth-4 white-text">
-                                                                                    <strong>Sin resultados</strong>
-                                                                                </div>
-                                                                            </div>
-                                                                        </infinite-loading>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header" id="headingTwo">
-                                                                <button type="button" class="accordion-button"
-                                                                    data-bs-toggle="collapse"
-                                                                    data-bs-target="#accordionTwo" aria-expanded="true"
-                                                                    aria-controls="accordionTwo">
-                                                                    Jugadores Prestamo
-                                                                </button>
-                                                            </h2>
-                                                            <div id="accordionTwo" class="accordion-collapse collapse show"
-                                                                aria-labelledby="headingTwo"
-                                                                data-bs-parent="#accordionExample">
-                                                                <div class="accordion-body">
-                                                                    <div class="table-responsive text-nowrap mt-2">
-                                                                        <table class="table">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th></th>
-                                                                                    <th>Foto</th>
-                                                                                    <th>Nombre</th>
-                                                                                    <th>Posición</th>
-                                                                                    <th>Sexo</th>
-                                                                                    <th>Edad</th>
-                                                                                    <th>Sede</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody class="table-border-bottom-0">
-                                                                                <tr v-for="(t, index) in this.PlantillaPrestamo"
-                                                                                    :key="index">
-                                                                                    <td>
-                                                                                        <input class="form-check-input"
-                                                                                            type="checkbox" value=""
-                                                                                            :id="`checkpres${index}`"
-                                                                                            v-model="seleccionPrestamo[t.folio]"
-                                                                                            @change="activaPrestamo(index, t.folio, t.nombre, t.posicion, t.sexo, t.edad, t.categoria, t.sede)">
-                                                                                    </td>
-                                                                                    <td>
-                                                                                        <div
-                                                                                            class="d-flex justify-content-start align-items-center">
-                                                                                            <div class="avatar-wrapper">
-                                                                                                <div class="avatar me-2">
-                                                                                                    <img :src="`ArchivosSistema/Jugadores/${t.id_jugador}/${t.foto}`"
-                                                                                                        alt="Avatar"
-                                                                                                        class="rounded-circle">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td>{{ t.nombre }}</td>
-                                                                                    <td>{{ t.posicion }}</td>
-                                                                                    <td>{{ t.sexo }}</td>
-                                                                                    <td>{{ t.edad }}</td>
-                                                                                    <td>{{ t.sede }}</td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        <infinite-loading force-use-infinite-wrapper=".infinite-wrapper" @infinite="consultaPrestamo">
-                                                                            <div slot="no-more">
-                                                                                <div class="chip green z-depth-4 white-text">
-                                                                                    <strong>No existen mas datos para cargar.</strong>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div slot="spinner">
-                                                                                <div class="chip yellow z-depth-4 white-text">
-                                                                                    <strong>Cargando...</strong>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div slot="no-results">
-                                                                                <div class="chip red z-depth-4 white-text">
-                                                                                    <strong>Sin resultados</strong>
-                                                                                </div>
-                                                                            </div>
-                                                                        </infinite-loading>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                            
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <h5>Jugadores Seleccionados</h5>
+                                        <div class="col-lg-12">
                                             <div class="table-responsive text-nowrap mt-2">
-                                                <table class="table" style="font-size: 12px;">
+                                                <table class="table">
                                                     <thead>
                                                         <tr>
-                                                            <th>#</th>
-                                                            <!-- <th>Folio</th> -->
+                                                            <th>
+                                                                <!-- <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    v-model="value"
+                                                                    @change="TodoJugador()"> -->
+                                                            </th>
+                                                            <th>Foto</th>
+                                                            <th>Dorsal</th>
                                                             <th>Nombre</th>
                                                             <th>Posición</th>
                                                             <th>Sexo</th>
                                                             <th>Edad</th>
                                                             <th>Sede</th>
-                                                            <th>Acciones</th>
+                                                            <th>Zona</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="table-border-bottom-0">
-                                                        <tr v-for="(t, index) in this.JugadorSeleccionado" :key="index">
+                                                        <tr v-for="(t, index) in this.PlantillaJugador"
+                                                            :key="index"  style="overflow: scroll;">
                                                             <td>
-                                                                {{ index + 1 }}
+                                                                <input class="form-check-input"
+                                                                    type="checkbox"
+                                                                    :id="`check2${index}`"
+                                                                    v-model="seleccionJugador[t.folio]"
+                                                                    @change="activaJugador(index, t.folio, t.num_dorsal, t.nombre, t.posicion, t.sexo, t.edad, t.categoria, t.sede, t.prestamo)">
                                                             </td>
-                                                            <!-- <td>{{ t.folio }}</td> -->
+                                                            <td>
+                                                                <div
+                                                                    class="d-flex justify-content-start align-items-center">
+                                                                    <div class="avatar-wrapper">
+                                                                        <div
+                                                                            class="avatar me-2">
+                                                                            <img :src="`ArchivosSistema/Jugadores/${t.id_jugador}/${t.foto}`"
+                                                                                alt="Avatar"
+                                                                                class="rounded-circle">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <th>{{ t.num_dorsal }}</th>
                                                             <td>{{ t.nombre }}</td>
                                                             <td>{{ t.posicion }}</td>
                                                             <td>{{ t.sexo }}</td>
                                                             <td>{{ t.edad }}</td>
                                                             <td>{{ t.sede }}</td>
-                                                            <td>
-                                                                <button type="button"
-                                                                    class="btn btn-icon btn-outline-danger waves-effect"
-                                                                    @click="deleteSelect(t.id_plantilla)">
-                                                                    <i class="tf-icons ri-delete-bin-fill ri-22px"></i>
-                                                                </button>
-                                                            </td>
+                                                            <th>
+                                                                <span class="badge rounded-pill bg-label-success me-1" v-if="t.zona == 'Local'">{{t.zona}}</span>
+                                                                <span class="badge rounded-pill bg-label-warning me-1" v-if="t.zona == 'Foraneo'">{{t.zona}}</span>
+                                                            </th>
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                <infinite-loading force-use-infinite-wrapper=".infinite-wrapper" @infinite="consultaJugador">
+                                                    <div slot="no-more">
+                                                        <div class="chip green z-depth-4 white-text">
+                                                            <strong>No existen mas datos para cargar.</strong>
+                                                        </div>
+                                                    </div>
+                                                    <div slot="spinner">
+                                                        <div class="chip yellow z-depth-4 white-text">
+                                                            <strong>Cargando...</strong>
+                                                        </div>
+                                                    </div>
+                                                    <div slot="no-results">
+                                                        <div class="chip red z-depth-4 white-text">
+                                                            <strong>Sin resultados</strong>
+                                                        </div>
+                                                    </div>
+                                                </infinite-loading>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row" v-else>
                                         <div class="col-lg-12">
-                                            <h5>Jugadores Seleccionados</h5>
+                                        <h5>Jugadores Seleccionados</h5>
                                             <div class="table-responsive text-nowrap mt-2">
                                                 <table class="table">
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
-                                                            <!-- <th>Folio</th> -->
+                                                            <th>Dorsal</th>
                                                             <th>Nombre</th>
                                                             <th>Posición</th>
                                                             <th>Sexo</th>
@@ -786,19 +653,12 @@
                                                             <td>
                                                                 {{ index + 1 }}
                                                             </td>
-                                                            <!-- <td>{{ t.folio }}</td> -->
+                                                            <td>{{ t.num_dorsal }}</td>
                                                             <td>{{ t.nombre }}</td>
                                                             <td>{{ t.posicion }}</td>
                                                             <td>{{ t.sexo }}</td>
                                                             <td>{{ t.edad }}</td>
                                                             <td>{{ t.sede }}</td>
-                                                            <!-- <td>
-                                                                <button type="button"
-                                                                    class="btn btn-icon btn-outline-danger waves-effect"
-                                                                    @click="deleteSelect(t.id_plantilla)">
-                                                                    <i class="tf-icons ri-delete-bin-fill ri-22px"></i>
-                                                                </button>
-                                                            </td> -->
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -807,8 +667,9 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+
+
                         <!-- Info pago -->
                         <div class="card mb-6" v-if="this.activeView == 'pago' && this.ProveedoresIntranet.length == 0">
                             <h5 class="card-header">Forma de Pago</h5>
@@ -1970,11 +1831,13 @@ export default {
                     this.cargaSeleccionado.push({
                         folio: this.PlantillaJugador[index].folio,
                         nombre: this.PlantillaJugador[index].nombre,
+                        num_dorsal: this.PlantillaJugador[index].num_dorsal,
                         posicion: this.PlantillaJugador[index].posicion,
                         sexo: this.PlantillaJugador[index].sexo,
                         edad: this.PlantillaJugador[index].edad,
                         categoria: this.PlantillaJugador[index].categoria,
                         sede: this.PlantillaJugador[index].sede,
+                        prestamo: this.PlantillaJugador[index].prestamo
                     });
 
 
@@ -1997,18 +1860,20 @@ export default {
                 this.cargaSeleccionado = [];
             }
         },
-        activaJugador(index, folio, nombre, posicion, sexo, edad, categoria, sede) {
+        activaJugador(index, folio, num_dorsal, nombre, posicion, sexo, edad, categoria, sede, prestamo) {
             var num = $(`#check2${index}`).prop('checked');
 
             if (num == true) {
                 var nuevoJugador = {
                     folio: folio,
+                    num_dorsal: num_dorsal,
                     nombre: nombre,
                     posicion: posicion,
                     sexo: sexo,
                     edad: edad,
                     categoria: categoria,
                     sede: sede,
+                    prestamo: prestamo
                 };
                 let formData = new FormData();
                 formData.append('bandera', 'individual');
@@ -2145,50 +2010,6 @@ export default {
             });
 
             
-        },
-        consultaPrestamo($state){
-            if (this.cargando2 || this.noMasDatos2) {
-                $state.complete(); 
-                return;
-            }
-
-            this.cargando2 = true; 
-            var doctor2 = 0;
-            if (this.page1 === 1) this.PlantillaPrestamo = [];
-            
-            this.page1++;
-
-            var url = `torneo/plantillaJugador?sede=${this.detalleTorneo.sede}&categoria=${this.detalleTorneo.categoria}&doctor2=${doctor2}&page1=${this.page1}`;
-            
-            axios.get(url).then(response => {
-                let posts = response.data.prestamo;
-                if (posts.length) {
-                    let nuevosDatos = posts.filter(nuevo => 
-                        !this.PlantillaPrestamo.some(existente => existente.id === nuevo.id)
-                    );
-                    this.PlantillaPrestamo = this.PlantillaPrestamo.concat(nuevosDatos);
-                    $state.loaded();
-                } else {
-                    $state.complete();
-                }
-
-                this.JugadorSeleccionado.map(jugador => {
-                this.PlantillaJugador.map(j => {
-                        if (j.folio === jugador.folio) {
-                            this.seleccionJugador[j.folio] = true;
-                        }
-                    });
-                    this.PlantillaPrestamo.map(p => {
-                        if (p.folio === jugador.folio) {
-                            this.seleccionPrestamo[p.folio] = true;
-                        }
-                    });
-
-                });
-            }).catch(error => {
-                console.error("Error al cargar los datos:", error);
-                $state.complete();
-            });
         },
         onChangeIncripcion(){
             var fileedit = this.$refs.fileInscripcion.files[0];

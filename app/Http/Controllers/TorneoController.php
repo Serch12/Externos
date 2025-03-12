@@ -90,9 +90,10 @@ class TorneoController extends Controller
         $categoria = $request->categoria;
         $sede = $request->sede;
         $plantilla = $this->TorneoRepository->plantillaJugador($categoria,$sede);
-        $prestamo = $this->TorneoRepository->prestamoJugador($categoria,$sede);
+    
+         
 
-       return response()->json(['plantilla' =>$plantilla,'prestamo'=>$prestamo]);
+       return response()->json(['plantilla' =>$plantilla]);
     }
 
 

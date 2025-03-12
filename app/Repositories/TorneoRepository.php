@@ -119,11 +119,27 @@ class TorneoRepository
      **/
     public function plantillaJugador($categoria,$sede){
         $respuesta = Jugadores::select('*')
-            ->where('categoria',$categoria)
-            ->where('sede',$sede)
-            ->where('estatus',0)
-            ->orderBy('id_jugador','DESC')
-            ->get(); 
+        ->where('categoria', $categoria)
+        ->where('estatus', 0)
+        ->where(function($query) use ($sede) {
+            $query->where('sede', $sede) 
+                ->orWhere(function($query) use ($sede) {
+                    $query->where('sede', '!=', $sede) 
+                        ->where('prestamo', 1);
+                });
+        })
+        ->orderByRaw("sede = ? DESC", [$sede])
+        ->orderBy('id_jugador', 'DESC') 
+        ->get();
+
+        foreach ($respuesta as $j) {
+            if ($j->sede == $sede) {
+                $j->zona = 'Local';
+            } else {
+                $j->zona = 'Foraneo';
+            }
+        }
+
         return $respuesta;
     }
 
@@ -174,12 +190,14 @@ class TorneoRepository
             $new = new PlantillaJugador();
             $new -> id_torneo = $request -> id_torneo;
             $new -> folio = $seleccion -> folio;
+            $new -> num_dorsal = $seleccion -> num_dorsal;
             $new -> nombre = $seleccion -> nombre;
             $new -> posicion = $seleccion -> posicion;
             $new -> sexo = $seleccion -> sexo;
             $new -> edad = $seleccion -> edad;
             $new -> categoria = $seleccion -> categoria;
             $new -> sede = $seleccion -> sede;
+            $new -> prestamo = $seleccion -> prestamo;
             $new -> save();
         }
         if ($request->bandera === 'multiple') {
@@ -188,12 +206,14 @@ class TorneoRepository
                 $new = new PlantillaJugador();
                 $new -> id_torneo = $request -> id_torneo;
                 $new -> folio = $value -> folio;
+                $new -> num_dorsal = $value -> num_dorsal;
                 $new -> nombre = $value -> nombre;
                 $new -> posicion = $value -> posicion;
                 $new -> sexo = $value -> sexo;
                 $new -> edad = $value -> edad;
                 $new -> categoria = $value -> categoria;
                 $new -> sede = $value -> sede;
+                $new -> prestamo = $value -> prestamo;
                 $new -> save();
             } 
         }
