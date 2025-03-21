@@ -104,4 +104,28 @@ class TalentosControllers extends Controller
         return $this->TalentosRepository->Talentodelete($request);
     }
 
+    /* FUNCIONES DE BANNERS */
+
+    /**
+     * Funcion que mostarra los banners
+     **/
+    public function getBanner(Request $request){
+        $date = $this->TalentosRepository->getBanner($request);
+        return response()->json(['date'=>$date,
+        'pagination'=>['total' => $date->total(),
+            'current_page' => $date->currentPage(),
+            'per_page' => $date->perPage(),
+            'last_page' => $date->lastPage(),
+            'from' => $date->firstItem(),
+            'to' => $date->lastPage()
+        ]]);
+    }
+
+    /**
+     * funciones que se registrara los banners
+     **/
+    public function createBanner(Request $request){
+        return $this->TalentosRepository->createBanner($request);
+    }
+
 }

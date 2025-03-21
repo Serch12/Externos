@@ -84,6 +84,11 @@ return [
             'root' => public_path().'/ArchivosSistema/Talentos',
             'visibility' => 'public', 
         ],
+        'datebanner' => [
+            'driver' => 'local',
+            'root' => public_path().'/ArchivosSistema/BannerDate',
+            'visibility' => 'public', 
+        ],
 
         's3' => [
             'driver' => 's3',
