@@ -1,110 +1,170 @@
 <template>
     <div>
-        <!-- vista de Talentos AMFpro -->
-        <div id="main" v-if="this.vista == 0"> 
-            <div class="row g-6" >
-                <div class="card">
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <h5 class="card-header">Talentos AMFpro</h5>
+        <div id="main" v-if="this.vista == 0">
+            <div class="col-md-12">
+                <div class="card mb-6">
+                <div class="card-header p-0">
+                    <div class="nav-align-top">
+                        <ul class="nav nav-tabs nav-fill" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button type="button" class="nav-link waves-effect active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-home" aria-controls="navs-justified-home" aria-selected="true">
+                                    <span class="d-none d-sm-block"><i class="tf-icons ri-football-line me-2"></i> Talentos AMFpro </span><i class="ri-football-line ri-20px d-sm-none"></i></button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button type="button" class="nav-link waves-effect" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-profile" aria-controls="navs-justified-profile" aria-selected="false" tabindex="-1">
+                                    <span class="d-none d-sm-block"><i class="tf-icons ri-git-repository-line me-2"></i> Banners Talentos</span><i class="ri-git-repository-line ri-20px d-sm-none"></i></button>
+                            </li>
+                            <span class="tab-slider" style="left: 0px; width: 165.135px; bottom: 0px;"></span>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body pt-5">
+                    <div class="tab-content p-0">
+                        <div class="tab-pane fade active show" id="navs-justified-home" role="tabpanel">
+                            <div class="row g-6 mt-2">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <h5 class="card-header">Talentos AMFpro</h5>
+                                    </div>
+                                    <div class="col-12 col-md-6 mt-3">
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <input type="search" id="email" class="form-control" v-model="search"
+                                                placeholder="Buscar Talentos AMFpro" @keyup="buscarTalentos()" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-lg-12 col-md-12" v-if="this.Talentos.length == 0">
+                                    <center>
+                                        <h5 class="card-header text-success">Sin Información</h5>
+                                        <img src="style/logos/img_no hay datos.png" alt="img_sindato" style="width: 200px;">
+                                    </center>
+                                </div>
+                                <div class="row" v-else>
+                                    <div class="table-responsive text-nowrap mt-2">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Banner</th>
+                                                    <th>Fecha</th>
+                                                    <th>Año</th>
+                                                    <th>Copa</th>
+                                                    <th>Fase</th>
+                                                    <th>Categoria</th>
+                                                    <th>Estatus</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-border-bottom-0">
+                                                <tr v-for="(t, index) in Talentos" :key="index">
+                                                    <td>{{ index+1 }}</td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-start align-items-center" >
+                                                            <div class="avatar-wrapper">
+                                                                <div class="avatar me-2" >
+                                                                    <img :src="`https://test-intranet.amfpro.mx/ArchivosSistema/GaleriaTalentos/${t.hidder}`" v-if="t.exit_hidder == false">
+                                                                    <img :src="`ArchivosSistema/Talentos/${t.hidder}`" v-else>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td><center>{{ t.fecha }}</center></td>
+                                                    <td>{{ t.year }}</td>
+                                                    <td>{{ t.copa }}</td>
+                                                    <td>{{ t.fase }}</td>
+                                                    <td>{{ t.categoria }}</td>
+                                                    <td>
+                                                        <center>
+                                                            <button class="btn btn-outline-primary btn-icon waves-effect" v-if="t.estatus == 0" @click="activacionEstatus(t.id_talento,t.estatus)">
+                                                                <i class="ri-checkbox-circle-fill ri-22px"></i>
+                                                            </button>
+                                                            <button class="btn btn-outline-danger btn-icon waves-effect" v-else @click="activacionEstatus(t.id_talento,t.estatus)">
+                                                                <i class="ri-close-circle-fill ri-22px"></i>
+                                                            </button>
+                                                        </center>
+                                                    </td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                                <i class="ri-more-2-line"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" type="button" style="color: orange;"
+                                                                    v-if="include('Vizualizar')" @click="muestra(1), infoTalento(t)">
+                                                                    <i class="ri-clipboard-line me-1"></i> Vizualizar</a>
+                                                                <a class="dropdown-item" type="button" style="color: #33b2ff;"
+                                                                    v-if="include('Editar') && (t.estatus == 0)" @click="muestra(2), infoTalento(t)">
+                                                                    <i class="ri-pencil-line me-1"></i> Editar</a>
+                                                                <a class="dropdown-item" type="button" style="color: red;"
+                                                                    v-if="include('Eliminar') && (t.estatus == 0)" @click="Talentodelete(t.id_talento)">
+                                                                    <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <nav aria-label="Page navigation example mt-3">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item disabled" v-if="pagination.current_page > 1">
+                                                    <a @click.prevent="changePage(pagination.current_page - 1)" class="page-link"
+                                                        href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                                </li>
+                                                <li class="page-item" v-for="(page, index) in pageNumber" :key="index"
+                                                    @click.prevent="changePage(page)"
+                                                    v-bind:class="[page == isActived ? 'active' : 'waves-effect']">
+                                                    <a class="page-link" href="#">{{ page }}</a>
+                                                </li>
+                                                <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                                                    <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link"
+                                                        href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-12 col-md-6 mt-3">
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <input type="search" id="email" class="form-control" v-model="search"
-                                    placeholder="Buscar Talentos AMFpro" @keyup="buscarTalentos()" />
+                        <div class="tab-pane fade" id="navs-justified-profile" role="tabpanel">
+                            <div class="row g-6 mt-2">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <h5 class="card-header">Banners Talento</h5>
+                                    </div>
+                                    <div class="col-12 col-md-6 mt-3">
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Registro" @keyup="buscarUsuario()"/>
+                                            <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#altaBanner">Agregar</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-6 col-md-6" v-for="(r, index) in BannerTable" :key="index" style="border-color: #33b2ff;">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="role-heading">
+                                                        <div class="d-flex justify-content-start align-items-center">
+                                                            <div class="avatar-wrapper">
+                                                                <div class="avatar me-2" >
+                                
+                                                                    <img :src="`ArchivosSistema/BannerDate/${r.banners}`" class="w-px-100" />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <a type="button" data-bs-toggle="modal" data-bs-target="#updateSedeModal" class="role-edit-modal" style="color: #4caf50;" @click="infoSede(r)">
+                                                        <p class="mb-0">Editar Sede</p>
+                                                    </a>
+                                                    </div>
+                                                    <a type="button" class="text-danger" @click="deleteSede(r)"><i class="ri-delete-bin-6-fill ri-22px"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12" v-if="this.Talentos.length == 0">
-                        <center>
-                            <h5 class="card-header text-success">Sin Información</h5>
-                            <img src="style/logos/img_no hay datos.png" alt="img_sindato" style="width: 200px;">
-                        </center>
-                    </div>
-                    <div class="row" v-else>
-                        <div class="table-responsive text-nowrap mt-2">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Banner</th>
-                                        <th>Fecha</th>
-                                        <th>Año</th>
-                                        <th>Copa</th>
-                                        <th>Fase</th>
-                                        <th>Categoria</th>
-                                        <th>Estatus</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-border-bottom-0">
-                                    <tr v-for="(t, index) in Talentos" :key="index">
-                                        <td>{{ index+1 }}</td>
-                                        <td>
-                                            <div class="d-flex justify-content-start align-items-center" >
-                                                <div class="avatar-wrapper">
-                                                    <div class="avatar me-2" >
-                                                        <img :src="`https://test-intranet.amfpro.mx/ArchivosSistema/GaleriaTalentos/${t.hidder}`" v-if="t.exit_hidder == false">
-                                                        <img :src="`ArchivosSistema/Talentos/${t.hidder}`" v-else>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><center>{{ t.fecha }}</center></td>
-                                        <td>{{ t.year }}</td>
-                                        <td>{{ t.copa }}</td>
-                                        <td>{{ t.fase }}</td>
-                                        <td>{{ t.categoria }}</td>
-                                        <td>
-                                            <center>
-                                                <button class="btn btn-outline-primary btn-icon waves-effect" v-if="t.estatus == 0" @click="activacionEstatus(t.id_talento,t.estatus)">
-                                                    <i class="ri-checkbox-circle-fill ri-22px"></i>
-                                                </button>
-                                                <button class="btn btn-outline-danger btn-icon waves-effect" v-else @click="activacionEstatus(t.id_talento,t.estatus)">
-                                                    <i class="ri-close-circle-fill ri-22px"></i>
-                                                </button>
-                                            </center>
-                                        </td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                    <i class="ri-more-2-line"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" type="button" style="color: orange;"
-                                                        v-if="include('Vizualizar')" @click="muestra(1), infoTalento(t)">
-                                                        <i class="ri-clipboard-line me-1"></i> Vizualizar</a>
-                                                    <a class="dropdown-item" type="button" style="color: #33b2ff;"
-                                                        v-if="include('Editar') && (t.estatus == 0)" @click="muestra(2), infoTalento(t)">
-                                                        <i class="ri-pencil-line me-1"></i> Editar</a>
-                                                    <a class="dropdown-item" type="button" style="color: red;"
-                                                        v-if="include('Eliminar') && (t.estatus == 0)" @click="Talentodelete(t.id_talento)">
-                                                        <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <nav aria-label="Page navigation example mt-3">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item disabled" v-if="pagination.current_page > 1">
-                                        <a @click.prevent="changePage(pagination.current_page - 1)" class="page-link"
-                                            href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                    </li>
-                                    <li class="page-item" v-for="(page, index) in pageNumber" :key="index"
-                                        @click.prevent="changePage(page)"
-                                        v-bind:class="[page == isActived ? 'active' : 'waves-effect']">
-                                        <a class="page-link" href="#">{{ page }}</a>
-                                    </li>
-                                    <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                        <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link"
-                                            href="#">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -372,18 +432,122 @@
                 </form>
             </div>
         </div>
+        <!-- Modal de alta de banner -->
+        <div class="modal fade" id="altaBanner" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalFullTitle" style="color: green;">Registro Banners</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="card-body">
+                            <!-- <h6>Datos del Torneo</h6> -->
+                            <div class="row g-6">
+                                <div class="col-md-4">
+                                    <div class="user-profile-header-banner">
+                                        <img src="style/assets/img/fondo5.jpg" alt="Banner image" class="rounded-top" style="height: 200px;" v-if="this.newBanner.banner == ''"/>
+                                        <img :src="imagenBanner" alt="Banner image" class="rounded-top" style="height: 200px;" v-else>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn rounded-pill btn-success waves-effect waves-light" v-if="include('Crear')" for="file-banner"  onclick="document.getElementById('file-banner').click()">Agregar</button>
+                                    <input type="file" id="file-banner" ref="bannernew" accept="image/*" style="display: none;" @change="onChangeFileUploadBanner()" multiple/>
+                                </div>
+                                <div class="col-md-6">
+                                    <p style="color: red;">Ingresa los proximos torneos</p>
+                                    <div class="edit_container" style="overflow: hidden;">
+                                        <quill-editor
+                                            v-model="newBanner.prox_torneo"
+                                            style="height: 200%;"
+                                            ref="myQuillEditorEditar"
+                                            :options="editorOption"
+                                            
+                                            @blur="onEditorBlur($event)"
+                                            @focus="onEditorFocus($event)"
+                                            @change="onEditorChange($event)">
+                                        </quill-editor>
+                                    </div>
+                                </div>
+                               
+                                <hr class="mt-4" style="color:black">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <h5 class="card-header">Galeria</h5>
+                                        </div>
+                                        <div class="col-12 col-md-6 mt-3">
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                <button type="button" class="btn rounded-pill btn-success waves-effect waves-light" v-if="include('Crear')" for="file-upload"  onclick="document.getElementById('file-upload').click()">Agregar</button>
+                                                <input type="file" id="file-upload" ref="escudo" accept="image/*" style="display: none;" @change="imgPops()" multiple/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <center v-if="this.galeriaBanner.length == 0">
+                                        <h5 class="card-header text-success">Sin Imagenes</h5>
+                                        <img src="style/logos/img_no hay datos.png" alt="img_sindato" style="width: 150px;">
+                                    </center>
+                                    <div class="table-responsive text-nowrap mt-2" v-else>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>IMG</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-border-bottom-0">
+                                                <tr v-for="(img, index) in galeriaBanner" :key="index">
+                                                    <td>{{ index+1 }}</td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-start align-items-center">
+                                                            <div class="avatar-wrapper">
+                                                                <div class="avatar me-2" >
+                                
+                                                                    <img :src="img.url" class="w-px-100" />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <button type="button" class="btn btn-outline-danger btn-icon waves-effect" @click="deletPops(index,img.id_img_talento)">
+                                                            <i class="ri-delete-bin-line ri-22px"></i>
+                                                        </button>
+                                                    </td>
+                                                    
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" @click="agregaBanner()">Guardar</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"> Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <br><br><br>
     </div>
 </template>
 <script>
 import axios from 'axios';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import { quillEditor } from 'vue-quill-editor';
 import { register } from 'swiper/element/bundle'
 register()
 
 export default {
     name: '',
     components: {
-        
+        quillEditor,
     },
     mixins: [],
     props: [
@@ -402,6 +566,15 @@ export default {
             Talentos:[],
             detalleTalento:[],
             galeriaTalento:[],
+            /* Banner */
+            BannerTable:[],
+            newBanner:{
+                banner:'',
+                prox_torneo:''
+            },
+            galeriaBanner:[],
+            imagenBanner:'',
+            editorOption: {},
             offset: 2,
             pagination: {
                 'total': 0,
@@ -443,6 +616,7 @@ export default {
     },
     mounted() {
         this.getTalentos();
+        this.getBanner();
     },
     methods: {
         getTalentos(page) {
@@ -592,9 +766,134 @@ export default {
 
                 }
             });
-        }
+        },
 
-    }
+
+        getBanner(page) {
+            let url = `talentos/getBanner?buscador=${this.search}&page=` + page;
+            axios.get(url).then(response => {
+                this.BannerTable = response.data.date.data;
+                this.pagination2 = response.data.pagination2;
+            });
+        },
+
+
+        onChangeFileUploadBanner(){
+            this.filenew = this.$refs.bannernew.files[0];
+            if (this.filenew.type != 'image/png' && this.filenew.type != 'image/jpeg') {
+                swal('Solo se permiten archivos PNG y JPEG', {
+                    position: 'center',
+                    icon: 'error',
+                    buttons: false,
+                    timer: 1600
+                })
+                this.$refs.bannernew.value = null;
+                return;
+            }
+            this.newBanner.banner = this.filenew
+            this.cargarImagen(this.filenew)
+        },
+        cargarImagen(file){
+            let reader = new FileReader();
+
+            reader.onload = (e) => {
+                this.imagenBanner = e.target.result
+            }
+            reader.readAsDataURL(file)
+        },
+        imgPops(){
+            const archivos = this.$refs.escudo.files;
+            for (let index = 0; index < archivos.length; index++) {
+                const img = archivos[index];
+                this.galeriaBanner.push({
+                    img: img,
+                    url: URL.createObjectURL(img)
+                });
+            }
+        },
+        deletPops(index) {
+            
+            URL.revokeObjectURL(this.galeriaBanner[index].url); 
+            this.galeriaBanner.splice(index, 1);
+        },
+
+        agregaBanner(){
+            if (this.newBanner.banner == '') {
+                this.$toast.error("Ingresa un Banner", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+            }
+            if (this.newBanner.prox_torneo == '') {
+                this.$toast.error("Ingresa los Proximos Torneos", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+            }
+            if (this.galeriaBanner.length == 0) {
+                this.$toast.error("Agrega imagenes a la Galeria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+            }
+            
+            let formData = new FormData();
+                formData.append('banners',this.newBanner.banner);
+                formData.append('prox_torneo',this.newBanner.prox_torneo);
+                // formData.append('galeriaBanner',JSON.stringify(this.galeriaBanner));
+                for (let i = 0; i < this.galeriaBanner.length; i++) {
+                    formData.append('img[' + i + ']', this.galeriaBanner[i].img);
+                }
+            axios.post('talentos/createBanner',formData).then(response=>{
+                $('#altaBanner').modal('hide');
+                this.newBanner = {
+                    banner:'',
+                    prox_torneo:'',
+                }
+                Swal.fire({
+                    title: 'Exitoso',
+                    text: "Se Agrego Correctamente!",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            })
+        },
+        onEditorReady (editor) {}, // prepara el editor
+        onEditorBlur () {}, // Evento de pérdida de foco
+        onEditorFocus () {}, // Obtiene el evento de enfoque
+        onEditorChange () {}, // evento de cambio de contenido
+}
 };
 </script>
 <style scoped>

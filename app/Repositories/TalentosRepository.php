@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Talentos;
 use App\Models\IMGTalentos;
 use App\Models\Torneo;
+use App\Models\DateBanners;
+use App\Models\DateIMGBanners;
 use Carbon\Carbon;
 use DateTime;
 use Mail;
@@ -149,5 +151,60 @@ class TalentosRepository
             }
         $delete->delete();
        return $delete;
+    }
+
+    /* FUNCIONES DE BANNERS */
+
+    /**
+     * funcion que mostrar los banner
+     **/
+    public function getBanner($request) {
+        $parametro = $request->buscador;
+
+        $data = DateBanners::select('*')
+            // ->where(function($query) use ($parametro) {
+            //     $query->where('copa','LIKE','%'.$parametro.'%')
+            //     ->orWhere('fase','LIKE','%'.$parametro.'%')
+            //     ->orWhere('categoria','LIKE','%'.$parametro.'%');
+            // })
+            ->orderBy('id_banner','DESC')
+            ->paginate(10);
+        return $data;
+    }
+
+    /**
+     * funciones que se registrara los banners
+     **/
+    public function createBanner($request){
+        
+        $new = new DateBanners();
+        $banners = $request->file('banners');
+        if (isset($banners)) {
+            $file = $request->file('banners');
+            //obtenemos el nombre del archivo
+            $nombre = $file->getClientOriginalName();
+            $url = $nombre;
+            //indicamos que queremos guardar un nuevo archivo en el disco local
+            \Storage::disk('datebanner')->put($url,  \File::get($file));
+            $new->banners= $url;
+        }
+        $new -> prox_torneo = $request -> prox_torneo;
+        $new -> save();
+
+        $galeria = $request->file('galeriaBanner');
+        if (isset($galeria)){
+            foreach ($request->file('galeriaBanner') as $key => $value) {
+                $imagen = new DateIMGBanners();
+                $imagen->id_banner = $new->id_banner;
+                //obtenemos el nombre del archivo
+                $nombre = $value->getClientOriginalName();
+                $urlimagen = $new->id_banner.'gale'."-". $nombre;
+                //indicamos que queremos guardar un nuevo archivo en el disco local
+                \Storage::disk('datebanner')->put($urlimagen,  \File::get($value));
+                $imagen->img_banner = $urlimagen;
+                $imagen->save();
+            }
+        }
+        return $new;
     }
 }
