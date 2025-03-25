@@ -7,7 +7,7 @@ use App\Models\Talentos;
 use App\Models\IMGTalentos;
 use App\Models\Torneo;
 use App\Models\DateBanners;
-use App\Models\DateIMGBanners;
+use App\Models\DateIMGBanner;
 use Carbon\Carbon;
 use DateTime;
 use Mail;
@@ -191,10 +191,10 @@ class TalentosRepository
         $new -> prox_torneo = $request -> prox_torneo;
         $new -> save();
 
-        $galeria = $request->file('galeriaBanner');
+        $galeria = $request->file('img');
         if (isset($galeria)){
-            foreach ($request->file('galeriaBanner') as $key => $value) {
-                $imagen = new DateIMGBanners();
+            foreach ($request->file('img') as $key => $value) {
+                $imagen = new DateIMGBanner();
                 $imagen->id_banner = $new->id_banner;
                 //obtenemos el nombre del archivo
                 $nombre = $value->getClientOriginalName();
@@ -206,5 +206,13 @@ class TalentosRepository
             }
         }
         return $new;
+    }
+
+    /**
+     * funcion que muestra la galeria de bannersgaleria
+     **/
+    public function Bannergaleria($id){
+        $gale = DateIMGBanner::where('id_banner',$id)->get();
+        return $gale;
     }
 }

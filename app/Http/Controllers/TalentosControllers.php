@@ -128,4 +128,11 @@ class TalentosControllers extends Controller
         return $this->TalentosRepository->createBanner($request);
     }
 
+    /**
+     * funcion que mostrara los Bannergaleria
+     **/
+    public function Bannergaleria($id){
+        return $this->TalentosRepository->Bannergaleria($id);
+    }
+
 }
