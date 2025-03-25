@@ -12,4 +12,5 @@ Route::post('/talentos/Talentodelete', [TalentosControllers::class, 'Talentodele
 
 Route::get('/talentos/getBanner', [TalentosControllers::class, 'getBanner'])->name('talentos/getBanner');
 Route::post('/talentos/createBanner', [TalentosControllers::class, 'createBanner'])->name('talentos/createBanner');
-Route::get('/talentos/Bannergaleria/{id}', [TalentosControllers::class, 'Bannergaleria'])->name('talentos/Bannergaleria/{id}');
+Route::post('/talentos/InactivoActivo', [TalentosControllers::class, 'InactivoActivo'])->name('talentos/InactivoActivo');
+Route::post('/talentos/deleteBanner', [TalentosControllers::class, 'deleteBanner'])->name('talentos/deleteBanner');
