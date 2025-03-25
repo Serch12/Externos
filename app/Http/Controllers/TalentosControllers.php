@@ -129,10 +129,17 @@ class TalentosControllers extends Controller
     }
 
     /**
-     * funcion que mostrara los Bannergaleria
+     * funcion de activacion/desactivacion de banners
      **/
-    public function Bannergaleria($id){
-        return $this->TalentosRepository->Bannergaleria($id);
+    public function InactivoActivo(Request $request){
+        return $this->TalentosRepository->InactivoActivo($request);
+    }
+
+    /**
+     * funcion de delete de banners
+     **/
+    public function deleteBanner(Request $request){
+        return $this->TalentosRepository->deleteBanner($request);
     }
 
 }

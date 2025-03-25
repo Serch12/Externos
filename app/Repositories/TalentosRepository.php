@@ -161,13 +161,9 @@ class TalentosRepository
     public function getBanner($request) {
         $parametro = $request->buscador;
 
-        $data = DateBanners::select('*')
-            // ->where(function($query) use ($parametro) {
-            //     $query->where('copa','LIKE','%'.$parametro.'%')
-            //     ->orWhere('fase','LIKE','%'.$parametro.'%')
-            //     ->orWhere('categoria','LIKE','%'.$parametro.'%');
-            // })
-            ->orderBy('id_banner','DESC')
+        $data = DateIMGBanner::select('*',\DB::raw('DATE(tbl_date_imgbanners.created_at) as created_date'))
+
+            ->orderBy('id_imgbanner','DESC')
             ->paginate(10);
         return $data;
     }
@@ -176,43 +172,41 @@ class TalentosRepository
      * funciones que se registrara los banners
      **/
     public function createBanner($request){
-        
-        $new = new DateBanners();
-        $banners = $request->file('banners');
-        if (isset($banners)) {
-            $file = $request->file('banners');
-            //obtenemos el nombre del archivo
-            $nombre = $file->getClientOriginalName();
-            $url = $nombre;
-            //indicamos que queremos guardar un nuevo archivo en el disco local
-            \Storage::disk('datebanner')->put($url,  \File::get($file));
-            $new->banners= $url;
-        }
-        $new -> prox_torneo = $request -> prox_torneo;
-        $new -> save();
-
+    
         $galeria = $request->file('img');
         if (isset($galeria)){
             foreach ($request->file('img') as $key => $value) {
                 $imagen = new DateIMGBanner();
-                $imagen->id_banner = $new->id_banner;
                 //obtenemos el nombre del archivo
                 $nombre = $value->getClientOriginalName();
-                $urlimagen = $new->id_banner.'gale'."-". $nombre;
+                $urlimagen = $hoy = Carbon::today()->format('Y/m/d').'gale'."-". $nombre;
                 //indicamos que queremos guardar un nuevo archivo en el disco local
                 \Storage::disk('datebanner')->put($urlimagen,  \File::get($value));
                 $imagen->img_banner = $urlimagen;
                 $imagen->save();
             }
         }
-        return $new;
+        return $imagen;
     }
 
     /**
-     * funcion que muestra la galeria de bannersgaleria
+     * funcion de activacion/desactivacion de banners
      **/
-    public function Bannergaleria($id){
-        $gale = DateIMGBanner::where('id_banner',$id)->get();
-        return $gale;
+    public function InactivoActivo($request){
+        $update = DateIMGBanner::find($request->id_imgbanner);
+        $update->estatus = $request->estatus;
+        $update -> save();
+        return $update;
     }
+
+    /**
+     * funcion de activacion/desactivacion de banners
+     **/
+    public function deleteBanner($request){
+        $update = DateIMGBanner::find($request->id_imgbanner);
+        \Storage::disk('datebanner')->delete($update->img_banner);
+        $update -> delete();
+        return $update;
+    }
+
 }

@@ -134,34 +134,58 @@
                                     <div class="col-12 col-md-6 mt-3">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                             <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Registro" @keyup="buscarUsuario()"/>
-                                            <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#altaBanner">Agregar</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-3 col-lg-6 col-md-6" v-for="(r, index) in BannerTable" :key="index" style="border-color: #33b2ff;">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="role-heading">
-                                                        <div class="d-flex justify-content-start align-items-center">
-                                                            <div class="avatar-wrapper">
-                                                                <div class="avatar me-2" >
-                                
-                                                                    <img :src="`ArchivosSistema/BannerDate/${r.banners}`" class="w-px-100" />
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <a type="button" data-bs-toggle="modal" data-bs-target="#editarBanner" class="role-edit-modal" style="color: #4caf50;" @click="infoBanner(r)">
-                                                        <p class="mb-0">Editar Banner</p>
-                                                    </a>
-                                                    </div>
-                                                    <a type="button" class="text-success" v-if="r.estatus == 0"><i class="ri-checkbox-circle-fill ri-22px"></i></a>
-                                                    <a type="button" class="text-danger" v-else><i class="ri-close-circle-fill ri-22px"></i></a>
-                                                    <a type="button" class="text-danger" @click="deleteSede(r)"><i class="ri-delete-bin-6-fill ri-22px"></i></a>
-                                                </div>
+                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                <button type="button" class="btn btn-outline-success waves-effect" v-if="include('Crear')" for="file-upload"  onclick="document.getElementById('file-upload').click()">Agregar</button>
+                                                <input type="file" id="file-upload" ref="escudo" accept="image/*" style="display: none;" @change="imgPops()" multiple/>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="table-responsive text-nowrap mt-2">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>IMG</th>
+                                                        <th>Año</th>
+                                                        <th><center>Estatus</center></th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-border-bottom-0">
+                                                    <tr v-for="(t, index) in BannerTable" :key="index">
+                                                        <td>{{ index+1 }}</td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-start align-items-center" >
+                                                                <div class="avatar-wrapper">
+                                                                    <div class="avatar me-2" >
+                                                                        <img :src="`ArchivosSistema/BannerDate/${t.img_banner}`" class="w-px-100" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{ t.created_date }}</td>
+                                                        <td>
+                                                            <center>
+                                                                <button class="btn btn-outline-primary btn-icon waves-effect" v-if="t.estatus == 0" @click="EstatusBanner(t.id_imgbanner,t.estatus)">
+                                                                    <i class="ri-checkbox-circle-fill ri-22px"></i>
+                                                                </button>
+                                                                <button class="btn btn-outline-danger btn-icon waves-effect" v-else @click="EstatusBanner(t.id_imgbanner,t.estatus)">
+                                                                    <i class="ri-close-circle-fill ri-22px"></i>
+                                                                </button>
+                                                            </center>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-outline-danger btn-icon waves-effect" @click="deleteBanner(t.id_imgbanner)">
+                                                                <i class="ri-delete-bin-fill ri-22px"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -432,106 +456,6 @@
                         <button type="reset" class="btn btn-danger" @click="muestra(0)">Cancelar</button>
                     </div>
                 </form>
-            </div>
-        </div>
-        <!-- Modal de alta de banner -->
-        <div class="modal fade" id="altaBanner" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="modalFullTitle" style="color: green;">Registro Banners</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form class="card-body">
-                            <!-- <h6>Datos del Torneo</h6> -->
-                            <div class="row g-6">
-                                <div class="col-md-4">
-                                    <div class="user-profile-header-banner">
-                                        <img src="style/assets/img/fondo5.jpg" alt="Banner image" class="rounded-top" style="height: 200px;" v-if="this.newBanner.banner == ''"/>
-                                        <img :src="imagenBanner" alt="Banner image" class="rounded-top" style="height: 200px;" v-else>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn rounded-pill btn-success waves-effect waves-light" v-if="include('Crear')" for="file-banner"  onclick="document.getElementById('file-banner').click()">Agregar</button>
-                                    <input type="file" id="file-banner" ref="bannernew" accept="image/*" style="display: none;" @change="onChangeFileUploadBanner()"/>
-                                </div>
-                                <div class="col-md-6">
-                                    <p style="color: red;">Ingresa los proximos torneos</p>
-                                    <div class="edit_container" style="overflow: hidden;">
-                                        <quill-editor
-                                            v-model="newBanner.prox_torneo"
-                                            style="height: 200%;"
-                                            ref="myQuillEditorEditar"
-                                            :options="editorOption"
-                                            
-                                            @blur="onEditorBlur($event)"
-                                            @focus="onEditorFocus($event)"
-                                            @change="onEditorChange($event)">
-                                        </quill-editor>
-                                    </div>
-                                </div>
-                               
-                                <hr class="mt-4" style="color:black">
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6">
-                                            <h5 class="card-header">Galeria</h5>
-                                        </div>
-                                        <div class="col-12 col-md-6 mt-3">
-                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                                <button type="button" class="btn rounded-pill btn-success waves-effect waves-light" v-if="include('Crear')" for="file-upload"  onclick="document.getElementById('file-upload').click()">Agregar</button>
-                                                <input type="file" id="file-upload" ref="escudo" accept="image/*" style="display: none;" @change="imgPops()" multiple/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <center v-if="this.galeriaBanner.length == 0">
-                                        <h5 class="card-header text-success">Sin Imagenes</h5>
-                                        <img src="style/logos/img_no hay datos.png" alt="img_sindato" style="width: 150px;">
-                                    </center>
-                                    <div class="table-responsive text-nowrap mt-2" v-else>
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>IMG</th>
-                                                    <th>Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="table-border-bottom-0">
-                                                <tr v-for="(img, index) in galeriaBanner" :key="index">
-                                                    <td>{{ index+1 }}</td>
-                                                    <td>
-                                                        <div class="d-flex justify-content-start align-items-center">
-                                                            <div class="avatar-wrapper">
-                                                                <div class="avatar me-2" >
-                                
-                                                                    <img :src="img.url" class="w-px-100" />
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    
-                                                    <td>
-                                                        <button type="button" class="btn btn-outline-danger btn-icon waves-effect" @click="deletPops(index,img.id_img_talento)">
-                                                            <i class="ri-delete-bin-line ri-22px"></i>
-                                                        </button>
-                                                    </td>
-                                                    
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="agregaBanner()">Guardar</button>
-                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"> Cerrar</button>
-                    </div>
-                </div>
             </div>
         </div>
         <!-- Modal de editar de banner -->
@@ -914,76 +838,12 @@ export default {
                     url: URL.createObjectURL(img)
                 });
             }
-        },
-        deletPops(index) {
-            
-            URL.revokeObjectURL(this.galeriaBanner[index].url); 
-            this.galeriaBanner.splice(index, 1);
-        },
-
-        agregaBanner(){
-            if (this.newBanner.banner == '') {
-                this.$toast.error("Ingresa un Banner", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-            }
-            if (this.newBanner.prox_torneo == '') {
-                this.$toast.error("Ingresa los Proximos Torneos", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-            }
-            if (this.galeriaBanner.length == 0) {
-                this.$toast.error("Agrega imagenes a la Galeria", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-            }
-            
             let formData = new FormData();
-                formData.append('banners',this.newBanner.banner);
-                formData.append('prox_torneo',this.newBanner.prox_torneo);
-                // formData.append('galeriaBanner',JSON.stringify(this.galeriaBanner));
                 for (let i = 0; i < this.galeriaBanner.length; i++) {
                     formData.append('img[' + i + ']', this.galeriaBanner[i].img);
                 }
             axios.post('talentos/createBanner',formData).then(response=>{
-                $('#altaBanner').modal('hide');
-                this.newBanner = {
-                    banner:'',
-                    prox_torneo:'',
-                }
+                
                 this.getBanner();
                 Swal.fire({
                     title: 'Exitoso',
@@ -994,6 +854,13 @@ export default {
                 });
             })
         },
+        deletPops(index) {
+            
+            URL.revokeObjectURL(this.galeriaBanner[index].url); 
+            this.galeriaBanner.splice(index, 1);
+        },
+
+
         infoBanner(b){
             this.DetalleBanner = b;
 
@@ -1015,6 +882,58 @@ export default {
             }
             this.DetalleBanner.banners = this.fileup
             this.cargarImagen(this.fileup)
+        },
+        EstatusBanner(id_imgbanner,value){
+            this.id_imgbanner = id_imgbanner;
+            
+            if (value == 0) {
+                var valor = 1;
+            }
+            if (value == 1) {
+                var valor = 0
+            }
+            this.valor = valor;
+            let formData = new FormData();
+                formData.append('id_imgbanner',this.id_imgbanner);
+                formData.append('estatus',this.valor);
+            axios.post('talentos/InactivoActivo',formData).then(response =>{
+                this.getBanner();
+                Swal.fire({
+                    title: "Perfecto!",
+                    text: "Estatus cambiado Correctamente.",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            })
+        },
+        deleteBanner(id){
+            this.id = id;
+            Swal.fire({
+                title: 'Estas seguro?',
+                text: "Se eliminara permanentemente!",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText:'Cancelar',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let formData = new FormData();
+                    formData.append('id_imgbanner',this.id);
+                    axios.post(`talentos/deleteBanner`,formData).then(response => {
+                        this.getBanner();
+                        Swal.fire({
+                            title: 'Eliminado',
+                            text: "Se elimino Correctamente!",
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2500,
+                        })
+                    });
+                }
+            })
         },
 
         onEditorReady (editor) {}, // prepara el editor
