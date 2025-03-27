@@ -446,12 +446,12 @@
                     <label for="sede">Sede</label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <!-- <div class="col-12 col-lg-6">
                   <div class="form-check form-switch mt-2">
                     <input type="checkbox" class="form-check-input" id="prestamo4545" v-model="newjugador.prestamo"/>
                     <label for="prestamo4545" class="text-heading">Opción a Prestamo?</label>
                   </div>
-                </div>
+                </div> -->
                 <div class="col-12 col-lg-6">
                   <div class="form-floating form-floating-outline">
                     <input type="number" id="num_dorsal" class="form-control" v-model="newjugador.num_dorsal" @input="verificaDorsal()"/>
@@ -601,12 +601,12 @@
                     <label for="sede">Sede</label>
                   </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <!-- <div class="col-12 col-lg-6">
                   <div class="form-check form-switch mt-2">
                     <input type="checkbox" class="form-check-input" id="prestamo4578" v-model="detalleJugador.prestamo"/>
                     <label for="prestamo4578" class="text-heading">Opción a Prestamo?</label>
                   </div>
-                </div>
+                </div> -->
                 <div class="col-12 col-lg-6">
                   <div class="form-floating form-floating-outline">
                     <input type="number" id="num_dorsal" class="form-control" v-model="detalleJugador.num_dorsal" @input="verificaDorsalUpdate()"/>
@@ -957,8 +957,8 @@ export default {
           });
           return;
         }
-        if (this.newjugador.num_dorsal != false) {
-          this.$toast.error("Tienes que poner otro numero de dorsal", {
+        if (this.newjugador.num_dorsal == '') {
+          this.$toast.error("Ingresa un Dorsal", {
             position: "top-center",
             timeout: 1270,
             closeOnClick: true,
@@ -1057,7 +1057,8 @@ export default {
         formData.append('sexo',this.newjugador.sexo);
         formData.append('categoria',this.newjugador.categoria);
         formData.append('sede',this.newjugador.sede);
-        formData.append('prestamo',this.newjugador.prestamo);
+        formData.append('num_dorsal',this.newjugador.num_dorsal);
+        // formData.append('prestamo',this.newjugador.prestamo);
         formData.append('acta_nacimiento',this.newjugador.acta_nacimiento);
         formData.append('curp',this.newjugador.curp);
         formData.append('identificacion',this.newjugador.identificacion);
@@ -1248,11 +1249,12 @@ export default {
         formData.append('posicion',this.detalleJugador.posicion);
         formData.append('sexo',this.detalleJugador.sexo);
         formData.append('categoria',this.detalleJugador.categoria);
+        formData.append('num_dorsal',this.detalleJugador.num_dorsal);
         for (let i = 0; i < this.detalleJugador.documentacion.length; i++) {
           formData.append(`documentacion[${i}][archivo]`, this.detalleJugador.documentacion[i].archivo);
           formData.append(`documentacion[${i}][tipo]`, this.detalleJugador.documentacion[i].tipo);
         }
-        formData.append('prestamo',this.detalleJugador.prestamo);
+        // formData.append('prestamo',this.detalleJugador.prestamo);
       axios.post('jugadores/updateJugador',formData).then(response=>{
         this.getJugador();
         this.submenuUpdate = false;
@@ -1388,8 +1390,29 @@ export default {
       }
       axios.post('jugadores/verificaDorsal',datos).then(response=>{
         this.NombreJugador = response.data.jugador;  
-      
+        
+        if (this.NombreJugador != false) {
+          this.$toast.error("Ya existe un registro con ese dorsal", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          this.newjugador.num_dorsal = '';
+          return;
+          
+        }
       })
+
+      
     },
     verificaDorsalUpdate(){
       if (this.detalleJugador.num_dorsal != this.detalleJugador.dorsal_antiguo) {

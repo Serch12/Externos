@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- vista de torneos -->
-        <div id="main" v-if="this.vista == 0"> 
+        <div id="main" v-if="this.vista == 0">
             <div class="row g-6" >
                 <div class="card">
                     <div class="row">
@@ -105,7 +105,7 @@
         <div id="main" v-if="this.vista == 1">
             <div class="card mb-6">
                 <h5 class="card-header" style="color: green;">Registro de Torneo</h5>
-                <form class="card-body">
+                <form class="card-body" onsubmit="return false" v-show="this.step == 0">
                     <h6>Datos del Torneo</h6>
                     <div class="row g-6">
                         <div class="col-md-6">
@@ -140,7 +140,7 @@
                         <div class="col-md-6">
                             <div class="input-group input-group-merge">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="email" id="direccion" class="form-control"
+                                    <input type="text" id="direccion" class="form-control"
                                         placeholder="Ingresa una Direccion de google maps "
                                         aria-label="Ingresa una Direccion de google maps " v-model="newtorneo.direccion"
                                         aria-describedby="direccion2" />
@@ -165,23 +165,268 @@
                         </div>
                         <h6>Datos de Contacto</h6>
                         <div class="col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                <div style="max-width: 800px; overflow: hidden;">
-                                    <quill-editor v-model="newtorneo.contacto" style="height: 150px ;text-align: left;"
-                                        ref="myQuillEditor" :options="editorOption" @blur="onEditorBlur($event)"
-                                        @focus="onEditorFocus($event)" @change="onEditorChange($event)">
-                                    </quill-editor>
-                                </div>
+                            <div class="edit_container" style="overflow: hidden;">
+                                <quill-editor
+                                    v-model="newtorneo.contacto"
+                                    style="height: 200px;"
+                                    ref="myQuillEditorEditar"
+                                    :options="editorOption"
+                                    @blur="onEditorBlur($event)"
+                                    @focus="onEditorFocus($event)"
+                                    @change="onEditorChange($event)">
+                                </quill-editor>
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="pt-6 mt-2">
-                        <button type="button" class="btn btn-primary me-4" @click="createTorneo()">Guardar</button>
-                        <button type="reset" class="btn btn-danger" @click="muestra(0)">Cancelar</button>
+                    <div class="col-12 d-flex justify-content-between mt-6">
+                        <button class="btn btn-outline-secondary btn-prev" disabled>
+                            <i class="ri-arrow-left-line ri-16px"></i>
+                            <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                        </button>
+                        <button class="btn btn-primary" @click="validateRegistro(0)">
+                            <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
+                            <i class="ri-arrow-right-line ri-16px"></i>
+                        </button>
                     </div>
                 </form>
+                <form class="card-body" onsubmit="return false" v-show="this.step == 1">
+                    <h6 style="color: red;">** Selecciona los jugadores que participaran en  la <b>{{ this.newtorneo.torneo }}</b> </h6>
+                    <div class="col-lg-12">
+                        <div class="table-responsive text-nowrap mt-2">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input class="form-check-input"
+                                                type="checkbox"
+                                                v-model="value"
+                                                @change="TodoJugador()">
+                                        </th>
+                                        <th>Foto</th>
+                                        <th>Dorsal</th>
+                                        <th>Nombre</th>
+                                        <th>Posición</th>
+                                        <th>Sexo</th>
+                                        <th>Edad</th>
+                                        <th>Sede</th>
+                                        <th>Zona</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <tr v-for="(t, index) in this.PlantillaJugador"
+                                        :key="index"  style="overflow: scroll;">
+                                        <td>
+                                            <input class="form-check-input"
+                                                type="checkbox"
+                                                :id="`check2${index}`"
+                                                v-model="seleccionJugador[t.folio]"
+                                                @change="activaJugador(index, t.folio, t.num_dorsal, t.nombre, t.posicion, t.sexo, t.edad, t.categoria, t.sede, t.prestamo)">
+                                        </td>
+                                        <td>
+                                            <div
+                                                class="d-flex justify-content-start align-items-center">
+                                                <div class="avatar-wrapper">
+                                                    <div
+                                                        class="avatar me-2">
+                                                        <img :src="`ArchivosSistema/Jugadores/${t.id_jugador}/${t.foto}`"
+                                                            alt="Avatar"
+                                                            class="rounded-circle">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <th>{{ t.num_dorsal }}</th>
+                                        <td>{{ t.nombre }}</td>
+                                        <td>{{ t.posicion }}</td>
+                                        <td>{{ t.sexo }}</td>
+                                        <td>{{ t.edad }}</td>
+                                        <td>{{ t.sede }}</td>
+                                        <th>
+                                            <span class="badge rounded-pill bg-label-success me-1" v-if="t.zona == 'Local'">{{t.zona}}</span>
+                                            <span class="badge rounded-pill bg-label-warning me-1" v-if="t.zona == 'Foraneo'">{{t.zona}}</span>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-between mt-6">
+                        <button class="btn btn-outline-secondary btn-prev" @click="goPrevStep()">
+                            <i class="ri-arrow-left-line ri-16px"></i>
+                            <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                        </button>
+                        <button class="btn btn-primary" @click="validateRegistro(1)">
+                            <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
+                            <i class="ri-arrow-right-line ri-16px"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="card-body" v-show="this.step == 2">
+                    <form id="addNewAddressForm" class="row g-5" onsubmit="return false" >
+                        <h6>Ingresa los Datos de pago del Torneo</h6>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="nameupdate"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.nombre"
+                                    placeholder="Nombre"/>
+                                <label for="nameupdate">Nombre</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="rfc"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.rfc"
+                                    placeholder="RFC"/>
+                                <label for="rfc">RFC</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select id="banco" name="roles" class="form-select" v-model="newDatosbancarios.banco">
+                                    <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                    <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                    <option value="BANORTE">BANORTE</option>
+                                    <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                    <option value="SANTANDER">SANTANDER</option>
+                                    <option value="HSBC">HSBC</option>
+                                    <option value="INBURSA">INBURSA</option>
+                                    <option value="MIFEL">MIFEL</option>
+                                    <option value="SCOTIABANK">SCOTIABANK</option>
+                                    <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                    <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                    <option value="BANCOPPEL">BANCOPPEL</option>
+                                    <option value="AFIRME">AFIRME</option>
+                                </select>
+                                <label for="banco">Banco</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="cuentabancaria"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.cuenta_bancaria"
+                                    placeholder="Cuenta Bancaria"/>
+                                <label for="cuentabancaria">Cuenta Bancaria</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="clabebancaria"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.clabe_bancaria"
+                                    placeholder="Clabe Bancaria"/>
+                                <label for="clabebancaria">Clabe Bancaria</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="direccion"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.direccion"
+                                    placeholder="Dirección"/>
+                                <label for="direccion"> Dirección</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="number"
+                                    id="telefono"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.telefono"
+                                    placeholder="Telefono"/>
+                                <label for="telefono"> Telefono</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="email"
+                                    id="mail"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.mail"
+                                    placeholder="Email"/>
+                                <label for="mail"> Email</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="ejecutivo"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.ejecutivo"
+                                    placeholder="Ejecutivo"/>
+                                <label for="ejecutivo"> Ejecutivo</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="number"
+                                    id="Subtotal"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.subtotal"
+                                    step="0.01"
+                                    placeholder="Subtotal"/>
+                                <label for="Subtotal"> Subtotal</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="number"
+                                    id="total"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.total"
+                                    step="0.01"
+                                    placeholder="total"/>
+                                <label for="total"> Total</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select id="tipopersona" name="roles" class="form-select" v-model="newDatosbancarios.tipo_persona">
+                                    <option value="Seleccionar">Seleccionar</option>
+                                    <option value="Persona Fisica">Persona Fisica</option>
+                                    <option value="Persona Moral">Persona Moral</option>
+
+                                </select>
+                                <label for="tipopersona">¿Persona Física ó Persona Moral?</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline mb-6">
+                                <input type="file"  accept="image/png,image/jpeg,.pdf" class="form-control" id="bs-validation-upload-file" ref="fileInscripcion" @change="onChangeIncripcion()">
+                                <label for="bs-validation-upload-file">Formato de Inscripción</label>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-between mt-6">
+                            <button class="btn btn-outline-secondary btn-prev" @click="goPrevStep()">
+                                <i class="ri-arrow-left-line ri-16px"></i>
+                                <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                            </button>
+                            <button class="btn btn-primary" @click="validateRegistro(2)">
+                                <span class="align-middle d-sm-block d-none me-2">Guardar</span>
+                                <!-- <i class="ri-arrow-right-line ri-16px"></i> -->
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         <!-- vista editar de torneos -->
@@ -419,7 +664,7 @@
                                     </div>
                                     <!-- <div class="col-12 col-md-12 mt-2">
                                         <iframe :src="`${this.detalleTorneo.direccion}`" title="description"></iframe>
-                                              
+
                                     </div> -->
 
                                     <h6 class="mt-2">Datos de Contacto</h6>
@@ -500,9 +745,9 @@
                                                 </div>
                                             </infinite-loading> -->
                                         </div>
-                                        
+
                                     </div>
-                                    
+
                                 </div>
                                 <div class="row" v-else>
                                     <div class="col-lg-12">
@@ -517,7 +762,7 @@
                                                         <th>Sexo</th>
                                                         <th>Edad</th>
                                                         <th>Sede</th>
-                                                        
+
                                                     </tr>
                                                 </thead>
                                                 <tbody class="table-border-bottom-0">
@@ -531,13 +776,7 @@
                                                         <td>{{ t.sexo }}</td>
                                                         <td>{{ t.edad }}</td>
                                                         <td>{{ t.sede }}</td>
-                                                        <!-- <td>
-                                                            <button type="button"
-                                                                class="btn btn-icon btn-outline-danger waves-effect"
-                                                                @click="deleteSelect(t.id_plantilla)">
-                                                                <i class="tf-icons ri-delete-bin-fill ri-22px"></i>
-                                                            </button>
-                                                        </td> -->
+                                                        
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -546,92 +785,14 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Plantilla -->
 
                         <div class="row" v-if="this.activeView == 'plantilla'">
                             <div class="card col-lg-12 me-5">
                                 <h5 class="card-header">Plantilla</h5>
                                 <div class="card-body">
-                                    <div class="row" v-if="this.detalleTorneo.estatus == 0||this.detalleTorneo.estatus == 3">
-                                        <div class="col-lg-12">
-                                            <div class="table-responsive text-nowrap mt-2">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>
-                                                                <!-- <input class="form-check-input"
-                                                                    type="checkbox"
-                                                                    v-model="value"
-                                                                    @change="TodoJugador()"> -->
-                                                            </th>
-                                                            <th>Foto</th>
-                                                            <th>Dorsal</th>
-                                                            <th>Nombre</th>
-                                                            <th>Posición</th>
-                                                            <th>Sexo</th>
-                                                            <th>Edad</th>
-                                                            <th>Sede</th>
-                                                            <th>Zona</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="table-border-bottom-0">
-                                                        <tr v-for="(t, index) in this.PlantillaJugador"
-                                                            :key="index"  style="overflow: scroll;">
-                                                            <td>
-                                                                <input class="form-check-input"
-                                                                    type="checkbox"
-                                                                    :id="`check2${index}`"
-                                                                    v-model="seleccionJugador[t.folio]"
-                                                                    @change="activaJugador(index, t.folio, t.num_dorsal, t.nombre, t.posicion, t.sexo, t.edad, t.categoria, t.sede, t.prestamo)">
-                                                            </td>
-                                                            <td>
-                                                                <div
-                                                                    class="d-flex justify-content-start align-items-center">
-                                                                    <div class="avatar-wrapper">
-                                                                        <div
-                                                                            class="avatar me-2">
-                                                                            <img :src="`ArchivosSistema/Jugadores/${t.id_jugador}/${t.foto}`"
-                                                                                alt="Avatar"
-                                                                                class="rounded-circle">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <th>{{ t.num_dorsal }}</th>
-                                                            <td>{{ t.nombre }}</td>
-                                                            <td>{{ t.posicion }}</td>
-                                                            <td>{{ t.sexo }}</td>
-                                                            <td>{{ t.edad }}</td>
-                                                            <td>{{ t.sede }}</td>
-                                                            <th>
-                                                                <span class="badge rounded-pill bg-label-success me-1" v-if="t.zona == 'Local'">{{t.zona}}</span>
-                                                                <span class="badge rounded-pill bg-label-warning me-1" v-if="t.zona == 'Foraneo'">{{t.zona}}</span>
-                                                            </th>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <infinite-loading force-use-infinite-wrapper=".infinite-wrapper" @infinite="consultaJugador">
-                                                    <div slot="no-more">
-                                                        <div class="chip green z-depth-4 white-text">
-                                                            <strong>No existen mas datos para cargar.</strong>
-                                                        </div>
-                                                    </div>
-                                                    <div slot="spinner">
-                                                        <div class="chip yellow z-depth-4 white-text">
-                                                            <strong>Cargando...</strong>
-                                                        </div>
-                                                    </div>
-                                                    <div slot="no-results">
-                                                        <div class="chip red z-depth-4 white-text">
-                                                            <strong>Sin resultados</strong>
-                                                        </div>
-                                                    </div>
-                                                </infinite-loading>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" v-else>
+                                    <div class="row">
                                         <div class="col-lg-12">
                                         <h5>Jugadores Seleccionados</h5>
                                             <div class="table-responsive text-nowrap mt-2">
@@ -645,7 +806,7 @@
                                                             <th>Sexo</th>
                                                             <th>Edad</th>
                                                             <th>Sede</th>
-                                                            
+
                                                         </tr>
                                                     </thead>
                                                     <tbody class="table-border-bottom-0">
@@ -717,7 +878,7 @@
                                             <label for="banco">Banco</label>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-12 col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             <input
@@ -814,7 +975,7 @@
                                                 <option value="Seleccionar">Seleccionar</option>
                                                 <option value="Persona Fisica">Persona Fisica</option>
                                                 <option value="Persona Moral">Persona Moral</option>
-                                               
+
                                             </select>
                                             <label for="tipopersona">¿Persona Física ó Persona Moral?</label>
                                         </div>
@@ -888,7 +1049,7 @@
                                             <label for="banco">Banco</label>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-12 col-md-6">
                                         <div class="form-floating form-floating-outline">
                                             <input
@@ -983,20 +1144,20 @@
                                                 <option value="Seleccionar">Seleccionar</option>
                                                 <option value="Persona Fisica">Persona Fisica</option>
                                                 <option value="Persona Moral">Persona Moral</option>
-                                               
+
                                             </select>
                                             <label for="tipopersona">¿Persona Física ó Persona Moral?</label>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6" v-if="this.activacion">
-                                        <p>Formato de Inscripción: 
-                                            <a type="button" class="btn btn-warning" :href="`ArchivosSistema/DatoBancario/${this.detalleTorneo.id_torneo}/${this.detalleTorneo.archivo}`" 
+                                        <p>Formato de Inscripción:
+                                            <a type="button" class="btn btn-warning" :href="`ArchivosSistema/DatoBancario/${this.detalleTorneo.id_torneo}/${this.detalleTorneo.archivo}`"
                                             target="_blank" onclick="window.open(this.href, this.target, 'width=650,height=650'); return false;">
                                                 <i class="ri-file-pdf-2-fill ri-2test0px me-2"></i>
                                             </a>
                                         </p>
-                                        <p>Recibo de Pago: 
-                                            <a type="button" class="btn btn-danger" :href="`${this.detalleTorneo.archivo_pago}`"  target="_blank" 
+                                        <p>Recibo de Pago:
+                                            <a type="button" class="btn btn-danger" :href="`${this.detalleTorneo.archivo_pago}`"  target="_blank"
                                                 onclick="window.open(this.href, this.target, 'width=650,height=650'); return false;" v-if="this.detalleTorneo.estatus == 2">
                                                 <i class="ri-file-pdf-2-fill ri-2test0px me-2"></i>
                                             </a>
@@ -1015,7 +1176,7 @@
                                         <button type="reset" class="btn btn-outline-danger" @click="modoUpdate()">Cancelar</button>
                                     </div>
 
-                                   
+
                                 </form>
                             </div>
                         </div>
@@ -1059,7 +1220,7 @@
                         <div class="col-md-4">
                             <div class="input-group input-group-merge">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="number" id="year" class="form-control" 
+                                    <input type="number" id="year" class="form-control"
                                         style="color: green;" aria-label="year" v-model="new_registro.year" disabled />
                                     <label for="year">Año</label>
                                 </div>
@@ -1068,7 +1229,7 @@
                         <div class="col-md-4">
                             <div class="input-group input-group-merge">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" id="categoria" class="form-control" 
+                                    <input type="text" id="categoria" class="form-control"
                                         style="color: green;" aria-label="categoria" v-model="new_registro.categoria" disabled />
                                     <label for="categoria">Categoria</label>
                                 </div>
@@ -1077,7 +1238,7 @@
                         <div class="col-md-4">
                             <div class="input-group input-group-merge">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="number" id="num_jugadores" class="form-control" 
+                                    <input type="number" id="num_jugadores" class="form-control"
                                         style="color: green;" aria-label="num_jugadores" v-model="new_registro.num_jugadores" disabled />
                                     <label for="num_jugadores">Número Jugadores</label>
                                 </div>
@@ -1102,7 +1263,7 @@
                                 <label for="bs-validation-bio">Descripción</label>
                             </div>
                         </div>
-                       
+
 
                         <div class="col-md-6">
                             <ul class="list-group mb-4">
@@ -1120,7 +1281,7 @@
                                                         <label for="bs-validation-upload-file">Banner</label>
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -1165,13 +1326,13 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            
+
                                             <td>
                                                 <button class="btn btn-outline-danger btn-icon waves-effect"  @click="eliminarImagen(index)">
                                                     <i class="ri-delete-bin-line ri-22px"></i>
                                                 </button>
                                             </td>
-                                            
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1248,7 +1409,7 @@
                                     <i class="ri-article-line ri-24px"></i><span class="fw-medium mx-2">Descripción:</span>
                                     <span>{{this.detalleTalento.descripcion}}</span>
                                     </li>
-                                    
+
                                 </ul>
 
                             </div>
@@ -1365,6 +1526,7 @@ export default {
     data() {
         return {
             vista: 0,
+            step:0,
             search: '',
             value: '',
             imagenMiniatura:'',
@@ -1493,11 +1655,11 @@ export default {
             }
         },
         generateEmbedUrl(link) {
-            
+
             const mapId = link.split("/").pop();
             console.log(mapId);
-            
-            
+
+
             // Generar la URL embebida
             return `https://www.google.com/maps?q=${mapId}&output=embed`;
         },
@@ -1514,111 +1676,16 @@ export default {
         showCard(view) {
             this.activeView = view;
         },
+        goPrevStep() {
+            this.step--;
+        },
+        goNextStep() {
+            this.step++;
+        },
         createTorneo() {
-            if (this.newtorneo.torneo == '') {
-                this.$toast.error("Ingresa el nombre del Torneo", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.newtorneo.categoria == 'Selecciona una Categoria') {
-                this.$toast.error("Selecciona una Categoria", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.newtorneo.direccion == '') {
-                this.$toast.error("Ingresa la Dirección", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.newtorneo.fecha_inicia == '') {
-                this.$toast.error("Ingresa la Fecha de Inicio", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.newtorneo.fecha_fin == '') {
-                this.$toast.error("Ingresa la Fecha de Fin", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.newtorneo.contacto == '') {
-                this.$toast.error("Ingresa los Datos de Contacto", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
 
             let formData = new FormData();
+            formData.append('formato',this.newtorneo.formato);
             formData.append('creacion', this.id_usuario_logeado);
             formData.append('torneo', this.newtorneo.torneo);
             formData.append('sede', this.newtorneo.sede);
@@ -1627,8 +1694,26 @@ export default {
             formData.append('fecha_inicia', this.newtorneo.fecha_inicia);
             formData.append('fecha_fin', this.newtorneo.fecha_fin);
             formData.append('contacto', this.newtorneo.contacto);
+            formData.append('cargaSeleccionado',JSON.stringify(this.cargaSeleccionado));
+            if (this.newDatosbancarios.nombre != '') {
+                formData.append('nombre',this.newDatosbancarios.nombre);
+                formData.append('rfc',this.newDatosbancarios.rfc);
+                formData.append('banco',this.newDatosbancarios.banco);
+                formData.append('cuenta_bancaria',this.newDatosbancarios.cuenta_bancaria);
+                formData.append('clabe_bancaria',this.newDatosbancarios.clabe_bancaria);
+                formData.append('direccion',this.newDatosbancarios.direccion);
+                formData.append('telefono',this.newDatosbancarios.telefono);
+                formData.append('mail',this.newDatosbancarios.mail);
+                formData.append('ejecutivo',this.newDatosbancarios.ejecutivo);
+                formData.append('tipo_persona',this.newDatosbancarios.tipo_persona);
+                formData.append('subtotal',this.newDatosbancarios.subtotal);
+                formData.append('total',this.newDatosbancarios.total);
+                formData.append('archivo',this.newDatosbancarios.archivo);
+            }else{
+                formData.append('bandera_pago','no aplica');
+            }
             axios.post('torneo/createTorneo', formData).then(response => {
-                this.getTorneo();
+
                 this.newtorneo = {
                     torneo: '',
                     sede: this.sede,
@@ -1637,16 +1722,190 @@ export default {
                     fecha_inicia: '',
                     fecha_fin: '',
                     contacto: ''
-                }
+                },
+                this.newDatosbancarios = {
+                    nombre:'',
+                    rfc:'',
+                    banco:'Seleccionar Banco',
+                    cuenta_bancaria:'',
+                    clabe_bancaria:'',
+                    direccion:'',
+                    telefono:'',
+                    mail:'',
+                    ejecutivo:'',
+                    tipo_persona:'Seleccionar',
+                    archivo:''
+                },
+                this.cargaSeleccionado = [];
+
+                this.getTorneo();
                 this.vista = 0;
-                Swal.fire({
-                    title: 'Exitoso',
-                    text: "Se Registro correctamente!",
-                    icon: 'success',
-                    showConfirmButton: false,
-                    timer: 2500,
-                });
             })
+        },
+        validateRegistro(value){
+            if (value == 0) {
+                this.PlantillaJugador = [];
+                // if (this.newtorneo.torneo == '') {
+                //     this.$toast.error("Ingresa el nombre del Torneo", {
+                //         position: "top-center",
+                //         timeout: 1270,
+                //         closeOnClick: true,
+                //         pauseOnFocusLoss: true,
+                //         pauseOnHover: true,
+                //         draggable: true,
+                //         draggablePercent: 0.6,
+                //         showCloseButtonOnHover: false,
+                //         hideProgressBar: true,
+                //         closeButton: "button",
+                //         icon: true,
+                //         rtl: false
+                //     });
+                //     return;
+                // }
+                // if (this.newtorneo.categoria == 'Selecciona una Categoria') {
+                //     this.$toast.error("Selecciona una Categoria", {
+                //         position: "top-center",
+                //         timeout: 1270,
+                //         closeOnClick: true,
+                //         pauseOnFocusLoss: true,
+                //         pauseOnHover: true,
+                //         draggable: true,
+                //         draggablePercent: 0.6,
+                //         showCloseButtonOnHover: false,
+                //         hideProgressBar: true,
+                //         closeButton: "button",
+                //         icon: true,
+                //         rtl: false
+                //     });
+                //     return;
+                // }
+                // if (this.newtorneo.direccion == '') {
+                //     this.$toast.error("Ingresa la Dirección", {
+                //         position: "top-center",
+                //         timeout: 1270,
+                //         closeOnClick: true,
+                //         pauseOnFocusLoss: true,
+                //         pauseOnHover: true,
+                //         draggable: true,
+                //         draggablePercent: 0.6,
+                //         showCloseButtonOnHover: false,
+                //         hideProgressBar: true,
+                //         closeButton: "button",
+                //         icon: true,
+                //         rtl: false
+                //     });
+                //     return;
+                // }
+                // if (this.newtorneo.fecha_inicia == '') {
+                //     this.$toast.error("Ingresa la Fecha de Inicio", {
+                //         position: "top-center",
+                //         timeout: 1270,
+                //         closeOnClick: true,
+                //         pauseOnFocusLoss: true,
+                //         pauseOnHover: true,
+                //         draggable: true,
+                //         draggablePercent: 0.6,
+                //         showCloseButtonOnHover: false,
+                //         hideProgressBar: true,
+                //         closeButton: "button",
+                //         icon: true,
+                //         rtl: false
+                //     });
+                //     return;
+                // }
+                // if (this.newtorneo.fecha_fin == '') {
+                //     this.$toast.error("Ingresa la Fecha de Fin", {
+                //         position: "top-center",
+                //         timeout: 1270,
+                //         closeOnClick: true,
+                //         pauseOnFocusLoss: true,
+                //         pauseOnHover: true,
+                //         draggable: true,
+                //         draggablePercent: 0.6,
+                //         showCloseButtonOnHover: false,
+                //         hideProgressBar: true,
+                //         closeButton: "button",
+                //         icon: true,
+                //         rtl: false
+                //     });
+                //     return;
+                // }
+                // if (this.newtorneo.contacto == '') {
+                //     this.$toast.error("Ingresa los Datos de Contacto", {
+                //         position: "top-center",
+                //         timeout: 1270,
+                //         closeOnClick: true,
+                //         pauseOnFocusLoss: true,
+                //         pauseOnHover: true,
+                //         draggable: true,
+                //         draggablePercent: 0.6,
+                //         showCloseButtonOnHover: false,
+                //         hideProgressBar: true,
+                //         closeButton: "button",
+                //         icon: true,
+                //         rtl: false
+                //     });
+                //     return;
+                // }
+                this.consultaJugador();
+                this.goNextStep();
+            }
+            if (value == 1) {
+                if (this.cargaSeleccionado.length == 0) {
+                    this.$toast.error("Selecciona tus Jugadores que participaran en el torneo", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }else{
+                    this.goNextStep();
+                }
+            }
+            if (value == 2) {
+                if (this.newDatosbancarios.nombre == '') {
+                    Swal.fire({
+                        title: "No Ingresaste Datos de Pago",
+                        text: "Estas seguro de continuar?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Continuar",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText:'No'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.newtorneo.formato = 'almacena';
+                        this.createTorneo();
+                    }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Advertencia",
+                        html: `Tus datos se almacenaran y se mandaran a <b>Revisión</b>`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Aceptar",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText:'Cancelar'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.newtorneo.formato = 'revision';
+                        this.createTorneo();
+                    }
+                    });
+                }
+            }
         },
 
         infoTorneo(t) {
@@ -1654,7 +1913,7 @@ export default {
 
             axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response => {
                 this.JugadorSeleccionado = response.data
-                
+
                 this.JugadorSeleccionado.map(jugador => {
                     this.PlantillaJugador.map(j => {
                         if (j.folio === jugador.folio) {
@@ -1842,15 +2101,6 @@ export default {
 
 
                 }
-                let formData = new FormData();
-                formData.append('bandera', 'multiple');
-                formData.append('id_torneo', this.detalleTorneo.id_torneo);
-                formData.append('selecccion', JSON.stringify(this.cargaSeleccionado));
-                axios.post('torneo/seleccionadosJugador', formData).then(response => {
-                    axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response => {
-                        this.JugadorSeleccionado = response.data
-                    })
-                })
             }
 
             if (this.value == false) {
@@ -1864,7 +2114,7 @@ export default {
             var num = $(`#check2${index}`).prop('checked');
 
             if (num == true) {
-                var nuevoJugador = {
+                this.cargaSeleccionado.push({
                     folio: folio,
                     num_dorsal: num_dorsal,
                     nombre: nombre,
@@ -1874,142 +2124,28 @@ export default {
                     categoria: categoria,
                     sede: sede,
                     prestamo: prestamo
-                };
-                let formData = new FormData();
-                formData.append('bandera', 'individual');
-                formData.append('id_torneo', this.detalleTorneo.id_torneo);
-                formData.append('selecccion', JSON.stringify(nuevoJugador));
-                axios.post('torneo/seleccionadosJugador', formData).then(response => {
-                    axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response => {
-                        this.JugadorSeleccionado = response.data
-                    })
-                })
+                });
+               
             }
             if (num == false) {
-                this.JugadorSeleccionado.forEach(function (p, index, object) {
+                this.cargaSeleccionado.forEach(function (p, index, object) {
                     if (p.folio === folio) {
-                        let formData = new FormData();
-                        formData.append('bandera', 'unico');
-                        formData.append('id_plantilla', p.id_plantilla);
-                        axios.post('torneo/deleteJugador', formData).then(response => {
-                            object.splice(index, 1);
-                        })
+                        object.splice(index, 1);
+                       
                     }
                 });
             }
         },
-        activaPrestamo(index, folio, nombre, posicion, sexo, edad, categoria, sede) {
-            var num = $(`#checkpres${index}`).prop('checked');
+    
+        consultaJugador() {
 
-            if (num == true) {
-                var jugadorPrestamo = {
-                    folio: folio,
-                    nombre: nombre,
-                    posicion: posicion,
-                    sexo: sexo,
-                    edad: edad,
-                    categoria: categoria,
-                    sede: sede,
-                };
-                let formData = new FormData();
-                formData.append('bandera', 'individual');
-                formData.append('id_torneo', this.detalleTorneo.id_torneo);
-                formData.append('selecccion', JSON.stringify(jugadorPrestamo));
-                axios.post('torneo/seleccionadosJugador', formData).then(response => {
-                    axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response => {
-                        this.JugadorSeleccionado = response.data
-                    })
-                })
-            }
-            if (num == false) {
-                this.JugadorSeleccionado.forEach(function (p, index, object) {
-                    if (p.folio === folio) {
-                        let formData = new FormData();
-                        formData.append('bandera', 'unico');
-                        formData.append('id_plantilla', p.id_plantilla);
-                        axios.post('torneo/deleteJugador', formData).then(response => {
-                            object.splice(index, 1);
-                        })
-                    }
-                });
-            }
-        },
-        deleteSelect(value) {
-            this.id_plantilla = value;
-            Swal.fire({
-                title: "Estas seguro?",
-                text: "Se eliminara definitivamente!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "Eliminar",
-                cancelButtonColor: "#d33",
-                cancelButtonText: "Cancelar",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    let formData = new FormData();
-                    formData.append('bandera', 'unico');
-                    formData.append('id_plantilla', this.id_plantilla);
-                    axios.post('torneo/deleteJugador', formData).then(response => {
-                        axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response => {
-                            this.JugadorSeleccionado = response.data
-                        })
-                        Swal.fire({
-                            title: 'Exitoso',
-                            text: "Se Elimino correctamente!",
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 2500,
-                        });
-                    })
 
-                }
-            });
-        },
-        consultaJugador($state) {
-            if (this.cargando || this.noMasDatos) {
-                $state.complete(); 
-                return;
-            }
+            var url = `torneo/plantillaJugador?sede=${this.newtorneo.sede}&categoria=${this.newtorneo.categoria}`;
 
-            this.cargando = true; 
-            var doctor = 0;
-            if (this.page === 1) this.PlantillaJugador = [];
-            
-            this.page++;
-
-            var url = `torneo/plantillaJugador?sede=${this.detalleTorneo.sede}&categoria=${this.detalleTorneo.categoria}&doctor=${doctor}&page=${this.page}`;
-            
             axios.get(url).then(response => {
-                let posts = response.data.plantilla;
-                if (posts.length) {
-                    let nuevosDatos = posts.filter(nuevo => 
-                        !this.PlantillaJugador.some(existente => existente.id === nuevo.id)
-                    );
-                    this.PlantillaJugador = this.PlantillaJugador.concat(nuevosDatos);
-                    $state.loaded();
-                } else {
-                    $state.complete();
-                }
-                this.JugadorSeleccionado.map(jugador => {
-                this.PlantillaJugador.map(j => {
-                    if (j.folio === jugador.folio) {
-                        this.seleccionJugador[j.folio] = true;
-                    }
-                });
-                this.PlantillaPrestamo.map(p => {
-                    if (p.folio === jugador.folio) {
-                        this.seleccionPrestamo[p.folio] = true;
-                    }
-                });
-
-            });
-            }).catch(error => {
-                console.error("Error al cargar los datos:", error);
-                $state.complete();
+                this.PlantillaJugador = response.data.plantilla;
             });
 
-            
         },
         onChangeIncripcion(){
             var fileedit = this.$refs.fileInscripcion.files[0];
@@ -2144,10 +2280,10 @@ export default {
         },
         modoUpdate(){
             if (this.activacion == true) {
-                
+
                 this.activacion = false;
             }else{
-              
+
                 this.activacion = true;
             }
         },
@@ -2259,7 +2395,7 @@ export default {
                 })
                 this.activacion = true;
                 this.getTorneo();
-                
+
                 Swal.fire({
                     title: 'Exitoso',
                     text: "Se Edito correctamente!",
@@ -2338,7 +2474,7 @@ export default {
                         this.eliminacionTecnico.push({
                             id_plantilla_tecnico:id
                         });
-                        
+
                     }
                 }
                 this.cargaTecnico = [];
@@ -2380,7 +2516,7 @@ export default {
             }
         },
         dateTalento(t){
-            
+
             this.new_registro = {
                 fecha:t.fecha_inicia+' '+ 'al'+' '+ t.fecha_fin,
                 year:t.año,
@@ -2395,7 +2531,7 @@ export default {
         },
         onChangeBanner() {
             this.file = this.$refs.fileBanner.files[0];
-            
+
             this.new_registro.hidder = this.file
             this.loadingHidden(this.file);
         },
@@ -2418,7 +2554,7 @@ export default {
             }
         },
         eliminarImagen(index) {
-            URL.revokeObjectURL(this.IMGTalento[index].url); 
+            URL.revokeObjectURL(this.IMGTalento[index].url);
             this.IMGTalento.splice(index, 1);
         },
         createTalentos(){
@@ -2569,9 +2705,9 @@ export default {
             }else{
                 this.new_registro.campeonato = 'No';
             }
-            
+
         },
-  
+
         onEditorReady(editor) { }, // prepara el editor
         onEditorBlur() { }, // Evento de pérdida de foco
         onEditorFocus() { }, // Obtiene el evento de enfoque

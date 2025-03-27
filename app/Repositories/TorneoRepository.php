@@ -85,6 +85,7 @@ class TorneoRepository
      * Funcion que creara el torneo
      **/
     public function createTorneo($request){
+
         $new = new Torneo();
         $new -> creacion = $request -> creacion;
         $new -> torneo = $request -> torneo;
@@ -95,6 +96,55 @@ class TorneoRepository
         $new -> fecha_fin = $request -> fecha_fin;
         $new -> contacto = $request -> contacto;
         $new -> save ();
+
+        $seleccion = json_decode($request->cargaSeleccionado);
+        foreach ($seleccion as $value) {
+
+            $new_plantilla = new PlantillaJugador();
+            $new_plantilla -> id_torneo = $new -> id_torneo;
+            $new_plantilla -> folio = $value -> folio;
+            $new_plantilla -> num_dorsal = $value -> num_dorsal;
+            $new_plantilla -> nombre = $value -> nombre;
+            $new_plantilla -> posicion = $value -> posicion;
+            $new_plantilla -> sexo = $value -> sexo;
+            $new_plantilla -> edad = $value -> edad;
+            $new_plantilla -> categoria = $value -> categoria;
+            $new_plantilla -> sede = $value -> sede;
+            $new_plantilla -> prestamo = $value -> prestamo;
+            $new_plantilla -> save();
+        }
+        if ($request->bandera_pago != 'no aplica') {
+            $new_pago = new ProveedoresIntranet();
+            $new_pago -> nombre = $request -> nombre;
+            $new_pago -> id_user = 5;
+            $new_pago -> rfc = $request -> rfc;
+            $new_pago -> banco = $request -> banco;
+            $new_pago -> ctaBanc = $request -> cuenta_bancaria;
+            $new_pago -> cbeBanc = $request -> clabe_bancaria;
+            $new_pago -> direccion = $request -> direccion;
+            $new_pago -> telefono = $request -> telefono;
+            $new_pago -> mail = $request -> mail;
+            $new_pago -> ejecutivo = $request -> ejecutivo;
+            $new_pago -> tipo_persona = $request -> tipo_persona;
+            $new_pago -> estatus = 1;
+            $new_pago ->save();
+
+            $edit = Torneo::find($new->id_torneo);
+            $file = $request->file('archivo');
+            if(isset($file)){
+                $file = $request->file('archivo');
+                $nombre = $file->getClientOriginalName();
+                $urlimagen = $new->id_torneo."/".$nombre;
+                \Storage::disk('datobancario')->put($urlimagen, \File::get($file));
+                $edit->archivo = $nombre;
+            }
+            $edit -> id_proveedor = $new_pago -> id_pro;
+            $edit -> subtotal = $request -> subtotal;
+            $edit -> total = $request -> total;
+            $edit -> save();
+        }
+
+
         return $new;
     }
 

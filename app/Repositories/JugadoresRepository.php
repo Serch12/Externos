@@ -92,12 +92,14 @@ class JugadoresRepository
         $new -> posicion = $request->posicion;
         $new -> sexo = $request->sexo;
         $new -> categoria = $request->categoria;
+        $new -> num_dorsal = $request -> num_dorsal;
         $new -> sede = $request->sede;
-        if ($request->prestamo == true) {
-            $new -> prestamo = 1;
-        } else {
-            $new -> prestamo = 0;
-        }
+        $new -> prestamo = 0;
+        // if ($request->prestamo == true) {
+        //     $new -> prestamo = 1;
+        // } else {
+        //     $new -> prestamo = 0;
+        // }
         
         $new -> save();
 
@@ -178,11 +180,12 @@ class JugadoresRepository
         $editar -> posicion = $request->posicion;
         $editar -> sexo = $request->sexo;
         $editar -> categoria = $request->categoria;
-        if ($request->prestamo == true) {
-            $editar -> prestamo = 1;
-        } else {
-            $editar -> prestamo = 0;
-        }
+        $editar -> num_dorsal = $request->num_dorsal;
+        // if ($request->prestamo == true) {
+        //     $editar -> prestamo = 1;
+        // } else {
+        //     $editar -> prestamo = 0;
+        // }
         $editar -> save();
 
         $archivos = $request->input('documentacion');
