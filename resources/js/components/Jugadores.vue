@@ -504,6 +504,63 @@
                     <i class="ri-arrow-left-line ri-16px"></i>
                     <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                   </button>
+                  <button class="btn btn-primary" @click="validacionAltaJugador(1)">
+                    <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
+                    <i class="ri-arrow-right-line ri-16px"></i>
+                  </button>
+                </div>
+              </form>
+              <form id="addNewAddressForm" class="row g-5" onsubmit="return false" v-show="this.step == 2">
+                <div class="col-12">
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="text"
+                      id="tutor"
+                      class="form-control"
+                      v-model="newjugador.tutor"
+                      placeholder="Nombre Tutor"/>
+                    <label for="tutor">Nombre Tutor</label>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-12">
+                  <div class="input-group input-group-merge">
+                    <div class="form-floating form-floating-outline">
+                      <input
+                        type="text"
+                        id="direccion"
+                        class="form-control"
+                        placeholder="Ingresa una Dirección"
+                        v-model="newjugador.direccion"/>
+                      <label for="direccion">Dirección</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="email"
+                      id="correo"
+                      class="form-control"
+                      placeholder="ejemplo@gmail.com"
+                      v-model="newjugador.correo"/>
+                    <label for="correo">Email</label>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                  <div class="form-floating form-floating-outline">
+                    <input
+                      type="number"
+                      id="telefono"
+                      class="form-control"
+                      v-model="newjugador.telefono"/>
+                    <label for="telefono">Telefono</label>
+                  </div>
+                </div>
+                <div class="col-12 d-flex justify-content-between mt-6">
+                  <button class="btn btn-outline-secondary" @click="goPrevStep()">
+                    <i class="ri-arrow-left-line ri-16px"></i>
+                    <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                  </button>
                   <button class="btn btn-primary" @click="agregaJugador()">
                     <span class="align-middle d-sm-block d-none me-2">Guardar</span>
                     <i class="ri-save-3-fill ri-16px"></i>
@@ -731,7 +788,11 @@ export default {
         sede:this.sede,
         acta_nacimiento:'',
         curp:'',
-        identificacion:''
+        identificacion:'',
+        tutor:'',
+        correo:'',
+        direccion:'',
+        telefono:''
       },
       Jugadores:[],
       step:0,
@@ -976,11 +1037,83 @@ export default {
         }
         this.goNextStep();
       }
+      if (value == 1) {
+        if (this.newjugador.foto == '') {
+          this.$toast.error("Añade una Fotografia", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
+        if (this.newjugador.acta_nacimiento == '') {
+          this.$toast.error("Añade la Acta de Nacimiento", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
+        if (this.newjugador.curp == '') {
+          this.$toast.error("Añade la Curp", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
+        if (this.newjugador.identificacion == '') {
+          this.$toast.error("Añade la Identificación", {
+            position: "top-center",
+            timeout: 1270,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+          });
+          return;
+        }
+        this.goNextStep();
+      }
+
       
     },
     agregaJugador(){  
-      if (this.newjugador.foto == '') {
-        this.$toast.error("Añade una Fotografia", {
+      if (this.newjugador.tutor == '') {
+        this.$toast.error("Ingresa el Nombre del Padre o Tutor", {
           position: "top-center",
           timeout: 1270,
           closeOnClick: true,
@@ -996,8 +1129,8 @@ export default {
         });
         return;
       }
-      if (this.newjugador.acta_nacimiento == '') {
-        this.$toast.error("Añade la Acta de Nacimiento", {
+      if (this.newjugador.direccion == '') {
+        this.$toast.error("Ingresa una direccion", {
           position: "top-center",
           timeout: 1270,
           closeOnClick: true,
@@ -1013,8 +1146,8 @@ export default {
         });
         return;
       }
-      if (this.newjugador.curp == '') {
-        this.$toast.error("Añade la Curp", {
+      if (this.newjugador.correo == '') {
+        this.$toast.error("Ingresaun correo", {
           position: "top-center",
           timeout: 1270,
           closeOnClick: true,
@@ -1030,8 +1163,8 @@ export default {
         });
         return;
       }
-      if (this.newjugador.identificacion == '') {
-        this.$toast.error("Añade la Identificación", {
+      if (this.newjugador.telefono == '') {
+        this.$toast.error("Ingresa un telefono", {
           position: "top-center",
           timeout: 1270,
           closeOnClick: true,
@@ -1062,6 +1195,10 @@ export default {
         formData.append('acta_nacimiento',this.newjugador.acta_nacimiento);
         formData.append('curp',this.newjugador.curp);
         formData.append('identificacion',this.newjugador.identificacion);
+        formData.append('tutor',this.newjugador.tutor);
+        formData.append('direccion',this.newjugador.direccion);
+        formData.append('correo',this.newjugador.correo);
+        formData.append('telefono',this.newjugador.telefono);
       axios.post('jugadores/createJugador',formData).then(response=>{
         this.getJugador();
         $('#createJugador').modal('hide');
@@ -1073,12 +1210,17 @@ export default {
           edad:0,
           posicion:'Selecciona una Posición',
           sexo:'Selecciona el Sexo',
+          prestamo:false,
           apodo:'',
           categoria:'Selecciona una Categoria',
           sede:this.sede,
           acta_nacimiento:'',
           curp:'',
-          identificacion:''
+          identificacion:'',
+          tutor:'',
+          correo:'',
+          direccion:'',
+          telefono:''
         }
         Swal.fire({
           title: 'Exitoso',

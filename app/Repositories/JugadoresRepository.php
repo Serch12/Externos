@@ -94,13 +94,11 @@ class JugadoresRepository
         $new -> categoria = $request->categoria;
         $new -> num_dorsal = $request -> num_dorsal;
         $new -> sede = $request->sede;
+        $new -> tutor = $request->tutor;
+        $new -> correo = $request->correo;
+        $new -> direccion = $request->direccion;
+        $new -> telefono = $request->telefono;
         $new -> prestamo = 0;
-        // if ($request->prestamo == true) {
-        //     $new -> prestamo = 1;
-        // } else {
-        //     $new -> prestamo = 0;
-        // }
-        
         $new -> save();
 
         $edit = Jugadores::find($new->id_jugador);

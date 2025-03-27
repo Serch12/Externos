@@ -179,9 +179,9 @@
                         </div>
                     </div>
                     <div class="col-12 d-flex justify-content-between mt-6">
-                        <button class="btn btn-outline-secondary btn-prev" disabled>
-                            <i class="ri-arrow-left-line ri-16px"></i>
-                            <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                        <button class="btn btn-outline-danger btn-prev">
+                            <!-- <i class="ri-arrow-left-line ri-16px"></i> -->
+                            <span class="align-middle d-sm-block d-none ms-2" @click="muestra(0)">Cancelar</span>
                         </button>
                         <button class="btn btn-primary" @click="validateRegistro(0)">
                             <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
@@ -219,7 +219,6 @@
                                             <input class="form-check-input"
                                                 type="checkbox"
                                                 :id="`check2${index}`"
-                                                v-model="seleccionJugador[t.folio]"
                                                 @change="activaJugador(index, t.folio, t.num_dorsal, t.nombre, t.posicion, t.sexo, t.edad, t.categoria, t.sede, t.prestamo)">
                                         </td>
                                         <td>
@@ -433,6 +432,333 @@
         <div id="main" v-if="this.vista == 2">
             <div class="card mb-6">
                 <h5 class="card-header" style="color: green;">Edición de Torneo</h5>
+                <form class="card-body" onsubmit="return false" v-show="this.step == 0">
+                    <h6>Datos del Torneo</h6>
+                    <div class="row g-6">
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="text" id="Torneo" class="form-control" placeholder="Nombre del Torneo"
+                                    v-model="detalleTorneo.torneo" />
+                                <label for="Torneo">Torneo</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="text" id="sede" class="form-control" placeholder="sede"
+                                        style="color: black;" aria-label="sede" v-model="detalleTorneo.sede" disabled />
+                                    <label for="sede">Sede</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select id="categoria" name="categoria" class="form-select"
+                                    v-model="detalleTorneo.categoria">
+                                    <option value="Selecciona una Categoria">Selecciona una Categoria</option>
+                                    <option value="Categoria 2009">Categoria 2009</option>
+                                    <option value="Categoria 2010">Categoria 2010</option>
+                                    <option value="Categoria 2011">Categoria 2011</option>
+                                    <option value="Categoria 2012">Categoria 2012</option>
+                                </select>
+                                <label for="categoria">Categoria</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="text" id="direccion" class="form-control"
+                                        placeholder="Ingresa una Direccion de google maps "
+                                        aria-label="Ingresa una Direccion de google maps " v-model="detalleTorneo.direccion"
+                                        aria-describedby="direccion2" />
+                                    <label for="direccion">Dirección</label>
+                                </div>
+                                <span id="direccion2" class="input-group-text">https://maps.app.goo.gl/</span>
+                            </div>
+                        </div>
+                        <h6>Rango de Fecha</h6>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="date" id="fecha_inicia" class="form-control"
+                                    v-model="detalleTorneo.fecha_inicia" />
+                                <label for="fecha_inicia">Fecha Inicia</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input type="date" id="fecha_fin" class="form-control" v-model="detalleTorneo.fecha_fin" />
+                                <label for="fecha_fin">Fecha Fin</label>
+                            </div>
+                        </div>
+                        <h6>Datos de Contacto</h6>
+                        <div class="col-md-12">
+                            <div class="edit_container" style="overflow: hidden;">
+                                <quill-editor
+                                    v-model="detalleTorneo.contacto"
+                                    style="height: 200px;"
+                                    ref="myQuillEditorEditar"
+                                    :options="editorOption"
+                                    @blur="onEditorBlur($event)"
+                                    @focus="onEditorFocus($event)"
+                                    @change="onEditorChange($event)">
+                                </quill-editor>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-between mt-6">
+                        <button class="btn btn-outline-danger btn-prev">
+                            <!-- <i class="ri-arrow-left-line ri-16px"></i> -->
+                            <span class="align-middle d-sm-block d-none ms-2" @click="muestra(0)">Cancelar</span>
+                        </button>
+                        <button class="btn btn-primary" @click="validateRegistroUpdate(0)">
+                            <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
+                            <i class="ri-arrow-right-line ri-16px"></i>
+                        </button>
+                    </div>
+                </form>
+                <form class="card-body" onsubmit="return false" v-show="this.step == 1">
+                    <h6 style="color: red;">** Selecciona los jugadores que participaran en  la <b>{{ this.newtorneo.torneo }}</b> </h6>
+                    <div class="col-lg-12">
+                        <div class="table-responsive text-nowrap mt-2">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input class="form-check-input"
+                                                type="checkbox"
+                                                v-model="value"
+                                                @change="TodoJugadorUpdate()">
+                                        </th>
+                                        <th>Foto</th>
+                                        <th>Dorsal</th>
+                                        <th>Nombre</th>
+                                        <th>Posición</th>
+                                        <th>Sexo</th>
+                                        <th>Edad</th>
+                                        <th>Sede</th>
+                                        <th>Zona</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <tr v-for="(t, index) in this.PlantillaJugador"
+                                        :key="index"  style="overflow: scroll;">
+                                        <td>
+                                            <input class="form-check-input"
+                                                type="checkbox"
+                                                :id="`check23${index}`"
+                                                v-model="seleccionJugador[t.folio]"
+                                                @change="activaJugadorUpdate(index, t.folio, t.num_dorsal, t.nombre, t.posicion, t.sexo, t.edad, t.categoria, t.sede, t.prestamo)">
+                                        </td>
+                                        <td>
+                                            <div
+                                                class="d-flex justify-content-start align-items-center">
+                                                <div class="avatar-wrapper">
+                                                    <div
+                                                        class="avatar me-2">
+                                                        <img :src="`ArchivosSistema/Jugadores/${t.id_jugador}/${t.foto}`"
+                                                            alt="Avatar"
+                                                            class="rounded-circle">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <th>{{ t.num_dorsal }}</th>
+                                        <td>{{ t.nombre }}</td>
+                                        <td>{{ t.posicion }}</td>
+                                        <td>{{ t.sexo }}</td>
+                                        <td>{{ t.edad }}</td>
+                                        <td>{{ t.sede }}</td>
+                                        <th>
+                                            <span class="badge rounded-pill bg-label-success me-1" v-if="t.zona == 'Local'">{{t.zona}}</span>
+                                            <span class="badge rounded-pill bg-label-warning me-1" v-if="t.zona == 'Foraneo'">{{t.zona}}</span>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-between mt-6">
+                        <button class="btn btn-outline-secondary btn-prev" @click="goPrevStep()">
+                            <i class="ri-arrow-left-line ri-16px"></i>
+                            <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                        </button>
+                        <button class="btn btn-primary" @click="validateRegistroUpdate(1)">
+                            <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
+                            <i class="ri-arrow-right-line ri-16px"></i>
+                        </button>
+                    </div>
+                </form>
+                <div class="card-body" v-show="this.step == 2">
+                    <form id="addNewAddressForm" class="row g-5" onsubmit="return false" >
+                        <h6>Ingresa los Datos de pago del Torneo</h6>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="nameupdate"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.nombre"
+                                    placeholder="Nombre"/>
+                                <label for="nameupdate">Nombre</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="rfc"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.rfc"
+                                    placeholder="RFC"/>
+                                <label for="rfc">RFC</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select id="banco" name="roles" class="form-select" v-model="newDatosbancarios.banco">
+                                    <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                    <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                    <option value="BANORTE">BANORTE</option>
+                                    <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                    <option value="SANTANDER">SANTANDER</option>
+                                    <option value="HSBC">HSBC</option>
+                                    <option value="INBURSA">INBURSA</option>
+                                    <option value="MIFEL">MIFEL</option>
+                                    <option value="SCOTIABANK">SCOTIABANK</option>
+                                    <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                    <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                    <option value="BANCOPPEL">BANCOPPEL</option>
+                                    <option value="AFIRME">AFIRME</option>
+                                </select>
+                                <label for="banco">Banco</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="cuentabancaria"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.cuenta_bancaria"
+                                    placeholder="Cuenta Bancaria"/>
+                                <label for="cuentabancaria">Cuenta Bancaria</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="clabebancaria"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.clabe_bancaria"
+                                    placeholder="Clabe Bancaria"/>
+                                <label for="clabebancaria">Clabe Bancaria</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="direccion"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.direccion"
+                                    placeholder="Dirección"/>
+                                <label for="direccion"> Dirección</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="number"
+                                    id="telefono"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.telefono"
+                                    placeholder="Telefono"/>
+                                <label for="telefono"> Telefono</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="email"
+                                    id="mail"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.mail"
+                                    placeholder="Email"/>
+                                <label for="mail"> Email</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="text"
+                                    id="ejecutivo"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.ejecutivo"
+                                    placeholder="Ejecutivo"/>
+                                <label for="ejecutivo"> Ejecutivo</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="number"
+                                    id="Subtotal"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.subtotal"
+                                    step="0.01"
+                                    placeholder="Subtotal"/>
+                                <label for="Subtotal"> Subtotal</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <div class="form-floating form-floating-outline">
+                                <input
+                                    type="number"
+                                    id="total"
+                                    class="form-control"
+                                    v-model="newDatosbancarios.total"
+                                    step="0.01"
+                                    placeholder="total"/>
+                                <label for="total"> Total</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select id="tipopersona" name="roles" class="form-select" v-model="newDatosbancarios.tipo_persona">
+                                    <option value="Seleccionar">Seleccionar</option>
+                                    <option value="Persona Fisica">Persona Fisica</option>
+                                    <option value="Persona Moral">Persona Moral</option>
+
+                                </select>
+                                <label for="tipopersona">¿Persona Física ó Persona Moral?</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline mb-6">
+                                <input type="file"  accept="image/png,image/jpeg,.pdf" class="form-control" id="bs-validation-upload-file" ref="fileInscripcion" @change="onChangeIncripcion()">
+                                <label for="bs-validation-upload-file">Formato de Inscripción</label>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-between mt-6">
+                            <button class="btn btn-outline-secondary btn-prev" @click="goPrevStep()">
+                                <i class="ri-arrow-left-line ri-16px"></i>
+                                <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
+                            </button>
+                            <button class="btn btn-primary" @click="validateRegistroUpdate(2)">
+                                <span class="align-middle d-sm-block d-none me-2">Guardar</span>
+                                <!-- <i class="ri-arrow-right-line ri-16px"></i> -->
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- <div id="main" v-if="this.vista == 2">
+            <div class="card mb-6">
+                <h5 class="card-header" style="color: green;">Edición de Torneo</h5>
                 <form class="card-body">
                     <h6>Datos del Torneo</h6>
                     <div class="row g-6">
@@ -513,7 +839,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> -->
         <!-- vista de vizualizacion -->
         <div id="main" v-if="this.vista == 3">
             <div class="container-xxl flex-grow-1 container-p-y">
@@ -680,16 +1006,13 @@
                         <div class="card mb-6" v-if="this.activeView === 'cuerpo_tecnico'">
                             <h5 class="card-header">Cuerpo Técnico</h5>
                             <div class="card-body pt-0">
-                                <div class="row" v-if="this.detalleTorneo.estatus == 0||this.detalleTorneo.estatus == 3">
+                                <div class="row">
                                     <div class="col-lg-12">
                                         <!-- <h5>Cuerpo Tecnico</h5> -->
                                         <div class="table-responsive text-nowrap mt-2">
                                             <table class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th>
-
-                                                        </th>
                                                         <th>Foto</th>
                                                         <th>Nombre</th>
                                                         <th>Puesto</th>
@@ -700,13 +1023,7 @@
                                                 <tbody class="table-border-bottom-0">
                                                     <tr v-for="(t, index) in this.PlantillaTecnico"
                                                         :key="index"  style="overflow: scroll;">
-                                                        <td>
-                                                            <input class="form-check-input"
-                                                                type="checkbox"
-                                                                :id="`checktecnico${index}`"
-                                                                v-model="Tecnicocheck[t.folio]"
-                                                                @change="activaTecnico(index, t.folio, t.nombre, t.puesto, t.sexo, t.edad, t.sede)">
-                                                        </td>
+
                                                         <td>
                                                             <div
                                                                 class="d-flex justify-content-start align-items-center">
@@ -727,61 +1044,11 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <!-- <infinite-loading force-use-infinite-wrapper=".infinite-wrapper" @infinite="consultaJugador">
-                                                <div slot="no-more">
-                                                    <div class="chip green z-depth-4 white-text">
-                                                        <strong>No existen mas datos para cargar.</strong>
-                                                    </div>
-                                                </div>
-                                                <div slot="spinner">
-                                                    <div class="chip yellow z-depth-4 white-text">
-                                                        <strong>Cargando...</strong>
-                                                    </div>
-                                                </div>
-                                                <div slot="no-results">
-                                                    <div class="chip red z-depth-4 white-text">
-                                                        <strong>Sin resultados</strong>
-                                                    </div>
-                                                </div>
-                                            </infinite-loading> -->
+                                            
                                         </div>
 
                                     </div>
 
-                                </div>
-                                <div class="row" v-else>
-                                    <div class="col-lg-12">
-                                        <div class="table-responsive text-nowrap mt-2">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <!-- <th>Folio</th> -->
-                                                        <th>Nombre</th>
-                                                        <th>Posición</th>
-                                                        <th>Sexo</th>
-                                                        <th>Edad</th>
-                                                        <th>Sede</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="table-border-bottom-0">
-                                                    <tr v-for="(t, index) in this.TecnicoSeleccionado" :key="index">
-                                                        <td>
-                                                            {{ index + 1 }}
-                                                        </td>
-                                                        <!-- <td>{{ t.folio }}</td> -->
-                                                        <td>{{ t.nombre }}</td>
-                                                        <td>{{ t.puesto }}</td>
-                                                        <td>{{ t.sexo }}</td>
-                                                        <td>{{ t.edad }}</td>
-                                                        <td>{{ t.sede }}</td>
-                                                        
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1527,6 +1794,7 @@ export default {
         return {
             vista: 0,
             step:0,
+            stepUpdate:0,
             search: '',
             value: '',
             imagenMiniatura:'',
@@ -1577,12 +1845,9 @@ export default {
             seleccionPrestamo: {},
             JugadorSeleccionado: [],
             cargaSeleccionado: [],
+            cargaSeleccionadoUpdate:[],
             ProveedoresIntranet:[],
             PlantillaTecnico:[],
-            TecnicoSeleccionado:[],
-            cargaTecnico:[],
-            Tecnicocheck:{},
-            eliminacionTecnico:[],
             Notas:[],
             IMGTalento:[],
             detalleTalento:[],
@@ -1735,119 +2000,131 @@ export default {
                     ejecutivo:'',
                     tipo_persona:'Seleccionar',
                     archivo:''
-                },
+                }
+                for (let index = 0; index < this.PlantillaJugador.length; index++) {
+                    $(`#check2${index}`).prop('checked', false);
+                }
                 this.cargaSeleccionado = [];
 
                 this.getTorneo();
                 this.vista = 0;
+                this.step = 0;
+
+                Swal.fire({
+                    title: 'Exitoso',
+                    text: "Se Agrego correctamente!",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
             })
         },
         validateRegistro(value){
             if (value == 0) {
                 this.PlantillaJugador = [];
-                // if (this.newtorneo.torneo == '') {
-                //     this.$toast.error("Ingresa el nombre del Torneo", {
-                //         position: "top-center",
-                //         timeout: 1270,
-                //         closeOnClick: true,
-                //         pauseOnFocusLoss: true,
-                //         pauseOnHover: true,
-                //         draggable: true,
-                //         draggablePercent: 0.6,
-                //         showCloseButtonOnHover: false,
-                //         hideProgressBar: true,
-                //         closeButton: "button",
-                //         icon: true,
-                //         rtl: false
-                //     });
-                //     return;
-                // }
-                // if (this.newtorneo.categoria == 'Selecciona una Categoria') {
-                //     this.$toast.error("Selecciona una Categoria", {
-                //         position: "top-center",
-                //         timeout: 1270,
-                //         closeOnClick: true,
-                //         pauseOnFocusLoss: true,
-                //         pauseOnHover: true,
-                //         draggable: true,
-                //         draggablePercent: 0.6,
-                //         showCloseButtonOnHover: false,
-                //         hideProgressBar: true,
-                //         closeButton: "button",
-                //         icon: true,
-                //         rtl: false
-                //     });
-                //     return;
-                // }
-                // if (this.newtorneo.direccion == '') {
-                //     this.$toast.error("Ingresa la Dirección", {
-                //         position: "top-center",
-                //         timeout: 1270,
-                //         closeOnClick: true,
-                //         pauseOnFocusLoss: true,
-                //         pauseOnHover: true,
-                //         draggable: true,
-                //         draggablePercent: 0.6,
-                //         showCloseButtonOnHover: false,
-                //         hideProgressBar: true,
-                //         closeButton: "button",
-                //         icon: true,
-                //         rtl: false
-                //     });
-                //     return;
-                // }
-                // if (this.newtorneo.fecha_inicia == '') {
-                //     this.$toast.error("Ingresa la Fecha de Inicio", {
-                //         position: "top-center",
-                //         timeout: 1270,
-                //         closeOnClick: true,
-                //         pauseOnFocusLoss: true,
-                //         pauseOnHover: true,
-                //         draggable: true,
-                //         draggablePercent: 0.6,
-                //         showCloseButtonOnHover: false,
-                //         hideProgressBar: true,
-                //         closeButton: "button",
-                //         icon: true,
-                //         rtl: false
-                //     });
-                //     return;
-                // }
-                // if (this.newtorneo.fecha_fin == '') {
-                //     this.$toast.error("Ingresa la Fecha de Fin", {
-                //         position: "top-center",
-                //         timeout: 1270,
-                //         closeOnClick: true,
-                //         pauseOnFocusLoss: true,
-                //         pauseOnHover: true,
-                //         draggable: true,
-                //         draggablePercent: 0.6,
-                //         showCloseButtonOnHover: false,
-                //         hideProgressBar: true,
-                //         closeButton: "button",
-                //         icon: true,
-                //         rtl: false
-                //     });
-                //     return;
-                // }
-                // if (this.newtorneo.contacto == '') {
-                //     this.$toast.error("Ingresa los Datos de Contacto", {
-                //         position: "top-center",
-                //         timeout: 1270,
-                //         closeOnClick: true,
-                //         pauseOnFocusLoss: true,
-                //         pauseOnHover: true,
-                //         draggable: true,
-                //         draggablePercent: 0.6,
-                //         showCloseButtonOnHover: false,
-                //         hideProgressBar: true,
-                //         closeButton: "button",
-                //         icon: true,
-                //         rtl: false
-                //     });
-                //     return;
-                // }
-                this.consultaJugador();
+                if (this.newtorneo.torneo == '') {
+                    this.$toast.error("Ingresa el nombre del Torneo", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.newtorneo.categoria == 'Selecciona una Categoria') {
+                    this.$toast.error("Selecciona una Categoria", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.newtorneo.direccion == '') {
+                    this.$toast.error("Ingresa la Dirección", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.newtorneo.fecha_inicia == '') {
+                    this.$toast.error("Ingresa la Fecha de Inicio", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.newtorneo.fecha_fin == '') {
+                    this.$toast.error("Ingresa la Fecha de Fin", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.newtorneo.contacto == '') {
+                    this.$toast.error("Ingresa los Datos de Contacto", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                this.consultaJugador(this.newtorneo.sede,this.newtorneo.categoria);
                 this.goNextStep();
             }
             if (value == 1) {
@@ -1913,20 +2190,6 @@ export default {
 
             axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response => {
                 this.JugadorSeleccionado = response.data
-
-                this.JugadorSeleccionado.map(jugador => {
-                    this.PlantillaJugador.map(j => {
-                        if (j.folio === jugador.folio) {
-                            this.seleccionJugador[j.folio] = true;
-                        }
-                    });
-                    this.PlantillaPrestamo.map(p => {
-                        if (p.folio === jugador.folio) {
-                            this.seleccionPrestamo[p.folio] = true;
-                        }
-                    });
-
-                });
             })
             axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_proveedor}`).then(response =>{
                 this.ProveedoresIntranet = response.data.bancarios;
@@ -1934,15 +2197,7 @@ export default {
             axios.get(`torneo/NotasDetalle/${this.detalleTorneo.id_torneo}/${this.sede}`).then(response =>{
                 this.Notas = response.data.notas
                 this.PlantillaTecnico = response.data.tecnico;
-                this.TecnicoSeleccionado = response.data.tecnicoselect;
-
-                this.TecnicoSeleccionado.map(tecnico =>{
-                    this.PlantillaTecnico.map(t =>{
-                        if (t.folio === tecnico.folio) {
-                            this.Tecnicocheck[t.folio] = true;
-                        }
-                    })
-                })
+                
             })
 
             if (this.detalleTorneo.id_talento != 0) {
@@ -2078,7 +2333,175 @@ export default {
                 });
             })
         },
-
+        validateRegistroUpdate(value){
+            if (value == 0) {
+                this.PlantillaJugador = [];
+                if (this.detalleTorneo.torneo == '') {
+                    this.$toast.error("Ingresa el nombre del Torneo", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleTorneo.categoria == 'Selecciona una Categoria') {
+                    this.$toast.error("Selecciona una Categoria", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleTorneo.direccion == '') {
+                    this.$toast.error("Ingresa la Dirección", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleTorneo.fecha_inicia == '') {
+                    this.$toast.error("Ingresa la Fecha de Inicio", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleTorneo.fecha_fin == '') {
+                    this.$toast.error("Ingresa la Fecha de Fin", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleTorneo.contacto == '') {
+                    this.$toast.error("Ingresa los Datos de Contacto", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                this.consultaJugador(this.detalleTorneo.sede,this.detalleTorneo.categoria);
+                this.goNextStep();
+                
+                
+            }
+            if (value == 1) {
+                
+                alert('hola');
+                // if (this.cargaSeleccionado.length == 0) {
+                //     this.$toast.error("Selecciona tus Jugadores que participaran en el torneo", {
+                //         position: "top-center",
+                //         timeout: 1270,
+                //         closeOnClick: true,
+                //         pauseOnFocusLoss: true,
+                //         pauseOnHover: true,
+                //         draggable: true,
+                //         draggablePercent: 0.6,
+                //         showCloseButtonOnHover: false,
+                //         hideProgressBar: true,
+                //         closeButton: "button",
+                //         icon: true,
+                //         rtl: false
+                //     });
+                //     return;
+                // }else{
+                //     this.goNextStep();
+                // }
+            }
+            if (value == 2) {
+                if (this.newDatosbancarios.nombre == '') {
+                    Swal.fire({
+                        title: "No Ingresaste Datos de Pago",
+                        text: "Estas seguro de continuar?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Continuar",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText:'No'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.newtorneo.formato = 'almacena';
+                        this.createTorneo();
+                    }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Advertencia",
+                        html: `Tus datos se almacenaran y se mandaran a <b>Revisión</b>`,
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Aceptar",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText:'Cancelar'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.newtorneo.formato = 'revision';
+                        this.createTorneo();
+                    }
+                    });
+                }
+            }
+        },
 
 
         TodoJugador() {
@@ -2136,15 +2559,87 @@ export default {
                 });
             }
         },
+        TodoJugadorUpdate() {
+            this.JugadorSeleccionado = [];
+
+            if (this.value == true) {
+                for (let index = 0; index < this.PlantillaJugador.length; index++) {
+                    $(`#check23${index}`).prop('checked', true);
+                    this.JugadorSeleccionado.push({
+                        folio: this.PlantillaJugador[index].folio,
+                        nombre: this.PlantillaJugador[index].nombre,
+                        num_dorsal: this.PlantillaJugador[index].num_dorsal,
+                        posicion: this.PlantillaJugador[index].posicion,
+                        sexo: this.PlantillaJugador[index].sexo,
+                        edad: this.PlantillaJugador[index].edad,
+                        categoria: this.PlantillaJugador[index].categoria,
+                        sede: this.PlantillaJugador[index].sede,
+                        prestamo: this.PlantillaJugador[index].prestamo
+                    });
+
+
+                }
+            }
+
+            if (this.value == false) {
+                for (let index = 0; index < this.PlantillaJugador.length; index++) {
+                    $(`#check23${index}`).prop('checked', false);
+                }
+                this.JugadorSeleccionado = [];
+            }
+        },
+        activaJugadorUpdate(index, folio, num_dorsal, nombre, posicion, sexo, edad, categoria, sede, prestamo) {
+            var num = $(`#check23${index}`).prop('checked');
+
+            if (num == true) {
+                this.JugadorSeleccionado.push({
+                    folio: folio,
+                    num_dorsal: num_dorsal,
+                    nombre: nombre,
+                    posicion: posicion,
+                    sexo: sexo,
+                    edad: edad,
+                    categoria: categoria,
+                    sede: sede,
+                    prestamo: prestamo
+                });
+               
+            }
+            if (num == false) {
+                this.JugadorSeleccionado.forEach(function (p, index, object) {
+                    if (p.folio === folio) {
+                        object.splice(index, 1);
+                       
+                    }
+                });
+            }
+        },
     
-        consultaJugador() {
+        consultaJugador(sede,categoria) {
 
 
-            var url = `torneo/plantillaJugador?sede=${this.newtorneo.sede}&categoria=${this.newtorneo.categoria}`;
+            var url = `torneo/plantillaJugador?sede=${sede}&categoria=${categoria}`;
 
             axios.get(url).then(response => {
                 this.PlantillaJugador = response.data.plantilla;
+
+                if (this.vista == 2) {
+                    this.JugadorSeleccionado.map(jugador => {
+                        this.PlantillaJugador.map(j => {
+                            if (j.folio === jugador.folio) {
+                                this.seleccionJugador[j.folio] = true;
+                            }
+                        });
+                        this.PlantillaPrestamo.map(p => {
+                            if (p.folio === jugador.folio) {
+                                this.seleccionPrestamo[p.folio] = true;
+                            }
+                        });
+
+                    });
+                }
             });
+            
 
         },
         onChangeIncripcion(){
@@ -2439,82 +2934,6 @@ export default {
             }
         },
 
-        TodoTecnico(){
-            this.cargaTecnico = [];
-
-            if (this.value == true) {
-                for (let index = 0; index < this.PlantillaTecnico.length; index++) {
-                    $(`#checktecnico${index}`).prop('checked', true);
-                    this.cargaTecnico.push({
-                        folio: this.PlantillaTecnico[index].folio,
-                        nombre: this.PlantillaTecnico[index].nombre,
-                        puesto: this.PlantillaTecnico[index].puesto,
-                        sexo: this.PlantillaTecnico[index].sexo,
-                        edad: this.PlantillaTecnico[index].edad,
-                        sede: this.PlantillaTecnico[index].sede,
-                    });
-
-                }
-                let formData = new FormData();
-                formData.append('bandera', 'multiple');
-                formData.append('id_torneo', this.detalleTorneo.id_torneo);
-                formData.append('selecccion', JSON.stringify(this.cargaTecnico));
-                axios.post('torneo/seleccionTecnico', formData).then(response => {
-                    axios.get(`torneo/NotasDetalle/${this.detalleTorneo.id_torneo}/${this.sede}`).then(response => {
-                        this.TecnicoSeleccionado = response.data.tecnicoselect
-                    })
-                })
-            }
-
-            if (this.value == false) {
-                for (let index = 0; index < this.PlantillaTecnico.length; index++) {
-                    $(`#checktecnico${index}`).prop('checked', false);
-                    for (let index = 0; index < this.TecnicoSeleccionado.length; index++) {
-                        const id = this.TecnicoSeleccionado[index].id_plantilla_tecnico;
-                        this.eliminacionTecnico.push({
-                            id_plantilla_tecnico:id
-                        });
-
-                    }
-                }
-                this.cargaTecnico = [];
-            }
-        },
-        activaTecnico(index, folio, nombre, puesto, sexo, edad, sede){
-            var num = $(`#checktecnico${index}`).prop('checked');
-
-            if (num == true) {
-                var nuevoTecnico = {
-                    folio: folio,
-                    nombre: nombre,
-                    puesto: puesto,
-                    sexo: sexo,
-                    edad: edad,
-                    sede: sede,
-                };
-                let formData = new FormData();
-                formData.append('bandera', 'individual');
-                formData.append('id_torneo', this.detalleTorneo.id_torneo);
-                formData.append('selecccion', JSON.stringify(nuevoTecnico));
-                axios.post('torneo/seleccionTecnico', formData).then(response => {
-                    axios.get(`torneo/NotasDetalle/${this.detalleTorneo.id_torneo}/${this.sede}`).then(response => {
-                        this.TecnicoSeleccionado = response.data.tecnicoselect
-                    })
-                })
-            }
-            if (num == false) {
-                this.TecnicoSeleccionado.forEach(function (p, index, object) {
-                    if (p.folio === folio) {
-                        let formData = new FormData();
-                        formData.append('bandera', 'unico');
-                        formData.append('id_plantilla_tecnico', p.id_plantilla_tecnico);
-                        axios.post('torneo/deleteTecnico', formData).then(response => {
-                            object.splice(index, 1);
-                        })
-                    }
-                });
-            }
-        },
         dateTalento(t){
 
             this.new_registro = {

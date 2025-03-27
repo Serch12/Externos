@@ -142,6 +142,17 @@ class TorneoRepository
             $edit -> subtotal = $request -> subtotal;
             $edit -> total = $request -> total;
             $edit -> save();
+
+
+            $estatus = Torneo::find($new->id_torneo);
+            if ($request->formato == 'almacena') {
+                $estatus -> estatus = 0;
+            } 
+            if($request->formato == 'revision') {
+                $estatus -> estatus = 1;
+            }
+            $estatus -> save();
+            
         }
 
 
