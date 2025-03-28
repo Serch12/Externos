@@ -177,6 +177,7 @@ class TalentosRepository
         if (isset($galeria)){
             foreach ($request->file('img') as $key => $value) {
                 $imagen = new DateIMGBanner();
+                $imagen ->fecha_publicacion = $request -> fecha_publicacion;
                 //obtenemos el nombre del archivo
                 $nombre = $value->getClientOriginalName();
                 $urlimagen = $hoy = Carbon::today()->format('Y/m/d').'gale'."-". $nombre;
