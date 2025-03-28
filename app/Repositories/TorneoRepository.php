@@ -163,6 +163,7 @@ class TorneoRepository
      * Funcion que creara el torneo
      **/
     public function updateTorneo($request){
+
         $edit = Torneo::find($request->id_torneo);
         $edit -> torneo = $request -> torneo;
         $edit -> categoria = $request -> categoria;
@@ -172,6 +173,80 @@ class TorneoRepository
         $edit -> fecha_fin = $request -> fecha_fin;
         $edit -> contacto = $request -> contacto;
         $edit -> save ();
+
+        $consulta = PlantillaJugador::where('id_torneo',$request->id_torneo)->get();
+
+        foreach ($consulta as $value) {
+            $pe = PlantillaJugador::find($value->id_plantilla);
+            $pe -> delete();
+        }
+
+        $seleccion = json_decode($request->JugadorSeleccionado);
+        foreach ($seleccion as $value) {
+
+            $new_plantilla = new PlantillaJugador();
+            $new_plantilla -> id_torneo = $edit -> id_torneo;
+            $new_plantilla -> folio = $value -> folio;
+            $new_plantilla -> num_dorsal = $value -> num_dorsal;
+            $new_plantilla -> nombre = $value -> nombre;
+            $new_plantilla -> posicion = $value -> posicion;
+            $new_plantilla -> sexo = $value -> sexo;
+            $new_plantilla -> edad = $value -> edad;
+            $new_plantilla -> categoria = $value -> categoria;
+            $new_plantilla -> sede = $value -> sede;
+            $new_plantilla -> prestamo = $value -> prestamo;
+            $new_plantilla -> save();
+        }
+
+        if ($request->id_proveedor == 0) {
+            $new_pago = new ProveedoresIntranet();
+            $new_pago -> nombre = $request -> nombre;
+            $new_pago -> id_user = 5;
+            $new_pago -> rfc = $request -> rfc;
+            $new_pago -> banco = $request -> banco;
+            $new_pago -> ctaBanc = $request -> cuenta_bancaria;
+            $new_pago -> cbeBanc = $request -> clabe_bancaria;
+            $new_pago -> direccion = $request -> direccion;
+            $new_pago -> telefono = $request -> telefono;
+            $new_pago -> mail = $request -> mail;
+            $new_pago -> ejecutivo = $request -> ejecutivo;
+            $new_pago -> tipo_persona = $request -> tipo_persona;
+            $new_pago -> estatus = 1;
+            $new_pago ->save();
+        } else {
+            $new_pago = ProveedoresIntranet::find($request->id_pro);
+            $new_pago -> nombre = $request -> nombre;
+            $new_pago -> id_user = 5;
+            $new_pago -> rfc = $request -> rfc;
+            $new_pago -> banco = $request -> banco;
+            $new_pago -> ctaBanc = $request -> ctaBanc;
+            $new_pago -> cbeBanc = $request -> cbeBanc;
+            $new_pago -> direccion = $request -> direccion;
+            $new_pago -> telefono = $request -> telefono;
+            $new_pago -> mail = $request -> mail;
+            $new_pago -> ejecutivo = $request -> ejecutivo;
+            $new_pago -> tipo_persona = $request -> tipo_persona;
+            $new_pago -> estatus = 1;
+            $new_pago ->save();
+        }
+        
+
+        $editt = Torneo::find($edit->id_torneo);
+        $file = $request->file('archivo');
+        if(isset($file)){
+            $file = $request->file('archivo');
+            $nombre = $file->getClientOriginalName();
+            $urlimagen = $request->id_torneo."/".$nombre;
+            \Storage::disk('datobancario')->put($urlimagen, \File::get($file));
+            $editt->archivo = $nombre;
+        }
+        $editt -> id_proveedor = $new_pago -> id_pro;
+        $editt -> subtotal = $request -> subtotal;
+        $editt -> total = $request -> total;
+        $editt -> estatus = 0;
+        $editt -> save();
+
+
         return $edit;
     }
 

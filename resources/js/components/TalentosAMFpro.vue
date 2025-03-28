@@ -784,7 +784,7 @@ export default {
                     axios.post('talentos/Talentodelete', formData).then(response => {
                         this.getTalentos();
                         Swal.fire({
-                            title: 'Exitoso',
+                            title: 'Éxito',
                             text: "Se Elimino correctamente!",
                             icon: 'success',
                             showConfirmButton: false,
@@ -846,7 +846,7 @@ export default {
                 
                 this.getBanner();
                 Swal.fire({
-                    title: 'Exitoso',
+                    title: 'Éxito',
                     text: "Se Agrego Correctamente!",
                     icon: 'success',
                     showConfirmButton: false,

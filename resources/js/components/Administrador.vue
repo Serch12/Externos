@@ -892,7 +892,7 @@
                     this.getAdministrador();
                     $('#createUser').modal('hide');
                     Swal.fire({
-                        title: 'Exitoso',
+                        title: 'Éxito',
                         text: "Se Agrego correctamente!",
                         icon: 'success',
                         showConfirmButton: false,
@@ -1017,7 +1017,7 @@
                     $('#editUser').modal('hide');
                     this.submenu = false;
                     Swal.fire({
-                        title: 'Exitoso',
+                        title: 'Éxito',
                         text: "Se Edito correctamente!",
                         icon: 'success',
                         showConfirmButton: false,
@@ -1095,7 +1095,7 @@
                         this.DetalleDocumentacion = res.data
                     })
                     Swal.fire({
-                        title: 'Exitoso',
+                        title: 'Éxito',
                         text: "Se Añadieron correctamente!",
                         icon: 'success',
                         showConfirmButton: false,

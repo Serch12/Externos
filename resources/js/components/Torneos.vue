@@ -591,32 +591,40 @@
                 </form>
                 <div class="card-body" v-show="this.step == 2">
                     <form id="addNewAddressForm" class="row g-5" onsubmit="return false" >
-                        <h6>Ingresa los Datos de pago del Torneo</h6>
+                        <h6>Ingresa los Datos de Pago del Torneo</h6>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="text"
-                                    id="nameupdate"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.nombre"
-                                    placeholder="Nombre"/>
+                                <input type="text" id="nameupdate" class="form-control" v-model="newDatosbancarios.nombre" placeholder="Nombre" v-if="this.detalleTorneo.id_proveedor == ''"/>
+                                <input type="text" id="nameupdate" class="form-control" v-model="ProveedoresIntranet[0].nombre" placeholder="Nombre1" v-else/>
                                 <label for="nameupdate">Nombre</label>
                             </div>
                         </div>
+                        
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="text"
-                                    id="rfc"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.rfc"
-                                    placeholder="RFC"/>
+                                <input type="text" id="rfc" class="form-control" v-model="newDatosbancarios.rfc" placeholder="RFC" v-if="this.detalleTorneo.id_proveedor == ''"/>
+                                <input type="text" id="rfc" class="form-control" v-model="ProveedoresIntranet[0].rfc" placeholder="RFC" v-else/>
                                 <label for="rfc">RFC</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <select id="banco" name="roles" class="form-select" v-model="newDatosbancarios.banco">
+                                <select id="banco" name="roles" class="form-select" v-model="newDatosbancarios.banco" v-if="this.detalleTorneo.id_proveedor == ''">
+                                    <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                    <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                    <option value="BANORTE">BANORTE</option>
+                                    <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                    <option value="SANTANDER">SANTANDER</option>
+                                    <option value="HSBC">HSBC</option>
+                                    <option value="INBURSA">INBURSA</option>
+                                    <option value="MIFEL">MIFEL</option>
+                                    <option value="SCOTIABANK">SCOTIABANK</option>
+                                    <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                    <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                    <option value="BANCOPPEL">BANCOPPEL</option>
+                                    <option value="AFIRME">AFIRME</option>
+                                </select>
+                                <select id="banco" name="roles" class="form-select" v-model="ProveedoresIntranet[0].banco" v-else>
                                     <option value="Seleccionar Banco">Seleccionar Banco</option>
                                     <option value="BBVA BANCOMER">BBVA BANCOMER</option>
                                     <option value="BANORTE">BANORTE</option>
@@ -637,101 +645,71 @@
 
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="text"
-                                    id="cuentabancaria"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.cuenta_bancaria"
-                                    placeholder="Cuenta Bancaria"/>
+                                <input type="text" id="cuentabancaria" class="form-control" v-model="newDatosbancarios.cuenta_bancaria" placeholder="Cuenta Bancaria" v-if="this.detalleTorneo.id_proveedor == 0"/>
+                                <input type="text" id="cuentabancaria" class="form-control" v-model="ProveedoresIntranet[0].ctaBanc" placeholder="Cuenta Bancaria" v-else/>
                                 <label for="cuentabancaria">Cuenta Bancaria</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="text"
-                                    id="clabebancaria"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.clabe_bancaria"
-                                    placeholder="Clabe Bancaria"/>
+                                <input type="text" id="clabebancaria" class="form-control" v-model="newDatosbancarios.clabe_bancaria" placeholder="Clabe Bancaria" v-if="this.detalleTorneo.id_proveedor == 0"/>
+                                <input type="text" id="clabebancaria" class="form-control" v-model="ProveedoresIntranet[0].cbeBanc" placeholder="Clabe Bancaria" v-else/>
                                 <label for="clabebancaria">Clabe Bancaria</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="text"
-                                    id="direccion"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.direccion"
-                                    placeholder="Dirección"/>
+                                <input type="text" id="direccion" class="form-control" v-model="newDatosbancarios.direccion" placeholder="Dirección" v-if="this.detalleTorneo.id_proveedor == 0"/>
+                                <input type="text" id="direccion" class="form-control" v-model="ProveedoresIntranet[0].direccion" placeholder="Dirección" v-else/>
                                 <label for="direccion"> Dirección</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="number"
-                                    id="telefono"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.telefono"
-                                    placeholder="Telefono"/>
+                                <input type="number" id="telefono" class="form-control" v-model="newDatosbancarios.telefono" placeholder="Telefono" v-if="this.detalleTorneo.id_proveedor == 0"/>
+                                <input type="number" id="telefono" class="form-control" v-model="ProveedoresIntranet[0].telefono" placeholder="Telefono" v-else/>
                                 <label for="telefono"> Telefono</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="email"
-                                    id="mail"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.mail"
-                                    placeholder="Email"/>
+                                <input type="email" id="mail" class="form-control" v-model="newDatosbancarios.mail" placeholder="Email" v-if="this.detalleTorneo.id_proveedor == 0"/>
+                                <input type="email" id="mail" class="form-control" v-model="ProveedoresIntranet[0].mail" placeholder="Email" v-else/>
                                 <label for="mail"> Email</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="text"
-                                    id="ejecutivo"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.ejecutivo"
-                                    placeholder="Ejecutivo"/>
+                                <input type="text" id="ejecutivo" class="form-control" v-model="newDatosbancarios.ejecutivo" placeholder="Ejecutivo" v-if="this.detalleTorneo.id_proveedor == 0"/>
+                                <input type="text" id="ejecutivo" class="form-control" v-model="ProveedoresIntranet[0].ejecutivo" placeholder="Ejecutivo" v-else/>
                                 <label for="ejecutivo"> Ejecutivo</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-3">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="number"
-                                    id="Subtotal"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.subtotal"
-                                    step="0.01"
-                                    placeholder="Subtotal"/>
+                                <input type="number" id="Subtotal" class="form-control" v-model="newDatosbancarios.subtotal" step="0.01" placeholder="Subtotal" v-if="this.detalleTorneo.id_proveedor == 0"/>
+                                <input type="number" id="Subtotal" class="form-control" v-model="detalleTorneo.subtotal" step="0.01" placeholder="Subtotal" v-else/>
                                 <label for="Subtotal"> Subtotal</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-3">
                             <div class="form-floating form-floating-outline">
-                                <input
-                                    type="number"
-                                    id="total"
-                                    class="form-control"
-                                    v-model="newDatosbancarios.total"
-                                    step="0.01"
-                                    placeholder="total"/>
+                                <input type="number" id="total" class="form-control" v-model="newDatosbancarios.total" step="0.01" placeholder="total" v-if="this.detalleTorneo.id_proveedor == 0"/>
+                                <input type="number" id="total" class="form-control" v-model="detalleTorneo.total" step="0.01" placeholder="total" v-else/>
                                 <label for="total"> Total</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <select id="tipopersona" name="roles" class="form-select" v-model="newDatosbancarios.tipo_persona">
+                                <select id="tipopersona" name="roles" class="form-select" v-model="newDatosbancarios.tipo_persona" v-if="this.detalleTorneo.id_proveedor == 0">
                                     <option value="Seleccionar">Seleccionar</option>
                                     <option value="Persona Fisica">Persona Fisica</option>
                                     <option value="Persona Moral">Persona Moral</option>
-
+                                </select>
+                                <select id="tipopersona" name="roles" class="form-select" v-model="ProveedoresIntranet[0].tipo_persona" v-else>
+                                    <option value="Seleccionar">Seleccionar</option>
+                                    <option value="Persona Fisica">Persona Fisica</option>
+                                    <option value="Persona Moral">Persona Moral</option>
                                 </select>
                                 <label for="tipopersona">¿Persona Física ó Persona Moral?</label>
                             </div>
@@ -1977,6 +1955,7 @@ export default {
             }else{
                 formData.append('bandera_pago','no aplica');
             }
+            
             axios.post('torneo/createTorneo', formData).then(response => {
 
                 this.newtorneo = {
@@ -2209,109 +2188,7 @@ export default {
 
         },
         updateTorneo() {
-            if (this.detalleTorneo.torneo == '') {
-                this.$toast.error("Ingresa el nombre del Torneo", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.detalleTorneo.categoria == 'Selecciona una Categoria') {
-                this.$toast.error("Selecciona una Categoria", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.detalleTorneo.direccion == '') {
-                this.$toast.error("Ingresa la Dirección", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.detalleTorneo.fecha_inicia == '') {
-                this.$toast.error("Ingresa la Fecha de Inicio", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.detalleTorneo.fecha_fin == '') {
-                this.$toast.error("Ingresa la Fecha de Fin", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-            if (this.detalleTorneo.contacto == '') {
-                this.$toast.error("Ingresa los Datos de Contacto", {
-                    position: "top-center",
-                    timeout: 1270,
-                    closeOnClick: true,
-                    pauseOnFocusLoss: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    draggablePercent: 0.6,
-                    showCloseButtonOnHover: false,
-                    hideProgressBar: true,
-                    closeButton: "button",
-                    icon: true,
-                    rtl: false
-                });
-                return;
-            }
-
+            
             let formData = new FormData();
             formData.append('id_torneo', this.detalleTorneo.id_torneo);
             formData.append('torneo', this.detalleTorneo.torneo);
@@ -2321,9 +2198,45 @@ export default {
             formData.append('fecha_inicia', this.detalleTorneo.fecha_inicia);
             formData.append('fecha_fin', this.detalleTorneo.fecha_fin);
             formData.append('contacto', this.detalleTorneo.contacto);
+            formData.append('id_proveedor', this.detalleTorneo.id_proveedor);
+            formData.append('JugadorSeleccionado',JSON.stringify(this.JugadorSeleccionado));
+            if (this.detalleTorneo.id_proveedor == 0) {
+                formData.append('nombre',this.newDatosbancarios.nombre);
+                formData.append('rfc',this.newDatosbancarios.rfc);
+                formData.append('banco',this.newDatosbancarios.banco);
+                formData.append('cuenta_bancaria',this.newDatosbancarios.cuenta_bancaria);
+                formData.append('clabe_bancaria',this.newDatosbancarios.clabe_bancaria);
+                formData.append('direccion',this.newDatosbancarios.direccion);
+                formData.append('telefono',this.newDatosbancarios.telefono);
+                formData.append('mail',this.newDatosbancarios.mail);
+                formData.append('ejecutivo',this.newDatosbancarios.ejecutivo);
+                formData.append('tipo_persona',this.newDatosbancarios.tipo_persona);
+                formData.append('subtotal',this.newDatosbancarios.subtotal);
+                formData.append('total',this.newDatosbancarios.total);
+                formData.append('archivo',this.newDatosbancarios.archivo);
+            } else {
+                formData.append('id_pro',this.ProveedoresIntranet[0].id_pro);
+                formData.append('nombre',this.ProveedoresIntranet[0].nombre);
+                formData.append('rfc',this.ProveedoresIntranet[0].rfc);
+                formData.append('banco',this.ProveedoresIntranet[0].banco);
+                formData.append('ctaBanc',this.ProveedoresIntranet[0].ctaBanc);
+                formData.append('cbeBanc',this.ProveedoresIntranet[0].cbeBanc);
+                formData.append('direccion',this.ProveedoresIntranet[0].direccion);
+                formData.append('telefono',this.ProveedoresIntranet[0].telefono);
+                formData.append('mail',this.ProveedoresIntranet[0].mail);
+                formData.append('ejecutivo',this.ProveedoresIntranet[0].ejecutivo);
+                formData.append('tipo_persona',this.ProveedoresIntranet[0].tipo_persona);
+                formData.append('subtotal',this.detalleTorneo.subtotal);
+                formData.append('total',this.detalleTorneo.total);
+                formData.append('archivo',this.detalleTorneo.archivo);
+            }
             axios.post('torneo/updateTorneo', formData).then(response => {
-                this.getTorneo();
+                
                 this.vista = 0;
+                this.step = 0;
+                this.JugadorSeleccionado = [];
+                this.ProveedoresIntranet = [];
+                this.getTorneo();
                 Swal.fire({
                     title: 'Exitoso',
                     text: "Se Edito correctamente!",
@@ -2444,62 +2357,11 @@ export default {
                 
             }
             if (value == 1) {
+                this.goNextStep();
                 
-                alert('hola');
-                // if (this.cargaSeleccionado.length == 0) {
-                //     this.$toast.error("Selecciona tus Jugadores que participaran en el torneo", {
-                //         position: "top-center",
-                //         timeout: 1270,
-                //         closeOnClick: true,
-                //         pauseOnFocusLoss: true,
-                //         pauseOnHover: true,
-                //         draggable: true,
-                //         draggablePercent: 0.6,
-                //         showCloseButtonOnHover: false,
-                //         hideProgressBar: true,
-                //         closeButton: "button",
-                //         icon: true,
-                //         rtl: false
-                //     });
-                //     return;
-                // }else{
-                //     this.goNextStep();
-                // }
             }
             if (value == 2) {
-                if (this.newDatosbancarios.nombre == '') {
-                    Swal.fire({
-                        title: "No Ingresaste Datos de Pago",
-                        text: "Estas seguro de continuar?",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        confirmButtonText: "Continuar",
-                        cancelButtonColor: "#d33",
-                        cancelButtonText:'No'
-                    }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.newtorneo.formato = 'almacena';
-                        this.createTorneo();
-                    }
-                    });
-                } else {
-                    Swal.fire({
-                        title: "Advertencia",
-                        html: `Tus datos se almacenaran y se mandaran a <b>Revisión</b>`,
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        confirmButtonText: "Aceptar",
-                        cancelButtonColor: "#d33",
-                        cancelButtonText:'Cancelar'
-                    }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.newtorneo.formato = 'revision';
-                        this.createTorneo();
-                    }
-                    });
-                }
+                this.updateTorneo();
             }
         },
 

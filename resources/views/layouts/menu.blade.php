@@ -65,14 +65,14 @@
             </li>
             @else
             @endhasanyrole
-            {{-- @if ($existJugador == true)
+            @if ($existJugador == true)
             <li class="menu-item {{ request()->routeIs('torneo') ? 'active' : '' }}">
               <a href="{{ route('torneo') }}" class="menu-link">
                 <i class="menu-icon tf-icons ri-shield-star-line"></i>
                 <div data-i18n="Torneos">Torneos</div>
               </a>
             </li>
-           @endif --}}
+           @endif
           </ul>
         </li>
         @else

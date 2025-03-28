@@ -855,7 +855,7 @@ export default {
                     sede:this.sede
                 }
                 Swal.fire({
-                    title: 'Exitoso',
+                    title: 'Éxito',
                     text: "Se Registro correctamente!",
                     icon: 'success',
                     showConfirmButton: false,
@@ -900,7 +900,7 @@ export default {
                     axios.post('cuerpo_tecnico/cambioEstatus',formData).then(response=>{
                         this.getCuerpoTecnico();
                         Swal.fire({
-                            title: 'Exitoso',
+                            title: 'Éxito',
                             text: "Se cambio correctamente!",
                             icon: 'success',
                             showConfirmButton: false,
@@ -926,7 +926,7 @@ export default {
                     axios.delete(`cuerpo_tecnico/deleteTecnico/${this.id}`).then(response =>{
                         this.getCuerpoTecnico();
                         Swal.fire({
-                            title: 'Exitoso',
+                            title: 'Éxito',
                             text: "Se Elimino correctamente!",
                             icon: 'success',
                             showConfirmButton: false,
@@ -950,7 +950,7 @@ export default {
                 $('#updateTecnico').modal('hide');
                 this.getCuerpoTecnico();
                 Swal.fire({
-                    title: 'Exitoso',
+                    title: 'Éxito',
                     text: "Se Edito correctamente!",
                     icon: 'success',
                     showConfirmButton: false,

@@ -476,7 +476,7 @@ export default {
                 this.getPerfil();
                 this.vista = 0;
                 Swal.fire({
-                    title: 'Exitoso',
+                    title: 'Éxito',
                     text: "Se Registro correctamente!",
                     icon: 'success',
                     showConfirmButton: false,

@@ -362,7 +362,7 @@ export default {
                 this.newpermisos =[];
                 $('#addRoleModal').modal('hide');
                 Swal.fire({
-                    title: 'Exitoso',
+                    title: 'Éxito',
                     text: "Se Agrego correctamente!",
                     icon: 'success',
                     showConfirmButton: false,
@@ -475,7 +475,7 @@ export default {
                 this.newpermisosUpdate =[];
                 $('#updateRoleModal').modal('hide');
                 Swal.fire({
-                    title: 'Exitoso',
+                    title: 'Éxito',
                     text: "Se Edito Correctamente!",
                     icon: 'success',
                     showConfirmButton: false,
@@ -510,7 +510,7 @@ export default {
                         axios.post('access/deleteRole',formData).then(response =>{
                             this.getPermisosRoles();
                             Swal.fire({
-                                title: 'Exitoso',
+                                title: 'Éxito',
                                 text: "Se Elimino Correctamente!",
                                 icon: 'success',
                                 showConfirmButton: false,

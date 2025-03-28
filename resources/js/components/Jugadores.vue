@@ -1223,7 +1223,7 @@ export default {
           telefono:''
         }
         Swal.fire({
-          title: 'Exitoso',
+          title: 'Éxito',
           text: "Se Registro correctamente!",
           icon: 'success',
           showConfirmButton: false,
@@ -1403,7 +1403,7 @@ export default {
         $('#editJugador').modal('hide');
         this.stepUpdate = 0;  
         Swal.fire({
-          title: 'Exitoso',
+          title: 'Éxito',
           text: "Se Edito correctamente!",
           icon: 'success',
           showConfirmButton: false,
@@ -1453,7 +1453,7 @@ export default {
         this.showCard(null);
         this.getJugador();
         Swal.fire({
-          title: 'Exitoso',
+          title: 'Éxito',
           text: "Se Guardo correctamente!",
           icon: 'success',
           showConfirmButton: false,
@@ -1487,7 +1487,7 @@ export default {
           axios.post('jugadores/cambioEstatus',formData).then(response=>{
             this.getJugador();
             Swal.fire({
-              title: 'Exitoso',
+              title: 'Éxito',
               text: "Se cambio el estatus correctamente!",
               icon: 'success',
               showConfirmButton: false,
@@ -1514,7 +1514,7 @@ export default {
           axios.post('jugadores/deleteJugador',formData).then(response=>{
             this.getJugador();
             Swal.fire({
-              title: 'Exitoso',
+              title: 'Éxito',
               text: "Se Elimino correctamente!",
               icon: 'success',
               showConfirmButton: false,

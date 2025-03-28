@@ -574,7 +574,7 @@
                     this.carruselImagenes.splice(index,1)
                     axios.delete(`post/eliminaImagen/${id}`).then((res)=>{
                         Swal.fire({
-                            title: 'Exitoso',
+                            title: 'Éxito',
                             text: "Se Elimino correctamente!",
                             icon: 'success',
                             showConfirmButton: false,
@@ -720,7 +720,7 @@
                 formData.append('informacion', this.nuevoPost.informacion);
                 axios.post('post/nuevo',formData).then(res =>{
                     Swal.fire({
-                        title: 'Exitoso',
+                        title: 'Éxito',
                         text: "Se Guardo correctamente!",
                         icon: 'success',
                         showConfirmButton: false,
@@ -756,7 +756,7 @@
                 var id = id_p;
                 axios.put(`post/cambio-estatus/${id}/${estatus}`).then(res =>{
                     Swal.fire({
-                        title: 'Exitoso',
+                        title: 'Éxito',
                         text: "Se cambio el estatus del post!",
                         icon: 'success',
                         showConfirmButton: false,
@@ -944,7 +944,7 @@
                 formData.append('informacion', this.contentEditar);
                 axios.post(`post/edita/${this.editaPost.id_p}`,formData).then(res =>{
                     Swal.fire({
-                        title: 'Exitoso',
+                        title: 'Éxito',
                         text: "Se Edito Correctamente!",
                         icon: 'success',
                         showConfirmButton: false,
