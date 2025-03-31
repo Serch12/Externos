@@ -228,7 +228,7 @@
                                         </li>
                                         </ul>
                                     </div>
-                                    <!-- <a href="javascript:void(0)" class="btn btn-primary">
+                                    <!-- <a href="javascript:void(0)" class="btn btn-success">
                                         <i class="ri-user-follow-line ri-16px me-2"></i>Connected
                                     </a> -->
                                 </div>
@@ -452,7 +452,7 @@
 
 
                     <div class="pt-6 mt-2">
-                        <button type="button" class="btn btn-primary me-4" @click="updateTalentos()">Editar</button>
+                        <button type="button" class="btn btn-success me-4" @click="updateTalentos()">Editar</button>
                         <button type="reset" class="btn btn-danger" @click="muestra(0)">Cancelar</button>
                     </div>
                 </form>

@@ -66,20 +66,21 @@
             @else
             @endhasanyrole
             @if ($existJugador == true)
-            <li class="menu-item {{ request()->routeIs('torneo') ? 'active' : '' }}">
-              <a href="{{ route('torneo') }}" class="menu-link">
-                <i class="menu-icon tf-icons ri-shield-star-line"></i>
-                <div data-i18n="Torneos">Torneos</div>
-              </a>
-            </li>
-           @endif
+              <li class="menu-item {{ request()->routeIs('torneo') ? 'active' : '' }}">
+                <a href="{{ route('torneo') }}" class="menu-link">
+                  <i class="menu-icon tf-icons ri-shield-star-line"></i>
+                  <div data-i18n="Torneos">Torneos</div>
+                </a>
+              </li>
+            @endif
           </ul>
         </li>
         @else
         @endhasanyrole
+
         @hasanyrole('Root|Administrador|CM')
         <!-- Comunicación y Medios -->
-        <li class="menu-item  {{ request()->routeIs('post','talentos') ? 'active' : '' }}">
+        <li class="menu-item  {{ request()->routeIs('post','talentos','correo') ? 'active' : '' }}">
           <a href="javascript:void(0)" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons ri-article-line"></i>
             <div data-i18n="Comunicación y Medios">Comunicación y Medios</div>
@@ -97,7 +98,12 @@
                 <i class="menu-icon tf-icons ri-account-circle-line"></i>
                 <div data-i18n="Talentos AMFpro">Talentos AMFpro</div>
               </a>
-              
+            </li>
+            <li class="menu-item {{ request()->routeIs('correo') ? 'active' : '' }}">
+              <a href="{{ route('correo') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-mail-send-fill"></i>
+                <div data-i18n="Correos AMFpro">Correos AMFpro</div>
+              </a>
             </li>
             
           </ul>

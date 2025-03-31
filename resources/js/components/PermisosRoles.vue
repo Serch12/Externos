@@ -23,7 +23,7 @@
                                     <button
                                         data-bs-target="#addRoleModal"
                                         data-bs-toggle="modal"
-                                        class="btn btn-sm btn-primary mb-4 text-nowrap add-new-role">
+                                        class="btn btn-sm btn-success mb-4 text-nowrap add-new-role">
                                         Añadir Role
                                     </button>
                                     <p class="mb-0">
@@ -119,7 +119,7 @@
                             <!-- Permission table -->
                             </div>
                             <div class="col-12 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                            <button type="button" class="btn btn-primary" @click="agregarRole()">Guardar</button>
+                            <button type="button" class="btn btn-success" @click="agregarRole()">Guardar</button>
                             <button
                                 type="reset"
                                 class="btn btn-outline-danger"
@@ -195,7 +195,7 @@
                             <!-- Permission table -->
                             </div>
                             <div class="col-12 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                            <button type="button" class="btn btn-primary" @click="updateRole()">Editar</button>
+                            <button type="button" class="btn btn-success" @click="updateRole()">Editar</button>
                             <button
                                 type="reset"
                                 class="btn btn-outline-danger"

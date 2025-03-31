@@ -102,7 +102,7 @@
                     @enderror
                 </div>
 
-                <button class="btn btn-primary d-grid w-100" type="submit">Enviar Codigo de Restablecimiento</button>
+                <button class="btn btn-success d-grid w-100" type="submit">Enviar Codigo de Restablecimiento</button>
               </form>
               <div class="text-center">
                 <a href="{{route('login')}}" class="d-flex align-items-center justify-content-center">

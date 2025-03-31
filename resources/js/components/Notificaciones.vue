@@ -78,13 +78,13 @@ export default {
     },
     mixins: [],
     props: [
-
-        'id_usuario_logeado',
-        'name_usuario_logeado',
-        'email',
-        'rol_usuario'
-
-    ],
+    'id_usuario_logeado',
+    'name_usuario_logeado',
+    'rol_usuario',
+    'sede',
+    'permisos',
+    'componente'
+  ],
     data() {
         return {
             notifications:[],

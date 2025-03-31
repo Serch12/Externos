@@ -3312,7 +3312,7 @@ textarea.form-control-lg {
   --bs-dropdown-header-color: #a8aab4;
   --bs-dropdown-header-padding-x: 1.25rem;
   --bs-dropdown-header-padding-y: 0.5rem;
-  position: fixed;
+  position: absolute;
   z-index: var(--bs-dropdown-zindex);
   display: none;
   min-width: var(--bs-dropdown-min-width);
@@ -3545,7 +3545,7 @@ textarea.form-control-lg {
 }
 
 .dropdown-menu.show {
-  position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-103.333px, 236px, 0px);
+  display: block;
 }
 
 .dropdown-header {

@@ -389,7 +389,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 text-center d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                    <button type="button" class="btn btn-primary" @click="agregaUser()">Guardar</button>
+                                    <button type="button" class="btn btn-success" @click="agregaUser()">Guardar</button>
                                     <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                                 </div>
                             </form>
@@ -582,7 +582,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                    <button type="button" class="btn btn-primary" @click="updateUsuarios()">Editar</button>
+                                    <button type="button" class="btn btn-success" @click="updateUsuarios()">Editar</button>
                                     <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                                 </div>
                             </form>
@@ -618,7 +618,7 @@
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                 Close
                             </button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-success">Save changes</button>
                         </div> -->
                     </div>
                 </div>
@@ -696,7 +696,7 @@
                                
                                 
                                 <div class="col-12 text-center d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                    <button type="button" class="btn btn-primary" @click="agregaSede()">Guardar</button>
+                                    <button type="button" class="btn btn-success" @click="agregaSede()">Guardar</button>
                                     <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                                 </div>
                             </form>

@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           email: {
             validators: {
               notEmpty: {
-                message: 'Por favor, introduzca su correo electrónico'
+                message: 'Please enter your email'
               },
               emailAddress: {
                 message: 'Please enter valid email address'
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
           password: {
             validators: {
               notEmpty: {
-                message: 'Por favor introduzca su contraseña'
+                message: 'Please enter your password'
               },
               stringLength: {
                 min: 6,

@@ -51,7 +51,7 @@
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-success">
                                     {{ __('Reset Password') }}
                                 </button>
                             </div>
@@ -210,7 +210,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary d-grid w-100 mt-3" type="submit">Restablecer Contraseña</button>
+                <button class="btn btn-success d-grid w-100 mt-3" type="submit">Restablecer Contraseña</button>
               </form>
             </div>
           </div>

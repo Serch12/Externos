@@ -15,7 +15,7 @@
                         <!-- Calendar Sidebar -->
                         <div class="col-xl-3 col-lg-4 app-calendar-sidebar border-end" id="app-calendar-sidebar">
                             <div class="p-5 my-sm-0 mb-4 border-bottom">
-                                <button class="btn btn-primary btn-toggle-sidebar w-100" data-bs-toggle="offcanvas" data-bs-target="#addEventSidebar" aria-controls="addEventSidebar">
+                                <button class="btn btn-success btn-toggle-sidebar w-100" data-bs-toggle="offcanvas" data-bs-target="#addEventSidebar" aria-controls="addEventSidebar">
                                     <i class="ri-add-line ri-16px me-1_5"></i>
                                     <span class="align-middle">Add Event</span>
                                 </button>
@@ -199,7 +199,7 @@
                                 </div>
                                 <div class="mb-5 d-flex justify-content-sm-between justify-content-start my-6 gap-2">
                                     <div class="d-flex">
-                                    <button type="submit" id="addEventBtn" class="btn btn-primary btn-add-event me-4">
+                                    <button type="submit" id="addEventBtn" class="btn btn-success btn-add-event me-4">
                                         Add
                                     </button>
                                     <button
@@ -251,7 +251,7 @@
                         
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" @click="cambiarPassword()">Guardar</button>
+                        <button type="button" class="btn btn-success" @click="cambiarPassword()">Guardar</button>
                     </div>
                 </div>
             </div>

@@ -307,7 +307,7 @@
                             </div>
                             </div>
                             
-                            <button type="button" class="btn btn-primary" @click="newTutor()">Guardar</button>
+                            <button type="button" class="btn btn-success" @click="newTutor()">Guardar</button>
                         </form>
                         </div>
                     </div> -->
@@ -438,7 +438,7 @@
                                 </div>
                             </div>
                             <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                <button type="button" class="btn btn-primary" @click="agregaTecnico()">Guardar</button>
+                                <button type="button" class="btn btn-success" @click="agregaTecnico()">Guardar</button>
                                 <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                             </div>
                         </form>
@@ -593,7 +593,7 @@
                                 </div>
                             </div>
                             <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                <button type="button" class="btn btn-primary" @click="updateTecnico()">Editar</button>
+                                <button type="button" class="btn btn-success" @click="updateTecnico()">Editar</button>
                                 <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                             </div>
                         </form>
@@ -612,7 +612,6 @@ export default {
     components: {
 
     },
-    mixins: [],
     props: [
         'id_usuario_logeado',
         'name_usuario_logeado',

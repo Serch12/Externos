@@ -191,7 +191,7 @@
                   
                   
                   <div class="pt-6 mt-6">
-                    <button type="button" class="btn btn-primary me-4" @click="crearPost()">Guardar</button>
+                    <button type="button" class="btn btn-success me-4" @click="crearPost()">Guardar</button>
                     <button type="reset" class="btn btn-danger" @click="muestra(0)">Cancelar</button>
                   </div>
                 </form>
@@ -336,7 +336,7 @@
                   
                   
                   <div class="pt-6 mt-6">
-                    <button type="button" class="btn btn-primary me-4" @click="editarPost()">Editar</button>
+                    <button type="button" class="btn btn-success me-4" @click="editarPost()">Editar</button>
                     <button type="reset" class="btn btn-danger" @click="muestra(0)">Cancelar</button>
                   </div>
                 </form>

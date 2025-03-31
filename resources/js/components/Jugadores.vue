@@ -335,7 +335,7 @@
                       </div>
                     </div>
                     
-                    <button type="button" class="btn btn-primary" @click="newTutor()">Guardar</button>
+                    <button type="button" class="btn btn-success" @click="newTutor()">Guardar</button>
                   </form>
                 </div>
               </div>
@@ -460,11 +460,11 @@
                   <p style="color: red;" v-if="this.NombreJugador != false">El Dorsal <b>{{ this.newjugador.num_dorsal }}</b> ya fue asignado al Jugador: <b>{{this.NombreJugador}}</b></p>
                 </div>
                 <div class="col-12 d-flex justify-content-between mt-6">
-                  <button class="btn btn-outline-secondary btn-prev" disabled>
+                  <button class="btn btn-outline-secondary" disabled>
                     <i class="ri-arrow-left-line ri-16px"></i>
                     <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                   </button>
-                  <button class="btn btn-primary" @click="validacionAltaJugador(0)">
+                  <button class="btn btn-success" @click="validacionAltaJugador(0)">
                     <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
                     <i class="ri-arrow-right-line ri-16px"></i>
                   </button>
@@ -504,7 +504,7 @@
                     <i class="ri-arrow-left-line ri-16px"></i>
                     <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                   </button>
-                  <button class="btn btn-primary" @click="validacionAltaJugador(1)">
+                  <button class="btn btn-success" @click="validacionAltaJugador(1)">
                     <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
                     <i class="ri-arrow-right-line ri-16px"></i>
                   </button>
@@ -561,7 +561,7 @@
                     <i class="ri-arrow-left-line ri-16px"></i>
                     <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                   </button>
-                  <button class="btn btn-primary" @click="agregaJugador()">
+                  <button class="btn btn-success" @click="agregaJugador()">
                     <span class="align-middle d-sm-block d-none me-2">Guardar</span>
                     <i class="ri-save-3-fill ri-16px"></i>
                   </button>
@@ -672,11 +672,11 @@
                   <p style="color: red;" v-if="this.NombreJugador != false">El Dorsal <b>{{ this.detalleJugador.num_dorsal }}</b> ya fue asignado al Jugador: <b>{{this.NombreJugador}}</b></p>
                 </div>
                 <div class="col-12 d-flex justify-content-between mt-6">
-                  <button class="btn btn-outline-secondary btn-prev" disabled>
+                  <button class="btn btn-outline-secondary" disabled>
                     <i class="ri-arrow-left-line ri-16px"></i>
                     <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                   </button>
-                  <button class="btn btn-primary" @click="goNextStepUp()">
+                  <button class="btn btn-success" @click="goNextStepUp()">
                     <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
                     <i class="ri-arrow-right-line ri-16px"></i>
                   </button>
@@ -740,7 +740,7 @@
                     <i class="ri-arrow-left-line ri-16px"></i>
                     <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                   </button>
-                  <button class="btn btn-primary" @click="EditarJugador()">
+                  <button class="btn btn-success" @click="EditarJugador()">
                     <span class="align-middle d-sm-block d-none me-2">Editar</span>
                     <i class="ri-save-3-fill ri-16px"></i>
                   </button>

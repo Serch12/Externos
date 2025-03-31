@@ -31,7 +31,7 @@
           <!-- Quick links -->
 
           <!-- Notification -->
-          <notificaciones-component id_usuario_logeado = "{{ auth()->user()->id }}" name_usuario_logeado = "{{ auth()->user()->name }}" rol_usuario = "{{ $rol_usuario }}" sede = "{{ $sede }}" permisos="{{json_encode($permisos)}}" componente="Jugadores"></notificaciones-component>
+          <notificaciones-component id_usuario_logeado = "{{ auth()->user()->id }}" name_usuario_logeado = "{{ auth()->user()->name }}" rol_usuario = "{{ $rol_usuario }}" sede = "{{ $sede }}" permisos="{{json_encode($permisos)}}" componente="Notificaciones"></notificaciones-component>
          
           <!--/ Notification -->
 
@@ -63,7 +63,7 @@
                       <span class="fw-medium d-block small">{{ auth()->user()->name }}</span>
                       <small class="text-muted">{{ $rol_usuario }}</small><br>
                       <small class="text-muted">{{ $sede }}</small>
-                    </div>
+                    </div>  
                   </div>
                 </a>
               </li>

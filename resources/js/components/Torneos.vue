@@ -183,7 +183,7 @@
                             <!-- <i class="ri-arrow-left-line ri-16px"></i> -->
                             <span class="align-middle d-sm-block d-none ms-2" @click="muestra(0)">Cancelar</span>
                         </button>
-                        <button class="btn btn-primary" @click="validateRegistro(0)">
+                        <button class="btn btn-success" @click="validateRegistro(0)">
                             <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
                             <i class="ri-arrow-right-line ri-16px"></i>
                         </button>
@@ -255,7 +255,7 @@
                             <i class="ri-arrow-left-line ri-16px"></i>
                             <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                         </button>
-                        <button class="btn btn-primary" @click="validateRegistro(1)">
+                        <button class="btn btn-success" @click="validateRegistro(1)">
                             <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
                             <i class="ri-arrow-right-line ri-16px"></i>
                         </button>
@@ -419,7 +419,7 @@
                                 <i class="ri-arrow-left-line ri-16px"></i>
                                 <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                             </button>
-                            <button class="btn btn-primary" @click="validateRegistro(2)">
+                            <button class="btn btn-success" @click="validateRegistro(2)">
                                 <span class="align-middle d-sm-block d-none me-2">Guardar</span>
                                 <!-- <i class="ri-arrow-right-line ri-16px"></i> -->
                             </button>
@@ -510,7 +510,7 @@
                             <!-- <i class="ri-arrow-left-line ri-16px"></i> -->
                             <span class="align-middle d-sm-block d-none ms-2" @click="muestra(0)">Cancelar</span>
                         </button>
-                        <button class="btn btn-primary" @click="validateRegistroUpdate(0)">
+                        <button class="btn btn-success" @click="validateRegistroUpdate(0)">
                             <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
                             <i class="ri-arrow-right-line ri-16px"></i>
                         </button>
@@ -583,7 +583,7 @@
                             <i class="ri-arrow-left-line ri-16px"></i>
                             <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                         </button>
-                        <button class="btn btn-primary" @click="validateRegistroUpdate(1)">
+                        <button class="btn btn-success" @click="validateRegistroUpdate(1)">
                             <span class="align-middle d-sm-block d-none me-2">Siguiente</span>
                             <i class="ri-arrow-right-line ri-16px"></i>
                         </button>
@@ -725,7 +725,7 @@
                                 <i class="ri-arrow-left-line ri-16px"></i>
                                 <span class="align-middle d-sm-block d-none ms-2">Anterior</span>
                             </button>
-                            <button class="btn btn-primary" @click="validateRegistroUpdate(2)">
+                            <button class="btn btn-success" @click="validateRegistroUpdate(2)">
                                 <span class="align-middle d-sm-block d-none me-2">Guardar</span>
                                 <!-- <i class="ri-arrow-right-line ri-16px"></i> -->
                             </button>
@@ -812,7 +812,7 @@
 
 
                     <div class="pt-6 mt-2">
-                        <button type="button" class="btn btn-primary me-4" @click="updateTorneo()">Editar</button>
+                        <button type="button" class="btn btn-success me-4" @click="updateTorneo()">Editar</button>
                         <button type="reset" class="btn btn-danger" @click="muestra(0)">Cancelar</button>
                     </div>
                 </form>
@@ -1233,7 +1233,7 @@
                                     </div>
 
                                     <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                        <button type="button" class="btn btn-primary" @click="createPago()">Guardar</button>
+                                        <button type="button" class="btn btn-success" @click="createPago()">Guardar</button>
                                         <!-- <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button> -->
                                     </div>
                                 </form>
@@ -1417,7 +1417,7 @@
                                     </div>
 
                                     <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4"  v-if="this.activacion ==  false">
-                                        <button type="button" class="btn btn-primary" @click="updatePago()">Editar</button>
+                                        <button type="button" class="btn btn-success" @click="updatePago()">Editar</button>
                                         <button type="reset" class="btn btn-outline-danger" @click="modoUpdate()">Cancelar</button>
                                     </div>
 
@@ -1587,7 +1587,7 @@
 
 
                     <div class="pt-6 mt-2">
-                        <button type="button" class="btn btn-primary me-4" @click="createTalentos()">Guardar</button>
+                        <button type="button" class="btn btn-success me-4" @click="createTalentos()">Guardar</button>
                         <button type="reset" class="btn btn-danger" @click="muestra(0)">Cancelar</button>
                     </div>
                 </form>
@@ -1623,7 +1623,7 @@
                                         </li>
                                         </ul>
                                     </div>
-                                    <!-- <a href="javascript:void(0)" class="btn btn-primary">
+                                    <!-- <a href="javascript:void(0)" class="btn btn-success">
                                         <i class="ri-user-follow-line ri-16px me-2"></i>Connected
                                     </a> -->
                                 </div>
@@ -1729,7 +1729,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-success">Guardar</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
                             Cerrar
                         </button>

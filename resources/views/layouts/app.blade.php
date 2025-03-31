@@ -1,7 +1,7 @@
 <!doctype html>
 
 <html
-  lang="en"
+  lang="es"
   class="light-style layout-menu-fixed layout-compact"
   dir="ltr"
   data-theme="theme-default"
@@ -54,6 +54,7 @@
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{asset('style/assets/vendor/css/pages/page-profile.css')}}" />
     <link rel="stylesheet" href="{{asset('style/assets/vendor/css/pages/ui-carousel.css')}}" />
+    {{-- <link rel="stylesheet" href="{{asset('style/assets/vendor/css/pages/app-email.css')}}" /> --}}
 
     <!-- Helpers -->
     <script src="{{asset('style/assets/vendor/js/helpers.js')}}"></script>
@@ -143,5 +144,6 @@
     <script src="{{asset('style/assets/js/pages-profile-user.js')}}"></script>
     <script src="{{asset('style/assets/js/form-wizard-icons.js')}}"></script>
     <script src="{{asset('style/assets/js/ui-carousel.js')}}"></script>
+    {{-- <script src="{{asset('style/assets/js/app-email.js')}}"></script> --}}
   </body>
 </html>

@@ -44,6 +44,7 @@ Vue.component('notificaciones-component', require('./components/Notificaciones.v
 Vue.component('sede-component', require('./components/Sedes.vue').default);
 Vue.component('cuerpotecnico-component', require('./components/CuerpoTecnico.vue').default);
 Vue.component('talentos-component', require('./components/TalentosAMFpro.vue').default);
+Vue.component('correo-component', require('./components/Correo.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

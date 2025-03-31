@@ -23,7 +23,7 @@
                                     <button
                                         data-bs-target="#addSedeModal"
                                         data-bs-toggle="modal"
-                                        class="btn btn-sm btn-primary mb-4 text-nowrap add-new-role">
+                                        class="btn btn-sm btn-success mb-4 text-nowrap add-new-role">
                                         Añadir Sede
                                     </button>
                                     <p class="mb-0">
@@ -130,7 +130,7 @@
                             
                             
                             <div class="col-12 text-center d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                <button type="button" class="btn btn-primary" @click="agregaSede()">Guardar</button>
+                                <button type="button" class="btn btn-success" @click="agregaSede()">Guardar</button>
                                 <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                             </div>
                         </form>
@@ -212,7 +212,7 @@
                             
                             
                             <div class="col-12 text-center d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                <button type="button" class="btn btn-primary" @click="editarSede()">Editar</button>
+                                <button type="button" class="btn btn-success" @click="editarSede()">Editar</button>
                                 <button type="reset" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
                             </div>
                         </form>
