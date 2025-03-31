@@ -64,4 +64,19 @@ class CorreoController extends Controller
             return view('auth.login');
         }
     }
+
+
+    /**
+     * funcion que guarda el correo electronico
+     **/
+    public function createCorreo(Request $request){
+        return $this->CorreosRepository->createCorreo($request);
+    }
+
+    /**
+     * FUNCION QUE EDITARA EL CORREO
+     **/
+    public function editarCorreo(Request $request){
+        return $this->CorreosRepository->editarCorreo($request);
+    }
 }
