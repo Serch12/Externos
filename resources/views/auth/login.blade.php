@@ -58,7 +58,7 @@
     <script src="{{asset('style/assets/js/config.js')}}"></script>
   </head>
 
-  <body style="background-image: url('style/assets/img/banners/loginbanner.svg');
+  <body style="background-image: url('style/logos/loginbanner.svg');
     background-repeat: no-repeat;
     background-size: cover;">
     <!-- Content -->

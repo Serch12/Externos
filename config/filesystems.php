@@ -89,6 +89,11 @@ return [
             'root' => public_path().'/ArchivosSistema/BannerDate',
             'visibility' => 'public', 
         ],
+        'galeriaCorreo' => [
+            'driver' => 'local',
+            'root' => public_path().'/ArchivosSistema/GaleriaCorreo',
+            'visibility' => 'public', 
+        ],
 
         's3' => [
             'driver' => 's3',

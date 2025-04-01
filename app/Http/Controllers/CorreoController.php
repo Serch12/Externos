@@ -65,18 +65,58 @@ class CorreoController extends Controller
         }
     }
 
+     /**
+     * Funcion que mostrara los correos creados 
+     **/
+    public function getCorreo(Request $request){
+        $data = $this->CorreoRepository->getCorreo($request);
+        $validacion = $this->CorreoHelper->validaCorreo($data);
+
+        return response()->json(['data'=>$data]);   
+    }
+
+
 
     /**
      * funcion que guarda el correo electronico
      **/
     public function createCorreo(Request $request){
-        return $this->CorreosRepository->createCorreo($request);
+        return $this->CorreoRepository->createCorreo($request);
     }
 
     /**
      * FUNCION QUE EDITARA EL CORREO
      **/
     public function editarCorreo(Request $request){
-        return $this->CorreosRepository->editarCorreo($request);
+        return $this->CorreoRepository->editarCorreo($request);
+    }
+
+    
+    /**
+     * funcion que activa y desactivara el correo electronico
+     **/
+    public function activacionCorreo(Request $request){
+        return $this->CorreoRepository->activacionCorreo($request);
+    }
+
+    /**
+     * FUNCION QUE MOSTRARA LA GALERIA DE CADA CORREO
+     **/
+    public function galeCorreo($id){
+        return $this->CorreoRepository->galeCorreo($id);
+    }
+
+    /**
+     * FUNCION QUE ELIMINARA EL CORREO
+     **/
+    public function deleteCorreo($id){
+        return $this->CorreoRepository->deleteCorreo($id);
+    }
+
+    /**
+     * FUNCION QUE ENVIARA LOS CORREOS ELECTRONICOS
+     **/
+    public function Correoenvio(){
+        return $this->CorreoRepository->Correoenvio();
     }
 }

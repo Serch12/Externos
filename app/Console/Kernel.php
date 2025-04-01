@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\ValidaNotificacion',
-        'App\Console\Commands\ActivacionBanner'
+        'App\Console\Commands\ActivacionBanner',
+        'App\Console\Commands\EnvioCorreoComando'
     ];
 
     /**
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('validacion:notificacion')->dailyAt('09:00');
         $schedule->command('activacion:banner')->dailyAt('09:00');
+        $schedule->command('correos:programar')->dailyAt('09:00');
     }
 
     /**

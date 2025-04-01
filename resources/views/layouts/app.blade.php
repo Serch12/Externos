@@ -6,7 +6,7 @@
   dir="ltr"
   data-theme="theme-default"
   data-assets-path="style/assets/"
-  data-template="horizontal-menu-template-no-customizer"
+  data-template="horizontal-menu-template-no-customizer">
   {{-- data-style="light"> --}}
   <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
