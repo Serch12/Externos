@@ -142,4 +142,11 @@ class TalentosControllers extends Controller
         return $this->TalentosRepository->deleteBanner($request);
     }
 
+    /**
+     * funcion que activara la taera programada de activacion de banner
+     **/
+    public function ActivaBanner(){
+        return $this->TalentosRepository->ActivaBanner();
+    }
+
 }

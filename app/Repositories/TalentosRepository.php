@@ -172,12 +172,13 @@ class TalentosRepository
      * funciones que se registrara los banners
      **/
     public function createBanner($request){
-    
+
         $galeria = $request->file('img');
         if (isset($galeria)){
             foreach ($request->file('img') as $key => $value) {
                 $imagen = new DateIMGBanner();
                 $imagen ->fecha_publicacion = $request -> fecha_publicacion;
+                $imagen ->fecha_fin_publi = $request -> fecha_fin_publi;
                 //obtenemos el nombre del archivo
                 $nombre = $value->getClientOriginalName();
                 $urlimagen = $hoy = Carbon::today()->format('Y/m/d').'gale'."-". $nombre;
@@ -208,6 +209,31 @@ class TalentosRepository
         \Storage::disk('datebanner')->delete($update->img_banner);
         $update -> delete();
         return $update;
+    }
+
+    /**
+     * funcion que activara la taera programada de activacion de banner
+     **/
+    public function ActivaBanner(){
+        $consulta = DateIMGBanner::select('*')->get();
+
+        if ($consulta != null) {
+
+            $fecha_actual = Carbon::now()->toDateString();
+
+            foreach ($consulta as $date) {
+
+                $update = DateIMGBanner::find($date->id_imgbanner);
+                if ($date->fecha_publicacion == $fecha_actual) {
+                    $update ->estatus = 1;
+                }elseif ($fecha_actual > $date->fecha_fin_publi) {
+                    $update -> estatus = 0;
+                }
+                $update -> save();
+            }
+        }
+       
+
     }
 
 }

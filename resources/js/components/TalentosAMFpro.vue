@@ -147,8 +147,9 @@
                                                     <tr>
                                                         <th>#</th>
                                                         <th>IMG</th>
-                                                        <th>Año</th>
-                                                        <th><center>Estatus</center></th>
+                                                        <th>Fecha Inicio</th>
+                                                        <th>Fecha Fin</th>
+                                                        <!-- <th><center>Estatus</center></th> -->
                                                         <th>Acciones</th>
                                                     </tr>
                                                 </thead>
@@ -165,7 +166,8 @@
                                                             </div>
                                                         </td>
                                                         <td>{{ t.fecha_publicacion }}</td>
-                                                        <td>
+                                                        <td>{{ t.fecha_fin_publi }}</td>
+                                                        <!-- <td>
                                                             <center>
                                                                 <button class="btn btn-outline-primary btn-icon waves-effect" v-if="t.estatus == 0" @click="EstatusBanner(t.id_imgbanner,t.estatus)">
                                                                     <i class="ri-checkbox-circle-fill ri-22px"></i>
@@ -174,7 +176,7 @@
                                                                     <i class="ri-close-circle-fill ri-22px"></i>
                                                                 </button>
                                                             </center>
-                                                        </td>
+                                                        </td> -->
                                                         <td>
                                                             <button class="btn btn-outline-danger btn-icon waves-effect" @click="deleteBanner(t.id_imgbanner)">
                                                                 <i class="ri-delete-bin-fill ri-22px"></i>
@@ -741,11 +743,22 @@ export default {
             }
             if (this.galeriaBanner.length != 0) {
                 Swal.fire({
-                    title: "¿Ingresa la fecha de publicación?",
+                    title: "¿Ingresa los datos correspondientes?",
                     html: `
-                       <div class="form-floating form-floating-outline">
-                            <input type="date" id="Fecha" class="form-control"  style="color: green;"/>
-                            <label for="Fecha">Fecha</label>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="date" id="fecha_publicacion" class="form-control"  style="color: green;"/>
+                                    <label for="fecha_publicacion">Fecha Publicación</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="date" id="fecha_fin" class="form-control"  style="color: green;"/>
+                                    <label for="fecha_fin">Fecha Fin Publicación</label>
+                                </div>
+                            </div>
+                            
                         </div>
 
                     `,
@@ -757,14 +770,20 @@ export default {
                     confirmButtonText: "Agregar",
                 preConfirm: () => {
                     // Obtener el valor seleccionado
-                    const fecha = document.getElementById('Fecha').value;
+                    const fecha_inicia = document.getElementById('fecha_publicacion').value;
+                    const fecha_fin = document.getElementById('fecha_fin').value;
                     
-                    if (fecha == '') {
-                        Swal.showValidationMessage('Ingresa la fecha de publicación');
+                    if (fecha_inicia == '') {
+                        Swal.showValidationMessage('Ingresa la fecha de inicio de publicación');
+                        return false; // Evita que la ventana modal se cierre    
+                    }
+                    if (fecha_fin == '') {
+                        Swal.showValidationMessage('Ingresa la fecha de fin de publicación');
                         return false; // Evita que la ventana modal se cierre    
                     }
             
-                    this.fecha_publicacion = fecha;
+                    this.fecha_publicacion = fecha_inicia;
+                    this.fecha_fin_publi = fecha_fin;
                     return true;
                 }
                 }).then((result) => {
@@ -775,8 +794,9 @@ export default {
                                 formData.append('img[' + i + ']', this.galeriaBanner[i].img);
                             }
                             formData.append('fecha_publicacion',this.fecha_publicacion);
+                            formData.append('fecha_fin_publi',this.fecha_fin_publi);
                         axios.post('talentos/createBanner',formData).then(response=>{
-                            
+                            this.galeriaBanner = [];
                             this.getBanner();
                             Swal.fire({
                                 title: 'Éxito',

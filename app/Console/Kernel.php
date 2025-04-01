@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'App\Console\Commands\ValidaNotificacion'
+        'App\Console\Commands\ValidaNotificacion',
+        'App\Console\Commands\ActivacionBanner'
     ];
 
     /**
@@ -25,6 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('validacion:notificacion')->dailyAt('09:00');
+        $schedule->command('activacion:banner')->dailyAt('09:00');
     }
 
     /**
