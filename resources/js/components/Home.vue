@@ -17,76 +17,41 @@
                             <div class="p-5 my-sm-0 mb-4 border-bottom">
                                 <button class="btn btn-success btn-toggle-sidebar w-100" data-bs-toggle="offcanvas" data-bs-target="#addEventSidebar" aria-controls="addEventSidebar">
                                     <i class="ri-add-line ri-16px me-1_5"></i>
-                                    <span class="align-middle">Add Event</span>
+                                    <span class="align-middle">Añadir Nota</span>
                                 </button>
                             </div>
                             <div class="px-4">
-                            <!-- inline calendar (flatpicker) -->
-                            <div class="inline-calendar"></div>
+                                <!-- inline calendar (flatpicker) -->
+                                <div class="inline-calendar"></div>
 
-                            <hr class="mb-5 mx-n4 mt-3" />
-                            <!-- Filter -->
-                            <div class="mb-4 ms-1">
-                                <h5>Event Filters</h5>
-                            </div>
+                                <hr class="mb-5 mx-n4 mt-3" />
+                                <!-- Filter -->
+                                <div class="mb-4 ms-1">
+                                    <h5>Filtro de Eventos</h5>
+                                </div>
 
-                            <div class="form-check form-check-secondary mb-5 ms-3">
-                                <input
-                                class="form-check-input select-all"
-                                type="checkbox"
-                                id="selectAll"
-                                data-value="all"
-                                checked />
-                                <label class="form-check-label" for="selectAll">View All</label>
-                            </div>
-
-                            <div class="app-calendar-events-filter text-heading">
-                                <div class="form-check form-check-danger mb-5 ms-3">
-                                <input
-                                    class="form-check-input input-filter"
-                                    type="checkbox"
-                                    id="select-personal"
-                                    data-value="personal"
-                                    checked />
-                                <label class="form-check-label" for="select-personal">Personal</label>
+                                <div class="app-calendar-events-filter text-heading">
+                                    <div class="form-check form-check-danger mb-5 ms-3">
+                                        <input
+                                            class="form-check-input input-filter"
+                                            type="checkbox"
+                                            id="select-torneo"
+                                            :true-value="true"
+                                            :false-value="false"
+                                            v-model="selectCalendario.torneo" @change="TipeEvent(selectCalendario.torneo)"/>
+                                        <label class="form-check-label" for="select-torneo">Torneo</label>
+                                    </div>
+                                    <div class="form-check mb-5 ms-3">
+                                        <input
+                                            class="form-check-input input-filter"
+                                            type="checkbox"
+                                            id="select-notas"
+                                            :true-value="true"
+                                            :false-value="false"
+                                            v-model="selectCalendario.notas" @change="TipeEvent(selectCalendario.notas)"/>
+                                        <label class="form-check-label" for="select-notas">Notas</label>
+                                    </div>
                                 </div>
-                                <div class="form-check mb-5 ms-3">
-                                <input
-                                    class="form-check-input input-filter"
-                                    type="checkbox"
-                                    id="select-business"
-                                    data-value="business"
-                                    checked />
-                                <label class="form-check-label" for="select-business">Business</label>
-                                </div>
-                                <div class="form-check form-check-warning mb-5 ms-3">
-                                <input
-                                    class="form-check-input input-filter"
-                                    type="checkbox"
-                                    id="select-family"
-                                    data-value="family"
-                                    checked />
-                                <label class="form-check-label" for="select-family">Family</label>
-                                </div>
-                                <div class="form-check form-check-success mb-5 ms-3">
-                                <input
-                                    class="form-check-input input-filter"
-                                    type="checkbox"
-                                    id="select-holiday"
-                                    data-value="holiday"
-                                    checked />
-                                <label class="form-check-label" for="select-holiday">Holiday</label>
-                                </div>
-                                <div class="form-check form-check-info ms-3">
-                                <input
-                                    class="form-check-input input-filter"
-                                    type="checkbox"
-                                    id="select-etc"
-                                    data-value="etc"
-                                    checked />
-                                <label class="form-check-label" for="select-etc">ETC</label>
-                                </div>
-                            </div>
                             </div>
                         </div>
                         <!-- /Calendar Sidebar -->
@@ -128,11 +93,11 @@
                                 </div>
                                 <div class="form-floating form-floating-outline mb-5">
                                     <select class="select2 select-event-label form-select" id="eventLabel" name="eventLabel">
-                                    <option data-label="primary" value="Business" selected>Business</option>
-                                    <option data-label="danger" value="Personal">Personal</option>
-                                    <option data-label="warning" value="Family">Family</option>
-                                    <option data-label="success" value="Holiday">Holiday</option>
-                                    <option data-label="info" value="ETC">ETC</option>
+                                        <option data-label="primary" value="Business" selected>Business</option>
+                                        <option data-label="danger" value="Personal">Personal</option>
+                                        <option data-label="warning" value="Family">Family</option>
+                                        <option data-label="success" value="Holiday">Holiday</option>
+                                        <option data-label="info" value="ETC">ETC</option>
                                     </select>
                                     <label for="eventLabel">Label</label>
                                 </div>
@@ -264,6 +229,8 @@
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import timeGridPlugin from '@fullcalendar/timegrid';
 export default {
     name: '',
     components: {
@@ -282,20 +249,65 @@ export default {
     data() {
         return {
             calendarOptions: {
-                plugins: [ dayGridPlugin, interactionPlugin ],
+                plugins: [
+                    listPlugin,
+                    dayGridPlugin,
+                    timeGridPlugin,
+                    interactionPlugin // needed for dateClick
+                ],
+                droppable: true,
+                locale:'es',
+                timeZone: 'GMT-5',
+                buttonText:{
+                    today:    'Hoy',
+                    month:    'Mes',
+                    week:     'Semana',
+                    day:      'Día',
+                    list:     'Lista'
+                },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
                 initialView: 'dayGridMonth',
-                dateClick: this.handleDateClick,
-                events: [
-                { title: 'event 1', date: '2019-04-01' },
-                { title: 'event 2', date: '2019-04-02' }
-                ]
+                // editable: true,
+                selectable: true,
+                selectMirror: true,
+                dayMaxEvents: true,
+                weekends: true,
+                select: this.handleDateSelect,
+                
+                slotLabelFormat:{
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                eventTimeFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                },
+                events: [],
+                eventClick:this.handleDateClick 
             },
             vista:0,
             checkInterval:null,
             cambio:{
                 id:this.id_usuario_logeado,
                 password:''
-            }
+            },
+
+            /* DATA DE CALENDARIO*/
+            Torneos:[],
+            Notas:[],
+            Calendario:[],
+            
+            selectCalendario:{
+                torneo:true,
+                notas:true
+            },
+            detalleCalendario:[]
         }
     },
     computed: {
@@ -313,11 +325,33 @@ export default {
                 clearInterval(this.checkInterval); // Detiene la verificación
             }
         }, 1000);
+
+        this.getCalendario();
     },
 
     methods: {
-        handleDateClick: function(arg) {
-            alert('date click! ' + arg.dateStr)
+        handleDateClick: function(info) {
+            var eventObj = info.event;
+
+            if (eventObj.url) {
+                alert(
+                'Clicked ' + eventObj.title + '.\n' +
+                'Will open ' + eventObj.url + ' in a new tab'
+                );
+
+                // window.open(eventObj.url);
+
+                info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
+            } else {
+                this.dateCalendar();
+
+                this.detalleCalendario ={
+                    torneo:eventObj.title,
+                    categoris:eventObj.extendedProps.categoria,
+                    
+                }
+
+            }
         },
         cambiarPassword(){
             if (this.cambio.password === '') {
@@ -352,6 +386,96 @@ export default {
                 $('#basicModal').modal('hide');
             })
         },
+        getCalendario(){
+            let url = `home/Calendario?buscador=${this.search}`;
+            axios.get(url).then(response => {
+                this.Calendario = response.data.calendario;
+
+                this.TipeEvent();
+                
+            });
+            
+        },
+        TipeEvent(){
+
+            this.calendarOptions.events = [];
+            var Torneo = this.Calendario.torneo;
+            var Notas = this.Calendario.nota;
+
+            if (this.selectCalendario.torneo == true) {        
+
+               this.dataTorneo = Torneo.map(eventotorneo => ({
+                    ...eventotorneo,
+                    title:eventotorneo.torneo,
+                    start: eventotorneo.fecha_inicia,
+                    end:eventotorneo.fecha_fin,
+                    color: '#ff4d49',
+                    extendedProps: {
+                        categoria: `${eventotorneo.categoria}`,
+                    },
+                })); 
+            }else{
+                this.dataTorneo = [];
+                
+            }
+            if (this.selectCalendario.notas == true) {        
+
+               this.dataNota = Notas.map(eventonota => ({
+                    ...eventonota,
+                    title:eventonota.nombre,
+                    start: eventonota.inicia_fecha,
+                    end:eventonota.fin_fecha,
+                    color: '#73c72f',
+                })); 
+            }else{
+                this.dataNota = [];
+                
+            }
+
+            this.calendarOptions.events = [...this.dataTorneo,...this.dataNota];
+        },
+        Eventos(){
+            
+            let eventosFiltrados = todosLosEventos.filter(evento =>
+                this.selectedCategories.includes(evento.tipo)
+            );
+
+            this.calendarOptions.events = eventosFiltrados.map(evento => ({
+                id: evento.id_torneo,
+                title: evento.nombre || "Evento sin título",
+                start: evento.fecha_inicio,
+                end: evento.fecha_fin || evento.fecha_inicio,
+                allDay: true,
+                backgroundColor: this.getEventColor(evento.tipo),
+                borderColor: this.getEventColor(evento.tipo)
+            }));
+        },
+        dateCalendar(){
+
+            Swal.fire({
+                title: "Editar Datos de Pago?",
+                html: `
+                    <label for="fecha_pago" style="color:black">Ingresa una Fecha:</label>
+                    <input id="fecha_pago" type="text" value="${this.detalleCalendario.torneo}">
+
+                  
+                `,
+                icon: "warning",
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                confirmButtonColor: "#12B8F2",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Editar",
+            
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+
+                }
+            });
+        }
+
+    
     }
 };
 </script>

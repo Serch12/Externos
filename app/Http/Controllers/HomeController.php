@@ -8,6 +8,7 @@ use App\Models\Usuarios;
 use App\Models\Perfil;
 use App\Models\Sedes;
 use App\Models\Jugadores;
+use App\Models\Torneo;
 use Mail;
 use DB;
 use Hash;
@@ -72,5 +73,24 @@ class HomeController extends Controller
         $user -> acceso = 1;
         $user->save();      
         return $user;
+    }
+
+    /**
+     * funcion que mostrara la informacion de cada seccion en el calendario
+     **/
+    public function Calendario(Request $request){
+        $torneo = Torneo::select('*')->get();
+        $nota = [
+            [
+                'nombre' => 'RECORDATORIO',
+                'inicia_fecha' => '2025-04-01',
+                'fin_fecha' => '2025-04-02',
+            ]
+        ];
+
+        return response()->json(['calendario'=> [
+            'torneo' => $torneo,
+            'nota'=>$nota
+        ]]);
     }
 }
