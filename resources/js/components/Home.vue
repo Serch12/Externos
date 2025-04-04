@@ -15,7 +15,7 @@
                         <!-- Calendar Sidebar -->
                         <div class="col-xl-3 col-lg-4 app-calendar-sidebar border-end" id="app-calendar-sidebar">
                             <div class="p-5 my-sm-0 mb-4 border-bottom">
-                                <button class="btn btn-success btn-toggle-sidebar w-100" data-bs-toggle="offcanvas" data-bs-target="#addEventSidebar" aria-controls="addEventSidebar">
+                                <button class="btn btn-success btn-toggle-sidebar w-100" data-bs-toggle="offcanvas" data-bs-target="#createRecordatorio" aria-controls="createRecordatorio">
                                     <i class="ri-add-line ri-16px me-1_5"></i>
                                     <span class="align-middle">Añadir Nota</span>
                                 </button>
@@ -66,126 +66,76 @@
                                 </div>
                             </div>
                             <div class="app-overlay"></div>
-                            <!-- FullCalendar Offcanvas -->
-                            <div
-                            class="offcanvas offcanvas-end event-sidebar"
-                            tabindex="-1"
-                            id="addEventSidebar"
-                            aria-labelledby="addEventSidebarLabel">
-                            <div class="offcanvas-header border-bottom">
-                                <h5 class="offcanvas-title" id="addEventSidebarLabel">Add Event</h5>
-                                <button
-                                type="button"
-                                class="btn-close text-reset"
-                                data-bs-dismiss="offcanvas"
-                                aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body">
-                                <form class="event-form pt-0" id="eventForm" onsubmit="return false">
-                                <div class="form-floating form-floating-outline mb-5">
-                                    <input
-                                    type="text"
-                                    class="form-control"
-                                    id="eventTitle"
-                                    name="eventTitle"
-                                    placeholder="Event Title" />
-                                    <label for="eventTitle">Title</label>
-                                </div>
-                                <div class="form-floating form-floating-outline mb-5">
-                                    <select class="select2 select-event-label form-select" id="eventLabel" name="eventLabel">
-                                        <option data-label="primary" value="Business" selected>Business</option>
-                                        <option data-label="danger" value="Personal">Personal</option>
-                                        <option data-label="warning" value="Family">Family</option>
-                                        <option data-label="success" value="Holiday">Holiday</option>
-                                        <option data-label="info" value="ETC">ETC</option>
-                                    </select>
-                                    <label for="eventLabel">Label</label>
-                                </div>
-                                <div class="form-floating form-floating-outline mb-5">
-                                    <input
-                                    type="text"
-                                    class="form-control"
-                                    id="eventStartDate"
-                                    name="eventStartDate"
-                                    placeholder="Start Date" />
-                                    <label for="eventStartDate">Start Date</label>
-                                </div>
-                                <div class="form-floating form-floating-outline mb-5">
-                                    <input
-                                    type="text"
-                                    class="form-control"
-                                    id="eventEndDate"
-                                    name="eventEndDate"
-                                    placeholder="End Date" />
-                                    <label for="eventEndDate">End Date</label>
-                                </div>
-                                <div class="mb-5">
-                                    <div class="form-check form-switch">
-                                    <input type="checkbox" class="form-check-input allDay-switch" id="allDaySwitch" />
-                                    <label class="form-check-label" for="allDaySwitch">All Day</label>
-                                    </div>
-                                </div>
-                                <div class="form-floating form-floating-outline mb-5">
-                                    <input
-                                    type="url"
-                                    class="form-control"
-                                    id="eventURL"
-                                    name="eventURL"
-                                    placeholder="https://www.google.com" />
-                                    <label for="eventURL">Event URL</label>
-                                </div>
-                                <div class="form-floating form-floating-outline mb-5 select2-primary">
-                                    <select
-                                    class="select2 select-event-guests form-select"
-                                    id="eventGuests"
-                                    name="eventGuests"
-                                    multiple>
-                                    <option data-avatar="1.png" value="Jane Foster">Jane Foster</option>
-                                    <option data-avatar="3.png" value="Donna Frank">Donna Frank</option>
-                                    <option data-avatar="5.png" value="Gabrielle Robertson">Gabrielle Robertson</option>
-                                    <option data-avatar="7.png" value="Lori Spears">Lori Spears</option>
-                                    <option data-avatar="9.png" value="Sandy Vega">Sandy Vega</option>
-                                    <option data-avatar="11.png" value="Cheryl May">Cheryl May</option>
-                                    </select>
-                                    <label for="eventGuests">Add Guests</label>
-                                </div>
-                                <div class="form-floating form-floating-outline mb-5">
-                                    <input
-                                    type="text"
-                                    class="form-control"
-                                    id="eventLocation"
-                                    name="eventLocation"
-                                    placeholder="Enter Location" />
-                                    <label for="eventLocation">Location</label>
-                                </div>
-                                <div class="form-floating form-floating-outline mb-5">
-                                    <textarea class="form-control" name="eventDescription" id="eventDescription"></textarea>
-                                    <label for="eventDescription">Description</label>
-                                </div>
-                                <div class="mb-5 d-flex justify-content-sm-between justify-content-start my-6 gap-2">
-                                    <div class="d-flex">
-                                    <button type="submit" id="addEventBtn" class="btn btn-success btn-add-event me-4">
-                                        Add
-                                    </button>
+                            <!-- FullCalendar Offcanvas create -->
+                            <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="createRecordatorio" aria-labelledby="addEventSidebarLabel">
+                                <div class="offcanvas-header border-bottom">
+                                    <h5 class="offcanvas-title" id="addEventSidebarLabel">Añadir Recordatorio</h5>
                                     <button
-                                        type="reset"
-                                        class="btn btn-outline-secondary btn-cancel me-sm-0 me-1"
-                                        data-bs-dismiss="offcanvas">
-                                        Cancel
-                                    </button>
-                                    </div>
-                                    <button class="btn btn-outline-danger btn-delete-event d-none">Delete</button>
+                                    type="button"
+                                    class="btn-close text-reset"
+                                    data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
                                 </div>
-                                </form>
+                                <div class="offcanvas-body">
+                                    <form class="event-form pt-0" id="eventForm" onsubmit="return false">
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <input
+                                        type="text"
+                                        class="form-control"
+                                        id="eventTitulo"
+                                        name="eventTitulo"
+                                        placeholder="Titulo" 
+                                        v-model="newrecordatorio.titulo"/>
+                                        <label for="eventTitulo">Titulo</label>
+                                    </div>
+                                
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <input
+                                        type="date"
+                                        class="form-control"
+                                        id="eventStartDate"
+                                        name="eventStartDate"
+                                        v-model="newrecordatorio.fecha_inicia" />
+                                        <label for="eventStartDate">Fecha Inicio</label>
+                                    </div>
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <input
+                                        type="date"
+                                        class="form-control"
+                                        id="eventEndDate"
+                                        name="eventEndDate"
+                                        v-model="newrecordatorio.fecha_fin"/>
+                                        <label for="eventEndDate">Fecha Fin</label>
+                                    </div>
+                                
+                                    <div class="form-floating form-floating-outline mb-5">
+                                        <textarea class="form-control" name="eventDescription" id="eventDescription" v-model="newrecordatorio.descripcion"></textarea>
+                                        <label for="eventDescription">Descripción</label>
+                                    </div>
+                                    <div class="mb-5 d-flex justify-content-sm-between justify-content-start my-6 gap-2">
+                                        <div class="d-flex">
+                                        <button type="button" id="addEventBtn" class="btn btn-success btn-add-event me-4" @click="RecordatorioCreate()">
+                                            Crear
+                                        </button>
+                                        <button
+                                            type="reset"
+                                            class="btn btn-outline-danger btn-cancel me-sm-0 me-1"
+                                            data-bs-dismiss="offcanvas">
+                                            Cancelar
+                                        </button>
+                                        </div>
+                                        <button class="btn btn-outline-danger btn-delete-event d-none">Delete</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
                             </div>
-                            </div>
-                        </div>
                         <!-- /Calendar & Modal -->
                     </div>
               </div>
             </div>
         </div>
-        
+
         <div class="modal fade" id="basicModal" data-bs-backdrop="static" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -198,7 +148,7 @@
                         <div class="mb-3">
                             <div class="form-password-toggle">
                                 <div class="input-group input-group-merge">
-                                
+
                                 <div class="form-floating form-floating-outline">
                                     <input
                                     type="password"
@@ -211,9 +161,9 @@
                                 </div>
                                 <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" @click="cambiarPassword()">Guardar</button>
@@ -222,7 +172,7 @@
             </div>
         </div>
         <br><br><br>
-        
+
     </div>
 </template>
 <script>
@@ -243,7 +193,7 @@ export default {
         'rol_usuario',
         'sede',
         'permisos',
-        'password',   
+        'password',
         'componente'
     ],
     data() {
@@ -277,7 +227,7 @@ export default {
                 dayMaxEvents: true,
                 weekends: true,
                 select: this.handleDateSelect,
-                
+
                 slotLabelFormat:{
                     hour: '2-digit',
                     minute: '2-digit',
@@ -289,7 +239,8 @@ export default {
                     hour12: true
                 },
                 events: [],
-                eventClick:this.handleDateClick 
+                eventClick:this.handleDateClick,
+                dateClick: this.CalendarClick,
             },
             vista:0,
             checkInterval:null,
@@ -302,19 +253,34 @@ export default {
             Torneos:[],
             Notas:[],
             Calendario:[],
-            
+
             selectCalendario:{
                 torneo:true,
                 notas:true
             },
-            detalleCalendario:[]
+            detalleTorneo:{
+                torneo:'',
+                categoria:''
+            },
+            detalleNota:{
+                nota:'',
+                descripcion:''
+            },
+            newrecordatorio:{
+                id_user:this.id_usuario_logeado,
+                titulo:'',
+                nombre:'',
+                descripcion:'',
+                fecha_inicia:'',
+                fecha_fin:'',
+            },
         }
     },
     computed: {
 
     },
     watch: {
-        
+
     },
     mounted() {
 
@@ -330,6 +296,21 @@ export default {
     },
 
     methods: {
+        CalendarClick:function (info) {
+            if(info.view.type == 'timeGridWeek' || info.view.type == 'timeGridDay'){
+                let str = info.dateStr;
+                var fecha = str.split("T")[0];
+                console.log(fecha);
+                
+                this.newrecordatorio.fecha_inicia = fecha;
+            }
+            if(info.view.type == 'dayGridMonth'){
+
+                this.newrecordatorio.fecha_inicia = info.dateStr;
+                this.newrecordatorio.fecha_fin = info.dateStr;
+            }
+            $('#createRecordatorio').offcanvas('show');
+        },
         handleDateClick: function(info) {
             var eventObj = info.event;
 
@@ -343,13 +324,31 @@ export default {
 
                 info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
             } else {
-                this.dateCalendar();
+               
 
-                this.detalleCalendario ={
-                    torneo:eventObj.title,
-                    categoris:eventObj.extendedProps.categoria,
-                    
+
+                if (eventObj.extendedProps.tipo === 'torneo') {
+                    this.detalleTorneo = {
+                        torneo: eventObj.title,
+                        categoria: eventObj.extendedProps.categoria,
+                        fecha_inicia: eventObj.extendedProps.fecha_inicia,
+                        fecha_fin: eventObj.extendedProps.fecha_fin,
+                        sede: eventObj.extendedProps.sede,
+
+
+                    };
+                    this.dateCalendar(this.detalleTorneo);
                 }
+                if (eventObj.extendedProps.tipo === 'nota') {
+                    this.detalleNota = {
+                        titulo: eventObj.title,
+                        fecha_inicia: eventObj.extendedProps.fecha_inicia,
+                        fecha_termina: eventObj.extendedProps.fecha_termina,
+                        descripcion: eventObj.extendedProps.descripcion,
+                    };
+                    this.dateCalendar(this.detalleNota);
+                }
+
 
             }
         },
@@ -392,9 +391,9 @@ export default {
                 this.Calendario = response.data.calendario;
 
                 this.TipeEvent();
-                
+
             });
-            
+
         },
         TipeEvent(){
 
@@ -402,40 +401,48 @@ export default {
             var Torneo = this.Calendario.torneo;
             var Notas = this.Calendario.nota;
 
-            if (this.selectCalendario.torneo == true) {        
+            if (this.selectCalendario.torneo == true) {
 
                this.dataTorneo = Torneo.map(eventotorneo => ({
                     ...eventotorneo,
                     title:eventotorneo.torneo,
                     start: eventotorneo.fecha_inicia,
                     end:eventotorneo.fecha_fin,
+                    tipo:'torneo',
                     color: '#ff4d49',
                     extendedProps: {
                         categoria: `${eventotorneo.categoria}`,
+                        fecha_inicia: `${eventotorneo.fecha_inicia}`,
+                        fecha_fin: `${eventotorneo.fecha_fin}`,
+                        sede: `${eventotorneo.sede}`,
                     },
-                })); 
+                }));
             }else{
                 this.dataTorneo = [];
-                
+
             }
-            if (this.selectCalendario.notas == true) {        
+            if (this.selectCalendario.notas == true) {
 
                this.dataNota = Notas.map(eventonota => ({
                     ...eventonota,
-                    title:eventonota.nombre,
-                    start: eventonota.inicia_fecha,
-                    end:eventonota.fin_fecha,
+                    title:eventonota.titulo,
+                    start: eventonota.fecha_inicia,
+                    end:eventonota.fecha_termina,
+                    tipo:'nota',
                     color: '#73c72f',
-                })); 
+                    extendedProps: {
+                        descripcion: `${eventonota.descripcion}`,
+                    },
+                }));
             }else{
                 this.dataNota = [];
-                
+
             }
 
             this.calendarOptions.events = [...this.dataTorneo,...this.dataNota];
         },
         Eventos(){
-            
+
             let eventosFiltrados = todosLosEventos.filter(evento =>
                 this.selectedCategories.includes(evento.tipo)
             );
@@ -450,32 +457,151 @@ export default {
                 borderColor: this.getEventColor(evento.tipo)
             }));
         },
-        dateCalendar(){
+        dateCalendar(value){
+            const {
+                titulo,
+                torneo,
+                descripcion,    
+                categoria,
+                sede,
+                fecha_inicia,
+                fecha_fin,  
+            } = value;
+            
 
             Swal.fire({
-                title: "Editar Datos de Pago?",
+                title: ` 
+                    ${titulo ? `<b class="text-center">${titulo}</b>` : ''}
+                    ${torneo ? `<b class="text-center">${torneo}</b>` : ''}`,
                 html: `
-                    <label for="fecha_pago" style="color:black">Ingresa una Fecha:</label>
-                    <input id="fecha_pago" type="text" value="${this.detalleCalendario.torneo}">
 
-                  
+                    <table class="table" style="font-size: 14px;">
+                        <tbody>
+                            <tr>
+                                ${categoria ? `<td colspan="2"><b>Categoria:</b></td>` : ''}
+                                ${categoria ? `<td colspan="2">${categoria}</td>` : ''}
+                                ${descripcion ? `<td colspan="2"><b>Descripción:</b></td>` : ''}
+                                ${descripcion ? `<td colspan="2">${descripcion}</td>` : ''}
+                            </tr>
+                            <tr>
+                                ${fecha_inicia ? `<td colspan="2"><b>Fecha Inicia:</b></td>` : ''}
+                                ${fecha_inicia ? `<td colspan="2">${fecha_inicia}</td>` : ''}
+                            </tr>
+                            <tr>
+                                ${fecha_fin ? `<td colspan="2"><b>Fecha Fin:</b></td>` : ''}
+                                ${fecha_fin ? `<td colspan="2">${fecha_fin}</td>` : ''}
+                            </tr>
+                            <tr>
+                                ${sede ? `<td colspan="2"><b>Sede:</b></td>` : ''}
+                                ${sede ? `<td colspan="2">${sede}</td>` : ''}
+                            </tr>
+                        </tbody>
+                    </table>
                 `,
-                icon: "warning",
                 showCancelButton: true,
                 cancelButtonText: "Cancelar",
-                confirmButtonColor: "#12B8F2",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Editar",
-            
+                showConfirmButton: false,
+
             }).then((result) => {
                 if (result.isConfirmed) {
-                    
+
 
                 }
             });
+        },
+        RecordatorioCreate(){
+            if (this.newrecordatorio.titulo == '') {
+                this.$toast.error("Añade un Titulo", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newrecordatorio.fecha_inicia == '') {
+                this.$toast.error("Añade una Fecha Inicial", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newrecordatorio.fecha_fin == '') {
+                this.$toast.error("Añade una Fecha Final", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newrecordatorio.descripcion == '') {
+                this.$toast.error("Añade una Descripción", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('id_user', this.newrecordatorio.id_user); 
+            formData.append('titulo', this.newrecordatorio.titulo);
+            formData.append('descripcion', this.newrecordatorio.descripcion);
+            formData.append('fecha_inicia', this.newrecordatorio.fecha_inicia);
+            formData.append('fecha_fin', this.newrecordatorio.fecha_fin);
+
+            axios.post('home/RecordatorioCreate', formData).then(res =>{
+                this.getCalendario();
+                $('#createRecordatorio').offcanvas('hide');
+                Swal.fire({
+                    title: 'Éxito',
+                    text: "Se Registro correctamente!",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2500,
+                    });
+                })
         }
 
-    
+
+
     }
 };
 </script>

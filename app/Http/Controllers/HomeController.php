@@ -9,6 +9,7 @@ use App\Models\Perfil;
 use App\Models\Sedes;
 use App\Models\Jugadores;
 use App\Models\Torneo;
+use App\Models\Recordatorio;
 use Mail;
 use DB;
 use Hash;
@@ -80,17 +81,27 @@ class HomeController extends Controller
      **/
     public function Calendario(Request $request){
         $torneo = Torneo::select('*')->get();
-        $nota = [
-            [
-                'nombre' => 'RECORDATORIO',
-                'inicia_fecha' => '2025-04-01',
-                'fin_fecha' => '2025-04-02',
-            ]
-        ];
+        $nota = Recordatorio::select('*')->get();
 
         return response()->json(['calendario'=> [
             'torneo' => $torneo,
             'nota'=>$nota
         ]]);
+    }
+
+    /**
+     * funcioon que mostrara la informacion de cada seccion en el calendario
+     **/
+    public function RecordatorioCreate(Request $request){
+        $new = new Recordatorio();
+        $new -> id_user = $request->id_user;
+        $new -> titulo = $request->titulo;
+        $new -> fecha_inicia = $request->fecha_inicia;
+        $new -> fecha_termina = $request->fecha_fin;
+        $new -> descripcion = $request->descripcion;
+        $new -> estatus = 0;
+        $new -> save();
+
+        return $new;
     }
 }
