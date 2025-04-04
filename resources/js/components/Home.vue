@@ -588,6 +588,14 @@ export default {
             formData.append('fecha_fin', this.newrecordatorio.fecha_fin);
 
             axios.post('home/RecordatorioCreate', formData).then(res =>{
+                this.newrecordatorio = {
+                    id_user:this.id_usuario_logeado,
+                    titulo:'',
+                    nombre:'',
+                    descripcion:'',
+                    fecha_inicia:'',
+                    fecha_fin:'',
+                }
                 this.getCalendario();
                 $('#createRecordatorio').offcanvas('hide');
                 Swal.fire({
