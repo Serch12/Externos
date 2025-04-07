@@ -71,6 +71,37 @@
                         </div>
                     </div>
                 </div>
+                <!-- <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-rounded pagination-outline-success pagination justify-content-center">
+                        <li class="page-item first">
+                            <a class="page-link waves-effect" href="javascript:void(0);"><i class="tf-icon ri-skip-back-mini-line ri-20px"></i></a>
+                        </li>
+                        <li class="page-item prev">
+                            <a class="page-link waves-effect" href="javascript:void(0);"><i class="tf-icon ri-arrow-left-s-line ri-20px"></i></a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link waves-effect" href="javascript:void(0);">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link waves-effect" href="javascript:void(0);">2</a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link waves-effect" href="javascript:void(0);">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link waves-effect" href="javascript:void(0);">4</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link waves-effect" href="javascript:void(0);">5</a>
+                        </li>
+                        <li class="page-item next">
+                            <a class="page-link waves-effect" href="javascript:void(0);"><i class="tf-icon ri-arrow-right-s-line ri-20px"></i></a>
+                        </li>
+                        <li class="page-item last">
+                            <a class="page-link waves-effect" href="javascript:void(0);"><i class="tf-icon ri-skip-forward-mini-line ri-20px"></i></a>
+                        </li>
+                    </ul>
+                </nav> -->
                 <nav aria-label="Page navigation example mt-3">
                     <ul class="pagination justify-content-center">
                         <li class="page-item disabled" v-if="pagination.current_page > 1">

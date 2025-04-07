@@ -476,33 +476,47 @@
                 </div>
               </form>
               <form id="addNewAddressForm" class="row g-5" onsubmit="return false" v-show="this.step == 1">
-                <div class="col-12">
+                <div class="card-body">
+                  <div class="d-flex align-items-start align-items-sm-center gap-6">
+                    <img src="style/assets/img/avatars/1.png" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-if="this.imagenMiniaturaUpdate == ''"/>
+                    <img :src="this.imagenMiniaturaUpdate" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-else/>
+                    <div class="button-wrapper">
+                      <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">Sube una Foto</span>
+                        <i class="ri-upload-2-line d-block d-sm-none"></i>
+                        <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg, image/jpg" ref="fileFoto" @change="onChangeFoto()"/>
+                      </label>
+                      <div>JPG, JPEG o PNG.</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-12">
                   <div class="form-floating form-floating-outline">
-                    <input type="file"  accept=".pdf" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
+                    <input type="file" accept=".pdf,.jpeg" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
                     <label for="bs-validation-upload-file">Foto</label>
                   </div>
-                  <p style="color: red;">*** Solo se permiten archivos PDF ***</p>
-                </div>
+                  <p style="color: red;">*** Solo se permiten archivos PDF y.JPEG ***</p>
+                </div> -->
                 <div class="col-12">
                   <div class="form-floating form-floating-outline">
-                    <input type="file"  accept=".pdf" class="form-control" id="bs-validation-upload-file_acta" ref="fileActa" @change="onChangeActa()">
+                    <input type="file"  accept=".pdf,.jpeg" class="form-control" id="bs-validation-upload-file_acta" ref="fileActa" @change="onChangeActa()">
                     <label for="bs-validation-upload-file_acta">Acta de Nacimiento</label>
                   </div>
-                  <p style="color: red;">*** Solo se permiten archivos PDF ***</p>
+                  <p style="color: red;">*** Solo se permiten archivos PDF y.JPEG ***</p>
                 </div>
                 <div class="col-12">
                   <div class="form-floating form-floating-outline">
-                    <input type="file"  accept=".pdf" class="form-control" id="bs-validation-upload-file_curp" ref="fileCurp" @change="onChangeCurp()">
+                    <input type="file" accept=".pdf,.jpeg" class="form-control" id="bs-validation-upload-file_curp" ref="fileCurp" @change="onChangeCurp()">
                     <label for="bs-validation-upload-file_curp">Curp</label>
                   </div>
-                  <p style="color: red;">*** Solo se permiten archivos PDF ***</p>
+                  <p style="color: red;">*** Solo se permiten archivos PDF y.JPEG ***</p>
                 </div>
                 <div class="col-12">
                   <div class="form-floating form-floating-outline">
-                    <input type="file"  accept=".pdf" class="form-control" id="bs-validation-upload-file_ident" ref="fileIdent" @change="onChangeIdentificacion()">
+                    <input type="file" accept=".pdf,.jpeg" class="form-control" id="bs-validation-upload-file_ident" ref="fileIdent" @change="onChangeIdentificacion()">
                     <label for="bs-validation-upload-file_ident">Identificación</label>
                   </div>
-                  <p style="color: red;">*** Solo se permiten archivos PDF ***</p>
+                  <p style="color: red;">*** Solo se permiten archivos PDF y.JPEG ***</p>
                 </div>
                 <div class="col-12 d-flex justify-content-between mt-6">
                   <button class="btn btn-outline-secondary" @click="goPrevStep()">
@@ -720,14 +734,14 @@
                         <td>{{ index + 1 }}</td>
                         <td v-if="arch.archivo == ''">
                           <div class="form-floating form-floating-outline">
-                            <input type="file"  accept=".pdf" class="form-control" :id="`bs-validation-upload-fileupdate${index}`" :ref="`fileArch${index}`" @change="onChangeArchivoUpdate(index,arch)">
+                            <input type="file" accept=".pdf,.jpeg" class="form-control" :id="`bs-validation-upload-fileupdate${index}`" :ref="`fileArch${index}`" @change="onChangeArchivoUpdate(index,arch)">
                             <label :for="`bs-validation-upload-fileupdate${index}`">Archivo</label>
                           </div>
                         </td>
                         <td v-else>
                           <a class="btn btn-icon rounded-pill btn-outline-youtube waves-effect"
                             target="_blank" :href="`ArchivosSistema/Jugadores/${arch.id_jugador}/${arch.archivo}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
-                            <i class="tf-icons ri-file-pdf-2-fill ri-22px"></i>
+                            <i class="tf-icons ri-file-info-line ri-22px"></i>
                           </a>
                         </td>
                         
