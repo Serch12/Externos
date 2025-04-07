@@ -461,8 +461,8 @@
               <form id="addNewAddressForm" class="row g-5" onsubmit="return false" v-show="this.step == 1">
                 <div class="card-body">
                   <div class="d-flex align-items-start align-items-sm-center gap-6">
-                    <img src="style/assets/img/avatars/1.png" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-if="this.imagenMiniaturaUpdate == ''"/>
-                    <img :src="this.imagenMiniaturaUpdate" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-else/>
+                    <img src="style/assets/img/avatars/1.png" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-if="this.imagenMiniatura == ''"/>
+                    <img :src="this.imagenMiniatura" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-else/>
                     <div class="button-wrapper">
                       <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
                         <span class="d-none d-sm-block">Sube una Foto</span>
@@ -1252,6 +1252,15 @@ export default {
     onChangeFoto(){
       var fileedit = this.$refs.fileFoto.files[0];
       this.newjugador.foto = fileedit
+      this.newcargarImagen(fileedit)
+    },
+    newcargarImagen(file){
+        let reader = new FileReader();
+
+        reader.onload = (e) => {
+            this.imagenMiniatura = e.target.result
+        }
+        reader.readAsDataURL(file)
     },
     onChangeActa(){
       var actafile = this.$refs.fileActa.files[0];
