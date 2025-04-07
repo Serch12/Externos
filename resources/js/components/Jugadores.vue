@@ -232,31 +232,14 @@
                         <tbody class="table-border-bottom-0">
                           <tr v-for="(arch, index) in detalleJugador.documentacion" :key="index">
                             <td>{{ index + 1 }}</td>
-                            <td v-if="arch.archivo == ''">
-                              <div class="form-floating form-floating-outline">
-                                <input type="file"  accept="image/png,image/jpeg" class="form-control" :id="`bs-validation-upload-fileupdate${index}`" :ref="`fileArch${index}`" @change="onChangeArchivoUpdate(index,arch)">
-                                <label :for="`bs-validation-upload-fileupdate${index}`">Archivo</label>
-                              </div>
+                            <td >
+                              <a class="btn btn-icon rounded-pill btn-outline-youtube waves-effect"
+                                target="_blank" :href="`ArchivosSistema/Jugadores/${arch.id_jugador}/${arch.archivo}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
+                                <i class="tf-icons ri-contract-line ri-22px"></i>
+                              </a>
                             </td>
-                            <td v-else>
-                              <img
-                                  :src="`ArchivosSistema/Jugadores/${arch.id_jugador}/${arch.archivo}`"
-                                  alt="Archivo"
-                                  style="width: 80px;"
-                                />
-                            </td>
-                            <td v-if="arch.id_docu_jugador == ''">
-                              <div class="form-floating form-floating-outline">
-                                <select :id="`tipo${index}`" :name="`tipo${index}`" class="form-select" v-model="arch.tipo">
-                                  <option value="Selecciona una Opción">Selecciona una Opción</option>
-                                  <option value="Acta de Nacimiento">Acta de Nacimiento</option>
-                                  <option value="Curp">Curp</option>
-                                  <option value="Identificación">Identificación</option>
-                                </select>
-                                <label :for="`tipo${index}`">Tipo</label>
-                              </div>
-                            </td>
-                            <td v-else>{{ arch.tipo }}</td>
+                            
+                            <td >{{ arch.tipo }}</td>
                           </tr>
 
                         </tbody>
@@ -741,7 +724,7 @@
                         <td v-else>
                           <a class="btn btn-icon rounded-pill btn-outline-youtube waves-effect"
                             target="_blank" :href="`ArchivosSistema/Jugadores/${arch.id_jugador}/${arch.archivo}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
-                            <i class="tf-icons ri-file-info-line ri-22px"></i>
+                            <i class="tf-icons ri-contract-line ri-22px"></i>
                           </a>
                         </td>
                         
