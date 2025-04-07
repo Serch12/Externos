@@ -1219,6 +1219,7 @@ export default {
         formData.append('telefono',this.newjugador.telefono);
       axios.post('jugadores/createJugador',formData).then(response=>{
         this.getJugador();
+        this.imagenMiniatura = '';
         $('#createJugador').modal('hide');
         this.step = 0;
         this.newjugador = {
@@ -1426,6 +1427,7 @@ export default {
         // formData.append('prestamo',this.detalleJugador.prestamo);
       axios.post('jugadores/updateJugador',formData).then(response=>{
         this.getJugador();
+        this.imagenMiniaturaUpdate = '';
         this.submenuUpdate = false;
         $('#editJugador').modal('hide');
         this.stepUpdate = 0;  
