@@ -228,6 +228,15 @@ class JugadoresRepository
         $editar -> correo = $request -> correo;
         $editar -> direccion = $request -> direccion;
         $editar -> telefono = $request -> telefono;
+        $file = $request->file('formato');
+        if(isset($file)){
+            // \Storage::disk('jugadores')->delete($request->id_jugador."/".$editar->foto);
+            $file = $request->file('formato');
+            $nombre = $file->getClientOriginalName();
+            $url = $request->id_jugador."/".$nombre;
+            \Storage::disk('jugadores')->put($url, \File::get($file));
+            $editar->formato = $nombre;
+        }
         $editar -> save ();
         return $editar;
     }

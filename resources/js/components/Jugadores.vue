@@ -248,8 +248,94 @@
               </div>
               <!-- Info Tutor -->
               <div class="card mb-6" v-if="this.activeView == 'tutor'">
-                <h5 class="card-header">Expendiente</h5>
-                <div class="card-body">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <h5 class="card-header">Expendiente</h5>
+                  </div>
+                  <div class="col-12 col-md-6 mt-3">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                      <button type="button" class="btn btn-outline-info waves-effect" @click="cambiarModo()">Editar</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body" v-if="this.stepTutor == 0">
+                  <form>
+                    <div class="input-group input-group-merge mb-6">
+                      <span id="basic-icon-default-fullname2" class="input-group-text">
+                        <i class="ri-user-line"></i>
+                      </span>
+                      <div class="form-floating form-floating-outline">
+                        <input 
+                          type="text"
+                          id="basic-icon-default-company"
+                          class="form-control"
+                          placeholder="Nombre"
+                          aria-label="Nombre"
+                          v-model="detalleJugador.tutor" 
+                          aria-describedby="basic-icon-default-fullname2" style="color: black;" disabled/>
+                        <label for="basic-icon-default-fullname">Nombre Tutor</label>
+                      </div>
+                    </div>
+                    <div class="input-group input-group-merge mb-6">
+                      <span id="basic-icon-default-company2" class="input-group-text">
+                        <i class="ri-map-pin-line"></i>
+                      </span>
+                      <div class="form-floating form-floating-outline">
+                        <input
+                          type="text"
+                          id="basic-icon-default-company"
+                          class="form-control"
+                          placeholder="Dirección"
+                          aria-label="Dirección"
+                          v-model="detalleJugador.direccion" 
+                          aria-describedby="basic-icon-default-company2" style="color: black;" disabled/>
+                        <label for="basic-icon-default-company">Dirección</label>
+                      </div>
+                    </div>
+                    <div class="mb-6">
+                      <div class="input-group input-group-merge">
+                        <span class="input-group-text"><i class="ri-mail-line"></i></span>
+                        <div class="form-floating form-floating-outline">
+                          <input
+                            type="email"
+                            id="basic-icon-default-email"
+                            class="form-control"
+                            placeholder="john.doe"
+                            aria-label="john.doe"
+                            v-model="detalleJugador.correo"
+                             aria-describedby="basic-icon-default-email2" style="color: black;" disabled/>
+                          <label for="basic-icon-default-email">Email</label>
+                        </div>
+                        <span id="basic-icon-default-email2" class="input-group-text">@example.com</span>
+                      </div>
+                     
+                    </div>
+                    <div class="input-group input-group-merge mb-6">
+                      <span id="basic-icon-default-phone2" class="input-group-text">
+                        <i class="ri-phone-fill"></i>
+                      </span>
+                      <div class="form-floating form-floating-outline">
+                        <input
+                          type="number"
+                          id="basic-icon-default-phone"
+                          class="form-control phone-mask"
+                          placeholder="658 799 8941"
+                          aria-label="658 799 8941"
+                          v-model="detalleJugador.telefono" 
+                          aria-describedby="basic-icon-default-phone2" style="color: black;" disabled/>
+                        <label for="basic-icon-default-phone">Telefono</label>
+                      </div>
+                    </div>
+                    <div class="input-group input-group-merge mb-6">
+                      <a class="btn btn-outline-whatsapp waves-effect"
+                        target="_blank" :href="`ArchivosSistema/Jugadores/${this.detalleJugador.id_jugador}/${this.detalleJugador.formato}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
+                        <i class="tf-icons ri-survey-line ri-16px me-2"></i>Formato de Consentimiento
+                      </a>
+                    </div>
+
+                  </form>
+                </div>
+                <div class="card-body" v-if="this.stepTutor == 1">
                   <form>
                     <div class="input-group input-group-merge mb-6">
                       <span id="basic-icon-default-fullname2" class="input-group-text">
@@ -317,7 +403,13 @@
                         <label for="basic-icon-default-phone">Telefono</label>
                       </div>
                     </div>
-                    
+                    <div class="col-12">
+                      <div class="form-floating form-floating-outline">
+                        <input type="file"  accept=".pdf" class="form-control" id="bs-validation-upload-file_acta" ref="carta" @change="onChangeFormato()">
+                        <label for="bs-validation-upload-file_acta">Formato de Consentimiento</label>
+                      </div>
+                      <p style="color: red;">*** Solo se permiten archivos PDF</p>
+                    </div>
                     <button type="button" class="btn btn-success" @click="newTutor()">Guardar</button>
                   </form>
                 </div>
@@ -815,6 +907,7 @@ export default {
       Jugadores:[],
       step:0,
       stepUpdate:0,
+      stepTutor:0,
       detalleJugador:[],
       activeView:null,
       DorsalExistente:false,
@@ -1487,9 +1580,13 @@ export default {
         formData.append('correo',this.detalleJugador.correo);
         formData.append('direccion',this.detalleJugador.direccion);
         formData.append('telefono',this.detalleJugador.telefono);
+        formData.append('formato',this.detalleJugador.formato);
+        formData.append('creacion',this.id_usuario_logeado);
       axios.post('jugadores/createTutor',formData).then(response =>{
         this.showCard(null);
         this.getJugador();
+        this.stepTutor = 0;
+        this.vista = 0;
         Swal.fire({
           title: 'Éxito',
           text: "Se Guardo correctamente!",
@@ -1603,6 +1700,13 @@ export default {
         })
         
       }
+    },
+    onChangeFormato(){
+      var fileedit = this.$refs.carta.files[0];
+      this.detalleJugador.formato = fileedit
+    },
+    cambiarModo(){
+      this.stepTutor = 1;
     }
 
   }
