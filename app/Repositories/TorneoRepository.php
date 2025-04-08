@@ -255,7 +255,7 @@ class TorneoRepository
      **/
     public function plantillaJugador($categoria,$sede){
         $respuesta = Jugadores::select('*')
-        ->where('categoria', $categoria)
+        // ->where('categoria', $categoria)
         ->where('estatus', 0)
         ->where(function($query) use ($sede) {
             $query->where('sede', $sede) 

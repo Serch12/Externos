@@ -208,6 +208,7 @@
                                         <th>Posición</th>
                                         <th>Sexo</th>
                                         <th>Edad</th>
+                                        <th>Categoria</th>
                                         <th>Sede</th>
                                         <th>Zona</th>
                                     </tr>
@@ -239,6 +240,7 @@
                                         <td>{{ t.posicion }}</td>
                                         <td>{{ t.sexo }}</td>
                                         <td>{{ t.edad }}</td>
+                                        <td>{{ t.categoria }}</td>
                                         <td>{{ t.sede }}</td>
                                         <th>
                                             <span class="badge rounded-pill bg-label-success me-1" v-if="t.zona == 'Local'">{{t.zona}}</span>
@@ -520,7 +522,7 @@
                     <h6 style="color: red;">** Selecciona los jugadores que participaran en  la <b>{{ this.newtorneo.torneo }}</b> </h6>
                     <div class="col-lg-12">
                         <div class="table-responsive text-nowrap mt-2">
-                            <table class="table">
+                            <table class="table" style="font-size: 14px;">
                                 <thead>
                                     <tr>
                                         <th>
@@ -535,6 +537,7 @@
                                         <th>Posición</th>
                                         <th>Sexo</th>
                                         <th>Edad</th>
+                                        <th>Categoria</th>
                                         <th>Sede</th>
                                         <th>Zona</th>
                                     </tr>
@@ -567,6 +570,7 @@
                                         <td>{{ t.posicion }}</td>
                                         <td>{{ t.sexo }}</td>
                                         <td>{{ t.edad }}</td>
+                                        <td>{{ t.categoria }}</td>
                                         <td>{{ t.sede }}</td>
                                         <th>
                                             <span class="badge rounded-pill bg-label-success me-1" v-if="t.zona == 'Local'">{{t.zona}}</span>

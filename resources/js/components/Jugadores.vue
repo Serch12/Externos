@@ -534,7 +534,7 @@
                 </div> -->
                 <div class="col-12 col-lg-6">
                   <div class="form-floating form-floating-outline">
-                    <input type="number" id="num_dorsal" class="form-control" v-model="newjugador.num_dorsal" @input="verificaDorsal()"/>
+                    <input type="number" id="num_dorsal" class="form-control" v-model="newjugador.num_dorsal" />
                     <label for="num_dorsal">Número Dorsal</label>
                   </div>
                   <p style="color: red;" v-if="this.NombreJugador != false">El Dorsal <b>{{ this.newjugador.num_dorsal }}</b> ya fue asignado al Jugador: <b>{{this.NombreJugador}}</b></p>
@@ -565,13 +565,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="col-12">
-                  <div class="form-floating form-floating-outline">
-                    <input type="file" accept=".pdf,.jpeg" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
-                    <label for="bs-validation-upload-file">Foto</label>
-                  </div>
-                  <p style="color: red;">*** Solo se permiten archivos PDF y.JPEG ***</p>
-                </div> -->
+
                 <div class="col-12">
                   <div class="form-floating form-floating-outline">
                     <input type="file"  accept=".pdf,.jpeg" class="form-control" id="bs-validation-upload-file_acta" ref="fileActa" @change="onChangeActa()">
@@ -774,7 +768,7 @@
                 </div> -->
                 <div class="col-12 col-lg-6">
                   <div class="form-floating form-floating-outline">
-                    <input type="number" id="num_dorsal" class="form-control" v-model="detalleJugador.num_dorsal" @input="verificaDorsalUpdate()"/>
+                    <input type="number" id="num_dorsal" class="form-control" v-model="detalleJugador.num_dorsal" />
                     <label for="num_dorsal">Número Dorsal</label>
                   </div>
                   <p style="color: red;" v-if="this.NombreJugador != false">El Dorsal <b>{{ this.detalleJugador.num_dorsal }}</b> ya fue asignado al Jugador: <b>{{this.NombreJugador}}</b></p>
@@ -953,6 +947,7 @@ export default {
   },
   mounted() {
     this.getJugador();
+
   },
   methods: {
     getJugador(page){
@@ -1314,6 +1309,9 @@ export default {
         this.getJugador();
         this.imagenMiniatura = '';
         $('#createJugador').modal('hide');
+        $('#bs-validation-upload-file_acta').val('');
+        $('#bs-validation-upload-file_curp').val('');
+        $('#bs-validation-upload-file_ident').val('');
         this.step = 0;
         this.newjugador = {
           foto:'',
