@@ -18,7 +18,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <!-- <th>#</th> -->
                             <th>Dorsal</th>
                             <th>Foto</th>
                             <th>Nombre</th>
@@ -33,7 +33,7 @@
                     </thead>
                     <tbody class="table-border-bottom-0">
                         <tr v-for="(jur, index) in Jugadores" :key="index">
-                            <td>{{ index+1 }}</td>
+                            <!-- <td>{{ index+1 }}</td> -->
                             <td>{{ jur.num_dorsal }}</td>
                             <td>
                                 <div class="d-flex justify-content-start align-items-center">
