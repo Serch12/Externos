@@ -746,6 +746,11 @@
                       <option value="Categoria 2010">Categoria 2010</option>
                       <option value="Categoria 2011">Categoria 2011</option>
                       <option value="Categoria 2012">Categoria 2012</option>
+                      <option value="Categoria 2013">Categoria 2013</option>
+                      <option value="Categoria 2014">Categoria 2014</option>
+                      <option value="Categoria 2015">Categoria 2015</option>
+                      <option value="Categoria 2016">Categoria 2016</option>
+                      <option value="Categoria 2017">Categoria 2017</option>
                     </select>
                     <label for="categoria">Categoria</label>
                   </div>
