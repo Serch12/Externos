@@ -733,7 +733,7 @@ export default {
             }
 
             let formData = new FormData();
-            formData.append('id_recordario', this.newrecordatorio.id_user); 
+            formData.append('id_user', this.newrecordatorio.id_user); 
             formData.append('titulo', this.newrecordatorio.titulo);
             formData.append('descripcion', this.newrecordatorio.descripcion);
             formData.append('fecha_inicia', this.newrecordatorio.fecha_inicia);
