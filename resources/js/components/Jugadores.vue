@@ -14,7 +14,7 @@
                     <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createJugador" v-if="include('Crear')">Agregar</button>
                   </div>
               </div>
-              <div class="table-responsive text-nowrap mt-2" style="font-size: 12px;">
+              <div class="table-responsive text-nowrap mt-2" style="font-size: 13px;">
                 <table class="table">
                     <thead>
                         <tr>
