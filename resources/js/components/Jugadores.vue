@@ -671,13 +671,13 @@
               <form id="addNewAddressForm" class="row g-5" onsubmit="return false" v-show="this.stepUpdate == 0">
                 <div class="card-body">
                   <div class="d-flex align-items-start align-items-sm-center gap-6">
-                    <img src="style/assets/img/avatars/1.png" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-if="this.imagenMiniaturaUpdate == ''"/>
+                    <img :src="`ArchivosSistema/Jugadores/${detalleJugador.id_jugador}/${detalleJugador.foto}`" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-if="this.imagenMiniaturaUpdate == ''"/>
                     <img :src="this.imagenMiniaturaUpdate" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-else/>
                     <div class="button-wrapper">
-                      <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
+                      <label for="upload_new" class="btn btn-primary me-3 mb-4" tabindex="0">
                         <span class="d-none d-sm-block">Sube una Foto</span>
                         <i class="ri-upload-2-line d-block d-sm-none"></i>
-                        <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" ref="fileFotoupdates" @change="onChangeFotoUpdate()"/>
+                        <input type="file" id="upload_new" class="account-file-input" hidden accept="image/png, image/jpeg" ref="fileFotoupdates" @change="onChangeFotoUpdate()"/>
                       </label>
                       <div>JPG permitido,o PNG.</div>
                     </div>
