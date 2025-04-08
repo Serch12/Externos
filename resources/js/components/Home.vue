@@ -327,6 +327,8 @@ export default {
                         fecha_fin: eventObj.extendedProps.fecha_fin,
                         sede: eventObj.extendedProps.sede,
                         id_recordario: eventObj.extendedProps.id_recordario,
+                        id_user: eventObj.extendedProps.id_user,
+                        id_logueado: eventObj.extendedProps.id_logueado,
 
 
                     };
@@ -339,6 +341,8 @@ export default {
                         fecha_termina: eventObj.extendedProps.fecha_termina,
                         descripcion: eventObj.extendedProps.descripcion,
                         id_recordario: eventObj.extendedProps.id_recordario,
+                        id_user: eventObj.extendedProps.id_user,
+                        id_logueado: eventObj.extendedProps.id_logueado,
                     };
                     this.dateCalendar(this.detalleNota);
                 }
@@ -410,6 +414,8 @@ export default {
                         fecha_fin: `${eventotorneo.fecha_fin}`,
                         sede: `${eventotorneo.sede}`,
                         id_recordario: `${eventotorneo.id_recordario}`,
+                        id_user: `${eventotorneo.id_user}`,
+                        id_logueado: this.id_usuario_logeado,
                     },
                 }));
             }else{
@@ -428,6 +434,8 @@ export default {
                     extendedProps: {
                         descripcion: `${eventonota.descripcion}`,
                         id_recordario: `${eventonota.id_recordario}`,
+                        id_user: `${eventonota.id_user}`,
+                        id_logueado: this.id_usuario_logeado,
                     },
                 }));
             }else{
@@ -458,6 +466,8 @@ export default {
             
             const {
                 id_recordario,
+                id_user,
+                id_logueado,
                 titulo,
                 torneo,
                 descripcion,    
@@ -468,12 +478,11 @@ export default {
                 fecha_termina
             } = value;
             
-
             Swal.fire({
                 html: `
                     ${titulo ? `<h5><b class="text-center">${titulo}</b></h5>` : ''}
                     ${torneo ? `<h5><b class="text-center">${torneo}</b></h5>` : ''}
-                    ${titulo ? 
+                    ${(titulo && String(id_user) === String(id_logueado)) ? 
                         `<div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="button" class="btn btn-icon btn-outline-info waves-effect" id="btn-edit">
                                 <span class="tf-icons ri-edit-box-fill ri-22px"></span>
