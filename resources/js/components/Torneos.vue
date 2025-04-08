@@ -133,6 +133,8 @@
                                     <option value="Categoria 2010">Categoria 2010</option>
                                     <option value="Categoria 2011">Categoria 2011</option>
                                     <option value="Categoria 2012">Categoria 2012</option>
+                                    <option value="Categoria 2013">Categoria 2013</option>
+                                    <option value="Categoria 2014">Categoria 2014</option>
                                 </select>
                                 <label for="categoria">Categoria</label>
                             </div>
@@ -457,11 +459,12 @@
                             <div class="form-floating form-floating-outline">
                                 <select id="categoria" name="categoria" class="form-select"
                                     v-model="detalleTorneo.categoria">
-                                    <option value="Selecciona una Categoria">Selecciona una Categoria</option>
                                     <option value="Categoria 2009">Categoria 2009</option>
                                     <option value="Categoria 2010">Categoria 2010</option>
                                     <option value="Categoria 2011">Categoria 2011</option>
                                     <option value="Categoria 2012">Categoria 2012</option>
+                                    <option value="Categoria 2013">Categoria 2013</option>
+                                    <option value="Categoria 2014">Categoria 2014</option>
                                 </select>
                                 <label for="categoria">Categoria</label>
                             </div>
