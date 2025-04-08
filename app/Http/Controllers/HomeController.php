@@ -104,4 +104,30 @@ class HomeController extends Controller
 
         return $new;
     }
+
+    /**
+     * Funcion que editara el recordatorio
+     **/
+    public function RecordatorioUpdate(Request $request){
+        $edit = Recordatorio::find($request->id_recordario);
+        $edit -> titulo = $request->titulo;
+        $edit -> fecha_inicia = $request->fecha_inicia;
+        $edit -> fecha_termina = $request->fecha_termina;
+        $edit -> descripcion = $request->descripcion;
+        $edit -> save();
+
+        return $edit;
+    }
+
+     /**
+     * Funcion que editara el recordatorio
+     **/
+    public function RecordatorioDelete(Request $request){
+
+        $delete = Recordatorio::find($request->id_recordario);
+
+        $delete -> delete();
+
+        return $delete;
+    }
 }

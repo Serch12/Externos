@@ -2,14 +2,6 @@
     <div>
         <div  v-if="this.vista == 0">
             <div class="row">
-                <!-- <div class="layout-demo-wrapper">
-                    <div class="layout-demo-placeholder">
-                        <img src="style/logos/Animación-Logo-AMFPRO.gif" class="img-fluid" style="width: 400px;"/>
-                    </div>
-                    <div class="layout-demo-info">
-
-                    </div>
-                </div> -->
                 <div class="card app-calendar-wrapper">
                     <div class="row g-0">
                         <!-- Calendar Sidebar -->
@@ -334,6 +326,7 @@ export default {
                         fecha_inicia: eventObj.extendedProps.fecha_inicia,
                         fecha_fin: eventObj.extendedProps.fecha_fin,
                         sede: eventObj.extendedProps.sede,
+                        id_recordario: eventObj.extendedProps.id_recordario,
 
 
                     };
@@ -345,6 +338,7 @@ export default {
                         fecha_inicia: eventObj.extendedProps.fecha_inicia,
                         fecha_termina: eventObj.extendedProps.fecha_termina,
                         descripcion: eventObj.extendedProps.descripcion,
+                        id_recordario: eventObj.extendedProps.id_recordario,
                     };
                     this.dateCalendar(this.detalleNota);
                 }
@@ -415,6 +409,7 @@ export default {
                         fecha_inicia: `${eventotorneo.fecha_inicia}`,
                         fecha_fin: `${eventotorneo.fecha_fin}`,
                         sede: `${eventotorneo.sede}`,
+                        id_recordario: `${eventotorneo.id_recordario}`,
                     },
                 }));
             }else{
@@ -432,6 +427,7 @@ export default {
                     color: '#73c72f',
                     extendedProps: {
                         descripcion: `${eventonota.descripcion}`,
+                        id_recordario: `${eventonota.id_recordario}`,
                     },
                 }));
             }else{
@@ -458,23 +454,37 @@ export default {
             }));
         },
         dateCalendar(value){
+            console.log(value);
+            
             const {
+                id_recordario,
                 titulo,
                 torneo,
                 descripcion,    
                 categoria,
                 sede,
                 fecha_inicia,
-                fecha_fin,  
+                fecha_fin,
+                fecha_termina
             } = value;
             
 
             Swal.fire({
-                title: ` 
-                    ${titulo ? `<b class="text-center">${titulo}</b>` : ''}
-                    ${torneo ? `<b class="text-center">${torneo}</b>` : ''}`,
                 html: `
-
+                    ${titulo ? `<h5><b class="text-center">${titulo}</b></h5>` : ''}
+                    ${torneo ? `<h5><b class="text-center">${torneo}</b></h5>` : ''}
+                    ${titulo ? 
+                        `<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-icon btn-outline-info waves-effect" id="btn-edit">
+                                <span class="tf-icons ri-edit-box-fill ri-22px"></span>
+                            </button>
+                            <button type="button" class="btn btn-icon btn-outline-danger waves-effect" id="btn-delete">
+                                <span class="tf-icons ri-delete-bin-6-fill ri-22px"></span>
+                            </button>
+                        </div>` 
+                    : ''}
+                     
+                    <br><br>
                     <table class="table" style="font-size: 14px;">
                         <tbody>
                             <tr>
@@ -490,6 +500,8 @@ export default {
                             <tr>
                                 ${fecha_fin ? `<td colspan="2"><b>Fecha Fin:</b></td>` : ''}
                                 ${fecha_fin ? `<td colspan="2">${fecha_fin}</td>` : ''}
+                                ${fecha_termina ? `<td colspan="2"><b>Fecha Fin:</b></td>` : ''}
+                                ${fecha_termina ? `<td colspan="2">${fecha_termina}</td>` : ''}
                             </tr>
                             <tr>
                                 ${sede ? `<td colspan="2"><b>Sede:</b></td>` : ''}
@@ -502,6 +514,137 @@ export default {
                 cancelButtonText: "Cancelar",
                 cancelButtonColor: "#d33",
                 showConfirmButton: false,
+                didOpen: () => {
+                    const swalContainer = Swal.getPopup();
+
+                    swalContainer.querySelector('#btn-edit').addEventListener('click', () => {
+                        Swal.fire({
+                            html: `
+                                <h5><b class="text-center">Editar Recordatorio</b></h5><br>
+                                <div class="row">
+                                    <div class="col-12 col-lg-12">
+                                        <div class="input-group input-group-merge">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="titulo" class="form-control" value="${titulo}"/>
+                                                <label for="titulo">Titulo</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6 mt-2">
+                                        <div class="input-group input-group-merge">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="date" id="fecha_inicia" class="form-control" value="${fecha_inicia}"/>
+                                                <label for="fecha_inicia">Fecha Inicia</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6 mt-2">
+                                        <div class="input-group input-group-merge">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="date" id="fecha_termina" class="form-control" value="${fecha_termina}"/>
+                                                <label for="fecha_termina">Fecha Inicia</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-12 mt-2">
+                                        <div class="input-group input-group-merge">
+                                            <div class="form-floating form-floating-outline">
+                                                <textarea class="form-control" id="descripcion">${descripcion}</textarea>
+                                                <label for="descripcion">Descripción</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                               
+                            `,
+                            showCancelButton: true,
+                            cancelButtonText: "Cancelar",
+                            confirmButtonColor: "#12B8F2",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Editar",
+                        preConfirm: () => {
+                            // Obtener el valor seleccionado
+                            const date_titulo = document.getElementById('titulo').value;
+                            const date_fechainicia = document.getElementById('fecha_inicia').value;
+                            const date_fechatermina = document.getElementById('fecha_termina').value;
+                            const date_descripcion = document.getElementById('descripcion').value;
+
+                            // Validar si se ha seleccionado una forma de pago
+                            if (date_titulo === '') {
+                                Swal.showValidationMessage('Ingresa un Titulo');
+                                return false; // Evita que la ventana modal se cierre
+                            }
+                            if (date_fechainicia == '') {
+                                Swal.showValidationMessage('Ingresa una Fecha Inicial');
+                                return false; // Evita que la ventana modal se cierre    
+                            }
+                            if (date_fechatermina == '') {
+                                Swal.showValidationMessage('Ingresa una Fecha Final');
+                                return false; // Evita que la ventana modal se cierre    
+                            }
+                            if (!date_descripcion.trim()) {
+                                Swal.showValidationMessage('Ingresa una Descripción');
+                                return false; // Evita que la ventana modal se cierre    
+                            }
+                        
+                            this.fecha_inicia = date_fechainicia;
+                            this.fecha_termina = date_fechatermina;
+                            this.titulo = date_titulo;
+                            this.descripcion = date_descripcion;
+                            this.id_recordario = id_recordario;
+                            return true;
+                        }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                let formData = new FormData();
+                                formData.append('id_recordario', this.id_recordario);
+                                formData.append('fecha_inicia', this.fecha_inicia);
+                                formData.append('fecha_termina', this.fecha_termina);
+                                formData.append('titulo', this.titulo);
+                                formData.append('descripcion', this.descripcion);
+
+                                axios.post('home/RecordatorioUpdate', formData).then(res =>{
+                                    this.getCalendario();
+                                    Swal.fire({
+                                        title: 'Éxito',
+                                        text: "Se Edito correctamente!",
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 2500,
+                                    });
+                                })
+                            }
+                        });
+                    });
+
+                    swalContainer.querySelector('#btn-delete').addEventListener('click', () => {
+                        Swal.fire({
+                            title: "Estas seguro?",
+                            text: "Se eliminara definitivamente!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            cancelButtonText: "Cancelar",
+                            confirmButtonText: "Eliminar"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                let formData = new FormData();
+                                formData.append('id_recordario', id_recordario);
+
+                                axios.post('home/RecordatorioDelete', formData).then(res =>{
+                                    this.getCalendario();
+                                    Swal.fire({
+                                        title: "Eliminado!",
+                                        text: "se elimino correctamente.",
+                                        icon: "success"
+                                    });
+                                })
+                            }
+                        });
+                    });
+                }
 
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -581,7 +724,7 @@ export default {
             }
 
             let formData = new FormData();
-            formData.append('id_user', this.newrecordatorio.id_user); 
+            formData.append('id_recordario', this.newrecordatorio.id_user); 
             formData.append('titulo', this.newrecordatorio.titulo);
             formData.append('descripcion', this.newrecordatorio.descripcion);
             formData.append('fecha_inicia', this.newrecordatorio.fecha_inicia);
@@ -606,7 +749,7 @@ export default {
                     timer: 2500,
                     });
                 })
-        }
+        },
 
 
 
