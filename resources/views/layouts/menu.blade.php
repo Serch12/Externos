@@ -112,8 +112,8 @@
         @endhasanyrole
 
         <!-- Components -->
-        <li class="menu-item">
-          <a href="javascript:void(0)" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('honorario') ? 'active' : '' }}">
+          <a href="{{ route('honorario') }}" class="menu-link">
             <i class="menu-icon tf-icons ri-cash-fill"></i>
             <div data-i18n="Honorarios">Honorarios</div>
           </a>

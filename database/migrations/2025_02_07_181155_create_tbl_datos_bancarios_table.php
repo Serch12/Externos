@@ -15,12 +15,12 @@ class CreateTblDatosBancariosTable extends Migration
     {
         Schema::create('tbl_datos_bancarios', function (Blueprint $table) {
             $table->bigIncrements('id_datos_bancarios');
-            $table->integer('id_torneo')->nullable();
+            $table->integer('id_user')->nullable();
             $table->text('nombre')->nullable();
             $table->string('banco')->nullable();
-            $table->bigInteger('cuenta_bancaria')->nullable();
-            $table->bigInteger('clabe_bancaria')->nullable();
-            $table->bigInteger('numero_tarjeta')->nullable();
+            $table->text('cuenta_bancaria')->nullable();
+            $table->text('clabe_bancaria')->nullable();
+            $table->text('numero_tarjeta')->nullable();
             $table->string('tipo_tarjeta')->nullable();
             $table->string('archivo')->nullable();
             $table->integer('estatus')->nullable();

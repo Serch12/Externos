@@ -19,7 +19,6 @@ class AddTblTorneosNewTable extends Migration
             $table->decimal('subtotal', 10, 2)->after("id_proveedor")->nullable();
             $table->decimal('total', 10, 2)->after("subtotal")->nullable();
             $table->text('archivo')->after("total")->nullable();
-            DB::statement("DROP TABLE IF EXISTS tbl_datos_bancarios");
         });
     }
 

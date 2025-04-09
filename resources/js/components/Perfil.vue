@@ -68,9 +68,14 @@
                                 Perfil
                             </button>
                         </li>
-                        <li class="nav-item" role="presentation" v-if="this.Perfil.rol_name == 'Cuerpo Tecnico'">
+                        <!-- <li class="nav-item" role="presentation" v-if="this.rol_usuario == 'Cuerpo Tecnico'">
                             <button class="nav-link" id="documentacion-tab" data-bs-toggle="pill" data-bs-target="#documentacion" type="button" role="tab" aria-controls="documentacion" aria-selected="false">
                                 <i class="ri-article-line me-2"></i>Documentación
+                            </button>
+                        </li> -->
+                        <li class="nav-item" role="presentation" v-if="this.rol_usuario == 'Cuerpo Tecnico'">
+                            <button class="nav-link" id="bancario-tab" data-bs-toggle="pill" data-bs-target="#bancario" type="button" role="tab" aria-controls="bancario" aria-selected="false">
+                                <i class="ri-money-dollar-circle-line me-2"></i>Datos Bancarios
                             </button>
                         </li>
                         
@@ -138,6 +143,51 @@
                                 </div>
                             <!--/ User Profile Content -->
                         </div>
+                        <div class="tab-pane fade show" id="bancario" role="tabpanel" aria-labelledby="bancario-tab">
+                            <!-- Payment Methods -->
+                            <div class="col-12 col-md-8">
+                                <div class="card card-action mb-6">
+                                    <div class="card-header align-items-center">
+                                        <h5 class="card-action-title mb-0">Datos Bancarios</h5>
+                                        <div class="card-action-element">
+                                            <button
+                                            class="btn btn-sm btn-primary"
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addNewCCModal">
+                                            <i class="ri-add-line ri-14px me-1"></i>Añadir
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="added-cards">
+                                            <div class="cardMaster border p-5 rounded-4 mb-4" v-for="(db, index) in DatoBancario" :key="index" >
+                                                <div class="d-flex justify-content-between flex-sm-row flex-column">
+                                                    <div class="card-information" data-bs-toggle="modal" data-bs-target="#vizualizaCard" @click="detaBancario(db)">
+                                                        <img class="mb-2 img-fluid" :src="`style/imgBancos/${db.imagen_banco}`" alt="Master Card" width="70px" height="70px"/>
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <h6 class="mb-0 me-2">{{db.nombre}}</h6>
+                                                            <!-- <span class="badge bg-label-primary me-1 rounded-pill">Popular</span> -->
+                                                        </div>
+                                                        <span class="card-number">Tarjeta: {{ db.numero_tarjeta }}</span>
+                                                    </div>
+                                                    <div class="d-flex flex-column text-start text-lg-end">
+                                                        <div class="d-flex order-sm-0 order-1 mt-sm-2">
+                                                            <button class="btn btn-sm btn-outline-primary me-4" data-bs-toggle="modal" data-bs-target="#editCard" @click="detaBancario(db)">
+                                                                Editar
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-danger" @click="deleteBancario(db.id_datos_bancarios)">Eliminar</button>
+                                                        </div>
+                                                        <small class="mt-sm-4 mt-2 order-sm-1 order-0 text-sm-end mb-2">{{ db.tipo_tarjeta }}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ Payment Methods -->
+                        </div>
                         <!-- <div class="tab-pane fade" id="documentacion" role="tabpanel" aria-labelledby="documentacion-tab">
                             <div class="row">
                                 <div class="col-xl-4 col-lg-5 col-md-5">
@@ -196,19 +246,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-xl-12 col-lg-5 col-md-5">
-                    <div class="card mb-6">
-                        <div class="card-body">
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a href="javascript:void(0)" class="btn btn-danger" @click="muestra(0)">
-                                    <i class="ri-arrow-left-long-fill ri-16px me-2"></i>Regresar
-                                </a>
-                            </div>
-                        </div>
-                    </div>   
-                </div>
-            </div> -->
         </div>
         <div id="main" v-if="this.vista == 1">
             <div class="card mb-6">
@@ -311,10 +348,257 @@
                 </form>
             </div>
         </div>
+        <!-- Agregar Dato Bancario -->
+        <div class="modal fade" id="addNewCCModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                <div class="modal-content">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-body p-0">
+                    <div class="text-center mb-6">
+                        <h4 class="mb-2">Añadir Nuevo Dato Bancario</h4>
+                    </div>
+                    <form id="addNewCCForm" class="row g-5" onsubmit="return false">
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="modalAddCard" name="modalAddCard" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="modalAddCard2" v-model="newBancario.numero_tarjeta"/>
+                                    <label for="modalAddCard">Número de Tarjeta</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="cuenta" name="cuenta" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="cuenta2" v-model="newBancario.cuenta_bancaria"/>
+                                    <label for="cuenta">Cuenta Bancaria</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="clabe" name="clabe" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="clabe2" v-model="newBancario.clabe_bancaria"/>
+                                    <label for="clabe">Clabe Bancaria</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select id="tipo_tarjeta" name="tipo_tarjeta" class="form-select" v-model="newBancario.tipo_tarjeta">
+                                    <option value="Selecciona">Selecciona</option>
+                                    <option value="credito">Crédito</option>
+                                    <option value="debito nomina">Débito Nomina</option>
+                                    <option value="debito empresarial">Débito Empresarial</option>
+                                    <option value="debito personal">Débito Personal</option>
+                                    <option value="servicios">Servicios</option>
+                                </select>
+                                <label for="tipo_tarjeta">Tipo de Tarjeta</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                <select id="banco" name="banco" class="form-select" v-model="newBancario.banco">
+                                    <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                    <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                    <option value="BANORTE">BANORTE</option>
+                                    <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                    <option value="SANTANDER">SANTANDER</option>
+                                    <option value="HSBC">HSBC</option>
+                                    <option value="INBURSA">INBURSA</option>
+                                    <option value="MIFEL">MIFEL</option>
+                                    <option value="SCOTIABANK">SCOTIABANK</option>
+                                    <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                    <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                    <option value="BANCOPPEL">BANCOPPEL</option>
+                                    <option value="AFIRME">AFIRME</option>
+                                </select>
+                                <label for="banco">Banco</label>
+                            </div>
+                        </div>
+                       
+                        <div class="col-12 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+                            <button type="button" class="btn btn-success" @click="createBancario()">Guardar</button>
+                            <button type="reset" class="btn btn-outline-danger btn-reset" data-bs-dismiss="modal" aria-label="Close">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- editar Dato Bancario -->
+        <div class="modal fade" id="editCard" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                <div class="modal-content">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-body p-0">
+                    <div class="text-center mb-6">
+                        <h4 class="mb-2">Editar Dato Bancario</h4>
+                    </div>
+                    <form id="addNewCCForm" class="row g-5" onsubmit="return false">
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="modalAddCard" name="modalAddCard" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="modalAddCard2" v-model="detalleBancario.numero_tarjeta"/>
+                                    <label for="modalAddCard">Número de Tarjeta</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="cuenta" name="cuenta" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="cuenta2" v-model="detalleBancario.cuenta_bancaria"/>
+                                    <label for="cuenta">Cuenta Bancaria</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="clabe" name="clabe" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="clabe2" v-model="detalleBancario.clabe_bancaria"/>
+                                    <label for="clabe">Clabe Bancaria</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select id="tipo_tarjeta" name="tipo_tarjeta" class="form-select" v-model="detalleBancario.tipo_tarjeta">
+                                    <option value="Selecciona">Selecciona</option>
+                                    <option value="credito">Crédito</option>
+                                    <option value="debito nomina">Débito Nomina</option>
+                                    <option value="debito empresarial">Débito Empresarial</option>
+                                    <option value="debito personal">Débito Personal</option>
+                                    <option value="servicios">Servicios</option>
+                                </select>
+                                <label for="tipo_tarjeta">Tipo de Tarjeta</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                <select id="banco" name="banco" class="form-select" v-model="detalleBancario.banco">
+                                    <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                    <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                    <option value="BANORTE">BANORTE</option>
+                                    <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                    <option value="SANTANDER">SANTANDER</option>
+                                    <option value="HSBC">HSBC</option>
+                                    <option value="INBURSA">INBURSA</option>
+                                    <option value="MIFEL">MIFEL</option>
+                                    <option value="SCOTIABANK">SCOTIABANK</option>
+                                    <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                    <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                    <option value="BANCOPPEL">BANCOPPEL</option>
+                                    <option value="AFIRME">AFIRME</option>
+                                </select>
+                                <label for="banco">Banco</label>
+                            </div>
+                        </div>
+                       
+                        <div class="col-12 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+                            <button type="button" class="btn btn-success" @click="updateBancario()">Editar</button>
+                            <button type="reset" class="btn btn-outline-danger btn-reset" data-bs-dismiss="modal" aria-label="Close">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- vizualizar Dato Bancario -->
+        <div class="modal fade" id="vizualizaCard" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                <div class="modal-content">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-body p-0">
+                    <div class="text-center mb-6">
+                        <h4 class="mb-2">Dato Bancario</h4>
+                    </div>
+                    <form id="addNewCCForm" class="row g-5" onsubmit="return false">
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="modalAddCard" name="modalAddCard" class="form-control credit-card-mask" type="text" style="color:black" disabled placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="modalAddCard2" v-model="this.detalleBancario.numero_tarjeta"/>
+                                    <label for="modalAddCard">Número de Tarjeta</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="cuenta" name="cuenta" class="form-control credit-card-mask" type="text" style="color:black" disabled placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="cuenta2" v-model="this.detalleBancario.cuenta_bancaria"/>
+                                    <label for="cuenta">Cuenta Bancaria</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="clabe" name="clabe" class="form-control credit-card-mask" type="text" style="color:black" disabled placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="clabe2" v-model="this.detalleBancario.clabe_bancaria"/>
+                                    <label for="clabe">Clabe Bancaria</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select id="tipo_tarjeta" name="tipo_tarjeta" class="form-select" v-model="this.detalleBancario.tipo_tarjeta" style="color:black" disabled>
+                                    <option value="Selecciona">Selecciona</option>
+                                    <option value="credito">Crédito</option>
+                                    <option value="debito nomina">Débito Nomina</option>
+                                    <option value="debito empresarial">Débito Empresarial</option>
+                                    <option value="debito personal">Débito Personal</option>
+                                    <option value="servicios">Servicios</option>
+                                </select>
+                                <label for="tipo_tarjeta">Tipo de Tarjeta</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                <select id="banco" name="banco" class="form-select" v-model="this.detalleBancario.banco" style="color:black" disabled>
+                                    <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                    <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                    <option value="BANORTE">BANORTE</option>
+                                    <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                    <option value="SANTANDER">SANTANDER</option>
+                                    <option value="HSBC">HSBC</option>
+                                    <option value="INBURSA">INBURSA</option>
+                                    <option value="MIFEL">MIFEL</option>
+                                    <option value="SCOTIABANK">SCOTIABANK</option>
+                                    <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                    <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                    <option value="BANCOPPEL">BANCOPPEL</option>
+                                    <option value="AFIRME">AFIRME</option>
+                                </select>
+                                <label for="banco">Banco</label>
+                            </div>
+                        </div>
+                       
+                        <div class="col-12 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+                            <button type="reset" class="btn btn-outline-danger btn-reset" data-bs-dismiss="modal" aria-label="Close">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <br><br>
     </div>
 </template>
 <script>
+import axios from 'axios';
+
 export default {
     name: '',
     components: {
@@ -333,8 +617,19 @@ export default {
         return {
             vista:'',
             Perfil:[],
+            DatoBancario:[],
+            detalleBancario:[],
             newperfil:{
 
+            },
+            newBancario:{
+                id_user:this.id_usuario_logeado,
+                nombre:this.name_usuario_logeado,
+                clabe_bancaria:'',
+                cuenta_bancaria:'',
+                numero_tarjeta:'',
+                tipo_tarjeta:'Selecciona',
+                banco:'Seleccionar Banco',
             }
         }
     },
@@ -358,6 +653,7 @@ export default {
                 }else{
                     this.vista = 0;
                 }
+                this.DatoBancario = response.data.datoBancario
             });
         },
         createPerfil(){
@@ -488,6 +784,258 @@ export default {
             var fileedit = this.$refs.fileFoto.files[0];
             this.newperfil.foto = fileedit
         },
+        createBancario(){
+            if (this.newBancario.numero_tarjeta == '') {
+                this.$toast.error("Ingresa un Número de Tarjeta", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newBancario.cuenta_bancaria == '') {
+                this.$toast.error("Ingresa una Cuenta Bancaria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newBancario.clabe_bancaria == '') {
+                this.$toast.error("Ingresa una Clabe Bancaria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newBancario.tipo_tarjeta == 'Selecciona') {
+                this.$toast.error("Selecciona un Tipo de Tarjeta", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.newBancario.banco == 'Seleccionar Banco') {
+                this.$toast.error("Selecciona un Banco", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('id_user',this.id_usuario_logeado);
+            formData.append('nombre',this.name_usuario_logeado);
+            formData.append('clabe_bancaria',this.newBancario.clabe_bancaria);
+            formData.append('cuenta_bancaria',this.newBancario.cuenta_bancaria);
+            formData.append('numero_tarjeta',this.newBancario.numero_tarjeta);
+            formData.append('tipo_tarjeta',this.newBancario.tipo_tarjeta);
+            formData.append('banco',this.newBancario.banco);
+
+
+            axios.post('perfil/createDatoBancario',formData).then(response=>{
+                this.getPerfil();
+                this.vista = 0;
+                $('#addNewCCModal').modal('hide');
+                Swal.fire({
+                    title: 'Éxito',
+                    text: "Se Registro correctamente!",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            })
+
+        },
+        detaBancario(db){
+            this.detalleBancario = db;
+        },
+        updateBancario(){
+            if (this.detalleBancario.numero_tarjeta == '') {
+                this.$toast.error("Ingresa un Número de Tarjeta", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.detalleBancario.cuenta_bancaria == '') {
+                this.$toast.error("Ingresa una Cuenta Bancaria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.detalleBancario.clabe_bancaria == '') {
+                this.$toast.error("Ingresa una Clabe Bancaria", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.detalleBancario.tipo_tarjeta == 'Selecciona') {
+                this.$toast.error("Selecciona un Tipo de Tarjeta", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+            if (this.detalleBancario.banco == 'Seleccionar Banco') {
+                this.$toast.error("Selecciona un Banco", {
+                    position: "top-center",
+                    timeout: 1270,
+                    closeOnClick: true,
+                    pauseOnFocusLoss: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    draggablePercent: 0.6,
+                    showCloseButtonOnHover: false,
+                    hideProgressBar: true,
+                    closeButton: "button",
+                    icon: true,
+                    rtl: false
+                });
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('id_datos_bancarios',this.detalleBancario.id_datos_bancarios);
+            formData.append('clabe_bancaria',this.detalleBancario.clabe_bancaria);
+            formData.append('cuenta_bancaria',this.detalleBancario.cuenta_bancaria);
+            formData.append('numero_tarjeta',this.detalleBancario.numero_tarjeta);
+            formData.append('tipo_tarjeta',this.detalleBancario.tipo_tarjeta);
+            formData.append('banco',this.detalleBancario.banco);
+
+
+            axios.post('perfil/updateDatoBancario',formData).then(response=>{
+                this.getPerfil();
+                this.vista = 0;
+                $('#editCard').modal('hide');
+                Swal.fire({
+                    title: 'Éxito',
+                    text: "Se Registro correctamente!",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            })
+        },
+        deleteBancario(id){
+            this.id_datos_bancarios = id;
+            Swal.fire({
+                title: 'Estas seguro?',
+                html: `Se eliminara definitivamente`,
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText:'Cancelar',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let formData = new FormData();
+                    formData.append('id_datos_bancarios',this.id_datos_bancarios);
+                    axios.post('perfil/deleteDatoBancario',formData).then(response=>{
+                        this.getPerfil();
+                        this.vista = 0;
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: "Se Elimino correctamente!",
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2500,
+                        });
+                    })
+                }
+            })   
+        }
     }
 };
 </script>

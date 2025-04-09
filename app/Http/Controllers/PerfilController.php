@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Perfil;
 use App\Models\Sedes;
 use App\Models\Jugadores;
+use App\Models\DatoBancario;
 use DB;
 use Cookie;
 
@@ -58,8 +59,36 @@ class PerfilController extends Controller
             ->select('roles.name as rol', 'users.id', 'users.name','users.estatus', 'users.email','users.sede','tbl_perfil.*')
             ->where('users.id', $request->id)
             ->first();
+        $datoBancario = DatoBancario::where('id_user',$request->id)->get();
+        foreach ($datoBancario as $db) {
+            if ($db->banco == 'BBVA BANCOMER') {
+                $db->imagen_banco = "bancomer.png";
+            } elseif($db->banco == 'BANORTE') {
+                $db->imagen_banco = "banorte.png";
+            } elseif($db->banco == 'CITI BANAMEX') {
+                $db->imagen_banco = "banamex.png";
+            } elseif($db->banco == 'SANTANDER') {
+                $db->imagen_banco = "santander.png";
+            } elseif($db->banco == 'HSBC') {
+                $db->imagen_banco = "hsbc.png";  
+            } elseif($db->banco == 'INBURSA') {
+                $db->imagen_banco = "inbursa.png";
+            } elseif($db->banco == 'MIFEL') {
+                $db->imagen_banco = "mifel.png";
+            } elseif($db->banco == 'SCOTIABANK') {
+                $db->imagen_banco = "scotiabank.png";
+            } elseif($db->banco == 'AMERICAN EXPRESS') {
+                $db->imagen_banco = "american.png";
+            } elseif($db->banco == 'BANCO AZTECA') {
+                $db->imagen_banco = "azteca.jpg";
+            } elseif($db->banco == 'BANCOPPEL') {
+                $db->imagen_banco = "coppel.png";
+            } elseif($db->banco == 'AFIRME') {
+                $db->imagen_banco = "afirme.png";
+            }  
+        }
 
-        return response()->json(['perfil'=>$perfil]);
+        return response()->json(['perfil'=>$perfil,'datoBancario'=>$datoBancario]);
     }
 
     /**
@@ -67,7 +96,7 @@ class PerfilController extends Controller
      **/
     public function createPerfil(Request $request){
 
-        $perfil = new Perfil();
+        $perfil = new Perfil(); 
         $perfil -> id = $request->id;
         $perfil -> nombre = $request->nombre;
         $perfil -> apellido_paterno = $request->apellido_paterno;
@@ -88,4 +117,44 @@ class PerfilController extends Controller
         }
         $perfil -> save();
     }
+
+    /**
+     * Funcion que añade el dato bancario
+     **/
+    public function createDatoBancario(Request $request){
+        $new = new DatoBancario();
+        $new -> nombre = $request->nombre;
+        $new -> id_user = $request->id_user;
+        $new -> numero_tarjeta = $request->numero_tarjeta;
+        $new -> cuenta_bancaria = $request->cuenta_bancaria;
+        $new -> clabe_bancaria = $request->clabe_bancaria;
+        $new -> banco = $request->banco;
+        $new -> tipo_tarjeta = $request->tipo_tarjeta;
+        $new -> estatus = 1;
+        $new -> save();
+
+    }
+
+    /**
+     * Funcion que añade el dato bancario
+     **/
+    public function updateDatoBancario(Request $request){
+        $new = DatoBancario::find($request->id_datos_bancarios);
+        $new -> numero_tarjeta = $request->numero_tarjeta;
+        $new -> cuenta_bancaria = $request->cuenta_bancaria;
+        $new -> clabe_bancaria = $request->clabe_bancaria;
+        $new -> banco = $request->banco;
+        $new -> tipo_tarjeta = $request->tipo_tarjeta;
+        $new -> save();
+
+    }
+
+    /**
+     * Funcion que elimina el dato bancario
+     **/
+    public function deleteDatoBancario(Request $request){
+        $delete = DatoBancario::find($request->id_datos_bancarios);
+        $delete -> delete();
+    }
+
 }
