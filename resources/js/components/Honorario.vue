@@ -25,7 +25,7 @@
                                 
                                <HonorarioFrom
                                :user_id="this.id_usuario_logeado"
-                               ref="HonorarioFrom">
+                               ref="ejecutaHono">
 
                                </HonorarioFrom>
                             </div>
@@ -83,13 +83,20 @@ export default {
     computed: {
         
     },
+    
     mounted() {
-        
+        this.iniciaHonorario();
     },
     methods: {
         include(permiso){
             return this.permisos.includes(permiso);
         },
+
+        iniciaHonorario(){
+            if (this.$refs.ejecutaHono) {
+                this.$refs.ejecutaHono.getHonorario();
+            } 
+        }
     }
 };
 </script>

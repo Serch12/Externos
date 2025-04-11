@@ -271,12 +271,7 @@
                     </div>
                     <div class="col-md-6">
                         <figure v-if="imagenMiniatura == ''">
-                            <img width="150" v-show="this.exist_imgp == true"
-                            height="190"
-                            :src="`ArchivosSistema/Post/${editaPost.imagen_sola}`"
-                            alt="imagen principal post"
-                            class=" z-depth-4"> 
-                            <img width="150" v-show="this.exist_imgp == false"
+                            <img width="150" 
                             height="190"
                             :src="`https://test-intranet.amfpro.mx/ArchivosSistema/Post/${editaPost.imagen_sola}`"
                             alt="imagen principal post"

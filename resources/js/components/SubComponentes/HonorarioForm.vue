@@ -3,48 +3,41 @@
         <div v-if="this.muestra == 0">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="card-header">Honorario</h5>
-                </div>
-                <div class="col-12 col-md-6 mt-3">
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <input type="search" id="email" class="form-control" v-model="search"
-                            placeholder="Buscar Honorario"/>
-                    </div>
+                  <h5 class="card-header">Honorario</h5>
                 </div>
                 <div class="col-12 col-md-12 mt-3">
-                    <div class="table-responsive text-nowrap">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Project</th>
-                                <th>Client</th>
-                                <th>Users</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody class="table-border-bottom-0">
-                            <tr>
-                               
-                                <td>Albert Cook</td>
-                                
-                                <td><span class="badge rounded-pill bg-label-primary me-1">Active</span></td>
-                                <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="ri-more-2-line"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-pencil-line me-1"></i> Edit</a>
-                                    <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-delete-bin-7-line me-1"></i> Delete</a>
-                                    </div>
-                                </div>
-                                </td>
-                            </tr>
-                            
-                            </tbody>
-                        </table>
-                    </div>
+                  <div class="table-responsive text-nowrap">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Nombres</th>
+                          <th>RFC</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody class="table-border-bottom-0">
+                        <tr v-for="(dh, index) in DetalleHonorario" :key="index">
+                          <td>{{ index+1 }}</td>
+                          <td>{{dh.nombre_honorario}}</td>
+                          
+                          <td><span class="badge rounded-pill bg-label-primary me-1">Active</span></td>
+                          <td>
+                            <div class="dropdown">
+                              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <i class="ri-more-2-line"></i>
+                              </button>
+                              <div class="dropdown-menu">
+                                <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-pencil-line me-1"></i> Edit</a>
+                                <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-delete-bin-7-line me-1"></i> Delete</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
             </div>
         </div>
@@ -515,31 +508,37 @@ Dear Queen Consolidated,
 </template>
 <script>
 export default {
-    name: '',
-    components: {
-        
+  name: '',
+  components: {
+      
+  },
+  mixins: [],
+  props: {
+      user_id: null,
+  },
+  data() {
+      return {
+          muestra:0,
+          DetalleHonorario:[],
+
+      }
+  },
+  computed: {
+      
+  },
+  created() {
+        this.$on('iniciaHonorario', this.getHonorario);
     },
-    mixins: [],
-    props: {
-        user_id: null,
-    },
-    data() {
-        return {
-            muestra:1,
-        }
-    },
-    computed: {
-        
-    },
-    watch: {
-        
-    },
-    mounted() {
-        
-    },
-    methods: {
-        
+  mounted() {
+      
+  },
+  methods: {
+    getHonorario(){
+      axios.get(`honorario/DetalleHonorario/${this.user_id}`).then(response => {
+        this.DetalleHonorario = response.data.detalle;
+      });
     }
+  }
 };
 </script>
 <style lang='' scoped>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\PostRepository;
 use App\Helpers\PostHelper;
@@ -94,6 +95,8 @@ class PostController extends Controller
      */
     public function nuevoPost(Request $request){
 
+        
+
         $post = new Post();
         $post->titulo = $request->titulo;
         $post->subtitulo = $request->subtitulo;
@@ -104,34 +107,50 @@ class PostController extends Controller
         $post->estatus = 0;
         $imagen = $request->file('imagen_sola');
         if(isset($imagen)){
-            $file = $request->file('imagen_sola');
-            //obtenemos el nombre del archivo
-            $nombre = $file->getClientOriginalName();
-            $url = $nombre;
-            //indicamos que queremos guardar un nuevo archivo en el disco local
-            \Storage::disk('post')->put($url,  \File::get($file));
-            $post->imagen_p = $url;
-        }else{
-            $post->imagen_p = '';
+            $imagen = $request->file('imagen_sola');
+
+            $nombre = $imagen->getClientOriginalName();
+
+            // Enviamos la imagen al Proyecto B
+            $response = Http::withOptions([
+                'verify' => false, // ⚠️ Solo si estás usando HTTPS en localhost con certificado autofirmado
+            ])->attach(
+                'image', // Este debe coincidir con el nombre que espera Proyecto B
+                file_get_contents($imagen),
+                $nombre
+            )->post('https://test-intranet.amfpro.mx/api/external-upload');
+            $data = $response->json();
+            $post->imagen_p = $data['filename'];
         }
         $post->save();
 
         $var = $request->file('files');
         if (isset($var)){
             foreach ($request->file('files') as $key => $value) {
-                $imagen = new ImagenesComunicado();
-                $imagen->id_comunicado = $post->id_p;
+
                 //obtenemos el nombre del archivo
                 $nombre = $value->getClientOriginalName();
-                $urlimagen = $nombre;
-                //indicamos que queremos guardar un nuevo archivo en el disco local
-                \Storage::disk('post')->put($urlimagen,  \File::get($value));
-                $imagen->nombre = $urlimagen;
-                $imagen->activo = 1;
-                $imagen->save();
+
+                // Enviar al Proyecto B
+                $response = Http::withOptions([
+                    'verify' => false, 
+                ])->attach(
+                    'image',
+                    file_get_contents($value),
+                    $nombre
+                )->post('https://test-intranet.amfpro.mx/api/external-upload');
+
+                if ($response->successful()) {
+                    // Guardas como siempre en el Proyecto A
+                    $imagen = new ImagenesComunicado();
+                    $imagen->id_comunicado = $post->id_p;
+                    $imagen->nombre = $nombre;
+                    $imagen->activo = 1;
+                    $imagen->save();
+                }
             }
         }
-        return $imagen;
+        return $post;
 
     }
 
@@ -152,19 +171,27 @@ class PostController extends Controller
 
         $edita = Post::find($id);
 
-        if ($request->file('imagen_sola')) {
-            $imagenAnterior = $edita['imagen_p'];
-            \Storage::disk('post')->delete($imagenAnterior);
-        }
+        // if ($request->file('imagen_sola')) {
+        //     $imagenAnterior = $edita['imagen_p'];
+        //     \Storage::disk('post')->delete($imagenAnterior);
+        // }
 
-        if ($request->file('imagen_sola')) {
-            $file = $request->file('imagen_sola');
-            $nombre = $file->getClientOriginalName();
-            $url = $nombre;
-            \Storage::disk('post')->put($url,  \File::get($file));
-            $edita->imagen_p = $url;
-        }else{
-            $edita->imagen_p = $request->imagen_sola;
+        $imagen = $request->file('imagen_sola');
+        if(isset($imagen)){
+            $imagen = $request->file('imagen_sola');
+
+            $nombre = $imagen->getClientOriginalName();
+
+            // Enviamos la imagen al Proyecto B
+            $response = Http::withOptions([
+                'verify' => false, // ⚠️ Solo si estás usando HTTPS en localhost con certificado autofirmado
+            ])->attach(
+                'image', // Este debe coincidir con el nombre que espera Proyecto B
+                file_get_contents($imagen),
+                $nombre
+            )->post('https://test-intranet.amfpro.mx/api/external-upload');
+            $data = $response->json();
+            $post->imagen_p = $data['filename'];
         }
         $edita->titulo = $request->titulo;
         $edita->subtitulo = $request->subtitulo;
@@ -173,19 +200,45 @@ class PostController extends Controller
         $edita->categoria = $request->categoria;
         $edita->informacion = $request->informacion;
 
-        $img = $request->file('filesEdita');
-        if (isset($img)){
+        // $img = $request->file('filesEdita');
+        // if (isset($img)){
+        //     foreach ($request->file('filesEdita') as $key => $value) {
+        //         $imagen = new ImagenesComunicado();
+        //         $imagen->id_comunicado = $edita->id_p;
+        //         //obtenemos el nombre del archivo
+        //         $nombre = $value->getClientOriginalName();
+        //         $urlimagen = $nombre;
+        //         //indicamos que queremos guardar un nuevo archivo en el disco local
+        //         \Storage::disk('post')->put($urlimagen,  \File::get($value));
+        //         $imagen->nombre = $urlimagen;
+        //         $imagen->activo = 1;
+        //         $imagen->save();
+        //     }
+        // }
+        $var = $request->file('filesEdita');
+        if (isset($var)){
             foreach ($request->file('filesEdita') as $key => $value) {
-                $imagen = new ImagenesComunicado();
-                $imagen->id_comunicado = $edita->id_p;
+
                 //obtenemos el nombre del archivo
                 $nombre = $value->getClientOriginalName();
-                $urlimagen = $nombre;
-                //indicamos que queremos guardar un nuevo archivo en el disco local
-                \Storage::disk('post')->put($urlimagen,  \File::get($value));
-                $imagen->nombre = $urlimagen;
-                $imagen->activo = 1;
-                $imagen->save();
+
+                // Enviar al Proyecto B
+                $response = Http::withOptions([
+                    'verify' => false, 
+                ])->attach(
+                    'image',
+                    file_get_contents($value),
+                    $nombre
+                )->post('https://test-intranet.amfpro.mx/api/external-upload');
+
+                if ($response->successful()) {
+                    // Guardas como siempre en el Proyecto A
+                    $imagen = new ImagenesComunicado();
+                    $imagen->id_comunicado = $edita->id_p;
+                    $imagen->nombre = $nombre;
+                    $imagen->activo = 1;
+                    $imagen->save();
+                }
             }
         }
         $edita->save();
