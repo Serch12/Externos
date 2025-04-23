@@ -4,7 +4,8 @@ use App\Http\Controllers\HonorariosController;
 
 Route::get('/honorario', [HonorariosController::class, 'index'])->name('honorario');
 Route::get('/honorario/DetalleHonorario/{id}', [HonorariosController::class, 'DetalleHonorario'])->name('honorario/DetalleHonorario/{id}');
-// Route::post('/jugadores/createJugador', [HonorariosController::class, 'createJugador'])->name('jugadores/createJugador');
+Route::post('/honorario/lectorPDF', [HonorariosController::class, 'lectorPDF'])->name('honorario/lectorPDF');
+Route::post('/honorario/AgregarHonorario', [HonorariosController::class, 'AgregarHonorario'])->name('honorario/AgregarHonorario');
 // Route::post('/jugadores/updateJugador', [HonorariosController::class, 'updateJugador'])->name('jugadores/updateJugador');
 // Route::post('/jugadores/createTutor', [HonorariosController::class, 'createTutor'])->name('jugadores/createTutor');
 // Route::post('/jugadores/cambioEstatus', [HonorariosController::class, 'cambioEstatus'])->name('jugadores/cambioEstatus');

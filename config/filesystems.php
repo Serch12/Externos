@@ -94,6 +94,11 @@ return [
             'root' => public_path().'/ArchivosSistema/GaleriaCorreo',
             'visibility' => 'public', 
         ],
+        'honorario' => [
+            'driver' => 'local',
+            'root' => public_path().'/ArchivosSistema/Honorario',
+            'visibility' => 'public', 
+        ],
 
         's3' => [
             'driver' => 's3',

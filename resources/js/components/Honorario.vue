@@ -78,6 +78,7 @@ export default {
     data() {
         return {
             vista:0,
+            search: '',
         }
     },
     computed: {
