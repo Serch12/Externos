@@ -111,6 +111,7 @@
         @else
         @endhasanyrole
 
+        @hasanyrole('Root|Cuerpo Tecnico')
         <!-- Components -->
         <li class="menu-item {{ request()->routeIs('honorario') ? 'active' : '' }}">
           <a href="{{ route('honorario') }}" class="menu-link">
@@ -119,6 +120,8 @@
           </a>
           
         </li>
+        @else
+        @endhasanyrole
 
         <!-- Forms -->
         {{-- <li class="menu-item">

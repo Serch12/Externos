@@ -146,8 +146,8 @@ class HonorariosController extends Controller
         foreach ($detalle as $value) {
 
             if ($value->estatus == 0) {
-                $value->color = 'warning';
-                $value->text = 'Revisión';
+                $value->color = 'success';
+                $value->text = 'Entregado';
             }
             if ($value->estatus == 1) {
                 $value->color = 'info';
