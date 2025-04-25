@@ -12,6 +12,7 @@ use App\Models\DetalleHonorarios;
 use App\Models\DatoBancario;
 use Illuminate\Support\Str;
 use Smalot\PdfParser\Parser;
+use Illuminate\Support\Facades\Http;
 use Mail;
 use Carbon\Carbon;
 use DB;
@@ -126,6 +127,23 @@ class HonorariosController extends Controller
                 $det->estatus = 3;
                 $det->save();
             }
+
+            // Enviar notificacion de finalizacion de ho
+
+            $notificacion =
+                ['descripcion' => 'Tienes una nueva solicitud Honorarios Externos', 
+                'id_user_de' => 6,
+                'id_user_para' => 6,
+                'modulo' => 'Pago de honorarios',
+                'detalle_notificacion' => 'En revisión',
+                'url' => 'pago-honorarios'];
+            
+
+            $response = Http::withOptions([
+                'verify' => false,
+            ])->asJson()->post('https://localhost/IntranetAMF/public/api/notificaciones-externos', $notificacion);
+
+            
         }
     }
 
