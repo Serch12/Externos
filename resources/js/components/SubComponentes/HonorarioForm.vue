@@ -37,7 +37,7 @@
                         <button type="button" class="btn btn-sm btn-danger waves-effect waves-light" @click="ArchivoPDF(dh)" v-if="dh.estatus == 1">
                           Subir PDF
                         </button>
-                        <button type="button" class="btn btn-icon btn-outline-info waves-effect" v-if="dh.estatus == 3" @click="infoHonorario(dh),vista(2)" >
+                        <button type="button" class="btn btn-icon btn-outline-info waves-effect" v-if="dh.estatus == 2" @click="infoHonorario(dh),vista(2)" >
                           <span class="tf-icons ri-edit-2-fill ri-22px"></span>
                         </button>
                         <button type="button" class="btn btn-icon btn-outline-warning waves-effect" v-if="dh.estatus == 0" @click="infoHonorario(dh),vista(3)" >
@@ -268,7 +268,7 @@
                       <div class="repeater-wrapper pt-0 pt-md-9" data-repeater-item>
                         <div class="d-flex border rounded position-relative pe-0">
                           <div class="row w-100 p-5 gx-5">
-                            <p class="mb-1" style="color: red;">** Recuerda Verificar tu Recibo de Honorario con tu PDF previamente cargado.**</p>
+                            <p class="mb-1" style="color: red;"><b>Motivo de rechazo: </b>{{honorarioDetalle.nota}}</p>
                             <div class="col-md-3 col-12 mb-md-0 mb-5 mt-2">
                               <h6 class="h6 repeater-title">Subtotal</h6>
                               <input type="number" class="form-control invoice-item-price mb-5" v-model="honorarioDetalle.subtotal" placeholder="0.00" min="12" />
@@ -681,6 +681,154 @@ export default {
     },
     infoHonorario(dh){
       this.honorarioDetalle = dh;
+    },
+    UpdateHonorario(){
+      if (this.honorarioDetalle.RFC == '') {
+        this.$toast.error("Ingresa tu RFC", {
+          position: "top-center",
+          timeout: 1270,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+        });
+        return;
+      }
+      if (this.honorarioDetalle.subtotal == '') {
+        this.$toast.error("Ingresa el subtotal", {
+          position: "top-center",
+          timeout: 1270,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+        });
+        return;
+      }
+      if (this.honorarioDetalle.iva == '') {
+        this.$toast.error("Ingresa el iva", {
+          position: "top-center",
+          timeout: 1270,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+        });
+        return;
+      }
+      if (this.honorarioDetalle.iva_retenido == '') {
+        this.$toast.error("Ingresa el iva retenido", {
+          position: "top-center",
+          timeout: 1270,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+        });
+        return;
+      }
+      if (this.honorarioDetalle.isr == '') {
+        this.$toast.error("Ingresa el isr", {
+          position: "top-center",
+          timeout: 1270,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+        });
+        return;
+      }
+      if (this.honorarioDetalle.total == '') {
+        this.$toast.error("Ingresa el Total", {
+          position: "top-center",
+          timeout: 1270,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+        });
+        return;
+      }
+      if (this.detallebanco == 'Selecciona un Dato Bancario') {
+        this.$toast.error("Selecciona un Dato Bancario", {
+          position: "top-center",
+          timeout: 1270,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          showCloseButtonOnHover: false,
+          hideProgressBar: true,
+          closeButton: "button",
+          icon: true,
+          rtl: false
+        });
+        return;
+      }
+
+      Swal.fire({
+        text: "Estas Seguro de Agregar el Honorario?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, Agregar!",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post('honorario/UpdateHonorario',this.honorarioDetalle).then(response => {
+        
+            this.muestra = 0;
+            this.honorarioDetalle = [];
+            this.DatoBancario = [];
+            this.getHonorario();
+            Swal.fire({
+              title: 'Éxito',
+              text: "Se Edito Correctamente!",
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          })
+        }
+      });
     }
   }
 };

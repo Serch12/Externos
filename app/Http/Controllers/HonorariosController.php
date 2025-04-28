@@ -171,6 +171,10 @@ class HonorariosController extends Controller
                 $value->color = 'info';
                 $value->text = 'En Proceso';
             }
+            if ($value->estatus == 2) {
+                $value->color = 'danger';
+                $value->text = 'Rechazado';
+            }
         }
     }
 
@@ -252,6 +256,39 @@ class HonorariosController extends Controller
         $edit->isr = $request->isr;
         $edit->total = $request->total;
         $edit->numero_recibo = $request->numero_recibo;
+        $edit->estatus = 0;
+        $edit->save();
+
+        $pagosN = DetalleHonorarios::where('id_pago_honorario',$edit->id_pago_honorario)->get();
+
+        $total_pago = 0;
+        foreach ($pagosN as $total) {
+            $total_pago += $total->total;
+        }
+
+
+        $date = Honorarios::find($edit->id_pago_honorario);
+        $date->total_honorario = $total_pago;
+        $date->save();
+        return $date;
+    }
+
+    /**
+     * FUNCION QUE AGREGARA UN NUEVO HONORARIO
+     **/
+    public function UpdateHonorario(Request $request){
+        $edit = DetalleHonorarios::find($request->id_detalle_pago_honorario);
+        $edit->RFC = $request->RFC;
+        $edit->banco = $request->banco;
+        $edit->cuenta_bancaria = $request->cuenta_bancaria;
+        $edit->clabe_interbancaria = $request->clabe_interbancaria;
+        $edit->subtotal = $request->subtotal;
+        $edit->iva = $request->iva;
+        $edit->iva_retenido = $request->iva_retenido;
+        $edit->isr = $request->isr;
+        $edit->total = $request->total;
+        $edit->numero_recibo = $request->numero_recibo;
+        $edit->nota = null;
         $edit->estatus = 0;
         $edit->save();
 
