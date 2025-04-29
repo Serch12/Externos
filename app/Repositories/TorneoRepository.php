@@ -6,7 +6,7 @@ use App\Models\Torneo;
 use App\Models\Jugadores;
 use App\Models\PlantillaJugador;
 use App\Models\PlantillaCuerpoTecnico;
-use App\Models\ProveedoresIntranet;
+use App\Models\FormatoPago;
 use App\Models\NotificacionIntranet;
 use App\Models\CuerpoTecnico;
 use App\Models\Notas;
@@ -114,19 +114,22 @@ class TorneoRepository
             $new_plantilla -> save();
         }
         if ($request->bandera_pago != 'no aplica') {
-            $new_pago = new ProveedoresIntranet();
+            $new_pago = new FormatoPago();
             $new_pago -> nombre = $request -> nombre;
-            $new_pago -> id_user = 5;
+            $new_pago -> creacion = $request->$new -> id_torneo;
             $new_pago -> rfc = $request -> rfc;
             $new_pago -> banco = $request -> banco;
-            $new_pago -> ctaBanc = $request -> cuenta_bancaria;
-            $new_pago -> cbeBanc = $request -> clabe_bancaria;
+            $new_pago -> cuenta_bancaria = $request -> cuenta_bancaria;
+            $new_pago -> clabe_bancaria = $request -> clabe_bancaria;
             $new_pago -> direccion = $request -> direccion;
             $new_pago -> telefono = $request -> telefono;
-            $new_pago -> mail = $request -> mail;
+            $new_pago -> email = $request -> email;
             $new_pago -> ejecutivo = $request -> ejecutivo;
+            $new_pago -> subtotal = $request -> subtotal;
+            $new_pago -> total = $request -> total;
             $new_pago -> tipo_persona = $request -> tipo_persona;
-            $new_pago -> estatus = 1;
+            $new_pago -> inscripcion = $request -> inscripcion;
+            $new_pago -> estatus = 0;
             $new_pago ->save();
 
             $edit = Torneo::find($new->id_torneo);
@@ -198,35 +201,40 @@ class TorneoRepository
             $new_plantilla -> save();
         }
 
-        if ($request->id_proveedor == 0) {
-            $new_pago = new ProveedoresIntranet();
+        if ($request->bandera == 'sin registro') {
+            $new_pago = new FormatoPago();
             $new_pago -> nombre = $request -> nombre;
-            $new_pago -> id_user = 5;
+            $new_pago -> creacion = $request->creacion;
             $new_pago -> rfc = $request -> rfc;
             $new_pago -> banco = $request -> banco;
-            $new_pago -> ctaBanc = $request -> cuenta_bancaria;
-            $new_pago -> cbeBanc = $request -> clabe_bancaria;
+            $new_pago -> cuenta_bancaria = $request -> cuenta_bancaria;
+            $new_pago -> clabe_bancaria = $request -> clabe_bancaria;
             $new_pago -> direccion = $request -> direccion;
             $new_pago -> telefono = $request -> telefono;
-            $new_pago -> mail = $request -> mail;
+            $new_pago -> email = $request -> email;
             $new_pago -> ejecutivo = $request -> ejecutivo;
+            $new_pago -> subtotal = $request -> subtotal;
+            $new_pago -> total = $request -> total;
             $new_pago -> tipo_persona = $request -> tipo_persona;
-            $new_pago -> estatus = 1;
+            $new_pago -> inscripcion = $request -> inscripcion;
+            $new_pago -> estatus = 0;
             $new_pago ->save();
         } else {
-            $new_pago = ProveedoresIntranet::find($request->id_pro);
+            $new_pago = FormatoPago::find($request->id_formato);
             $new_pago -> nombre = $request -> nombre;
-            $new_pago -> id_user = 5;
             $new_pago -> rfc = $request -> rfc;
             $new_pago -> banco = $request -> banco;
-            $new_pago -> ctaBanc = $request -> ctaBanc;
-            $new_pago -> cbeBanc = $request -> cbeBanc;
+            $new_pago -> cuenta_bancaria = $request -> cuenta_bancaria;
+            $new_pago -> clabe_bancaria = $request -> clabe_bancaria;
             $new_pago -> direccion = $request -> direccion;
             $new_pago -> telefono = $request -> telefono;
-            $new_pago -> mail = $request -> mail;
+            $new_pago -> email = $request -> email;
             $new_pago -> ejecutivo = $request -> ejecutivo;
+            $new_pago -> subtotal = $request -> subtotal;
+            $new_pago -> total = $request -> total;
             $new_pago -> tipo_persona = $request -> tipo_persona;
-            $new_pago -> estatus = 1;
+            $new_pago -> inscripcion = $request -> inscripcion;
+            $new_pago -> estatus = 0;
             $new_pago ->save();
         }
         
@@ -373,7 +381,7 @@ class TorneoRepository
      * Mostrara informacion externa del torneo
      **/
     public function Bancarios($id){
-       $bancario = ProveedoresIntranet::where('id_pro',$id)
+       $bancario = FormatoPago::where('creacion',$id)
        ->select('*')
        ->get();
        return $bancario;
@@ -393,19 +401,22 @@ class TorneoRepository
      * FUNCION QUE AGREGARA EL DATO BANCARIO
      **/
     public function createDatoBancario($request){
-        $new = new ProveedoresIntranet();
+        $new = new FormatoPago();
         $new -> nombre = $request -> nombre;
-        $new -> id_user = 5;
+        $new -> creacion = $request->creacion;
         $new -> rfc = $request -> rfc;
         $new -> banco = $request -> banco;
-        $new -> ctaBanc = $request -> cuenta_bancaria;
-        $new -> cbeBanc = $request -> clabe_bancaria;
+        $new -> cuenta_bancaria = $request -> cuenta_bancaria;
+        $new -> clabe_bancaria = $request -> clabe_bancaria;
         $new -> direccion = $request -> direccion;
         $new -> telefono = $request -> telefono;
-        $new -> mail = $request -> mail;
+        $new -> email = $request -> email;
         $new -> ejecutivo = $request -> ejecutivo;
+        $new -> subtotal = $request -> subtotal;
+        $new -> total = $request -> total;
         $new -> tipo_persona = $request -> tipo_persona;
-        $new -> estatus = 1;
+        $new -> inscripcion = $request -> inscripcion;
+        $new -> estatus = 0;
         $new ->save();
 
         $edit = Torneo::find($request->id_torneo);
@@ -429,18 +440,21 @@ class TorneoRepository
      **/
     public function updateDatoBancario($request){
 
-        $new = ProveedoresIntranet::find($request->id_pro);
+        $new = FormatoPago::find($request->id_formato);
         $new -> nombre = $request -> nombre;
-        $new -> id_user = 5;
         $new -> rfc = $request -> rfc;
         $new -> banco = $request -> banco;
-        $new -> ctaBanc = $request -> ctaBanc;
-        $new -> cbeBanc = $request -> cbeBanc;
+        $new -> cuenta_bancaria = $request -> cuenta_bancaria;
+        $new -> clabe_bancaria = $request -> clabe_bancaria;
         $new -> direccion = $request -> direccion;
         $new -> telefono = $request -> telefono;
-        $new -> mail = $request -> mail;
+        $new -> email = $request -> email;
         $new -> ejecutivo = $request -> ejecutivo;
+        $new -> subtotal = $request -> subtotal;
+        $new -> total = $request -> total;
         $new -> tipo_persona = $request -> tipo_persona;
+        $new -> inscripcion = $request -> inscripcion;
+        $new -> estatus = 0;
         $new ->save();
 
         $edit = Torneo::find($request->id_torneo);

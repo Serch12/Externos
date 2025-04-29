@@ -653,14 +653,14 @@
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
                                 <input type="text" id="cuentabancaria" class="form-control" v-model="newDatosbancarios.cuenta_bancaria" placeholder="Cuenta Bancaria" v-if="this.detalleTorneo.id_proveedor == 0"/>
-                                <input type="text" id="cuentabancaria" class="form-control" v-model="ProveedoresIntranet[0].ctaBanc" placeholder="Cuenta Bancaria" v-else/>
+                                <input type="text" id="cuentabancaria" class="form-control" v-model="ProveedoresIntranet[0].cuenta_bancaria" placeholder="Cuenta Bancaria" v-else/>
                                 <label for="cuentabancaria">Cuenta Bancaria</label>
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
                                 <input type="text" id="clabebancaria" class="form-control" v-model="newDatosbancarios.clabe_bancaria" placeholder="Clabe Bancaria" v-if="this.detalleTorneo.id_proveedor == 0"/>
-                                <input type="text" id="clabebancaria" class="form-control" v-model="ProveedoresIntranet[0].cbeBanc" placeholder="Clabe Bancaria" v-else/>
+                                <input type="text" id="clabebancaria" class="form-control" v-model="ProveedoresIntranet[0].clabe_bancaria" placeholder="Clabe Bancaria" v-else/>
                                 <label for="clabebancaria">Clabe Bancaria</label>
                             </div>
                         </div>
@@ -680,8 +680,8 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating form-floating-outline">
-                                <input type="email" id="mail" class="form-control" v-model="newDatosbancarios.mail" placeholder="Email" v-if="this.detalleTorneo.id_proveedor == 0"/>
-                                <input type="email" id="mail" class="form-control" v-model="ProveedoresIntranet[0].mail" placeholder="Email" v-else/>
+                                <input type="email" id="mail" class="form-control" v-model="newDatosbancarios.email" placeholder="Email" v-if="this.detalleTorneo.id_proveedor == 0"/>
+                                <input type="email" id="mail" class="form-control" v-model="ProveedoresIntranet[0].email" placeholder="Email" v-else/>
                                 <label for="mail"> Email</label>
                             </div>
                         </div>
@@ -1181,7 +1181,7 @@
                                                 type="email"
                                                 id="mail"
                                                 class="form-control"
-                                                v-model="newDatosbancarios.mail"
+                                                v-model="newDatosbancarios.email"
                                                 placeholder="Email"/>
                                             <label for="mail"> Email</label>
                                         </div>
@@ -1308,7 +1308,7 @@
                                                 type="text"
                                                 id="cuentabancaria"
                                                 class="form-control"
-                                                v-model="ProveedoresIntranet[0].ctaBanc"
+                                                v-model="ProveedoresIntranet[0].cuenta_bancaria"
                                                 placeholder="Cuenta Bancaria" :disabled="activacion" style="color: black;"/>
                                             <label for="cuentabancaria">Cuenta Bancaria</label>
                                         </div>
@@ -1319,7 +1319,7 @@
                                                 type="text"
                                                 id="clabebancaria"
                                                 class="form-control"
-                                                v-model="ProveedoresIntranet[0].cbeBanc"
+                                                v-model="ProveedoresIntranet[0].clabe_bancaria"
                                                 placeholder="Clabe Bancaria" :disabled="activacion" style="color: black;"/>
                                             <label for="clabebancaria">Clabe Bancaria</label>
                                         </div>
@@ -1352,7 +1352,7 @@
                                                 type="email"
                                                 id="mail"
                                                 class="form-control"
-                                                v-model="ProveedoresIntranet[0].mail"
+                                                v-model="ProveedoresIntranet[0].email"
                                                 placeholder="Email" :disabled="activacion" style="color: black;"/>
                                             <label for="mail"> Email</label>
                                         </div>
@@ -1953,7 +1953,7 @@ export default {
                 formData.append('clabe_bancaria',this.newDatosbancarios.clabe_bancaria);
                 formData.append('direccion',this.newDatosbancarios.direccion);
                 formData.append('telefono',this.newDatosbancarios.telefono);
-                formData.append('mail',this.newDatosbancarios.mail);
+                formData.append('email',this.newDatosbancarios.email);
                 formData.append('ejecutivo',this.newDatosbancarios.ejecutivo);
                 formData.append('tipo_persona',this.newDatosbancarios.tipo_persona);
                 formData.append('subtotal',this.newDatosbancarios.subtotal);
@@ -2177,7 +2177,7 @@ export default {
             axios.get(`torneo/detalleSeleccionado/${this.detalleTorneo.id_torneo}`).then(response => {
                 this.JugadorSeleccionado = response.data
             })
-            axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_proveedor}`).then(response =>{
+            axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_torneo}`).then(response =>{
                 this.ProveedoresIntranet = response.data.bancarios;
             })
             axios.get(`torneo/NotasDetalle/${this.detalleTorneo.id_torneo}/${this.sede}`).then(response =>{
@@ -2205,9 +2205,13 @@ export default {
             formData.append('fecha_inicia', this.detalleTorneo.fecha_inicia);
             formData.append('fecha_fin', this.detalleTorneo.fecha_fin);
             formData.append('contacto', this.detalleTorneo.contacto);
-            formData.append('id_proveedor', this.detalleTorneo.id_proveedor);
+            if (this.ProveedoresIntranet.length == 0) {
+                formData.append('bandera', 'sin registro');
+            } else {
+                formData.append('bandera', 'con registro');
+            }
             formData.append('JugadorSeleccionado',JSON.stringify(this.JugadorSeleccionado));
-            if (this.detalleTorneo.id_proveedor == 0) {
+            if (this.ProveedoresIntranet.length == 0) {
                 formData.append('nombre',this.newDatosbancarios.nombre);
                 formData.append('rfc',this.newDatosbancarios.rfc);
                 formData.append('banco',this.newDatosbancarios.banco);
@@ -2222,15 +2226,15 @@ export default {
                 formData.append('total',this.newDatosbancarios.total);
                 formData.append('archivo',this.newDatosbancarios.archivo);
             } else {
-                formData.append('id_pro',this.ProveedoresIntranet[0].id_pro);
+                formData.append('id_formato',this.ProveedoresIntranet[0].id_formato);
                 formData.append('nombre',this.ProveedoresIntranet[0].nombre);
                 formData.append('rfc',this.ProveedoresIntranet[0].rfc);
                 formData.append('banco',this.ProveedoresIntranet[0].banco);
-                formData.append('ctaBanc',this.ProveedoresIntranet[0].ctaBanc);
-                formData.append('cbeBanc',this.ProveedoresIntranet[0].cbeBanc);
+                formData.append('cuenta_bancaria',this.ProveedoresIntranet[0].cuenta_bancaria);
+                formData.append('clabe_bancaria',this.ProveedoresIntranet[0].clabe_bancaria);
                 formData.append('direccion',this.ProveedoresIntranet[0].direccion);
                 formData.append('telefono',this.ProveedoresIntranet[0].telefono);
-                formData.append('mail',this.ProveedoresIntranet[0].mail);
+                formData.append('email',this.ProveedoresIntranet[0].email);
                 formData.append('ejecutivo',this.ProveedoresIntranet[0].ejecutivo);
                 formData.append('tipo_persona',this.ProveedoresIntranet[0].tipo_persona);
                 formData.append('subtotal',this.detalleTorneo.subtotal);
@@ -2607,6 +2611,7 @@ export default {
             }
             let formData = new FormData();
                 formData.append('id_torneo',this.detalleTorneo.id_torneo);
+                formData.append('creacion',this.detalleTorneo.id_torneo);
                 formData.append('nombre',this.newDatosbancarios.nombre);
                 formData.append('rfc',this.newDatosbancarios.rfc);
                 formData.append('banco',this.newDatosbancarios.banco);
@@ -2614,14 +2619,14 @@ export default {
                 formData.append('clabe_bancaria',this.newDatosbancarios.clabe_bancaria);
                 formData.append('direccion',this.newDatosbancarios.direccion);
                 formData.append('telefono',this.newDatosbancarios.telefono);
-                formData.append('mail',this.newDatosbancarios.mail);
+                formData.append('email',this.newDatosbancarios.email);
                 formData.append('ejecutivo',this.newDatosbancarios.ejecutivo);
                 formData.append('tipo_persona',this.newDatosbancarios.tipo_persona);
                 formData.append('subtotal',this.newDatosbancarios.subtotal);
                 formData.append('total',this.newDatosbancarios.total);
                 formData.append('archivo',this.newDatosbancarios.archivo);
             axios.post('torneo/createDatoBancario',formData).then(response =>{
-                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_proveedor}`).then(response =>{
+                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_torneo}`).then(response =>{
                     this.ProveedoresIntranet = response.data.bancarios;
                 })
                 this.newDatosbancarios = {
@@ -2739,22 +2744,22 @@ export default {
             }
             let formData = new FormData();
                 formData.append('id_torneo',this.detalleTorneo.id_torneo);
-                formData.append('id_pro',this.ProveedoresIntranet[0].id_pro);
+                formData.append('id_formato',this.ProveedoresIntranet[0].id_formato);
                 formData.append('nombre',this.ProveedoresIntranet[0].nombre);
                 formData.append('rfc',this.ProveedoresIntranet[0].rfc);
                 formData.append('banco',this.ProveedoresIntranet[0].banco);
-                formData.append('ctaBanc',this.ProveedoresIntranet[0].ctaBanc);
-                formData.append('cbeBanc',this.ProveedoresIntranet[0].cbeBanc);
+                formData.append('cuenta_bancaria',this.ProveedoresIntranet[0].cuenta_bancaria);
+                formData.append('clabe_bancaria',this.ProveedoresIntranet[0].clabe_bancaria);
                 formData.append('direccion',this.ProveedoresIntranet[0].direccion);
                 formData.append('telefono',this.ProveedoresIntranet[0].telefono);
-                formData.append('mail',this.ProveedoresIntranet[0].mail);
+                formData.append('email',this.ProveedoresIntranet[0].email);
                 formData.append('ejecutivo',this.ProveedoresIntranet[0].ejecutivo);
                 formData.append('tipo_persona',this.ProveedoresIntranet[0].tipo_persona);
                 formData.append('subtotal',this.detalleTorneo.subtotal);
                 formData.append('total',this.detalleTorneo.total);
                 formData.append('archivo',this.detalleTorneo.archivo);
             axios.post('torneo/updateDatoBancario',formData).then(response =>{
-                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_proveedor}`).then(response =>{
+                axios.get(`torneo/InfoExterna/${this.detalleTorneo.id_torneo}`).then(response =>{
                     this.ProveedoresIntranet = response.data.bancarios;
                 })
                 this.activacion = true;
