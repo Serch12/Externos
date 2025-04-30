@@ -14,9 +14,9 @@
       <div class="sk-plane"></div>
  */
 .sk-plane {
-  width: var(--sk-size);
-  height: var(--sk-size);
-  background-color: var(--sk-color);
+  width: 100px;
+  height: 100px;
+  background-color: rgb(30, 197, 30);
   animation: sk-plane 1.2s infinite ease-in-out;
 }
 

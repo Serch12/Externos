@@ -50,6 +50,7 @@
     <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
     <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/select2/select2.css')}}" />
     <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/swiper/swiper.css')}}" />
+    <link rel="stylesheet" href="{{asset('style/assets/vendor/libs/spinkit/spinkit.css')}}" />
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{asset('style/assets/vendor/css/pages/page-profile.css')}}" />
@@ -86,8 +87,9 @@
               <div class="container-xxl flex-grow-1 container-p-y">
                 <!-- Layout Demo -->
                 @yield('content') 
+                @include('layouts/loading')
                 <!--/ Layout Demo -->
-                    </div>
+              </div>
               
               <!--/ Content -->
 
@@ -100,6 +102,7 @@
             <!--/ Content wrapper -->
           </div>
         </div>
+
         <!--/ Layout container -->
       </div>
     </div>

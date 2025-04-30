@@ -74,8 +74,9 @@ class HonorariosController extends Controller
         ->join('tbl_sedes', 'users.sede', '=', 'tbl_sedes.id_sede')
         ->select('roles.name as rol', 'users.id', 'users.name', 'users.email','users.sede', 'tbl_sedes.nombre' ,DB::raw('GROUP_CONCAT(permissions.name) as permisos'))
         ->groupBy('users.id', 'users.name', 'users.email', 'roles.name','users.sede','tbl_sedes.nombre')
-        ->where('roles.name','Cuerpo Tecnico')
+        ->whereIn('roles.name', ['Cuerpo Tecnico', 'CM', 'Asesor Juridico','Aseso'])
         ->get();
+
         
 
         if ($hoy->day === 1) {
@@ -83,7 +84,7 @@ class HonorariosController extends Controller
             $new ->id_usuario = 6;
             $new -> nombre_usuario = 'Angelica Cabrera';
             $new -> fecha_pago = $fecha;
-            $new -> concepto = 'HONORARIOS PROFESIONALES TALENTOS ' . $mesActual;
+            $new -> concepto = 'HONORARIOS EXTERNOS ' . $mesActual;
             $new -> total_honorario = '0.00';
             $new -> modulo = 'Externos';
             $new ->estatus = 0;

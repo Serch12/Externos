@@ -73,7 +73,7 @@
                                 <i class="ri-article-line me-2"></i>Documentación
                             </button>
                         </li> -->
-                        <li class="nav-item" role="presentation" v-if="this.rol_usuario == 'Cuerpo Tecnico'">
+                        <li class="nav-item" role="presentation">
                             <button class="nav-link" id="bancario-tab" data-bs-toggle="pill" data-bs-target="#bancario" type="button" role="tab" aria-controls="bancario" aria-selected="false">
                                 <i class="ri-money-dollar-circle-line me-2"></i>Datos Bancarios
                             </button>

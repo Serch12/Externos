@@ -107,12 +107,21 @@
                         </tbody>
                       </table>
                     </div>
-                    <div class="col-md-6 col-sm-5 col-12 mb-sm-0 mb-6">
+                    <div class="col-md-6 col-sm-2 col-12 mb-sm-0 mb-6">
                       <h6>Datos Bancarios:</h6>
-                      <select class="form-select mb-4 w-60" @change="selectBanco()" v-model="detallebanco" >
-                        <option value="Selecciona un Dato Bancario">Selecciona un Dato Bancario</option>
-                        <option v-for="(db, index) in DatoBancario" :key="index" :value="db">{{db.banco}}</option>
-                      </select>
+                      <div class="row">
+                        <div class="col-md-6 col-sm-8">
+                          <select class="form-select mb-4 w-100" @change="selectBanco()" v-model="detallebanco" >
+                            <option value="Selecciona un Dato Bancario">Selecciona un Dato Bancario</option>
+                            <option v-for="(db, index) in DatoBancario" :key="index" :value="db">{{db.banco}}</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6 col-sm-2">
+                          <button type="button" class="btn rounded-pill btn-icon btn-outline-primary waves-effect" data-bs-toggle="modal" data-bs-target="#addNewCCModal">
+                            <span class="tf-icons ri-check-double-line ri-22px"></span>
+                          </button>
+                        </div>
+                      </div>
                       <p class="mb-1"><b>Banco:</b> {{ this.honorarioDetalle.banco }}</p>
                       <p class="mb-1"><b>Cuenta Bancaria:</b> {{ this.honorarioDetalle.cuenta_bancaria }}</p>
                       <p class="mb-1"><b>Clabe Interbancaria:</b> {{ this.honorarioDetalle.clabe_interbancaria }}</p>
@@ -349,21 +358,31 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-6 col-8 pe-0 ps-0 ps-md-2">
-                      <dl class="row mb-0 gx-4">
-                        <dt class="col-sm-12 mb-2 d-md-flex align-items-center justify-content-start">
-                          <span class="h5 text-capitalize mb-0 text-nowrap">No.Recibo </span>
-                          <span class="text-capitalize mb-0 text-nowrap"># {{this.honorarioDetalle.numero_recibo}}</span>
-                        </dt>
-                        <!-- <dd class="col-sm-7">
-                          <div class="input-group input-group-merge input-group-sm">
-                            <span class="input-group-text">#</span>
-                            <input type="text" class="form-control" v-model="honorarioDetalle.numero_recibo" id="invoiceId" />
-                          </div>
-                        </dd> -->
-                        
-                      </dl>
-                    </div>
+                    <div class="col-md-4 col-8 pe-0 ps-0 ps-md-2">
+                          <dl class="row mb-0 gx-4">
+                            <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
+                              <span class="h5 text-capitalize mb-0 text-nowrap">No.Recibo:</span>
+                            </dt>
+                            <dd class="col-sm-7">
+                              <!-- <div class="input-group input-group-merge input-group-sm">
+                                <span class="input-group-text">#</span>
+                                <input type="number" class="form-control" v-model="honorarioDetalle.numero_recibo" id="invoiceId">
+                              </div> -->
+                            </dd>
+                            <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
+                              <span class="fw-normal">{{this.honorarioDetalle.numero_recibo}}</span>
+                            </dt>
+                            <!-- <dd class="col-sm-7">
+                              <input type="text" class="form-control form-control-sm invoice-date flatpickr-input" placeholder="12/13/2013" readonly="readonly">
+                            </dd>
+                            <dt class="col-sm-5 d-md-flex align-items-center justify-content-start">
+                              <span class="fw-normal text-nowrap">Due Date:</span>
+                            </dt>
+                            <dd class="col-sm-7 mb-0">
+                              <input type="text" class="form-control form-control-sm due-date flatpickr-input" placeholder="4/23/2023" readonly="readonly">
+                            </dd> -->
+                          </dl>
+                        </div>
                   </div>
                 </div>
                 <div class="card-body py-6 px-0">
@@ -436,6 +455,88 @@
           </div>
 
         </div>
+         <!-- Agregar Dato Bancario -->
+         <div class="modal fade" id="addNewCCModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+                <div class="modal-content">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-body p-0">
+                    <div class="text-center mb-6">
+                        <h4 class="mb-2">Añadir Nuevo Dato Bancario</h4>
+                    </div>
+                    <form id="addNewCCForm" class="row g-5" onsubmit="return false">
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="modalAddCard" name="modalAddCard" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="modalAddCard2" v-model="newBancario.numero_tarjeta"/>
+                                    <label for="modalAddCard">Número de Tarjeta</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="cuenta" name="cuenta" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="cuenta2" v-model="newBancario.cuenta_bancaria"/>
+                                    <label for="cuenta">Cuenta Bancaria</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <div class="form-floating form-floating-outline">
+                                    <input id="clabe" name="clabe" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                    aria-describedby="clabe2" v-model="newBancario.clabe_bancaria"/>
+                                    <label for="clabe">Clabe Bancaria</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating form-floating-outline">
+                                <select id="tipo_tarjeta" name="tipo_tarjeta" class="form-select" v-model="newBancario.tipo_tarjeta">
+                                    <option value="Selecciona">Selecciona</option>
+                                    <option value="credito">Crédito</option>
+                                    <option value="debito nomina">Débito Nomina</option>
+                                    <option value="debito empresarial">Débito Empresarial</option>
+                                    <option value="debito personal">Débito Personal</option>
+                                    <option value="servicios">Servicios</option>
+                                </select>
+                                <label for="tipo_tarjeta">Tipo de Tarjeta</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-12">
+                            <div class="form-floating form-floating-outline">
+                                <select id="banco" name="banco" class="form-select" v-model="newBancario.banco">
+                                    <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                    <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                    <option value="BANORTE">BANORTE</option>
+                                    <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                    <option value="SANTANDER">SANTANDER</option>
+                                    <option value="HSBC">HSBC</option>
+                                    <option value="INBURSA">INBURSA</option>
+                                    <option value="MIFEL">MIFEL</option>
+                                    <option value="SCOTIABANK">SCOTIABANK</option>
+                                    <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                    <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                    <option value="BANCOPPEL">BANCOPPEL</option>
+                                    <option value="AFIRME">AFIRME</option>
+                                </select>
+                                <label for="banco">Banco</label>
+                            </div>
+                        </div>
+                       
+                        <div class="col-12 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+                            <button type="button" class="btn btn-success" @click="createBancario()">Guardar</button>
+                            <button type="reset" class="btn btn-outline-danger btn-reset" data-bs-dismiss="modal" aria-label="Close">
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <br><br><br><br><br><br><br>
     </div>
 </template>
@@ -458,6 +559,15 @@ export default {
           honorarioDetalle:[],
           DatoBancario:[],
           detallebanco:'Selecciona un Dato Bancario',
+          newBancario:{
+            id_user:this.id_usuario_logeado,
+            nombre:this.name_usuario_logeado,
+            clabe_bancaria:'',
+            cuenta_bancaria:'',
+            numero_tarjeta:'',
+            tipo_tarjeta:'Selecciona',
+            banco:'Seleccionar Banco',
+          }
 
       }
   },
@@ -468,7 +578,7 @@ export default {
         this.$on('iniciaHonorario', this.getHonorario);
     },
   mounted() {
-      
+
   },
   methods: {
     getHonorario(){
@@ -476,6 +586,7 @@ export default {
         this.DetalleHonorario = response.data.detalle;
         this.DatoBancario = response.data.banco;
       });
+      
     },
     vista(valor){
       this.muestra = valor;
@@ -514,6 +625,7 @@ export default {
           }
         }).then((result) => {
           if (result.isConfirmed) {
+            $('#modalloading').modal('show');
             const file = result.value;   
             
             let formData = new FormData();
@@ -524,6 +636,7 @@ export default {
             axios.post('honorario/lectorPDF',formData).then(response => {
               this.honorarioDetalle = response.data;
               this.muestra = 1;
+              $('#modalloading').modal('hide');
             })
           }
         });
@@ -661,8 +774,9 @@ export default {
         cancelButtonText: "Cancelar",
       }).then((result) => {
         if (result.isConfirmed) {
+          $('#modalloading').modal('show');
           axios.post('honorario/AgregarHonorario',this.honorarioDetalle).then(response => {
-        
+            
             this.muestra = 0;
             this.honorarioDetalle = [];
             this.DatoBancario = [];
@@ -674,7 +788,9 @@ export default {
               showConfirmButton: false,
               timer: 2500,
             });
+            $('#modalloading').modal('hide');
           })
+         
         }
       });
       
@@ -829,7 +945,119 @@ export default {
           })
         }
       });
-    }
+    },
+    createBancario(){
+      if (this.newBancario.numero_tarjeta == '') {
+          this.$toast.error("Ingresa un Número de Tarjeta", {
+              position: "top-center",
+              timeout: 1270,
+              closeOnClick: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              draggable: true,
+              draggablePercent: 0.6,
+              showCloseButtonOnHover: false,
+              hideProgressBar: true,
+              closeButton: "button",
+              icon: true,
+              rtl: false
+          });
+          return;
+      }
+      if (this.newBancario.cuenta_bancaria == '') {
+          this.$toast.error("Ingresa una Cuenta Bancaria", {
+              position: "top-center",
+              timeout: 1270,
+              closeOnClick: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              draggable: true,
+              draggablePercent: 0.6,
+              showCloseButtonOnHover: false,
+              hideProgressBar: true,
+              closeButton: "button",
+              icon: true,
+              rtl: false
+          });
+          return;
+      }
+      if (this.newBancario.clabe_bancaria == '') {
+          this.$toast.error("Ingresa una Clabe Bancaria", {
+              position: "top-center",
+              timeout: 1270,
+              closeOnClick: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              draggable: true,
+              draggablePercent: 0.6,
+              showCloseButtonOnHover: false,
+              hideProgressBar: true,
+              closeButton: "button",
+              icon: true,
+              rtl: false
+          });
+          return;
+      }
+      if (this.newBancario.tipo_tarjeta == 'Selecciona') {
+          this.$toast.error("Selecciona un Tipo de Tarjeta", {
+              position: "top-center",
+              timeout: 1270,
+              closeOnClick: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              draggable: true,
+              draggablePercent: 0.6,
+              showCloseButtonOnHover: false,
+              hideProgressBar: true,
+              closeButton: "button",
+              icon: true,
+              rtl: false
+          });
+          return;
+      }
+      if (this.newBancario.banco == 'Seleccionar Banco') {
+          this.$toast.error("Selecciona un Banco", {
+              position: "top-center",
+              timeout: 1270,
+              closeOnClick: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              draggable: true,
+              draggablePercent: 0.6,
+              showCloseButtonOnHover: false,
+              hideProgressBar: true,
+              closeButton: "button",
+              icon: true,
+              rtl: false
+          });
+          return;
+      }
+
+      let formData = new FormData();
+      formData.append('id_user',this.user_id);
+      formData.append('nombre',this.nombre_honorario);
+      formData.append('clabe_bancaria',this.newBancario.clabe_bancaria);
+      formData.append('cuenta_bancaria',this.newBancario.cuenta_bancaria);
+      formData.append('numero_tarjeta',this.newBancario.numero_tarjeta);
+      formData.append('tipo_tarjeta',this.newBancario.tipo_tarjeta);
+      formData.append('banco',this.newBancario.banco);
+
+
+      axios.post('perfil/createDatoBancario',formData).then(response=>{
+          $('#addNewCCModal').modal('hide');
+          axios.get(`honorario/DetalleHonorario/${this.user_id}`).then(response => {
+            this.DatoBancario = response.data.banco;
+          });
+          Swal.fire({
+              title: 'Éxito',
+              text: "Se Registro correctamente!",
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 2500,
+          });
+      })
+
+    },
   }
 };
 </script>

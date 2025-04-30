@@ -26,11 +26,11 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected function schedule(Schedule $schedule)
-    {
+    {   
+        $schedule->command('creacion:honorario')->dailyAt('09:00');
         $schedule->command('validacion:notificacion')->dailyAt('09:00');
         $schedule->command('activacion:banner')->dailyAt('09:00');
         $schedule->command('correos:programar')->dailyAt('09:00');
-        $schedule->command('creacion:honorario')->dailyAt('09:00');
     }
 
     /**
