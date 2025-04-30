@@ -1,7 +1,13 @@
 <template>
     <div>
         <div v-if="this.muestra == 0">
-          <div class="row">
+          <div class="row" v-if="this.DetalleHonorario.length == 0">
+            <center class="mt-2">
+                <h5 class="card-header" style="color: green;">No hay Honorarios Activos</h5>
+                <img src="style/assets/img_externos/no_hay_honorarios.png" alt="img" style="max-width: 300px;">
+            </center>
+          </div>
+          <div class="row" v-else>
             <div class="col-12 col-md-6">
               <h5 class="card-header">Honorario</h5>
             </div>

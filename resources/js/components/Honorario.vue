@@ -45,7 +45,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    -------------------------------
+                                    <center class="mt-2">
+                                        <h5 class="card-header" style="color: green;">Sin Historial</h5>
+                                        <img src="style/assets/img_externos/no_hay_honorarios.png" alt="img" style="max-width: 300px;">
+                                    </center>
                                 </div>
                             </div>
                         </div>
