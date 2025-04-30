@@ -1,7 +1,12 @@
 <template>
     <div>
         <div  v-if="this.vista == 0">
-            <div class="row">
+            <div class="row" v-if="this.rol_usuario == 'Asesor Juridico'||this.rol_usuario == 'Asesor'">
+                <center>
+                    <img src="style/assets/img_externos/Banners.png" alt="" style="max-width: 100%;">
+                </center>
+            </div>
+            <div class="row" v-else>
                 <div class="card app-calendar-wrapper">
                     <div class="row g-0">
                         <!-- Calendar Sidebar -->
