@@ -66,7 +66,6 @@ class HonorariosController extends Controller
         $fecha = $hoy->format('Y-m-d');
         $mesActual = $hoy->format('Y-m');
 
-        dd($hoy,$fecha,$mesActual);
 
         $usuario = DB::table('users')
         ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
