@@ -74,7 +74,7 @@ class HonorariosController extends Controller
         ->join('tbl_sedes', 'users.sede', '=', 'tbl_sedes.id_sede')
         ->select('roles.name as rol', 'users.id', 'users.name', 'users.email','users.sede', 'tbl_sedes.nombre' ,DB::raw('GROUP_CONCAT(permissions.name) as permisos'))
         ->groupBy('users.id', 'users.name', 'users.email', 'roles.name','users.sede','tbl_sedes.nombre')
-        ->whereIn('roles.name', ['Cuerpo Tecnico', 'CM', 'Asesor Juridico','Asesor'])
+        ->whereIn('roles.name', ['Cuerpo Tecnico', 'CM', 'Asesor Juridico','Asesor','Auxiliar Técnico'])
         ->get();
 
         

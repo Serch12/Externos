@@ -111,7 +111,7 @@
         @else
         @endhasanyrole
 
-        @hasanyrole('Root|Cuerpo Tecnico|CM|Asesor Juridico|Asesor')
+        @hasanyrole('Root|Cuerpo Tecnico|CM|Asesor Juridico|Asesor|Auxiliar Técnico')
         <!-- Components -->
         <li class="menu-item {{ request()->routeIs('honorario') ? 'active' : '' }}">
           <a href="{{ route('honorario') }}" class="menu-link">
