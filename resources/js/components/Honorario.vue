@@ -12,7 +12,7 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link waves-effect" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-profile" aria-controls="navs-justified-profile" aria-selected="false" tabindex="-1">
-                                    <span class="d-none d-sm-block"><i class="tf-icons ri-git-repository-line me-2"></i> Historial Honorario</span><i class="ri-git-repository-line ri-20px d-sm-none"></i></button>
+                                    <span class="d-none d-sm-block"><i class="tf-icons ri-git-repository-line me-2"></i> Historial Honorario1</span><i class="ri-git-repository-line ri-20px d-sm-none"></i></button>
                             </li>
                             <span class="tab-slider" style="left: 0px; width: 165.135px; bottom: 0px;"></span>
                         </ul>
