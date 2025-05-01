@@ -8,7 +8,7 @@
                         <ul class="nav nav-tabs nav-fill" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link waves-effect active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-home" aria-controls="navs-justified-home" aria-selected="true">
-                                    <span class="d-none d-sm-block"><i class="tf-icons ri-football-line me-2"></i> Honorario </span><i class="ri-football-line ri-20px d-sm-none"></i></button>
+                                    <span class="d-none d-sm-block"><i class="tf-icons ri-football-line me-2"></i> Honorario1 </span><i class="ri-football-line ri-20px d-sm-none"></i></button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link waves-effect" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-profile" aria-controls="navs-justified-profile" aria-selected="false" tabindex="-1">
