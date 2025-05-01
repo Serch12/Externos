@@ -27,10 +27,21 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {   
-        $schedule->command('creacion:honorario')->dailyAt('09:00');
+        $schedule->command('creacion:honorario')->dailyAt('10:00');
         $schedule->command('validacion:notificacion')->dailyAt('09:00');
         $schedule->command('activacion:banner')->dailyAt('09:00');
         $schedule->command('correos:programar')->dailyAt('09:00');
+    }
+
+    /**
+     * Get the timezone that should be used by default for scheduled events.
+     *
+     * @return \DateTimeZone|string|null
+     */
+
+    protected function scheduleTimezone()
+    {
+        return 'America/Mexico_City';
     }
 
     /**
