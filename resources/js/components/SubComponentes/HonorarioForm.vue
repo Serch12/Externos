@@ -1041,7 +1041,7 @@ export default {
 
       let formData = new FormData();
       formData.append('id_user',this.user_id);
-      formData.append('nombre',this.nombre_honorario);
+      formData.append('nombre',this.honorarioDetalle.nombre_honorario);
       formData.append('clabe_bancaria',this.newBancario.clabe_bancaria);
       formData.append('cuenta_bancaria',this.newBancario.cuenta_bancaria);
       formData.append('numero_tarjeta',this.newBancario.numero_tarjeta);
