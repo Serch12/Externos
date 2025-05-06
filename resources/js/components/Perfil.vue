@@ -414,6 +414,7 @@
                                     <option value="BANCO AZTECA">BANCO AZTECA</option>
                                     <option value="BANCOPPEL">BANCOPPEL</option>
                                     <option value="AFIRME">AFIRME</option>
+                                    <option value="BANBAJIO">BANBAJÍO</option>
                                 </select>
                                 <label for="banco">Banco</label>
                             </div>
@@ -496,6 +497,7 @@
                                     <option value="BANCO AZTECA">BANCO AZTECA</option>
                                     <option value="BANCOPPEL">BANCOPPEL</option>
                                     <option value="AFIRME">AFIRME</option>
+                                    <option value="BANBAJIO">BANBAJÍO</option>
                                 </select>
                                 <label for="banco">Banco</label>
                             </div>
