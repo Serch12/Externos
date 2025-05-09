@@ -1,550 +1,554 @@
 <template>
     <div>
-        <div v-if="this.muestra == 0">
-          <div class="row" v-if="this.DetalleHonorario.length == 0">
-            <center class="mt-2">
-                <h5 class="card-header" style="color: green;">No hay Honorarios Activos</h5>
-                <img src="style/assets/img_externos/no_hay_honorarios.png" alt="img" style="max-width: 300px;">
-            </center>
+      <!-- Vista principal -->
+      <div v-if="this.muestra == 0">
+        <div class="row" v-if="this.DetalleHonorario.length == 0">
+          <center class="mt-2">
+              <h5 class="card-header" style="color: green;">No hay Honorarios Activos</h5>
+              <img src="style/assets/img_externos/no_hay_honorarios.png" alt="img" style="max-width: 300px;">
+          </center>
+        </div>
+        <div class="row" v-else>
+          <div class="col-12 col-md-6">
+            <h5 class="card-header">Honorario</h5>
           </div>
-          <div class="row" v-else>
-            <div class="col-12 col-md-6">
-              <h5 class="card-header">Honorario</h5>
+          <div class="col-12 col-md-12 mt-3">
+            <div class="table-responsive text-nowrap" style="font-size: 14px;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>RFC</th>
+                    <th>Subtotal</th>
+                    <th>Iva</th>
+                    <th>Iva Retenido</th>
+                    <th>ISR</th>
+                    <th>Total</th>
+                    <th>Estatus</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                  <tr v-for="(dh, index) in DetalleHonorario" :key="index">
+                    <td>{{ index+1 }}</td>
+                    <td>{{dh.nombre_honorario}}</td>
+                    <td>{{ dh.RFC === null ? 'N/A' : dh.RFC }}</td>
+                    <td>${{ formatPrice(dh.subtotal) }}</td>
+                    <td>${{ formatPrice(dh.iva) }}</td>
+                    <td>${{ formatPrice(dh.iva_retenido) }}</td>
+                    <td>${{ formatPrice(dh.isr) }}</td>
+                    <td>${{ formatPrice(dh.total) }}</td>
+                    <td><span :class="`badge rounded-pill bg-label-${dh.color} me-1`">{{dh.text}}</span></td>
+                    <td>
+                      <button type="button" class="btn btn-sm btn-danger waves-effect waves-light" @click="ArchivoPDF(dh)" v-if="dh.estatus == 1">
+                        Subir PDF
+                      </button>
+                      <button type="button" class="btn btn-icon btn-outline-info waves-effect" v-if="dh.estatus == 2" @click="infoHonorario(dh),vista(2)" >
+                        <span class="tf-icons ri-edit-2-fill ri-22px"></span>
+                      </button>
+                      <button type="button" class="btn btn-icon btn-outline-warning waves-effect" v-if="dh.estatus == 0" @click="infoHonorario(dh),vista(3)" >
+                        <span class="tf-icons ri-file-text-fill ri-22px"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="col-12 col-md-12 mt-3">
-              <div class="table-responsive text-nowrap" style="font-size: 14px;">
-                <table class="table">
+          </div>
+        </div>
+      </div>
+      <!-- Vista alata -->
+      <div v-if="this.muestra == 1">
+        <div class="row invoice-edit">
+          <!-- Invoice Edit-->
+          <div class="col-lg-9 col-12 mb-lg-0 mb-6">
+            <div class="card invoice-preview-card p-sm-12 p-6">
+              <div class="card-body invoice-preview-header rounded-4 text-heading p-6 px-3">
+                <div class="row mx-0 px-3 row-gap-6">
+                  <div class="col-md-6 ps-0">
+                    <div class="d-flex svg-illustration align-items-center gap-2 mb-6">
+                      <span class="app-brand-logo demo">
+                          <img src="style/logos/logo-_amfpro_pro_color.png" alt="logo" width="250px">
+                      </span>
+                    </div>
+                    <!-- <p class="mb-1">Av. Industria Automotriz n.33 int. 203</p>
+                    <p class="mb-1">Col. Parque Industrial Lerma, Lerma, Estado de México. CP. 52004</p>
+                    <p class="mb-0">+728 690 6040</p> -->
+                  </div>
+                  <div class="col-md-6 col-8 pe-0 ps-0 ps-md-2">
+                    <dl class="row mb-0 gx-4">
+                      <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
+                        <span class="h5 text-capitalize mb-0 text-nowrap">No.Recibo</span>
+                      </dt>
+                      <dd class="col-sm-7">
+                        <div class="input-group input-group-merge input-group-sm">
+                          <span class="input-group-text">#</span>
+                          <input type="text" class="form-control" v-model="honorarioDetalle.numero_recibo" id="invoiceId" />
+                        </div>
+                      </dd>
+                      
+                    </dl>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body py-6 px-0">
+                <div class="row">
+                  <div class="col-md-6 col-sm-7">
+                    <h6>Honorario a:</h6>
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td class="pe-4">Nombre:</td>
+                          <td>{{this.honorarioDetalle.nombre_honorario}}</td>
+                        </tr>
+                        <tr>
+                          <td class="pe-4">RFC:</td>
+                          <td><input type="text" class="form-control" v-model="honorarioDetalle.RFC" id="RFC" /></td>
+                        </tr>
+                        <tr>
+                          <td class="pe-4">Sede:</td>
+                          <td>{{this.honorarioDetalle.sede}}</td>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-md-6 col-sm-2 col-12 mb-sm-0 mb-6">
+                    <h6>Datos Bancarios:</h6>
+                    <div class="row">
+                      <div class="col-md-6 col-sm-8">
+                        <select class="form-select mb-4 w-100" @change="selectBanco()" v-model="detallebanco" >
+                          <option value="Selecciona un Dato Bancario">Selecciona un Dato Bancario</option>
+                          <option v-for="(db, index) in DatoBancario" :key="index" :value="db">{{db.banco}}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6 col-sm-2">
+                        <button type="button" class="btn rounded-pill btn-icon btn-outline-primary waves-effect" data-bs-toggle="modal" data-bs-target="#addNewCCModal">
+                          <span class="tf-icons ri-check-double-line ri-22px"></span>
+                        </button>
+                      </div>
+                    </div>
+                    <p class="mb-1"><b>Banco:</b> {{ this.honorarioDetalle.banco }}</p>
+                    <p class="mb-1"><b>Cuenta Bancaria:</b> {{ this.honorarioDetalle.cuenta_bancaria }}</p>
+                    <p class="mb-1"><b>Clabe Interbancaria:</b> {{ this.honorarioDetalle.clabe_interbancaria }}</p>
+                  </div>
+                </div>
+              </div>
+              <hr class="mb-6 mt-0" />
+              <div class="card-body pt-0 px-0">
+                <form class="source-item">
+                  <div class="mb-4" data-repeater-list="group-a">
+                    <div class="repeater-wrapper pt-0 pt-md-9" data-repeater-item>
+                      <div class="d-flex border rounded position-relative pe-0">
+                        <div class="row w-100 p-5 gx-5">
+                          <p class="mb-1" style="color: red;">** Recuerda Verificar tu Recibo de Honorario con tu PDF previamente cargado.**</p>
+                          <div class="col-md-3 col-12 mb-md-0 mb-5 mt-2">
+                            <h6 class="h6 repeater-title">Subtotal</h6>
+                            <input type="number" class="form-control invoice-item-price mb-5" v-model="honorarioDetalle.subtotal" placeholder="0.00" min="12" />
+                            <div class="d-flex flex-column gap-2 text-heading">
+
+                              <span>Honorario PDF:</span>
+                              <a class="btn btn-danger d-grid w-100 waves-effect waves-light" target="_blank" :href="`ArchivosSistema/Honorario/${honorarioDetalle.archivo_recibo}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
+                                <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                  <i class="ri-file-pdf-2-fill ri-16px me-2"></i>Ver</span>
+                              </a>
+                            </div>
+                          </div>
+                          <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
+                            <h6 class="h6 repeater-title">IVA</h6>
+                            <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.iva" placeholder="0.00" min="1" max="50" />
+                          </div>
+                          <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
+                            <h6 class="h6 repeater-title">IVA Retenido</h6>
+                            <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.iva_retenido" placeholder="0.00" min="1" max="50" />
+                          </div>
+                          <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
+                            <h6 class="h6 repeater-title">ISR</h6>
+                            <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.isr" placeholder="0.00" min="1" max="50" />
+                          </div>
+                          <div class="col-md-2 col-12 pe-0">
+                            <h6 class="h6 repeater-title">Total</h6>
+                            <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.total" placeholder="0.00" min="1" max="50" />
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- /Invoice Edit-->
+
+          <!-- Invoice Actions -->
+          <div class="col-lg-3 col-12 invoice-actions">
+            <div class="card mb-6">
+              <div class="card-body">
+                <button class="btn btn-success d-grid w-100 mb-4" @click="AgregarHonorario()">
+                  <span class="d-flex align-items-center justify-content-center text-nowrap">
+                    <i class="ri-money-dollar-circle-line ri-16px scaleX-n1-rtl me-2"></i>Guardar Honorario</span>
+                </button>
+                <button class="btn btn-danger d-grid w-100" @click="vista(0)">
+                  <span class="d-flex align-items-center justify-content-center text-nowrap">
+                    <i class="ri-close-circle-line ri-16px me-2"></i>Cancelar Honorario</span>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div class="d-flex justify-content-between mb-4">
+                <p class="mb-1" style="color: red;">** Recuerda Verificar tu Recibo de Honorario con tu PDF previamente cargado.**</p>
+              </div>
+              
+            </div>
+            
+          </div>
+          <!-- /Invoice Actions -->
+        </div>
+      </div>
+      <!-- Vista edicion -->
+      <div v-if="this.muestra == 2">
+        <div class="row invoice-edit">
+          <!-- Invoice Edit-->
+          <div class="col-lg-9 col-12 mb-lg-0 mb-6">
+            <div class="card invoice-preview-card p-sm-12 p-6">
+              <div class="card-body invoice-preview-header rounded-4 text-heading p-6 px-3">
+                <div class="row mx-0 px-3 row-gap-6">
+                  <div class="col-md-6 ps-0">
+                    <div class="d-flex svg-illustration align-items-center gap-2 mb-6">
+                      <span class="app-brand-logo demo">
+                          <img src="style/logos/logo-_amfpro_pro_color.png" alt="logo" width="250px">
+                      </span>
+                    </div>
+                    <!-- <p class="mb-1">Av. Industria Automotriz n.33 int. 203</p>
+                    <p class="mb-1">Col. Parque Industrial Lerma, Lerma, Estado de México. CP. 52004</p>
+                    <p class="mb-0">+728 690 6040</p> -->
+                  </div>
+                  <div class="col-md-6 col-8 pe-0 ps-0 ps-md-2">
+                    <dl class="row mb-0 gx-4">
+                      <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
+                        <span class="h5 text-capitalize mb-0 text-nowrap">No.Recibo</span>
+                      </dt>
+                      <dd class="col-sm-7">
+                        <div class="input-group input-group-merge input-group-sm">
+                          <span class="input-group-text">#</span>
+                          <input type="text" class="form-control" v-model="honorarioDetalle.numero_recibo" id="invoiceId" />
+                        </div>
+                      </dd>
+                      
+                    </dl>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body py-6 px-0">
+                <div class="row">
+                  <div class="col-md-6 col-sm-7">
+                    <h6>Honorario a:</h6>
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td class="pe-4">Nombre:</td>
+                          <td>{{this.honorarioDetalle.nombre_honorario}}</td>
+                        </tr>
+                        <tr>
+                          <td class="pe-4">RFC:</td>
+                          <td><input type="text" class="form-control" v-model="honorarioDetalle.RFC" id="RFC" /></td>
+                        </tr>
+                        <tr>
+                          <td class="pe-4">Sede:</td>
+                          <td>{{this.honorarioDetalle.sede}}</td>
+                        </tr>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-md-6 col-sm-5 col-12 mb-sm-0 mb-6">
+                    <h6>Datos Bancarios:</h6>
+                    <select class="form-select mb-4 w-60" @change="selectBanco()" v-model="detallebanco" >
+                      <option value="Selecciona un Dato Bancario">Selecciona un Dato Bancario</option>
+                      <option v-for="(db, index) in DatoBancario" :key="index" :value="db">{{db.banco}}</option>
+                    </select>
+                    <p class="mb-1"><b>Banco:</b> {{ this.honorarioDetalle.banco }}</p>
+                    <p class="mb-1"><b>Cuenta Bancaria:</b> {{ this.honorarioDetalle.cuenta_bancaria }}</p>
+                    <p class="mb-1"><b>Clabe Interbancaria:</b> {{ this.honorarioDetalle.clabe_interbancaria }}</p>
+                  </div>
+                </div>
+              </div>
+              <hr class="mb-6 mt-0" />
+              <div class="card-body pt-0 px-0">
+                <form class="source-item">
+                  <div class="mb-4" data-repeater-list="group-a">
+                    <div class="repeater-wrapper pt-0 pt-md-9" data-repeater-item>
+                      <div class="d-flex border rounded position-relative pe-0">
+                        <div class="row w-100 p-5 gx-5">
+                          <p class="mb-1" style="color: red;"><b>Motivo de rechazo: </b>{{honorarioDetalle.nota}}</p>
+                          <div class="col-md-3 col-12 mb-md-0 mb-5 mt-2">
+                            <h6 class="h6 repeater-title">Subtotal</h6>
+                            <input type="number" class="form-control invoice-item-price mb-5" v-model="honorarioDetalle.subtotal" placeholder="0.00" min="12" />
+                            <div class="d-flex flex-column gap-2 text-heading">
+                              <span>Honorario PDF:</span>
+                              <a class="btn btn-danger d-grid w-100 waves-effect waves-light" target="_blank" :href="`ArchivosSistema/Honorario/${honorarioDetalle.archivo_recibo}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
+                                <span class="d-flex align-items-center justify-content-center text-nowrap">
+                                  <i class="ri-file-pdf-2-fill ri-16px me-2"></i>Ver</span>
+                              </a>
+                            </div>
+                          </div>
+                          <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
+                            <h6 class="h6 repeater-title">IVA</h6>
+                            <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.iva" placeholder="0.00" min="1" max="50" />
+                          </div>
+                          <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
+                            <h6 class="h6 repeater-title">IVA Retenido</h6>
+                            <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.iva_retenido" placeholder="0.00" min="1" max="50" />
+                          </div>
+                          <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
+                            <h6 class="h6 repeater-title">ISR</h6>
+                            <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.isr" placeholder="0.00" min="1" max="50" />
+                          </div>
+                          <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
+                            <h6 class="h6 repeater-title">Total</h6>
+                            <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.total" placeholder="0.00" min="1" max="50" />
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- /Invoice Edit-->
+
+          <!-- Invoice Actions -->
+          <div class="col-lg-3 col-12 invoice-actions">
+            <div class="card mb-6">
+              <div class="card-body">
+                <button class="btn btn-success d-grid w-100 mb-4" @click="UpdateHonorario()">
+                  <span class="d-flex align-items-center justify-content-center text-nowrap">
+                    <i class="ri-money-dollar-circle-line ri-16px scaleX-n1-rtl me-2"></i>Editar Honorario</span>
+                </button>
+                <button class="btn btn-danger d-grid w-100" @click="vista(0)">
+                  <span class="d-flex align-items-center justify-content-center text-nowrap">
+                    <i class="ri-close-circle-line ri-16px me-2"></i>Cancelar Honorario</span>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div class="d-flex justify-content-between mb-4">
+                <p class="mb-1" style="color: red;">** Recuerda Verificar tu Recibo de Honorario con tu PDF previamente cargado.**</p>
+              </div>
+              
+            </div>
+            
+          </div>
+          <!-- /Invoice Actions -->
+        </div>
+      </div>
+      <!-- vista detalle -->
+      <div v-if="this.muestra == 3">
+        <div class="row invoice-preview">
+          <!-- Invoice -->
+          <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-6">
+            <div class="card invoice-preview-card p-sm-12 p-6">
+              <div class="card-body invoice-preview-header rounded-4 p-6">
+                <div
+                  class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column text-heading align-items-xl-center align-items-md-start align-items-sm-center flex-wrap gap-6">
+                  <div>
+                    <div class="d-flex svg-illustration align-items-center gap-2 mb-6">
+                      <span class="app-brand-logo demo">
+                        <img src="style/logos/logo-_amfpro_pro_color.png" alt="logo" width="250px">
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-8 pe-0 ps-0 ps-md-2">
+                        <dl class="row mb-0 gx-4">
+                          <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
+                            <span class="h5 text-capitalize mb-0 text-nowrap">No.Recibo:</span>
+                          </dt>
+                          <dd class="col-sm-7">
+                            <!-- <div class="input-group input-group-merge input-group-sm">
+                              <span class="input-group-text">#</span>
+                              <input type="number" class="form-control" v-model="honorarioDetalle.numero_recibo" id="invoiceId">
+                            </div> -->
+                          </dd>
+                          <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
+                            <span class="fw-normal">{{this.honorarioDetalle.numero_recibo}}</span>
+                          </dt>
+                          <!-- <dd class="col-sm-7">
+                            <input type="text" class="form-control form-control-sm invoice-date flatpickr-input" placeholder="12/13/2013" readonly="readonly">
+                          </dd>
+                          <dt class="col-sm-5 d-md-flex align-items-center justify-content-start">
+                            <span class="fw-normal text-nowrap">Due Date:</span>
+                          </dt>
+                          <dd class="col-sm-7 mb-0">
+                            <input type="text" class="form-control form-control-sm due-date flatpickr-input" placeholder="4/23/2023" readonly="readonly">
+                          </dd> -->
+                        </dl>
+                      </div>
+                </div>
+              </div>
+              <div class="card-body py-6 px-0">
+                <div class="d-flex justify-content-between flex-wrap gap-6">
+                  <div>
+                    <h6>Honorario:</h6>
+                    <p class="mb-1">Nombre: {{ this.honorarioDetalle.nombre_honorario }}</p>
+                    <p class="mb-1">Sede: {{this.honorarioDetalle.sede}}</p>
+                    <p class="mb-1">RFC: {{this.honorarioDetalle.RFC}}</p>
+                  </div>
+                  <div>
+                    <h6>Datos Bancarios:</h6>
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td class="pe-4">Banco:</td>
+                          <td>{{this.honorarioDetalle.banco}}</td>
+                        </tr>
+                        <tr>
+                          <td class="pe-4">Cuenta Bancaria:</td>
+                          <td>{{ this.honorarioDetalle.cuenta_bancaria }}</td>
+                        </tr>
+                        <tr>
+                          <td class="pe-4">Cuenta Interbancaria:</td>
+                          <td>{{this.honorarioDetalle.clabe_interbancaria}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="table-responsive border rounded-4 border-bottom-0">
+                <table class="table m-0">
                   <thead>
                     <tr>
-                      <th>#</th>
-                      <th>Nombre</th>
-                      <th>RFC</th>
                       <th>Subtotal</th>
                       <th>Iva</th>
                       <th>Iva Retenido</th>
                       <th>ISR</th>
                       <th>Total</th>
-                      <th>Estatus</th>
-                      <th>Acciones</th>
                     </tr>
                   </thead>
-                  <tbody class="table-border-bottom-0">
-                    <tr v-for="(dh, index) in DetalleHonorario" :key="index">
-                      <td>{{ index+1 }}</td>
-                      <td>{{dh.nombre_honorario}}</td>
-                      <td>{{ dh.RFC === null ? 'N/A' : dh.RFC }}</td>
-                      <td>${{ formatPrice(dh.subtotal) }}</td>
-                      <td>${{ formatPrice(dh.iva) }}</td>
-                      <td>${{ formatPrice(dh.iva_retenido) }}</td>
-                      <td>${{ formatPrice(dh.isr) }}</td>
-                      <td>${{ formatPrice(dh.total) }}</td>
-                      <td><span :class="`badge rounded-pill bg-label-${dh.color} me-1`">{{dh.text}}</span></td>
-                      <td>
-                        <button type="button" class="btn btn-sm btn-danger waves-effect waves-light" @click="ArchivoPDF(dh)" v-if="dh.estatus == 1">
-                          Subir PDF
-                        </button>
-                        <button type="button" class="btn btn-icon btn-outline-info waves-effect" v-if="dh.estatus == 2" @click="infoHonorario(dh),vista(2)" >
-                          <span class="tf-icons ri-edit-2-fill ri-22px"></span>
-                        </button>
-                        <button type="button" class="btn btn-icon btn-outline-warning waves-effect" v-if="dh.estatus == 0" @click="infoHonorario(dh),vista(3)" >
-                          <span class="tf-icons ri-file-text-fill ri-22px"></span>
-                        </button>
-                      </td>
+                  <tbody>
+                    <tr>
+                      <td class="text-nowrap text-heading">${{formatPrice(this.honorarioDetalle.subtotal)}}</td>
+                      <td class="text-nowrap">${{ formatPrice(this.honorarioDetalle.iva) }}</td>
+                      <td> ${{ formatPrice(this.honorarioDetalle.iva_retenido) }}</td>
+                      <td>${{ formatPrice(this.honorarioDetalle.isr) }}</td>
+                      <td>${{this.honorarioDetalle.total}}</td>
                     </tr>
                   </tbody>
                 </table>
+              </div>  
+            </div>
+          </div>
+          <!-- /Invoice -->
+
+          <!-- Invoice Actions -->
+          <div class="col-xl-3 col-md-4 col-12 invoice-actions">
+            <div class="card">
+              <div class="card-body">
+                <button class="btn btn-danger d-grid w-100 mb-4" @click="vista(0)">
+                  <span class="d-flex align-items-center justify-content-center text-nowrap">
+                    <i class="ri-send-plane-line ri-16px scaleX-n1-rtl me-2"></i>Regresar</span>
+                </button>
               </div>
             </div>
           </div>
+          <!-- /Invoice Actions -->
         </div>
-        <div v-if="this.muestra == 1">
-          <div class="row invoice-edit">
-            <!-- Invoice Edit-->
-            <div class="col-lg-9 col-12 mb-lg-0 mb-6">
-              <div class="card invoice-preview-card p-sm-12 p-6">
-                <div class="card-body invoice-preview-header rounded-4 text-heading p-6 px-3">
-                  <div class="row mx-0 px-3 row-gap-6">
-                    <div class="col-md-6 ps-0">
-                      <div class="d-flex svg-illustration align-items-center gap-2 mb-6">
-                        <span class="app-brand-logo demo">
-                            <img src="style/logos/logo-_amfpro_pro_color.png" alt="logo" width="250px">
-                        </span>
-                      </div>
-                      <!-- <p class="mb-1">Av. Industria Automotriz n.33 int. 203</p>
-                      <p class="mb-1">Col. Parque Industrial Lerma, Lerma, Estado de México. CP. 52004</p>
-                      <p class="mb-0">+728 690 6040</p> -->
-                    </div>
-                    <div class="col-md-6 col-8 pe-0 ps-0 ps-md-2">
-                      <dl class="row mb-0 gx-4">
-                        <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
-                          <span class="h5 text-capitalize mb-0 text-nowrap">No.Recibo</span>
-                        </dt>
-                        <dd class="col-sm-7">
-                          <div class="input-group input-group-merge input-group-sm">
-                            <span class="input-group-text">#</span>
-                            <input type="text" class="form-control" v-model="honorarioDetalle.numero_recibo" id="invoiceId" />
-                          </div>
-                        </dd>
-                        
-                      </dl>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="card-body py-6 px-0">
-                  <div class="row">
-                    <div class="col-md-6 col-sm-7">
-                      <h6>Honorario a:</h6>
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td class="pe-4">Nombre:</td>
-                            <td>{{this.honorarioDetalle.nombre_honorario}}</td>
-                          </tr>
-                          <tr>
-                            <td class="pe-4">RFC:</td>
-                            <td><input type="text" class="form-control" v-model="honorarioDetalle.RFC" id="RFC" /></td>
-                          </tr>
-                          <tr>
-                            <td class="pe-4">Sede:</td>
-                            <td>{{this.honorarioDetalle.sede}}</td>
-                          </tr>
-                          
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="col-md-6 col-sm-2 col-12 mb-sm-0 mb-6">
-                      <h6>Datos Bancarios:</h6>
-                      <div class="row">
-                        <div class="col-md-6 col-sm-8">
-                          <select class="form-select mb-4 w-100" @change="selectBanco()" v-model="detallebanco" >
-                            <option value="Selecciona un Dato Bancario">Selecciona un Dato Bancario</option>
-                            <option v-for="(db, index) in DatoBancario" :key="index" :value="db">{{db.banco}}</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6 col-sm-2">
-                          <button type="button" class="btn rounded-pill btn-icon btn-outline-primary waves-effect" data-bs-toggle="modal" data-bs-target="#addNewCCModal">
-                            <span class="tf-icons ri-check-double-line ri-22px"></span>
+      </div>
+        <!-- Agregar Dato Bancario -->
+        <div class="modal fade" id="addNewCCModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
+              <div class="modal-content">
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <div class="modal-body p-0">
+                  <div class="text-center mb-6">
+                      <h4 class="mb-2">Añadir Nuevo Dato Bancario</h4>
+                  </div>
+                  <form id="addNewCCForm" class="row g-5" onsubmit="return false">
+                      <div class="col-6">
+                          <div class="input-group input-group-merge">
+                              <div class="form-floating form-floating-outline">
+                                  <input id="modalAddCard" name="modalAddCard" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                  aria-describedby="modalAddCard2" v-model="newBancario.numero_tarjeta"/>
+                                  <label for="modalAddCard">Número de Tarjeta</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="input-group input-group-merge">
+                              <div class="form-floating form-floating-outline">
+                                  <input id="cuenta" name="cuenta" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                  aria-describedby="cuenta2" v-model="newBancario.cuenta_bancaria"/>
+                                  <label for="cuenta">Cuenta Bancaria</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="input-group input-group-merge">
+                              <div class="form-floating form-floating-outline">
+                                  <input id="clabe" name="clabe" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
+                                  aria-describedby="clabe2" v-model="newBancario.clabe_bancaria"/>
+                                  <label for="clabe">Clabe Bancaria</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-12 col-md-6">
+                          <div class="form-floating form-floating-outline">
+                              <select id="tipo_tarjeta" name="tipo_tarjeta" class="form-select" v-model="newBancario.tipo_tarjeta">
+                                  <option value="Selecciona">Selecciona</option>
+                                  <option value="credito">Crédito</option>
+                                  <option value="debito nomina">Débito Nomina</option>
+                                  <option value="debito empresarial">Débito Empresarial</option>
+                                  <option value="debito personal">Débito Personal</option>
+                                  <option value="servicios">Servicios</option>
+                              </select>
+                              <label for="tipo_tarjeta">Tipo de Tarjeta</label>
+                          </div>
+                      </div>
+                      <div class="col-12 col-md-12">
+                          <div class="form-floating form-floating-outline">
+                              <select id="banco" name="banco" class="form-select" v-model="newBancario.banco">
+                                  <option value="Seleccionar Banco">Seleccionar Banco</option>
+                                  <option value="BBVA BANCOMER">BBVA BANCOMER</option>
+                                  <option value="BANORTE">BANORTE</option>
+                                  <option value="CITI BANAMEX">CITI BANAMEX</option>
+                                  <option value="SANTANDER">SANTANDER</option>
+                                  <option value="HSBC">HSBC</option>
+                                  <option value="INBURSA">INBURSA</option>
+                                  <option value="MIFEL">MIFEL</option>
+                                  <option value="SCOTIABANK">SCOTIABANK</option>
+                                  <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
+                                  <option value="BANCO AZTECA">BANCO AZTECA</option>
+                                  <option value="BANCOPPEL">BANCOPPEL</option>
+                                  <option value="AFIRME">AFIRME</option>
+                                  <option value="BANBAJIO">BANBAJÍO</option>
+                              </select>
+                              <label for="banco">Banco</label>
+                          </div>
+                      </div>
+                      
+                      <div class="col-12 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
+                          <button type="button" class="btn btn-success" @click="createBancario()">Guardar</button>
+                          <button type="reset" class="btn btn-outline-danger btn-reset" data-bs-dismiss="modal" aria-label="Close">
+                              Cancelar
                           </button>
-                        </div>
                       </div>
-                      <p class="mb-1"><b>Banco:</b> {{ this.honorarioDetalle.banco }}</p>
-                      <p class="mb-1"><b>Cuenta Bancaria:</b> {{ this.honorarioDetalle.cuenta_bancaria }}</p>
-                      <p class="mb-1"><b>Clabe Interbancaria:</b> {{ this.honorarioDetalle.clabe_interbancaria }}</p>
-                    </div>
-                  </div>
-                </div>
-                <hr class="mb-6 mt-0" />
-                <div class="card-body pt-0 px-0">
-                  <form class="source-item">
-                    <div class="mb-4" data-repeater-list="group-a">
-                      <div class="repeater-wrapper pt-0 pt-md-9" data-repeater-item>
-                        <div class="d-flex border rounded position-relative pe-0">
-                          <div class="row w-100 p-5 gx-5">
-                            <p class="mb-1" style="color: red;">** Recuerda Verificar tu Recibo de Honorario con tu PDF previamente cargado.**</p>
-                            <div class="col-md-3 col-12 mb-md-0 mb-5 mt-2">
-                              <h6 class="h6 repeater-title">Subtotal</h6>
-                              <input type="number" class="form-control invoice-item-price mb-5" v-model="honorarioDetalle.subtotal" placeholder="0.00" min="12" />
-                              <div class="d-flex flex-column gap-2 text-heading">
-
-                                <span>Honorario PDF:</span>
-                                <a class="btn btn-danger d-grid w-100 waves-effect waves-light" target="_blank" :href="`ArchivosSistema/Honorario/${honorarioDetalle.archivo_recibo}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
-                                  <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                    <i class="ri-file-pdf-2-fill ri-16px me-2"></i>Ver</span>
-                                </a>
-                              </div>
-                            </div>
-                            <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
-                              <h6 class="h6 repeater-title">IVA</h6>
-                              <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.iva" placeholder="0.00" min="1" max="50" />
-                            </div>
-                            <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
-                              <h6 class="h6 repeater-title">IVA Retenido</h6>
-                              <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.iva_retenido" placeholder="0.00" min="1" max="50" />
-                            </div>
-                            <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
-                              <h6 class="h6 repeater-title">ISR</h6>
-                              <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.isr" placeholder="0.00" min="1" max="50" />
-                            </div>
-                            <div class="col-md-2 col-12 pe-0">
-                              <h6 class="h6 repeater-title">Total</h6>
-                              <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.total" placeholder="0.00" min="1" max="50" />
-                            </div>
-                          </div>
-                          
-                        </div>
-                      </div>
-                    </div>
-                    
                   </form>
-                </div>
+                  </div>
               </div>
-            </div>
-            <!-- /Invoice Edit-->
-
-            <!-- Invoice Actions -->
-            <div class="col-lg-3 col-12 invoice-actions">
-              <div class="card mb-6">
-                <div class="card-body">
-                  <button class="btn btn-success d-grid w-100 mb-4" @click="AgregarHonorario()">
-                    <span class="d-flex align-items-center justify-content-center text-nowrap">
-                      <i class="ri-money-dollar-circle-line ri-16px scaleX-n1-rtl me-2"></i>Guardar Honorario</span>
-                  </button>
-                  <button class="btn btn-danger d-grid w-100" @click="vista(0)">
-                    <span class="d-flex align-items-center justify-content-center text-nowrap">
-                      <i class="ri-close-circle-line ri-16px me-2"></i>Cancelar Honorario</span>
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between mb-4">
-                  <p class="mb-1" style="color: red;">** Recuerda Verificar tu Recibo de Honorario con tu PDF previamente cargado.**</p>
-                </div>
-                
-              </div>
-              
-            </div>
-            <!-- /Invoice Actions -->
           </div>
-        </div>
-        <div v-if="this.muestra == 2">
-          <div class="row invoice-edit">
-            <!-- Invoice Edit-->
-            <div class="col-lg-9 col-12 mb-lg-0 mb-6">
-              <div class="card invoice-preview-card p-sm-12 p-6">
-                <div class="card-body invoice-preview-header rounded-4 text-heading p-6 px-3">
-                  <div class="row mx-0 px-3 row-gap-6">
-                    <div class="col-md-6 ps-0">
-                      <div class="d-flex svg-illustration align-items-center gap-2 mb-6">
-                        <span class="app-brand-logo demo">
-                            <img src="style/logos/logo-_amfpro_pro_color.png" alt="logo" width="250px">
-                        </span>
-                      </div>
-                      <!-- <p class="mb-1">Av. Industria Automotriz n.33 int. 203</p>
-                      <p class="mb-1">Col. Parque Industrial Lerma, Lerma, Estado de México. CP. 52004</p>
-                      <p class="mb-0">+728 690 6040</p> -->
-                    </div>
-                    <div class="col-md-6 col-8 pe-0 ps-0 ps-md-2">
-                      <dl class="row mb-0 gx-4">
-                        <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
-                          <span class="h5 text-capitalize mb-0 text-nowrap">No.Recibo</span>
-                        </dt>
-                        <dd class="col-sm-7">
-                          <div class="input-group input-group-merge input-group-sm">
-                            <span class="input-group-text">#</span>
-                            <input type="text" class="form-control" v-model="honorarioDetalle.numero_recibo" id="invoiceId" />
-                          </div>
-                        </dd>
-                        
-                      </dl>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="card-body py-6 px-0">
-                  <div class="row">
-                    <div class="col-md-6 col-sm-7">
-                      <h6>Honorario a:</h6>
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td class="pe-4">Nombre:</td>
-                            <td>{{this.honorarioDetalle.nombre_honorario}}</td>
-                          </tr>
-                          <tr>
-                            <td class="pe-4">RFC:</td>
-                            <td><input type="text" class="form-control" v-model="honorarioDetalle.RFC" id="RFC" /></td>
-                          </tr>
-                          <tr>
-                            <td class="pe-4">Sede:</td>
-                            <td>{{this.honorarioDetalle.sede}}</td>
-                          </tr>
-                          
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="col-md-6 col-sm-5 col-12 mb-sm-0 mb-6">
-                      <h6>Datos Bancarios:</h6>
-                      <select class="form-select mb-4 w-60" @change="selectBanco()" v-model="detallebanco" >
-                        <option value="Selecciona un Dato Bancario">Selecciona un Dato Bancario</option>
-                        <option v-for="(db, index) in DatoBancario" :key="index" :value="db">{{db.banco}}</option>
-                      </select>
-                      <p class="mb-1"><b>Banco:</b> {{ this.honorarioDetalle.banco }}</p>
-                      <p class="mb-1"><b>Cuenta Bancaria:</b> {{ this.honorarioDetalle.cuenta_bancaria }}</p>
-                      <p class="mb-1"><b>Clabe Interbancaria:</b> {{ this.honorarioDetalle.clabe_interbancaria }}</p>
-                    </div>
-                  </div>
-                </div>
-                <hr class="mb-6 mt-0" />
-                <div class="card-body pt-0 px-0">
-                  <form class="source-item">
-                    <div class="mb-4" data-repeater-list="group-a">
-                      <div class="repeater-wrapper pt-0 pt-md-9" data-repeater-item>
-                        <div class="d-flex border rounded position-relative pe-0">
-                          <div class="row w-100 p-5 gx-5">
-                            <p class="mb-1" style="color: red;"><b>Motivo de rechazo: </b>{{honorarioDetalle.nota}}</p>
-                            <div class="col-md-3 col-12 mb-md-0 mb-5 mt-2">
-                              <h6 class="h6 repeater-title">Subtotal</h6>
-                              <input type="number" class="form-control invoice-item-price mb-5" v-model="honorarioDetalle.subtotal" placeholder="0.00" min="12" />
-                              <div class="d-flex flex-column gap-2 text-heading">
-                                <span>Honorario PDF:</span>
-                                <a class="btn btn-danger d-grid w-100 waves-effect waves-light" target="_blank" :href="`ArchivosSistema/Honorario/${honorarioDetalle.archivo_recibo}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
-                                  <span class="d-flex align-items-center justify-content-center text-nowrap">
-                                    <i class="ri-file-pdf-2-fill ri-16px me-2"></i>Ver</span>
-                                </a>
-                              </div>
-                            </div>
-                            <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
-                              <h6 class="h6 repeater-title">IVA</h6>
-                              <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.iva" placeholder="0.00" min="1" max="50" />
-                            </div>
-                            <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
-                              <h6 class="h6 repeater-title">IVA Retenido</h6>
-                              <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.iva_retenido" placeholder="0.00" min="1" max="50" />
-                            </div>
-                            <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
-                              <h6 class="h6 repeater-title">ISR</h6>
-                              <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.isr" placeholder="0.00" min="1" max="50" />
-                            </div>
-                            <div class="col-md-2 col-12 mb-md-0 mb-4 mt-2">
-                              <h6 class="h6 repeater-title">Total</h6>
-                              <input type="number" class="form-control invoice-item-qty" v-model="honorarioDetalle.total" placeholder="0.00" min="1" max="50" />
-                            </div>
-                          </div>
-                          
-                        </div>
-                      </div>
-                    </div>
-                    
-                  </form>
-                </div>
-              </div>
-            </div>
-            <!-- /Invoice Edit-->
-
-            <!-- Invoice Actions -->
-            <div class="col-lg-3 col-12 invoice-actions">
-              <div class="card mb-6">
-                <div class="card-body">
-                  <button class="btn btn-success d-grid w-100 mb-4" @click="UpdateHonorario()">
-                    <span class="d-flex align-items-center justify-content-center text-nowrap">
-                      <i class="ri-money-dollar-circle-line ri-16px scaleX-n1-rtl me-2"></i>Editar Honorario</span>
-                  </button>
-                  <button class="btn btn-danger d-grid w-100" @click="vista(0)">
-                    <span class="d-flex align-items-center justify-content-center text-nowrap">
-                      <i class="ri-close-circle-line ri-16px me-2"></i>Cancelar Honorario</span>
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between mb-4">
-                  <p class="mb-1" style="color: red;">** Recuerda Verificar tu Recibo de Honorario con tu PDF previamente cargado.**</p>
-                </div>
-                
-              </div>
-              
-            </div>
-            <!-- /Invoice Actions -->
-          </div>
-        </div>
-        <div v-if="this.muestra == 3">
-          <div class="row invoice-preview">
-            <!-- Invoice -->
-            <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-6">
-              <div class="card invoice-preview-card p-sm-12 p-6">
-                <div class="card-body invoice-preview-header rounded-4 p-6">
-                  <div
-                    class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column text-heading align-items-xl-center align-items-md-start align-items-sm-center flex-wrap gap-6">
-                    <div>
-                      <div class="d-flex svg-illustration align-items-center gap-2 mb-6">
-                        <span class="app-brand-logo demo">
-                          <img src="style/logos/logo-_amfpro_pro_color.png" alt="logo" width="250px">
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-md-4 col-8 pe-0 ps-0 ps-md-2">
-                          <dl class="row mb-0 gx-4">
-                            <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
-                              <span class="h5 text-capitalize mb-0 text-nowrap">No.Recibo:</span>
-                            </dt>
-                            <dd class="col-sm-7">
-                              <!-- <div class="input-group input-group-merge input-group-sm">
-                                <span class="input-group-text">#</span>
-                                <input type="number" class="form-control" v-model="honorarioDetalle.numero_recibo" id="invoiceId">
-                              </div> -->
-                            </dd>
-                            <dt class="col-sm-5 mb-2 d-md-flex align-items-center justify-content-start">
-                              <span class="fw-normal">{{this.honorarioDetalle.numero_recibo}}</span>
-                            </dt>
-                            <!-- <dd class="col-sm-7">
-                              <input type="text" class="form-control form-control-sm invoice-date flatpickr-input" placeholder="12/13/2013" readonly="readonly">
-                            </dd>
-                            <dt class="col-sm-5 d-md-flex align-items-center justify-content-start">
-                              <span class="fw-normal text-nowrap">Due Date:</span>
-                            </dt>
-                            <dd class="col-sm-7 mb-0">
-                              <input type="text" class="form-control form-control-sm due-date flatpickr-input" placeholder="4/23/2023" readonly="readonly">
-                            </dd> -->
-                          </dl>
-                        </div>
-                  </div>
-                </div>
-                <div class="card-body py-6 px-0">
-                  <div class="d-flex justify-content-between flex-wrap gap-6">
-                    <div>
-                      <h6>Honorario:</h6>
-                      <p class="mb-1">Nombre: {{ this.honorarioDetalle.nombre_honorario }}</p>
-                      <p class="mb-1">Sede: {{this.honorarioDetalle.sede}}</p>
-                      <p class="mb-1">RFC: {{this.honorarioDetalle.RFC}}</p>
-                    </div>
-                    <div>
-                      <h6>Datos Bancarios:</h6>
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td class="pe-4">Banco:</td>
-                            <td>{{this.honorarioDetalle.banco}}</td>
-                          </tr>
-                          <tr>
-                            <td class="pe-4">Cuenta Bancaria:</td>
-                            <td>{{ this.honorarioDetalle.cuenta_bancaria }}</td>
-                          </tr>
-                          <tr>
-                            <td class="pe-4">Cuenta Interbancaria:</td>
-                            <td>{{this.honorarioDetalle.clabe_interbancaria}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="table-responsive border rounded-4 border-bottom-0">
-                  <table class="table m-0">
-                    <thead>
-                      <tr>
-                        <th>Subtotal</th>
-                        <th>Iva</th>
-                        <th>Iva Retenido</th>
-                        <th>ISR</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="text-nowrap text-heading">${{formatPrice(this.honorarioDetalle.subtotal)}}</td>
-                        <td class="text-nowrap">${{ formatPrice(this.honorarioDetalle.iva) }}</td>
-                        <td> ${{ formatPrice(this.honorarioDetalle.iva_retenido) }}</td>
-                        <td>${{ formatPrice(this.honorarioDetalle.isr) }}</td>
-                        <td>${{this.honorarioDetalle.total}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>  
-              </div>
-            </div>
-            <!-- /Invoice -->
-
-            <!-- Invoice Actions -->
-            <div class="col-xl-3 col-md-4 col-12 invoice-actions">
-              <div class="card">
-                <div class="card-body">
-                  <button class="btn btn-danger d-grid w-100 mb-4" @click="vista(0)">
-                    <span class="d-flex align-items-center justify-content-center text-nowrap">
-                      <i class="ri-send-plane-line ri-16px scaleX-n1-rtl me-2"></i>Regresar</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!-- /Invoice Actions -->
-          </div>
-
-        </div>
-         <!-- Agregar Dato Bancario -->
-         <div class="modal fade" id="addNewCCModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered1 modal-simple modal-add-new-cc">
-                <div class="modal-content">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <div class="modal-body p-0">
-                    <div class="text-center mb-6">
-                        <h4 class="mb-2">Añadir Nuevo Dato Bancario</h4>
-                    </div>
-                    <form id="addNewCCForm" class="row g-5" onsubmit="return false">
-                        <div class="col-6">
-                            <div class="input-group input-group-merge">
-                                <div class="form-floating form-floating-outline">
-                                    <input id="modalAddCard" name="modalAddCard" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
-                                    aria-describedby="modalAddCard2" v-model="newBancario.numero_tarjeta"/>
-                                    <label for="modalAddCard">Número de Tarjeta</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="input-group input-group-merge">
-                                <div class="form-floating form-floating-outline">
-                                    <input id="cuenta" name="cuenta" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
-                                    aria-describedby="cuenta2" v-model="newBancario.cuenta_bancaria"/>
-                                    <label for="cuenta">Cuenta Bancaria</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="input-group input-group-merge">
-                                <div class="form-floating form-floating-outline">
-                                    <input id="clabe" name="clabe" class="form-control credit-card-mask" type="text" placeholder="1356 3215 6548 7898" 
-                                    aria-describedby="clabe2" v-model="newBancario.clabe_bancaria"/>
-                                    <label for="clabe">Clabe Bancaria</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="form-floating form-floating-outline">
-                                <select id="tipo_tarjeta" name="tipo_tarjeta" class="form-select" v-model="newBancario.tipo_tarjeta">
-                                    <option value="Selecciona">Selecciona</option>
-                                    <option value="credito">Crédito</option>
-                                    <option value="debito nomina">Débito Nomina</option>
-                                    <option value="debito empresarial">Débito Empresarial</option>
-                                    <option value="debito personal">Débito Personal</option>
-                                    <option value="servicios">Servicios</option>
-                                </select>
-                                <label for="tipo_tarjeta">Tipo de Tarjeta</label>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-12">
-                            <div class="form-floating form-floating-outline">
-                                <select id="banco" name="banco" class="form-select" v-model="newBancario.banco">
-                                    <option value="Seleccionar Banco">Seleccionar Banco</option>
-                                    <option value="BBVA BANCOMER">BBVA BANCOMER</option>
-                                    <option value="BANORTE">BANORTE</option>
-                                    <option value="CITI BANAMEX">CITI BANAMEX</option>
-                                    <option value="SANTANDER">SANTANDER</option>
-                                    <option value="HSBC">HSBC</option>
-                                    <option value="INBURSA">INBURSA</option>
-                                    <option value="MIFEL">MIFEL</option>
-                                    <option value="SCOTIABANK">SCOTIABANK</option>
-                                    <option value="AMERICAN EXPRESS">AMERICAN EXPRESS</option>
-                                    <option value="BANCO AZTECA">BANCO AZTECA</option>
-                                    <option value="BANCOPPEL">BANCOPPEL</option>
-                                    <option value="AFIRME">AFIRME</option>
-                                    <option value="BANBAJIO">BANBAJÍO</option>
-                                </select>
-                                <label for="banco">Banco</label>
-                            </div>
-                        </div>
-                       
-                        <div class="col-12 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                            <button type="button" class="btn btn-success" @click="createBancario()">Guardar</button>
-                            <button type="reset" class="btn btn-outline-danger btn-reset" data-bs-dismiss="modal" aria-label="Close">
-                                Cancelar
-                            </button>
-                        </div>
-                    </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br><br><br><br><br><br><br>
+      </div>
+      <br><br><br><br><br><br><br>
     </div>
 </template>
 <script>
@@ -557,33 +561,32 @@ export default {
   },
   mixins: [],
   props: {
-      user_id: null,
+    user_id: null,
   },
   data() {
-      return {
-          muestra:0,
-          DetalleHonorario:[],
-          honorarioDetalle:[],
-          DatoBancario:[],
-          detallebanco:'Selecciona un Dato Bancario',
-          newBancario:{
-            id_user:this.id_usuario_logeado,
-            nombre:this.name_usuario_logeado,
-            clabe_bancaria:'',
-            cuenta_bancaria:'',
-            numero_tarjeta:'',
-            tipo_tarjeta:'Selecciona',
-            banco:'Seleccionar Banco',
-          }
-
+    return {
+      muestra:0,
+      DetalleHonorario:[],
+      honorarioDetalle:[],
+      DatoBancario:[],
+      detallebanco:'Selecciona un Dato Bancario',
+      newBancario:{
+        id_user:this.id_usuario_logeado,
+        nombre:this.name_usuario_logeado,
+        clabe_bancaria:'',
+        cuenta_bancaria:'',
+        numero_tarjeta:'',
+        tipo_tarjeta:'Selecciona',
+        banco:'Seleccionar Banco',
       }
+    }
   },
   computed: {
       
   },
   created() {
-        this.$on('iniciaHonorario', this.getHonorario);
-    },
+    this.$on('iniciaHonorario', this.getHonorario);
+  },
   mounted() {
 
   },
@@ -802,9 +805,9 @@ export default {
       });
       
     },
-    infoHonorario(dh){
-      this.honorarioDetalle = dh;
-    },
+      infoHonorario(dh){
+        this.honorarioDetalle = dh;
+      },
     UpdateHonorario(){
       if (this.honorarioDetalle.RFC == '') {
         this.$toast.error("Ingresa tu RFC", {

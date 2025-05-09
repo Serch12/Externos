@@ -207,9 +207,10 @@ class HonorariosController extends Controller
             $file = $request->file('file');
             if(isset($file)){
                 $file = $request->file('file');
-                $nombre = $file->getClientOriginalName();
+                $nombre = $file->getClientOriginalExtension();
                 $hoy = Carbon::today()->format('Ymd'); 
-                $url = $hoy."-".$request->nombre_honorario."-".$nombre;
+
+                $url = $hoy."-". strtoupper(str_replace(' ', '_', $request->nombre_honorario)) . '.'. $nombre;
                 \Storage::disk('honorario')->put($url, \File::get($file));
                 $edit->archivo_recibo = $url;
             }
@@ -306,5 +307,42 @@ class HonorariosController extends Controller
         $date->total_honorario = $total_pago;
         $date->save();
         return $date;
+    }
+
+
+    /* FUNCIONES DE HISTORIAL DE HONORARIOS */
+
+    /**
+     * funcion que mostrara el historial de honorarios
+     **/
+    public function HistorialHonorario($id) {
+        $historial = DetalleHonorarios::where('user_id',$id)->where('estatus',3)->get();
+        // $valida = $this->EstatusHono($detalle);
+        $banco = DatoBancario::where('id_user',$id)->get();
+        return response()->json(['historial' => $historial, 'banco' => $banco]);
+    }
+
+    /**
+     * funcion que mostrara el historial de honorarios
+     **/
+    public function HistorialAdmin() {
+        $historial = DetalleHonorarios::select('*')
+        ->where('user_id','!=',0)
+        ->where('estatus','!=',3)
+        ->get();
+
+        foreach ($historial as $value) {
+
+            if ($value->estatus == 0) {
+                $value->color = 'success';
+                $value->text = 'Entregado';
+            }
+            if ($value->estatus == 1) {
+                $value->color = 'danger';
+                $value->text = 'No Entregado';
+            }
+        }
+
+        return response()->json(['historial' => $historial]);
     }
 }

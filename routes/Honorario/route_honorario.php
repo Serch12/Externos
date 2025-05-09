@@ -7,9 +7,9 @@ Route::get('/honorario/DetalleHonorario/{id}', [HonorariosController::class, 'De
 Route::post('/honorario/lectorPDF', [HonorariosController::class, 'lectorPDF'])->name('honorario/lectorPDF');
 Route::post('/honorario/AgregarHonorario', [HonorariosController::class, 'AgregarHonorario'])->name('honorario/AgregarHonorario');
 Route::post('/honorario/UpdateHonorario', [HonorariosController::class, 'UpdateHonorario'])->name('honorario/UpdateHonorario');
-// Route::post('/jugadores/updateJugador', [HonorariosController::class, 'updateJugador'])->name('jugadores/updateJugador');
-// Route::post('/jugadores/createTutor', [HonorariosController::class, 'createTutor'])->name('jugadores/createTutor');
-// Route::post('/jugadores/cambioEstatus', [HonorariosController::class, 'cambioEstatus'])->name('jugadores/cambioEstatus');
-// Route::post('/jugadores/deleteJugador', [HonorariosController::class, 'deleteJugador'])->name('jugadores/deleteJugador');
-// Route::post('/jugadores/deleteArchivo/{id}',  [HonorariosController::class, 'deleteArchivo'])->name('jugadores/deleteArchivo/{id}');
-// Route::post('/jugadores/verificaDorsal', [HonorariosController::class, 'verificaDorsal'])->name('jugadores/verificaDorsal');
+
+
+/* Rutas Honorario Historial */
+
+Route::get('/honorario/HistorialHonorario/{id}', [HonorariosController::class, 'HistorialHonorario'])->name('honorario/HistorialHonorario/{id}');
+Route::get('/honorario/HistorialAdmin', [HonorariosController::class, 'HistorialAdmin'])->name('honorario/HistorialAdmin');
