@@ -185,7 +185,7 @@ class HonorariosController extends Controller
      * FUNCION QUE LEE EL ARCHIVO PDF
      **/
 
-     private function extract($text, $pattern){
+    private function extract($text, $pattern){
         preg_match($pattern, $text, $matches);
         return $matches[1] ?? null;
     }
