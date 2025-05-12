@@ -80,12 +80,12 @@ class HonorariosController extends Controller
 
         
 
-        if ($hoy->day === 1) {
+        if ($hoy->day === 12) {
             $new = new Honorarios();
             $new ->id_usuario = 6;
             $new -> nombre_usuario = 'Angelica Cabrera';
             $new -> fecha_pago = $fecha;
-            $new -> concepto = 'HONORARIOS EXTERNOS ' . $mesActual;
+            $new -> concepto = 'HONORARIOS EXTRAS TALENTOS ' . $mesActual;
             $new -> total_honorario = '0.00';
             $new -> modulo = 'Externos';
             $new ->estatus = 0;
@@ -111,7 +111,7 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 12) {
+        if ($hoy->day === 10) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
@@ -132,18 +132,18 @@ class HonorariosController extends Controller
 
             // Enviar notificacion de finalizacion de ho
 
-            $notificacion =
-                ['descripcion' => 'Tienes una nueva solicitud Honorarios Externos', 
-                'id_user_de' => 6,
-                'id_user_para' => 6,
-                'modulo' => 'Pago de honorarios',
-                'detalle_notificacion' => 'En revisión',
-                'url' => 'pago-honorarios'];
+            // $notificacion =
+            //     ['descripcion' => 'Tienes una nueva solicitud Honorarios Externos', 
+            //     'id_user_de' => 6,
+            //     'id_user_para' => 6,
+            //     'modulo' => 'Pago de honorarios',
+            //     'detalle_notificacion' => 'En revisión',
+            //     'url' => 'pago-honorarios'];
             
 
-            $response = Http::withOptions([
-                'verify' => false,
-            ])->asJson()->post('https://localhost/IntranetAMF/public/api/notificaciones-externos', $notificacion);
+            // $response = Http::withOptions([
+            //     'verify' => false,
+            // ])->asJson()->post('https://localhost/IntranetAMF/public/api/notificaciones-externos', $notificacion);
 
             
         }
