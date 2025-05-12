@@ -111,14 +111,16 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 15) {
+        if ($hoy->day === 12) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
             
             $registro = Honorarios::whereYear('fecha_pago', $añoActual)
                 ->whereMonth('fecha_pago', $mesActual)
+                 ->orderBy('created_at', 'desc') 
                 ->first();
+            dd($registro);
 
             $edit = Honorarios::find($registro->id_pago_honorario);
             $edit->estatus = 1;
