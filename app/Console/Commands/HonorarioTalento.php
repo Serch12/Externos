@@ -4,21 +4,21 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class HonorarioComando extends Command
+class HonorarioTalento extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'creacion:honorario';
+    protected $signature = 'honorario:talento';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Creacion de Honorario';
+    protected $description = 'Creacion y desactivacion de honorarios talentos';
 
     /**
      * Create a new command instance.
@@ -37,7 +37,6 @@ class HonorarioComando extends Command
      */
     public function handle()
     {
-
-        app('App\Http\Controllers\HonorariosController')->validaHonorario();
+        app('App\Http\Controllers\HonorariosController')->TalentoHonorario();
     }
 }
