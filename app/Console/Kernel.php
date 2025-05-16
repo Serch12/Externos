@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\ValidaNotificacion',
         'App\Console\Commands\ActivacionBanner',
         'App\Console\Commands\EnvioCorreoComando',
-        'App\Console\Commands\HonorarioComando',
+        'App\Console\Commands\HonorarioTalento',
+        'App\Console\Commands\HonorarioExterno',
     ];
 
     /**
