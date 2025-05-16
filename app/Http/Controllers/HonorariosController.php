@@ -57,17 +57,16 @@ class HonorariosController extends Controller
         }
     }
 
-
     /**
-     * Funcion que realizara el formato de honorario y como tambein la habilitacion de cada detalle para cada usuario en el sistema
+     * Funcion que realizara el formato de honorario y como tambein la habilitacion de cada detalle para cada usuario en el sistema DE EXTERNOS 
      **/
-    public function validaHonorario(){
+    public function ExternoHonorario(){
         $hoy = Carbon::now();
         $fecha = $hoy->format('Y-m-d');
         $mesActual = $hoy->format('Y-m');
 
 
-        $usuario = DB::table('users')
+        $usuarioexterno = DB::table('users')
         ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
         ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
         ->join('role_has_permissions', 'roles.id', '=', 'role_has_permissions.role_id')
@@ -75,27 +74,27 @@ class HonorariosController extends Controller
         ->join('tbl_sedes', 'users.sede', '=', 'tbl_sedes.id_sede')
         ->select('roles.name as rol', 'users.id', 'users.name', 'users.email','users.sede', 'tbl_sedes.nombre' ,DB::raw('GROUP_CONCAT(permissions.name) as permisos'))
         ->groupBy('users.id', 'users.name', 'users.email', 'roles.name','users.sede','tbl_sedes.nombre')
-        ->whereIn('roles.name', ['Cuerpo Tecnico', 'CM', 'Asesor Juridico','Asesor','Auxiliar Técnico'])
+        ->whereIn('roles.name', ['CM', 'Asesor Juridico','Asesor'])
         ->get();
 
-        
 
         if ($hoy->day === 1) {
             $new = new Honorarios();
             $new ->id_usuario = 6;
             $new -> nombre_usuario = 'Angelica Cabrera';
             $new -> fecha_pago = $fecha;
-            $new -> concepto = 'HONORARIOS EXTRAS TALENTOS ' . $mesActual;
+            $new -> concepto = 'HONORARIOS EXTERNOS ' . $mesActual;
             $new -> total_honorario = '0.00';
             $new -> modulo = 'Externos';
             $new ->estatus = 0;
             $new ->save();   
             
             // Guardar los detalles de honorarios
-            foreach ($usuario as $user) {
+            foreach ($usuarioexterno as $user) {
                 $newdetalle = new DetalleHonorarios();
                 $newdetalle -> id_pago_honorario = $new -> id_pago_honorario;
                 $newdetalle -> user_id = $user -> id;
+                $newdetalle -> modulo = 'Externos';
                 $newdetalle -> nombre_honorario = $user->name;
                 $newdetalle -> sede = $user->nombre;
                 $newdetalle -> id_honorario = 0;
@@ -111,12 +110,13 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 15) {
+        if ($hoy->day === 10) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
             
             $registro = Honorarios::whereYear('fecha_pago', $añoActual)
+                ->where('modulo','Externos')
                 ->whereMonth('fecha_pago', $mesActual)
                 ->orderBy('created_at', 'desc') 
                 ->first();
@@ -131,23 +131,87 @@ class HonorariosController extends Controller
                 $det->save();
             }
 
-            // Enviar notificacion de finalizacion de ho
-
-            // $notificacion =
-            //     ['descripcion' => 'Tienes una nueva solicitud Honorarios Externos', 
-            //     'id_user_de' => 6,
-            //     'id_user_para' => 6,
-            //     'modulo' => 'Pago de honorarios',
-            //     'detalle_notificacion' => 'En revisión',
-            //     'url' => 'pago-honorarios'];
-            
-
-            // $response = Http::withOptions([
-            //     'verify' => false,
-            // ])->asJson()->post('https://localhost/IntranetAMF/public/api/notificaciones-externos', $notificacion);
-
             
         }
+    }
+
+
+    /**
+     * Funcion que realizara el formato de honorario y como tambein la habilitacion de cada detalle para cada usuario en el sistema DE TALENTOS
+     **/
+    public function TalentoHonorario(){
+        $hoy = Carbon::now();
+        $fecha = $hoy->format('Y-m-d');
+        $mesActual = $hoy->format('Y-m');
+
+        $tecnicos = DB::table('users')
+        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+        ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+        ->join('role_has_permissions', 'roles.id', '=', 'role_has_permissions.role_id')
+        ->join('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
+        ->join('tbl_sedes', 'users.sede', '=', 'tbl_sedes.id_sede')
+        ->select('roles.name as rol', 'users.id', 'users.name', 'users.email','users.sede', 'tbl_sedes.nombre' ,DB::raw('GROUP_CONCAT(permissions.name) as permisos'))
+        ->groupBy('users.id', 'users.name', 'users.email', 'roles.name','users.sede','tbl_sedes.nombre')
+        ->whereIn('roles.name', ['Cuerpo Tecnico', 'Auxiliar Técnico'])
+        ->get();
+
+        
+        if ($hoy->day === 1) {
+            $new = new Honorarios();
+            $new ->id_usuario = 6;
+            $new -> nombre_usuario = 'Angelica Cabrera';
+            $new -> fecha_pago = $fecha;
+            $new -> concepto = 'HONORARIOS TALENTOS ' . $mesActual;
+            $new -> total_honorario = '0.00';
+            $new -> modulo = 'Talentos';
+            $new ->estatus = 0;
+            $new ->save();   
+            
+            // Guardar los detalles de honorarios
+            foreach ($tecnicos as $user) {
+                $newdetalle = new DetalleHonorarios();
+                $newdetalle -> id_pago_honorario = $new -> id_pago_honorario;
+                $newdetalle -> user_id = $user -> id;
+                $newdetalle -> modulo = 'Talentos';
+                $newdetalle -> nombre_honorario = $user->name;
+                $newdetalle -> sede = $user->nombre;
+                $newdetalle -> id_honorario = 0;
+                $newdetalle -> subtotal = 0.00;
+                $newdetalle -> iva = 0.00;
+                $newdetalle -> iva_retenido = 0.00;
+                $newdetalle -> isr = 0.00;
+                $newdetalle -> total = 0.00;
+                $newdetalle -> estatus = 1;
+                $newdetalle -> save();
+            }
+            return $new;
+
+        }
+
+        if ($hoy->day === 10) {
+            // Cambiar el estatus si existe
+            $mesActual = Carbon::now()->format('m');
+            $añoActual = Carbon::now()->format('Y');
+            
+            $registro = Honorarios::whereYear('fecha_pago', $añoActual)
+                ->where('modulo','Talentos')
+                ->whereMonth('fecha_pago', $mesActual)
+                ->orderBy('created_at', 'desc') 
+                ->first();
+
+            $edit = Honorarios::find($registro->id_pago_honorario);
+            $edit->estatus = 1;
+            $edit->save();
+
+            $detalle = DetalleHonorarios::where('id_pago_honorario',$registro->id_pago_honorario)->get();
+            foreach ($detalle as $det) {
+                $det->estatus = 3;
+                $det->save();
+            }
+            
+        }
+
+       
     }
 
     /**
