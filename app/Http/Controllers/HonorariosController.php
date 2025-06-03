@@ -78,7 +78,7 @@ class HonorariosController extends Controller
         ->get();
 
 
-        if ($hoy->day === 1) {
+        if ($hoy->day === 3) {
             $new = new Honorarios();
             $new ->id_usuario = 6;
             $new -> nombre_usuario = 'Angelica Cabrera';
@@ -156,16 +156,16 @@ class HonorariosController extends Controller
         ->get();
 
         
-        if ($hoy->day === 1) {
+        if ($hoy->day === 3) {
             $new = new Honorarios();
-            $new ->id_usuario = 6;
-            $new -> nombre_usuario = 'Angelica Cabrera';
-            $new -> fecha_pago = $fecha;
-            $new -> concepto = 'HONORARIOS TALENTOS ' . $mesActual;
-            $new -> total_honorario = '0.00';
-            $new -> modulo = 'Talentos';
-            $new ->estatus = 0;
-            $new ->save();   
+            $new->id_usuario = 6;
+            $new->nombre_usuario = 'Angelica Cabrera';
+            $new->fecha_pago = $fecha;
+            $new->concepto = 'HONORARIOS TALENTOS ' . $mesActual;
+            $new->total_honorario = '0.00';
+            $new->modulo = 'Talentos';
+            $new->estatus = 0;
+            $new->save();   
             
             // Guardar los detalles de honorarios
             foreach ($tecnicos as $user) {
