@@ -392,6 +392,7 @@ class HonorariosController extends Controller
      **/
     public function HistorialAdmin() {
         $historial = DetalleHonorarios::select('*')
+        ->whereIn('modulo',['Externos','Talentos'])
         ->where('user_id','!=',0)
         ->where('estatus','!=',3)
         ->get();
