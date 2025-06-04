@@ -324,6 +324,7 @@ class HonorariosController extends Controller
         $edit->isr = $request->isr;
         $edit->total = $request->total;
         $edit->numero_recibo = $request->numero_recibo;
+        $edit -> nota = 'Sin Nota';
         $edit->estatus = 0;
         $edit->save();
 
@@ -356,7 +357,7 @@ class HonorariosController extends Controller
         $edit->isr = $request->isr;
         $edit->total = $request->total;
         $edit->numero_recibo = $request->numero_recibo;
-        $edit->nota = null;
+        $edit -> nota = 'Sin Nota';
         $edit->estatus = 0;
         $edit->save();
 
