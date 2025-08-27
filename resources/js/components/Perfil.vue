@@ -9,10 +9,7 @@
                         </div>
                         <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-5">
                             <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                                <img
-                                :src="`ArchivosSistema/Documentacion/${this.Perfil.foto}`"
-                                alt="user image"
-                                class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img" />
+                                <img :src="`ArchivosSistema/Documentacion/${this.Perfil.foto}`" alt="user image" class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img" @error="(event)=>onImageError(event)"/>
                             </div>
                             <div class="flex-grow-1 mt-4 mt-sm-12">
                                 <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-6">
@@ -632,7 +629,8 @@ export default {
                 numero_tarjeta:'',
                 tipo_tarjeta:'Selecciona',
                 banco:'Seleccionar Banco',
-            }
+            },
+            backupImageSrc: 'style/logos/sinfoto.png',
         }
     },
     computed: {
@@ -645,6 +643,9 @@ export default {
         this.getPerfil();
     },
     methods: {
+        onImageError(event) {
+            event.target.src = this.backupImageSrc;
+        },
         getPerfil(){
             var url = `perfil/getPerfil?id=${this.id_usuario_logeado}`;
                 axios.get(url).then(response => {

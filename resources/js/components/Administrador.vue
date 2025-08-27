@@ -35,7 +35,7 @@
                                                 <div class="d-flex justify-content-start align-items-center" v-if="user.perfil != null">
                                                     <div class="avatar-wrapper">
                                                         <div class="avatar me-2" >
-                                                            <img :src="`ArchivosSistema/Documentacion/${user.perfil.foto}`" alt="Avatar" class="rounded-circle">
+                                                            <img :src="`ArchivosSistema/Documentacion/${user.perfil.foto}`" alt="Avatar" class="rounded-circle" @error="(event)=>onImageError(event)">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -100,32 +100,28 @@
                             </div>
                             <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-5">
                                 <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                                    <img
-                                    :src="`ArchivosSistema/Documentacion/${this.detalleUsuario.perfil.foto}`"
-                                    alt="user image"
-                                    class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img" />
+                                    <img :src="`ArchivosSistema/Documentacion/${this.detalleUsuario.perfil.foto}`" alt="user image" class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img" @error="(event)=>onImageError(event)"/>
                                 </div>
                                 <div class="flex-grow-1 mt-4 mt-sm-12">
                                     <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-6">
                                         <div class="user-profile-info">
                                             <h4 class="mb-2">{{this.detalleUsuario.name}}</h4>
-                                            <ul
-                                            class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4">
-                                            <li class="list-inline-item">
-                                                <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.rol_name}}</span>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.sede[0].nombre}}</span>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <i class="ri-calendar-line me-2 ri-24px"></i
-                                                ><span class="fw-medium"> Joined April 2021</span>
-                                            </li>
+                                            <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4">
+                                                <li class="list-inline-item">
+                                                    <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.rol_name}}</span>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.sede[0].nombre}}</span>
+                                                </li>
+                                                <!-- <li class="list-inline-item">
+                                                    <i class="ri-calendar-line me-2 ri-24px"></i
+                                                    ><span class="fw-medium"> Joined April 2021</span>
+                                                </li> -->
                                             </ul>
                                         </div>
                                         <div class="alert alert-solid-success d-flex align-items-center" role="alert" v-if="this.detalleUsuario.estatus == 1">
                                             <span class="alert-icon rounded">
-                                            <i class="ri-checkbox-circle-line ri-22px"></i>
+                                                <i class="ri-checkbox-circle-line ri-22px"></i>
                                             </span>
                                             ACTIVO
                                         </div>
@@ -786,6 +782,7 @@
                     'to': 0
                 },
                 offset: 2,
+                backupImageSrc: 'style/logos/sinfoto.png',
             }
         },
         computed: {
@@ -820,6 +817,9 @@
             this.getAdministrador();
         },
         methods: {
+            onImageError(event) {
+                event.target.src = this.backupImageSrc;
+            },
             muestra(valor){
                 this.vista = valor;
             },

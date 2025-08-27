@@ -40,7 +40,7 @@
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
               <div class="avatar avatar-online">
                 @if ($imagen->foto != 'sinfoto')
-                  <img src="{{ asset('ArchivosSistema/Documentacion/'.$imagen->foto)}}" alt class="rounded-circle" />
+                  <img src="{{ asset('ArchivosSistema/Documentacion/'.$imagen->foto)}}" alt class="rounded-circle" onerror="this.onerror=null;this.src='{{ asset('style/logos/sinfoto.png') }}';"/>
                 @else
                 <img src="{{asset('style/logos/sinfoto.png')}}" alt class="rounded-circle" />
                 @endif
@@ -53,7 +53,7 @@
                     <div class="flex-shrink-0 me-2">
                       <div class="avatar avatar-online">
                         @if ($imagen->foto != 'sinfoto')
-                          <img src="{{ asset('ArchivosSistema/Documentacion/'.$imagen->foto)}}" alt class="rounded-circle" />
+                          <img src="{{ asset('ArchivosSistema/Documentacion/'.$imagen->foto)}}" alt class="rounded-circle" onerror="this.onerror=null;this.src='{{ asset('style/logos/sinfoto.png') }}';" />
                         @else
                           <img src="{{asset('style/logos/sinfoto.png')}}" alt class="rounded-circle" />
                         @endif

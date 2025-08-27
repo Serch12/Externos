@@ -39,7 +39,7 @@
                                 <div class="d-flex justify-content-start align-items-center">
                                     <div class="avatar-wrapper">
                                         <div class="avatar me-2" >
-                                          <img :src="`ArchivosSistema/Jugadores/${jur.id_jugador}/${jur.foto}`" alt="Avatar"/>
+                                          <img :src="`ArchivosSistema/Jugadores/${jur.id_jugador}/${jur.foto}`" alt="Avatar" @error="(event)=>onImageError(event)"/>
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                 <nav aria-label="Page navigation example mt-3">
                   <ul class="pagination justify-content-center">
                     <li class="page-item disabled" v-if="pagination.current_page > 1">
-                        <a @click.prevent="changePage(pagination.current_page -1)" class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        <a @click.prevent="changePage(pagination.current_page -1)" class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
                     </li>
                     <li class="page-item" v-for="(page, index) in pageNumber"
                         :key="index" @click.prevent="changePage(page)"
@@ -91,7 +91,7 @@
                         <a class="page-link" href="#">{{ page }}</a>
                     </li>
                     <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                        <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link" href="#">Next</a>
+                        <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link" href="#">Siguiente</a>
                     </li>
                   </ul>
                 </nav>
@@ -671,7 +671,7 @@
               <form id="addNewAddressForm" class="row g-5" onsubmit="return false" v-show="this.stepUpdate == 0">
                 <div class="card-body">
                   <div class="d-flex align-items-start align-items-sm-center gap-6">
-                    <img :src="`ArchivosSistema/Jugadores/${detalleJugador.id_jugador}/${detalleJugador.foto}`" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-if="this.imagenMiniaturaUpdate == ''"/>
+                    <img :src="`ArchivosSistema/Jugadores/${detalleJugador.id_jugador}/${detalleJugador.foto}`" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" @error="(event)=>onImageError(event)" v-if="this.imagenMiniaturaUpdate == ''"/>
                     <img :src="this.imagenMiniaturaUpdate" alt="user-avatar" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-else/>
                     <div class="button-wrapper">
                       <label for="upload_new" class="btn btn-primary me-3 mb-4" tabindex="0">
@@ -919,6 +919,7 @@ export default {
         'from': 0,
         'to': 0
       },
+      backupImageSrc: 'style/logos/sinfoto.png',
       offset: 2,
     }
   },
@@ -955,6 +956,9 @@ export default {
 
   },
   methods: {
+    onImageError(event) {
+      event.target.src = this.backupImageSrc;
+    },
     getJugador(page){
       if (this.search == '') {
                 

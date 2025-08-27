@@ -60,7 +60,7 @@
                                 </ul>
                             </div>
                             <div class="mx-auto my-6">
-                                <img :src="`ArchivosSistema/CuerpoTecnico/${c.id_cuerpo_tecnico}/${c.foto}`" alt="Foto" class="rounded-circle w-px-100" />
+                                <img :src="`ArchivosSistema/CuerpoTecnico/${c.id_cuerpo_tecnico}/${c.foto}`" alt="Foto" class="rounded-circle w-px-100" @error="(event)=>onImageError(event)"/>
                             </div>
                             <h5 class="mb-0 card-title">{{c.nombre}}</h5>
                             <span>{{c.puesto}}</span>
@@ -677,6 +677,8 @@ export default {
                 'from': 0,
                 'to': 0
             },
+            backupImageSrc: 'style/logos/sinfoto.png',
+
             offset: 2,
         }
     },
@@ -714,6 +716,9 @@ export default {
     methods: {
         include(permiso){
             return this.permisos.includes(permiso);
+        },
+        onImageError(event) {
+            event.target.src = this.backupImageSrc;
         },
         muestra(value){
             this.vista = value;
