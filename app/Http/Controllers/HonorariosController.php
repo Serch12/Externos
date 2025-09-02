@@ -78,7 +78,7 @@ class HonorariosController extends Controller
         ->get();
 
 
-        if ($hoy->day === 5) {
+        if ($hoy->day === 2) {
             $new = new Honorarios();
             $new ->id_usuario = 6;
             $new -> nombre_usuario = 'Angelica Cabrera';
@@ -110,7 +110,7 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 18) {
+        if ($hoy->day === 10) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
@@ -156,7 +156,7 @@ class HonorariosController extends Controller
         ->get();
 
         
-        if ($hoy->day === 5) {
+        if ($hoy->day === 2) {
             $new = new Honorarios();
             $new->id_usuario = 6;
             $new->nombre_usuario = 'Angelica Cabrera';
@@ -188,7 +188,7 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 18) {
+        if ($hoy->day === 10) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
