@@ -74,7 +74,7 @@
                                     <img src="style/assets/img_externos/no_hay_honorarios.png" alt="img" style="max-width: 300px;">
                                 </center>
                             </div>
-                            <div class="table-responsive text-nowrap mt-2">
+                            <div class="table-responsive text-nowrap mt-2" v-else>
                                  <table class="table">
                                     <thead>
                                     <tr>
