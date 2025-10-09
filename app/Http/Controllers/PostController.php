@@ -95,13 +95,13 @@ class PostController extends Controller
      */
     public function nuevoPost(Request $request){
 
-        
 
         $post = new Post();
         $post->titulo = $request->titulo;
         $post->subtitulo = $request->subtitulo;
         $post->ruta = $request->ruta;
         $post->fecha = $request->fecha;
+        $post->modulo = $request->modulo;
         $post->categoria = $request->categoria;
         $post->informacion = $request->informacion;
         $post->estatus = 0;
@@ -118,9 +118,26 @@ class PostController extends Controller
                 'image', // Este debe coincidir con el nombre que espera Proyecto B
                 file_get_contents($imagen),
                 $nombre
-            )->post('https://test-intranet.amfpro.mx/api/external-upload');
+            )->post('https://test-intranet.amfpro.mx/public/api/external-upload');
             $data = $response->json();
             $post->imagen_p = $data['filename'];
+        }
+        $imagen_s = $request->file('imagen_s');
+        if(isset($imagen_s)){
+            $imagen_s = $request->file('imagen_s');
+
+            $nombre = $imagen_s->getClientOriginalName();
+
+            // Enviamos la imagen al Proyecto B
+            $response = Http::withOptions([
+                'verify' => false, // ⚠️ Solo si estás usando HTTPS en localhost con certificado autofirmado
+            ])->attach(
+                'image_secu', // Este debe coincidir con el nombre que espera Proyecto B
+                file_get_contents($imagen_s),
+                $nombre
+            )->post('https://test-intranet.amfpro.mx/public/api/external-upload');
+            $data = $response->json();
+            $post->imagen_s = $data['filename'];
         }
         $post->save();
 
@@ -138,7 +155,7 @@ class PostController extends Controller
                     'image',
                     file_get_contents($value),
                     $nombre
-                )->post('https://test-intranet.amfpro.mx/api/external-upload');
+                )->post('https://test-intranet.amfpro.mx/public/api/external-upload');
 
                 if ($response->successful()) {
                     // Guardas como siempre en el Proyecto A

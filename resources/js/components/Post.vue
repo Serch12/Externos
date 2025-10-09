@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <!-- vista alta de torneos -->
+        <!-- vista alta de post -->
         <div id="main" v-if="this.vista == 1">
             <div class="card mb-6">
                 <h5 class="card-header" style="color: green;">Nuevo Post</h5>
@@ -119,7 +119,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <div class="input-group input-group-merge">
                         <div class="form-floating form-floating-outline">
                           <input
@@ -132,9 +132,35 @@
                         </div>
                       </div>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md mb-md-0 mb-2">
+                                <div class="form-check custom-option custom-option-basic">
+                                    <label class="form-check-label custom-option-content" for="radioStandard">
+                                    <input name="23232323332" class="form-check-input" type="radio" value="Sitio Web" id="radioStandard" v-model="nuevoPost.modulo" >
+                                    <span class="custom-option-header">
+                                        <span class="h6 mb-0">Sitio Web</span>
+                                        <!-- <span class="text-body-secondary">Free</span> -->
+                                    </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md mb-md-0 mb-2">
+                                <div class="form-check custom-option custom-option-basic">
+                                    <label class="form-check-label custom-option-content" for="radioExpress">
+                                    <input name="94653646" class="form-check-input" type="radio" value="App" id="radioExpress"  v-model="nuevoPost.modulo">
+                                    <span class="custom-option-header">
+                                        <span class="h6 mb-0">App</span>
+                                        <!-- <span class="text-body-secondary">$5.00</span> -->
+                                    </span>
+                                    
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline" v-show="nuevoPost.modulo == 'Sitio Web'">
                             <select id="categoria" name="categoria" class="form-select" v-model="nuevoPost.categoria">
                                 <option value="Selecciona una Categoria">Selecciona una Categoria</option>
                                 <option value="comunicados">Comunicados</option>
@@ -142,20 +168,43 @@
                             </select>
                             <label for="categoria">Categoria</label>
                         </div>
+                        <div class="form-floating form-floating-outline" v-show="nuevoPost.modulo == 'App'">
+                            <select id="categoria" name="categoria" class="form-select" v-model="nuevoPost.categoria">
+                                <option value="Selecciona una Categoria">Selecciona una Categoria</option>
+                                <option value="e-learning">E-Learning</option>
+                                <option value="femenil">Femenil</option>
+                                <option value="amfpro">AMFPRO</option>
+                            </select>
+                            <label for="categoria">Categoria</label>
+                        </div>
                     </div>
                     <div class="col-12 col-md-6" >
                         <div class="form-floating form-floating-outline mb-6">
                             <input type="file" class="form-control" id="bs-validation-upload-file" accept="image/png,image/jpeg" ref="filesolo" @change="onChangeFileUploadSolo()">
-                            <label for="bs-validation-upload-file">Foto</label>
+                            <label for="bs-validation-upload-file">IMG Principal</label>
                         </div>
                         <div class="file-path-wrapper">
                             <p class="grey-text"><b>Dimensiones: 1440px * 600px | Peso Max. 2MB | Formato: JPG o PNG</b></p>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <figure v-show="imagenMiniatura != ''">
-                            <img width="120" height="120" :src="imagen" alt="imagen principal post">
-                        </figure>
+                     <div class="col-12 col-md-6" >
+                        <div class="form-floating form-floating-outline mb-6">
+                            <input type="file" class="form-control" id="bs-validation-upload-file" accept="image/png,image/jpeg" ref="filetwo" @change="onChangeFileUploadTwo()">
+                            <label for="bs-validation-upload-file">IMG Secundaria</label>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <p class="grey-text"><b>Dimensiones: 1440px * 600px | Peso Max. 2MB | Formato: JPG o PNG</b></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" v-show="imagenMiniatura != ''">
+                        <center>
+                                <img :src="imagen" alt="user-avatar" class="d-block rounded-4" id="uploadedAvataqqr" style="max-width: 200px; max-height: 200px;"></img>
+                        </center>
+                    </div>
+                    <div class="col-md-6" v-show="imagenSecu != ''">
+                        <center>
+                                <img :src="imagenTwo" alt="user-avatar" class="d-block rounded-4" id="uploadedAvataqqr" style="max-width: 200px; max-height: 200px;"></img>
+                        </center>
                     </div>
                     <h6>Galeria</h6>
                     <div class="col-md-12">
@@ -367,12 +416,13 @@
             return {
                 vista:0,
                 nuevoPost: {
-                    titulo:'', subtitulo: '', ruta:'', imagen_sola:'', imagenes:'', fecha:'', categoria:'Selecciona una Categoria',
+                    titulo:'', subtitulo: '', ruta:'', imagen_sola:'', imagen_s:'', imagenes:'', fecha:'', modulo:'Sitio Web', categoria:'Selecciona una Categoria',
                     informacion:''
                 },
                 imagenMiniatura:'',
+                imagenSecu:'',
                 editaPost: {
-                    id_p:'',titulo:'', subtitulo: '', ruta:'', imagen_sola:'', imagenes:'', fecha:'', categoria:'Selecciona una Categoria',
+                    id_p:'',titulo:'', subtitulo: '', ruta:'', imagen_sola:'', imagen_s:'', imagenes:'', fecha:'', modulo:'', categoria:'Selecciona una Categoria',
                     informacion:''
                 },
                 search:'',
@@ -430,6 +480,9 @@
             imagen(){
                 return this.imagenMiniatura
             },
+            imagenTwo(){
+                return this.imagenSecu
+            },
             
         },
         watch: {
@@ -479,6 +532,7 @@
                     }
                 this.contentEditar=''
                 this.imagenMiniatura =''
+                this.imagenSecu = ''
             },
             infoEditar(lp){
                 this.editaPost.id_p = lp.id_p
@@ -513,6 +567,23 @@
                 this.nuevoPost.imagen_sola = this.file
                 this.cargarImagen(this.file)
             },
+            onChangeFileUploadTwo(){
+                this.filetwo = this.$refs.filetwo.files[0];
+                console.log(this.filetwo);
+                if (this.filetwo.type != 'image/png' && this.filetwo.type != 'image/jpeg') {
+                    Swal.fire({
+                        title: 'Error',
+                        text: "Solo se permiten archivos PNG y JPEG",
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                    this.$refs.filetwo.value = null;
+                    return;
+                }
+                this.nuevoPost.imagen_s = this.filetwo
+                this.cargarImagenTwo(this.filetwo)
+            },
             onChangeFileUploadSoloEditar(){
                 this.fileeditar = this.$refs.filesoloeditar.files[0];
                 // console.log(this.file);
@@ -530,55 +601,63 @@
                 this.editaPost.imagen_sola = this.fileeditar
                 this.cargarImagen(this.fileeditar)
             },
-                cargarImagen(file){
-                    let reader = new FileReader();
+            cargarImagen(file){
+                let reader = new FileReader();
 
-                    reader.onload = (e) => {
-                        this.imagenMiniatura = e.target.result
-                    }
-                    reader.readAsDataURL(file)
-                },
-                onChangeFileUploadCarousel(){
-                    this.nuevalista = '';
-                    this.listaImagenes = []
-                    this.$forceUpdate();
-                    this.fileimagenes = this.$refs.filecarousel.files;
-                    for (let index = 0; index < this.$refs.filecarousel.files.length; index++) {
-                        if (this.fileimagenes[index].type != 'image/png' && this.fileimagenes[index] != 'image/jpeg') {
-                            Swal.fire({
-                                title: 'Error',
-                                text: "Solo se permiten archivos PNG y JPEG!",
-                                icon: 'error',
-                                showConfirmButton: false,
-                                timer: 2500,
-                            });
-                            this.$refs.filecarousel.value = null;
-                            $('#imagenes').val('');
-                            return;
-                        }
-                        this.listaImagenes.push(this.fileimagenes[index].name)
+                reader.onload = (e) => {
+                    this.imagenMiniatura = e.target.result
+                }
+                reader.readAsDataURL(file)
+            },
+            cargarImagenTwo(file){
+                let reader = new FileReader();
 
-                    }
-                    this.nuevoPost.imagenes = this.fileimagenes
-                    this.nuevalista = Array.from(this.fileimagenes);
-                    console.log(this.nuevalista)
-                    console.log(this.listaImagenes)
-
-                },
-                quitaImagen(index, id){
-                    this.carruselImagenes.splice(index,1)
-                    axios.delete(`post/eliminaImagen/${id}`).then((res)=>{
+                reader.onload = (e) => {
+                    this.imagenSecu = e.target.result
+                }
+                reader.readAsDataURL(file)
+            },
+            onChangeFileUploadCarousel(){
+                this.nuevalista = '';
+                this.listaImagenes = []
+                this.$forceUpdate();
+                this.fileimagenes = this.$refs.filecarousel.files;
+                for (let index = 0; index < this.$refs.filecarousel.files.length; index++) {
+                    if (this.fileimagenes[index].type != 'image/png' && this.fileimagenes[index] != 'image/jpeg') {
                         Swal.fire({
-                            title: 'Éxito',
-                            text: "Se Elimino correctamente!",
-                            icon: 'success',
+                            title: 'Error',
+                            text: "Solo se permiten archivos PNG y JPEG!",
+                            icon: 'error',
                             showConfirmButton: false,
                             timer: 2500,
                         });
-                    })
+                        this.$refs.filecarousel.value = null;
+                        $('#imagenes').val('');
+                        return;
+                    }
+                    this.listaImagenes.push(this.fileimagenes[index].name)
 
-                },
-            crearPost(){
+                }
+                this.nuevoPost.imagenes = this.fileimagenes
+                this.nuevalista = Array.from(this.fileimagenes);
+                console.log(this.nuevalista)
+                console.log(this.listaImagenes)
+
+            },
+            quitaImagen(index, id){
+                this.carruselImagenes.splice(index,1)
+                axios.delete(`post/eliminaImagen/${id}`).then((res)=>{
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: "Se Elimino correctamente!",
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                })
+
+            },
+            crearPost(){  
 
                 this.nuevoPost.informacion = this.content;
                 if (this.nuevoPost.titulo == '') {
@@ -649,8 +728,42 @@
                     });
                     return;
                 }
+                 if (this.nuevoPost.imagen_s === '') {
+                    this.$toast.error("Debes adjuntar una Imagen Secundaria", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
                 if (this.nuevoPost.fecha === '') {
                     this.$toast.error("Debes seleccionar una Fecha", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.nuevoPost.modulo === '') {
+                    this.$toast.error("Debes seleccionar una Modulo", {
                         position: "top-center",
                         timeout: 1270,
                         closeOnClick: true,
@@ -705,29 +818,28 @@
                 formData.append('subtitulo', this.nuevoPost.subtitulo);
                 formData.append('ruta', this.nuevoPost.ruta);
                 formData.append('imagen_sola', this.nuevoPost.imagen_sola);
+                formData.append('imagen_s', this.nuevoPost.imagen_s);
                 const files = this.$refs.myVueDropzone.getAcceptedFiles();
 
                 for (let i = 0; i < files.length; i++) {
                     formData.append('files[' + i + ']', files[i]);
                 }
                 formData.append('fecha', this.nuevoPost.fecha);
+                formData.append('modulo', this.nuevoPost.modulo);
                 formData.append('categoria', this.nuevoPost.categoria);
                 formData.append('informacion', this.nuevoPost.informacion);
+                $('#modalloading').modal('show');
                 axios.post('post/nuevo',formData).then(res =>{
-                    Swal.fire({
-                        title: 'Éxito',
-                        text: "Se Guardo correctamente!",
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 2500,
-                    });
+
                     this.nuevoPost= {
                         titulo:'',
                         subtitulo: '',
                         ruta:'',
                         imagen_sola:'',
+                        imagen_s:'',
                         imagenes:'',
                         fecha:'',
+                        modulo:'',
                         categoria:'Selecciona categoria',
                         informacion:''
                     }
@@ -735,6 +847,14 @@
                     $('#imagenes').val('');
                     $('#input-file-now').val('');
                     this.getPost();
+                $('#modalloading').modal('hide');
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: "Se Guardo correctamente!",
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 })
 
             },
