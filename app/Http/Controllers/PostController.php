@@ -208,7 +208,25 @@ class PostController extends Controller
                 $nombre
             )->post('https://test-intranet.amfpro.mx/api/external-upload');
             $data = $response->json();
-            $post->imagen_p = $data['filename'];
+            $edita->imagen_p = $data['filename'];
+        }
+
+        $imagen_s = $request->file('imagen_s');
+        if(isset($imagen_s)){
+            $imagen_s = $request->file('imagen_s');
+
+            $nombre = $imagen_s->getClientOriginalName();
+
+            // Enviamos la imagen al Proyecto B
+            $response = Http::withOptions([
+                'verify' => false, // ⚠️ Solo si estás usando HTTPS en localhost con certificado autofirmado
+            ])->attach(
+                'image_secu', // Este debe coincidir con el nombre que espera Proyecto B
+                file_get_contents($imagen_s),
+                $nombre
+            )->post('https://test-intranet.amfpro.mx/api/external-upload');
+            $data = $response->json();
+            $edita->imagen_s = $data['filename'];
         }
         $edita->titulo = $request->titulo;
         $edita->subtitulo = $request->subtitulo;

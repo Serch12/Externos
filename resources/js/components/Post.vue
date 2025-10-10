@@ -187,7 +187,7 @@
                             <p class="grey-text"><b>Dimensiones: 1440px * 600px | Peso Max. 2MB | Formato: JPG o PNG</b></p>
                         </div>
                     </div>
-                     <div class="col-12 col-md-6" >
+                    <div class="col-12 col-md-6" >
                         <div class="form-floating form-floating-outline mb-6">
                             <input type="file" class="form-control" id="bs-validation-upload-file" accept="image/png,image/jpeg" ref="filetwo" @change="onChangeFileUploadTwo()">
                             <label for="bs-validation-upload-file">IMG Secundaria</label>
@@ -284,7 +284,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <div class="input-group input-group-merge">
                         <div class="form-floating form-floating-outline">
                           <input
@@ -297,13 +297,48 @@
                         </div>
                       </div>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <div class="form-floating form-floating-outline">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md mb-md-0 mb-2">
+                                <div class="form-check custom-option custom-option-basic">
+                                    <label class="form-check-label custom-option-content" for="radioStandard">
+                                    <input name="hfjrhfierf" class="form-check-input" type="radio" value="Sitio Web" id="radioStandard" v-model="editaPost.modulo" >
+                                    <span class="custom-option-header">
+                                        <span class="h6 mb-0">Sitio Web</span>
+                                        <!-- <span class="text-body-secondary">Free</span> -->
+                                    </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md mb-md-0 mb-2">
+                                <div class="form-check custom-option custom-option-basic">
+                                    <label class="form-check-label custom-option-content" for="radioExpress">
+                                    <input name="kñlefkñlew" class="form-check-input" type="radio" value="App" id="radioExpress"  v-model="editaPost.modulo">
+                                    <span class="custom-option-header">
+                                        <span class="h6 mb-0">App</span>
+                                        <!-- <span class="text-body-secondary">$5.00</span> -->
+                                    </span>
+                                    
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating form-floating-outline" v-show="editaPost.modulo == 'Sitio Web'">
                             <select id="categoria" name="categoria" class="form-select" v-model="editaPost.categoria">
                                 <option value="Selecciona una Categoria">Selecciona una Categoria</option>
                                 <option value="comunicados">Comunicados</option>
                                 <option value="noticias">Noticias</option>
+                            </select>
+                            <label for="categoria">Categoria</label>
+                        </div>
+                        <div class="form-floating form-floating-outline" v-show="editaPost.modulo == 'App'">
+                            <select id="categoria" name="categoria" class="form-select" v-model="editaPost.categoria">
+                                <option value="Selecciona una Categoria">Selecciona una Categoria</option>
+                                <option value="e-learning">E-Learning</option>
+                                <option value="femenil">Femenil</option>
+                                <option value="amfpro">AMFPRO</option>
                             </select>
                             <label for="categoria">Categoria</label>
                         </div>
@@ -318,7 +353,26 @@
                             <p class="grey-text"><b>Dimensiones: 1440px * 600px | Peso Max. 2MB | Formato: JPG o PNG</b></p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-6" >
+                        <div class="form-floating form-floating-outline mb-6">
+                            <input type="file" class="form-control" id="bs-validation-upload-file" accept="image/png,image/jpeg" ref="filetwo" @change="onChangeFileUploadTwoUpdate()">
+                            <label for="bs-validation-upload-file">IMG Secundaria</label>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <p class="grey-text"><b>Dimensiones: 1440px * 600px | Peso Max. 2MB | Formato: JPG o PNG</b></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" v-show="imagenMiniatura != ''">
+                        <center>
+                            <img :src="`https://test-intranet.amfpro.mx/ArchivosSistema/Post/${editaPost.imagen_sola}`" alt="user-avatar" class="d-block rounded-4" id="uploadedAvataqqr" style="max-width: 200px; max-height: 200px;"></img>
+                        </center>
+                    </div>
+                    <div class="col-md-6" v-show="imagenSecu != ''">
+                        <center>
+                                <img :src="imagenTwo" alt="user-avatar" class="d-block rounded-4" id="uploadedAvataqqr" style="max-width: 200px; max-height: 200px;"></img>
+                        </center>
+                    </div>
+                    <!-- <div class="col-md-6">
                         <figure v-if="imagenMiniatura == ''">
                             <img width="150" 
                             height="190"
@@ -332,7 +386,7 @@
                             :src="imagen"
                             alt="imagen principal post">
                         </figure>
-                    </div>
+                    </div> -->
                     <h6>Galeria</h6>
                     <div class="col-md-12">
                          <a href="#*" v-for="(imagen, index) in carruselImagenes" :key="index"  >
@@ -540,6 +594,7 @@
                 this.editaPost.subtitulo = lp.subtitulo
                 this.editaPost.ruta = lp.ruta
                 this.editaPost.fecha = lp.fecha
+                this.editaPost.modulo = lp.modulo
                 this.editaPost.categoria = lp.categoria
                 this.editaPost.informacion = lp.informacion
                 this.editaPost.imagen_sola = lp.imagen_p
@@ -1055,6 +1110,7 @@
                     formData.append('filesEdita[' + i + ']', files[i]);
                 }
                 formData.append('fecha', this.editaPost.fecha);
+                formData.append('modulo', this.editaPost.modulo);
                 formData.append('categoria', this.editaPost.categoria);
                 formData.append('informacion', this.contentEditar);
                 axios.post(`post/edita/${this.editaPost.id_p}`,formData).then(res =>{
