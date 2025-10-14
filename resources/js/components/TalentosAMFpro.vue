@@ -788,7 +788,7 @@ export default {
                 }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                    
+                        $('#modalloading').modal('show');
                         let formData = new FormData();
                             for (let i = 0; i < this.galeriaBanner.length; i++) {
                                 formData.append('img[' + i + ']', this.galeriaBanner[i].img);
@@ -798,6 +798,7 @@ export default {
                         axios.post('talentos/createBanner',formData).then(response=>{
                             this.galeriaBanner = [];
                             this.getBanner();
+                            $('#modalloading').modal('hide');
                             Swal.fire({
                                 title: 'Éxito',
                                 text: "Se Agrego Correctamente!",
@@ -806,7 +807,6 @@ export default {
                                 timer: 2500,
                             });
                         })
-
                     }
                 });
             }
