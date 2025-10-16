@@ -184,8 +184,8 @@
                             <label for="bs-validation-upload-file">IMG Principal</label>
                         </div>
                         <div class="file-path-wrapper">
-                            <p class="grey-text"><b>Dimensiones: 1440px * 600px | Peso Max. 2MB | Formato: JPG o PNG</b></p>
-                        </div>
+                            <p class="grey-text"><b></b></p>
+                        </div>Dimensiones: 1440px * 600px | Peso Max. 2MB | Formato: JPG o PNG
                     </div>
                     <div class="col-12 col-md-6" >
                         <div class="form-floating form-floating-outline mb-6">
@@ -301,8 +301,8 @@
                         <div class="row">
                             <div class="col-md mb-md-0 mb-2">
                                 <div class="form-check custom-option custom-option-basic">
-                                    <label class="form-check-label custom-option-content" for="radioStandard">
-                                    <input name="hfjrhfierf" class="form-check-input" type="radio" value="Sitio Web" id="radioStandard" v-model="editaPost.modulo" >
+                                    <label class="form-check-label custom-option-content" for="radioStandard_update">
+                                    <input name="update_modulo" class="form-check-input" type="radio" value="Sitio Web" id="radioStandard_update" v-model="editaPost.modulo" >
                                     <span class="custom-option-header">
                                         <span class="h6 mb-0">Sitio Web</span>
                                         <!-- <span class="text-body-secondary">Free</span> -->
@@ -312,8 +312,8 @@
                             </div>
                             <div class="col-md mb-md-0 mb-2">
                                 <div class="form-check custom-option custom-option-basic">
-                                    <label class="form-check-label custom-option-content" for="radioExpress">
-                                    <input name="kñlefkñlew" class="form-check-input" type="radio" value="App" id="radioExpress"  v-model="editaPost.modulo">
+                                    <label class="form-check-label custom-option-content" for="radioExpress_update">
+                                    <input name="update_modulo" class="form-check-input" type="radio" value="App" id="radioExpress_update"  v-model="editaPost.modulo">
                                     <span class="custom-option-header">
                                         <span class="h6 mb-0">App</span>
                                         <!-- <span class="text-body-secondary">$5.00</span> -->
@@ -362,37 +362,23 @@
                             <p class="grey-text"><b>Dimensiones: 1440px * 600px | Peso Max. 2MB | Formato: JPG o PNG</b></p>
                         </div>
                     </div>
-                    <div class="col-md-6" v-show="imagenMiniatura != ''">
+                    <div class="col-md-6">
                         <center>
-                            <img :src="`https://test-intranet.amfpro.mx/ArchivosSistema/Post/${editaPost.imagen_sola}`" alt="user-avatar" class="d-block rounded-4" id="uploadedAvataqqr" style="max-width: 200px; max-height: 200px;"></img>
+                            <img :src="`${this.url}/ArchivosSistema/Post/${editaPost.imagen_sola}`" alt="user-avatar" class="d-block rounded-4" id="uploadedAvataqqr" style="max-width: 200px; max-height: 200px;"></img>
                         </center>
                     </div>
-                    <div class="col-md-6" v-show="imagenSecu != ''">
+                    <div class="col-md-6">
                         <center>
-                                <img :src="imagenTwo" alt="user-avatar" class="d-block rounded-4" id="uploadedAvataqqr" style="max-width: 200px; max-height: 200px;"></img>
+                                <img :src="`${this.url}/ArchivosSistema/Post/${editaPost.secundaria}`" alt="user-avatar" class="d-block rounded-4" id="uploadedAvataqqr" style="max-width: 200px; max-height: 200px;"></img>
                         </center>
                     </div>
-                    <!-- <div class="col-md-6">
-                        <figure v-if="imagenMiniatura == ''">
-                            <img width="150" 
-                            height="190"
-                            :src="`https://test-intranet.amfpro.mx/ArchivosSistema/Post/${editaPost.imagen_sola}`"
-                            alt="imagen principal post"
-                            class=" z-depth-4"> 
-                        </figure>
-                        <figure v-else>
-                            <img width="150"
-                            height="190"
-                            :src="imagen"
-                            alt="imagen principal post">
-                        </figure>
-                    </div> -->
+                    
                     <h6>Galeria</h6>
                     <div class="col-md-12">
                          <a href="#*" v-for="(imagen, index) in carruselImagenes" :key="index"  >
                             <div class="image-container">
                                     <img :src="`ArchivosSistema/Post/${imagen.nombre}`" width="80px" :alt="`${imagen.nombre}`" v-show="imagen.img_value == true"/>
-                                    <img :src="`https://test-intranet.amfpro.mx/ArchivosSistema/Post/${imagen.nombre}`" width="80px" :alt="`${imagen.nombre}`" v-show="imagen.img_value == false"/>
+                                    <img :src="`${url}/ArchivosSistema/Post/${imagen.nombre}`" width="80px" :alt="`${imagen.nombre}`" v-show="imagen.img_value == false"/>
                                    
                                     <div class="overlay">
                                         <button type="button" class="btn btn-icon btn-outline-danger waves-effect"   @click="quitaImagen(index, imagen.id_imagen)">
@@ -505,7 +491,8 @@
                 exist_imgp:'',
                 contentEditar: ``,
                 editorOption: {},
-                carruselImagenes:[]
+                carruselImagenes:[],
+                url:''
             }
         },
         computed: {
@@ -552,6 +539,7 @@
                     axios.get(url).then(response => {
 
                         this.listaPost= response.data.listaPost.data
+                        this.url = response.data.url
                         this.pagination = response.data.pagination
                         // this.identificador = response.data.ultimo
                     });
@@ -561,6 +549,7 @@
                     axios.get(url).then(response => {
 
                         this.listaPost = response.data.listaPost.data
+                        this.url = response.data.url
                         this.pagination = response.data.pagination
                         // this.identificador = response.data.ultimo
                     });
@@ -598,6 +587,7 @@
                 this.editaPost.categoria = lp.categoria
                 this.editaPost.informacion = lp.informacion
                 this.editaPost.imagen_sola = lp.imagen_p
+                this.editaPost.secundaria = lp.imagen_s
                 this.contentEditar= lp.informacion
                 this.exist_imgp = lp.exist_imgp;
 
@@ -655,6 +645,23 @@
                 }
                 this.editaPost.imagen_sola = this.fileeditar
                 this.cargarImagen(this.fileeditar)
+            },
+            onChangeFileUploadTwoUpdate(){
+                this.fileeditar = this.$refs.filetwo.files[0];
+                // console.log(this.file);
+                if (this.fileeditar.type != 'image/png' && this.fileeditar.type != 'image/jpeg') {
+                    Swal.fire({
+                        title: 'Error',
+                        text: "Solo se permiten archivos PNG y JPEG!",
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                    this.$refs.filetwo.value = null;
+                    return;
+                }
+                this.editaPost.secundaria = this.fileeditar
+                // this.cargarImagen(this.fileeditar)
             },
             cargarImagen(file){
                 let reader = new FileReader();
@@ -1058,6 +1065,23 @@
                     });
                     return;
                 }
+                if (this.editaPost.modulo === '') {
+                    this.$toast.error("Debes seleccionar un Modulo", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
                 if (this.editaPost.categoria === 'Selecciona una Categoria') {
                     this.$toast.error("Debes Ingresar una Categoria", {
                         position: "top-center",
@@ -1092,19 +1116,14 @@
                     });
                     return;
                 }
-                // const editaPost = this.editaPost
-                // axios.put(`post/edita/${this.editaPost.id_p}`, editaPost).then((res)=>{
-                //     console.log(res);
-                // })
+            
                 let formData = new FormData();
                 formData.append('titulo', this.editaPost.titulo);
                 formData.append('subtitulo', this.editaPost.subtitulo);
                 formData.append('ruta', this.editaPost.ruta);
                 formData.append('imagen_sola', this.editaPost.imagen_sola);
-                // for (let index = 0; index < this.nuevalista.length; index++) {
-                //     let filecarousel = this.nuevalista[index];
-                //     formData.append('imagenes[' + index + ']', filecarousel);
-                // }
+                formData.append('secundaria', this.editaPost.secundaria);
+               
                 const files = this.$refs.myVueDropzoneEdit.getAcceptedFiles();
                 for (let i = 0; i < files.length; i++) {
                     formData.append('filesEdita[' + i + ']', files[i]);
@@ -1113,14 +1132,9 @@
                 formData.append('modulo', this.editaPost.modulo);
                 formData.append('categoria', this.editaPost.categoria);
                 formData.append('informacion', this.contentEditar);
+                $('#modalloading').modal('show');
                 axios.post(`post/edita/${this.editaPost.id_p}`,formData).then(res =>{
-                    Swal.fire({
-                        title: 'Éxito',
-                        text: "Se Edito Correctamente!",
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 2500,
-                    });
+                    
                     this.editaPost= {
                         titulo:'',
                         subtitulo: '',
@@ -1136,6 +1150,14 @@
                     // $('#imagenes').val('');
                     $('#input-file-now-editar').val('');
                     this.getPost();
+                    $('#modalloading').modal('hide');
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: "Se Edito Correctamente!",
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
                 })
             },
         },

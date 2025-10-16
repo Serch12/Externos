@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\PostRepository;
@@ -79,8 +80,15 @@ class PostController extends Controller
         foreach ($listaPost as $value) {
           $value-> exist_imgp  = Storage::disk('post')->exists($value->imagen_p);
         }
+        $host = $request->getHost(); 
+
+        if (Str::contains($host, 'localhost')) {
+            $url = 'https://localhost/IntranetAMF/public';
+        } else {
+            $url = 'https://test-intranet.amfpro.mx';
+        }
         return response()->json(['listaPost'=>$listaPost,
-        'ultimo'=>$ultimo_id,
+        'ultimo'=>$ultimo_id, 'url' => $url,
         'pagination'=>['total' => $listaPost->total(),
         'current_page' => $listaPost->currentPage(),
         'per_page' => $listaPost->perPage(),
@@ -94,7 +102,13 @@ class PostController extends Controller
      * funcion que creara un nuevo post
      */
     public function nuevoPost(Request $request){
+        $host = $request->getHost(); 
 
+        if (Str::contains($host, 'localhost')) {
+            $url = 'https://localhost/IntranetAMF/public/api/external-upload';
+        } else {
+            $url = 'https://test-intranet.amfpro.mx/api/external-upload';
+        }
 
         $post = new Post();
         $post->titulo = $request->titulo;
@@ -118,7 +132,7 @@ class PostController extends Controller
                 'image', // Este debe coincidir con el nombre que espera Proyecto B
                 file_get_contents($imagen),
                 $nombre
-            )->post('https://test-intranet.amfpro.mx/public/api/external-upload');
+            )->post($url);
             $data = $response->json();
             $post->imagen_p = $data['filename'];
         }
@@ -135,7 +149,7 @@ class PostController extends Controller
                 'image_secu', // Este debe coincidir con el nombre que espera Proyecto B
                 file_get_contents($imagen_s),
                 $nombre
-            )->post('https://test-intranet.amfpro.mx/public/api/external-upload');
+            )->post($url);
             $data = $response->json();
             $post->imagen_s = $data['filename'];
         }
@@ -155,7 +169,7 @@ class PostController extends Controller
                     'image',
                     file_get_contents($value),
                     $nombre
-                )->post('https://test-intranet.amfpro.mx/public/api/external-upload');
+                )->post($url);
 
                 if ($response->successful()) {
                     // Guardas como siempre en el Proyecto A
@@ -186,12 +200,15 @@ class PostController extends Controller
 
      public function edita(Request $request, $id){
 
-        $edita = Post::find($id);
+        $host = $request->getHost(); 
 
-        // if ($request->file('imagen_sola')) {
-        //     $imagenAnterior = $edita['imagen_p'];
-        //     \Storage::disk('post')->delete($imagenAnterior);
-        // }
+        if (Str::contains($host, 'localhost')) {
+            $url = 'https://localhost/IntranetAMF/public/api/external-upload';
+        } else {
+            $url = 'https://test-intranet.amfpro.mx/api/external-upload';
+        }
+
+        $edita = Post::find($id);
 
         $imagen = $request->file('imagen_sola');
         if(isset($imagen)){
@@ -206,14 +223,14 @@ class PostController extends Controller
                 'image', // Este debe coincidir con el nombre que espera Proyecto B
                 file_get_contents($imagen),
                 $nombre
-            )->post('https://test-intranet.amfpro.mx/api/external-upload');
+            )->post($url);
             $data = $response->json();
             $edita->imagen_p = $data['filename'];
         }
 
-        $imagen_s = $request->file('imagen_s');
+        $imagen_s = $request->file('secundaria');
         if(isset($imagen_s)){
-            $imagen_s = $request->file('imagen_s');
+            $imagen_s = $request->file('secundaria');
 
             $nombre = $imagen_s->getClientOriginalName();
 
@@ -224,7 +241,7 @@ class PostController extends Controller
                 'image_secu', // Este debe coincidir con el nombre que espera Proyecto B
                 file_get_contents($imagen_s),
                 $nombre
-            )->post('https://test-intranet.amfpro.mx/api/external-upload');
+            )->post($url);
             $data = $response->json();
             $edita->imagen_s = $data['filename'];
         }
@@ -232,24 +249,10 @@ class PostController extends Controller
         $edita->subtitulo = $request->subtitulo;
         $edita->ruta = $request->ruta;
         $edita->fecha = $request->fecha;
+        $edita->modulo = $request->modulo;
         $edita->categoria = $request->categoria;
         $edita->informacion = $request->informacion;
 
-        // $img = $request->file('filesEdita');
-        // if (isset($img)){
-        //     foreach ($request->file('filesEdita') as $key => $value) {
-        //         $imagen = new ImagenesComunicado();
-        //         $imagen->id_comunicado = $edita->id_p;
-        //         //obtenemos el nombre del archivo
-        //         $nombre = $value->getClientOriginalName();
-        //         $urlimagen = $nombre;
-        //         //indicamos que queremos guardar un nuevo archivo en el disco local
-        //         \Storage::disk('post')->put($urlimagen,  \File::get($value));
-        //         $imagen->nombre = $urlimagen;
-        //         $imagen->activo = 1;
-        //         $imagen->save();
-        //     }
-        // }
         $var = $request->file('filesEdita');
         if (isset($var)){
             foreach ($request->file('filesEdita') as $key => $value) {
@@ -264,7 +267,7 @@ class PostController extends Controller
                     'image',
                     file_get_contents($value),
                     $nombre
-                )->post('https://test-intranet.amfpro.mx/api/external-upload');
+                )->post($url);
 
                 if ($response->successful()) {
                     // Guardas como siempre en el Proyecto A
