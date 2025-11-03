@@ -75,6 +75,7 @@ class HonorariosController extends Controller
         ->select('roles.name as rol', 'users.id', 'users.name', 'users.email','users.sede', 'tbl_sedes.nombre' ,DB::raw('GROUP_CONCAT(permissions.name) as permisos'))
         ->groupBy('users.id', 'users.name', 'users.email', 'roles.name','users.sede','tbl_sedes.nombre')
         ->whereIn('roles.name', ['CM', 'Asesor Juridico','Asesor'])
+        ->where('users.estatus',1)
         ->get();
 
 
@@ -110,7 +111,7 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 12) {
+        if ($hoy->day === 10) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
@@ -153,6 +154,7 @@ class HonorariosController extends Controller
         ->select('roles.name as rol', 'users.id', 'users.name', 'users.email','users.sede', 'tbl_sedes.nombre' ,DB::raw('GROUP_CONCAT(permissions.name) as permisos'))
         ->groupBy('users.id', 'users.name', 'users.email', 'roles.name','users.sede','tbl_sedes.nombre')
         ->whereIn('roles.name', ['Cuerpo Tecnico', 'Auxiliar Técnico'])
+        ->where('users.estatus',1)
         ->get();
 
         
@@ -188,7 +190,7 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 12) {
+        if ($hoy->day === 10) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
