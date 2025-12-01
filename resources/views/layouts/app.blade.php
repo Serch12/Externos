@@ -117,7 +117,7 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset('js/app.js') }}"></script>
+
     <script src="{{asset('style/assets/vendor/libs/jquery/jquery.js')}}"></script>
     <script src="{{asset('style/assets/vendor/libs/popper/popper.js')}}"></script>
     <script src="{{asset('style/assets/vendor/js/bootstrap.js')}}"></script>
@@ -131,6 +131,9 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
+    <script src="{{asset('style/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js')}}"></script>
+    <script src="{{asset('style/assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{asset('style/assets/vendor/libs/cleavejs/cleave.js')}}"></script>
     <script src="{{asset('style/assets/vendor/libs/tagify/tagify.js')}}"></script>
     <script src="{{asset('style/assets/vendor/libs/cleavejs/cleave-phone.js')}}"></script>

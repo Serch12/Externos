@@ -67,14 +67,7 @@ class AdministradorController extends Controller
         $valida = $this->AdministradorHelper->validar($muestra);
         $roles = Role::select('*')->get();
         $sedes = Sedes ::select('*')->get(); 
-        return response()->json(['roles'=>$roles, 'muestra'=>$muestra,'sedes'=>$sedes,
-        'pagination'=>['total' => $muestra->total(),
-            'current_page' => $muestra->currentPage(),
-            'per_page' => $muestra->perPage(),
-            'last_page' => $muestra->lastPage(),
-            'from' => $muestra->firstItem(),
-            'to' => $muestra->lastPage()
-            ]]);
+        return response()->json(['roles'=>$roles, 'muestra'=>$muestra,'sedes'=>$sedes]);
     }   
     
     /**

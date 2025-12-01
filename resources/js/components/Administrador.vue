@@ -4,7 +4,22 @@
                 <div class="row">
                     <!-- Users List Table -->
                     <div class="card">
-                    
+                        <div class="card-datatable table-responsive">
+                            <table class="tabla_user table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Email</th>
+                                        <th>Rol</th>
+                                        <th>Estatus</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- <div class="card">
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <h5 class="card-header">Usuario</h5>
@@ -88,7 +103,7 @@
                                 </nav>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div id="main" v-if="this.vista == 1">
@@ -773,48 +788,20 @@
                     active:''
                 },
                 editorOption: {},
-                pagination: {
-                    'total': 0,
-                    'current_page': 0,
-                    'per_page': 0,
-                    'last_page': 0,
-                    'from': 0,
-                    'to': 0
-                },
-                offset: 2,
+
+                table: null,
+                // offset: 2,
                 backupImageSrc: 'style/logos/sinfoto.png',
             }
         },
         computed: {
-            isActived: function () {
-                return this.pagination.current_page;
-            },
-            pageNumber: function () {
-                if (!this.pagination.to) {
-                    return [];
-                }
-                var from = this.pagination.current_page - this.offset; // bandera offset
-                if (from < 1) {
-                    from = 1
-                }
-                var to = from + (this.offset * 2);
-                if (to >= this.pagination.last_page) {
-                    to = this.pagination.last_page;
-                }
-                var pageArray = [];
-                while (from <= to) {
-                    pageArray.push(from);
-                    from++;
-                }
-
-                return pageArray;
-            }
+            
         },
         watch: {
             
         },
         mounted() {
-            this.getAdministrador();
+            this.initDataTable();
         },
         methods: {
             onImageError(event) {
@@ -822,40 +809,262 @@
             },
             muestra(valor){
                 this.vista = valor;
-            },
-            getAdministrador(page){
-                if (this.search == '') {
-                
-                    var url = `administrador/Busqueda?page=`+page;
-                    axios.get(url).then(response => {
+                if (valor == 0) {
+                    this.location.reload();
 
-                        this.Usuario = response.data.muestra.data,
-                        this.Roles = response.data.roles
-                        this.Sedes = response.data.sedes
-                        this.pagination = response.data.pagination
-                    });
-                } else {
-                    this.search
-                    var url = `administrador/Busqueda?buscador=${this.search}&page=`+page;
-                    axios.get(url).then(response => {
-                        this.Usuario = response.data.muestra.data
-                        this.Roles = response.data.roles
-                        this.Sedes = response.data.sedes
-                        this.pagination = response.data.pagination
-                    });
                 }
+            },
+            initDataTable() {
+                
+                var statusObj = {
+                    
+                    0: { title: 'Inactivo', class: 'bg-label-danger' },
+                    1: { title: 'Activo', class: 'bg-label-success' },
+                    2: { title: 'Inactivo', class: 'bg-label-danger' }
+                };
+
+                this.table = $(".tabla_user").DataTable({
+                    data: this.Usuario,
+                    responsive: true,
+                    destroy: true, // Para evitar duplicados en reinicio
+                    columns: [
+                        { data: 'id' },
+                        { data: "name" },
+                        { data: "email" },
+                        { data: "rol_name" },
+                        { data: "estatus" },
+                        { data: null },
+                        
+                    ],
+                    columnDefs: [
+                        {
+                            // For Responsive
+                            className: 'control',
+                            orderable: false,
+                            searchable: false,
+                            responsivePriority: 2,
+                            targets: 0,
+                            render: function (data, type, full, meta) {
+                                return '';
+                            }
+                        },
+                        {
+                            /* Usuario */
+                            targets: 1,
+                            orderable: false,
+                            searchable: false,
+                            responsivePriority: 4,
+                            render: function (data, type, full, meta) {
+                                var $name = full.name,
+                                    $email = full.email,
+                                    $image = (full.perfil && full.perfil.foto) ? full.perfil.foto : null;
+
+                                console.log($image);
+
+                                var $output = '';
+
+                                if ($image) {
+                                    // Avatar con foto
+                                    $output =
+                                        '<img src="ArchivosSistema/Documentacion/' + $image + '" ' +
+                                        'alt="Avatar" class="rounded-circle" ' +
+                                        'onerror="this.onerror=null;this.src=\'style/logos/sinfotoclinica.png\';">';
+                                } else {
+                                    // Avatar con iniciales
+                                    var states = ['success', 'danger', 'warning', 'info', 'dark', 'primary', 'secondary'];
+                                    var stateNum = Math.floor(Math.random() * states.length);
+                                    var $state = states[stateNum];
+
+                                    var initials = ($name.match(/\b\w/g) || []);
+                                    initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+
+                                    $output = '<span class="avatar-initial rounded-circle bg-label-' + $state + '">' + initials + '</span>';
+                                }
+
+                                var $row_output =
+                                    '<div class="d-flex justify-content-left align-items-center">' +
+                                    '<div class="avatar-wrapper">' +
+                                    '<div class="avatar avatar-sm me-3">' +
+                                    $output +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="d-flex flex-column">' +
+                                    '<span class="fw-medium text-truncate">' +
+                                    $name +
+                                    '</span>' +
+                                    '<small>' +
+                                    $email +
+                                    '</small>' +
+                                    '</div>' +
+                                    '</div>';
+
+                                return $row_output;
+                            }
+
+                        },
+                        {
+                            /* Email */
+                            targets: 2,
+                            render: function (data, type, full, meta) {
+                                var $email = full.email;
+                                return '<span >' + $email + '</span>';
+                            }
+                        },
+                        {
+                            /* roles */
+                            targets: 3,
+                            render: function (data, type, full, meta) {
+                                var $role = full.rol_name;
+                                // var roleBadgeObj = {
+                                //     CuerpoTecnico: '<i class="ri-nurse-line ri-22px text-primary me-2"></i>',
+                                //     Recepcion: '<i class="ri-dossier-line ri-22px text-warning me-2"></i>',
+                                //     Psicologia: '<i class="ri-psychotherapy-line ri-22px text-success me-2"></i>',
+                                //     Doctor: '<i class="ri-stethoscope-fill ri-22px text-info me-2"></i>',
+                                //     Root: '<i class="ri-vip-crown-line ri-22px text-danger me-2"></i>',
+                                //     Contabilidad: '<i class="ri-coins-line ri-22px text-warning me-2"></i>',
+                                //     Abogado: '<i class="ri-scales-3-fill ri-22px text-success me-2"></i>',
+                                //     Asesor: '<i class="ri-football-line ri-22px text-success me-2"></i>',
+                                //     Presidencia: '<i class="ri-box-3-line ri-22px text-success me-2"></i>',
+                                //     Coordinador: '<i class="ri-funds-line ri-22px text-warning me-2"></i>'
+                                // };
+                                return (
+                                "<span class='text-truncate d-flex align-items-center text-heading'>" +
+                                    // roleBadgeObj[$role] +
+                                    $role +
+                                '</span>'
+                                );
+                            }
+                        },
+                        {
+                            // User Status
+                            targets: 4,
+                            render: function (data, type, full, meta) {
+                                var $status = full.estatus;
+
+                                return (
+                                '<span class="badge rounded-pill ' +
+                                statusObj[$status].class +
+                                '" text-capitalized>' +
+                                statusObj[$status].title +
+                                '</span>'
+                                );
+                            }
+                        },
+                        {
+                            targets: -1,
+                            title: 'Acciones',
+                            searchable: false,
+                            orderable: false,
+                            render: () => {
+                                return (
+                                   
+                                    '<button class="btn btn-sm btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow waves-effect waves-light" data-bs-toggle="dropdown"><i class="ri-more-2-fill ri-20px"></i></button>' +
+                                    '<div class="dropdown-menu dropdown-menu-end m-0">' +
+                                        '<a type="button" class="btn-vizualizar dropdown-item" style="color: orange;"> <i class="ri-clipboard-line me-1"></i> Vizualizar</a>' +
+                                        '<a type="button" class="btn-eliminar dropdown-item" style="color: red;"> <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>' +
+                                    '</div>'
+                                );
+                            }
+                        }
+                    ], 
+                    order: [[2, 'desc']],
+                   dom:
+                        '<"row mx-1"' +
+                        '<"col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start gap-4 mt-5 mt-md-0"l>' +
+                        '<"col-sm-12 col-md-7"<"dt-action-buttons d-flex align-items-center justify-content-md-end justify-content-center flex-column flex-sm-row flex-nowrap"<"me-sm-4"f><".add-new w-px-200 mb-5 mb-sm-0">>>' +
+                        '>t' +
+                        '<"row mx-1"' +
+                        '<"col-sm-12 col-md-6"i>' +
+                        '<"col-sm-12 col-md-6"p>' +
+                        '>',
+                    language: {
+                        sLengthMenu: 'Mostrar _MENU_',
+                        search: '',
+                        searchPlaceholder: 'Buscar Usuario',
+                        paginate: {
+                            next: '<i class="ri-skip-forward-mini-line"></i>',
+                            previous: '<i class="ri-skip-back-mini-line"></i>'
+                        },
+                        sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        sZeroRecords: "No se encontraron resultados",
+                        sInfoFiltered: "(filtrando de un total de _MAX_ registros)",
+                    },
+                    // For responsive popup
+                    responsive: {
+                        details: {
+                            display: $.fn.dataTable.Responsive.display.modal({
+                                header: function (row) {
+                                var data = row.data();
+                                return 'Usuario ' + data.name;
+                                }
+                            }),
+                            type: 'column',
+                            renderer: function (api, rowIdx, columns) {
+                                var data = $.map(columns, function (col, i) {
+                                return col.title !== '' // ? Do not show row in modal popup if title is blank (for check box)
+                                    ?   '<tr data-dt-row="' + col.rowIndex + '" data-dt-column="' + col.columnIndex + '">' +
+                                            '<td>' +  col.title + ':' +  '</td> ' + '<td>' + col.data + '</td>' +
+                                        '</tr>'
+                                    : '';
+                                }).join('');
+
+                                return data ? $('<table class="table"/><tbody />').append(data) : false;
+                            }
+                        }
+                    },
+                    
+                    
+                });
+                $('.add-new').html(
+                    "<button class='btn btn-primary waves-effect waves-light' data-bs-toggle='modal' data-bs-target='#createUser'><i class='ri-add-line me-0 me-sm-1 d-inline-block d-sm-none'></i><span class= 'd-none d-sm-inline-block'> Nuevo Usuario </span ></button>"
+                );
+                
+                this.getAdministrador();
+                let vm = this; // referencia al componente Vue
+
+                // Evento para Vizualizar
+                $('.tabla_user').on('click', '.btn-vizualizar', function (e) {
+                    let data = vm.table.row($(this).parents('tr')).data();
+                    vm.muestra(1);
+                    vm.infoUsuario(data); 
+                });
+
+                // Evento para Eliminar
+                $('.tabla_user').on('click', '.btn-eliminar', function (e) {
+                    let data = vm.table.row($(this).parents('tr')).data();
+                    vm.eliminarPerfil(data); 
+                });
+            },
+            getAdministrador(){ 
+                const reloadTable = (data) => {
+                    this.table.clear();
+                    this.table.rows.add(data);
+                    this.table.draw();
+                    if (this.table.responsive) {
+                        this.table.responsive.recalc();
+                    }
+                };
+                var url = `administrador/Busqueda`;
+                axios.get(url).then(response => {
+
+                    this.Usuario = response.data.muestra,
+                    this.Roles = response.data.roles
+                    this.Sedes = response.data.sedes
+                    reloadTable(this.Usuario);
+                });
+
             },
             include(permiso){
                 return this.permisos.includes(permiso);
             },
-            changePage: function (page) {
-                this.pagination.current_page = page;
-                this.getAdministrador(page);
-            },
-            buscarUsuario() {               
-                clearTimeout(this.tiempoBusqueda)
-                this.tiempoBusqueda = setTimeout(this.getAdministrador, 200)
-            },
+            // changePage: function (page) {
+            //     this.pagination.current_page = page;
+            //     this.getAdministrador(page);
+            // },
+            // buscarUsuario() {               
+            //     clearTimeout(this.tiempoBusqueda)
+            //     this.tiempoBusqueda = setTimeout(this.getAdministrador, 200)
+            // },
             agregaUser(){
                 if (this.registro.name == '') {
                     this.$toast.error("Ingresa un Nombre", {
