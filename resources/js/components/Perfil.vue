@@ -1,8 +1,8 @@
 <template>
     <div>
 
-        <div id="main" v-if="this.vista == 0">
-            <div class="row">
+        <div id="main" v-if="this.vista == 0"> 
+             <div class="row">
                     <!-- User Sidebar -->
                 <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
                     <!-- User Card -->
@@ -290,6 +290,7 @@
                             </div>
                             <div class="tab-pane fade" id="documentacion" role="tabpanel" aria-labelledby="documentacion-tab">
                                 <div class="row">
+                                    <h6 class="mb-2 text-danger">*Recuerda que la Documentación es en formato PDF*</h6>
                                     <div class="col-xl-3 col-lg-5 col-md-5 mt-2"  v-for="a in archivosFaltantes" :key="a.tipo">
                                         <div class="card h-100">
                                             <div class="card-body">
@@ -477,7 +478,7 @@
                                                                 <a type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver Contrato" @click="verContrato(c.id_contrato_digital)">
                                                                     <i class="ri-file-list-fill bg-label-warning ri-25px me-1"></i>
                                                                 </a>
-                                                                <a type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Firmar Contrato">
+                                                                <a type="button" data-bs-toggle="modal" data-bs-placement="bottom" title="Firmar Contrato" data-bs-target="#modalFirma">
                                                                     <i class="ri-edit-box-fill bg-label-info ri-25px me-1"></i>
                                                                 </a>
                                                                 
@@ -760,6 +761,64 @@
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="modalFirma" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalCenterTitle">Firma Electrónica de Contrato</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                                <tbody class="table-border-bottom-0">
+                                    <tr>
+                                        <td><b>ID Contrato:</b></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Tipo:</b></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Vigencia:</b></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Monto Mensual:</b></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-12 ">
+                            <div class="card shadow-none bg-label-secondary">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        Declaro haber leido y estar de acuerdo con las condiciones establecidas e el presente contrato. Al hacer clic en "Firmar electronicamente", acepto los terminos y condiciones y otorgo mi consentimiento para la formalización de este acuerdo.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+                                <label class="form-check-label" for="defaultCheck3"> He leído y acepto las condiciones del contrato </label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer mt-2">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn btn-primary">Firmar electronicamente</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <br><br>
     </div>
 </template>
