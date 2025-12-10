@@ -13,7 +13,9 @@ class AddTblContratosDigitalOrigenTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('tbl_contratos_digital', function (Blueprint $table) {
+            $table->string("origen")->after("id_usuario_creo")->nullable();
+        });
     }
 
     /**

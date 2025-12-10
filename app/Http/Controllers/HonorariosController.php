@@ -79,12 +79,12 @@ class HonorariosController extends Controller
         ->get();
 
 
-        if ($hoy->day === 1) {
+        if ($hoy->day === 10) {
             $new = new Honorarios();
             $new ->id_usuario = 6;
             $new -> nombre_usuario = 'Angelica Cabrera';
             $new -> fecha_pago = $fecha;
-            $new -> concepto = 'HONORARIOS EXTERNOS ' . $mesActual;
+            $new -> concepto = 'HONORARIOS EXTRAORDINARIOS EXTERNOS' . $mesActual;
             $new -> total_honorario = '0.00';
             $new -> modulo = 'Externos';
             $new ->estatus = 0;
@@ -111,7 +111,7 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 10) {
+        if ($hoy->day === 13) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
