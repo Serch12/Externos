@@ -441,7 +441,7 @@
                                         <!-- Tabla -->
                                         <div class="card">
                                             <h5 class="card-header">Contratos Pendientes de Firma</h5>
-                                            <div class="table-responsive text-nowrap">
+                                            <div class="table-responsive text-nowrap ">
                                                 <table class="table" style="font-size: 16px;">
                                                     <thead class="table-light">
                                                         <tr>
@@ -462,7 +462,7 @@
                                                                 {{ c.tipo_contrato }}
                                                             </td>
                                                             <td>
-                                                                {{c.fecha_inicio}} - {{ c.fecha_fin }}
+                                                                {{c.fecha_inicio}} -- {{ c.fecha_fin }}
                                                             </td>
                                                             <td>
                                                                 ${{ formatPrice(c.salario_numero_1) }}
@@ -474,7 +474,7 @@
                                                                 <a type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver Contrato" @click="verContrato(c.id_contrato_digital)">
                                                                     <i class="ri-file-list-fill bg-label-warning ri-25px me-1"></i>
                                                                 </a>
-                                                                <a type="button" data-bs-toggle="modal" data-bs-placement="bottom" title="Firmar Contrato" data-bs-target="#modalFirma" @click="detalleContrato()">
+                                                                <a type="button" data-bs-toggle="modal" data-bs-placement="bottom" title="Firmar Contrato" data-bs-target="#modalConfirmacion" @click="detalleContrato(c)">
                                                                     <i class="ri-edit-box-fill bg-label-info ri-25px me-1"></i>
                                                                 </a>
                                                                 
@@ -757,8 +757,8 @@
             </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="modalFirma" tabindex="-1" aria-hidden="true">
+        <!-- Modal Confirmacion-->
+        <div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -771,19 +771,19 @@
                                 <tbody class="table-border-bottom-0">
                                     <tr>
                                         <td><b>ID Contrato:</b></td>
-                                        <td></td>
+                                        <td>CI-{{ this.InfoContrato.id_contrato_digital }}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Tipo:</b></td>
-                                        <td></td>
+                                        <td>{{ this.InfoContrato.tipo_contrato }}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Vigencia:</b></td>
-                                        <td></td>
+                                        <td>{{ this.InfoContrato.fecha_inicio }} - {{ this.InfoContrato.fecha_fin }}</td>
                                     </tr>
                                     <tr>
                                         <td><b>Monto Mensual:</b></td>
-                                        <td></td>
+                                        <td>${{ formatPrice(this.InfoContrato.salario_numero_1) }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -800,7 +800,7 @@
                         </div>
                         <div class="col-md-12 mt-2">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+                                <input class="form-check-input" type="checkbox" id="defaultCheck3" v-model="buttonFirma">
                                 <label class="form-check-label" for="defaultCheck3"> He leído y acepto las condiciones del contrato </label>
                             </div>
                         </div>
@@ -810,9 +810,32 @@
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             Cancelar
                         </button>
-                        <button type="button" class="btn btn-primary">Firmar electronicamente</button>
+                        <button type="button" class="btn btn-primary" :disabled="!buttonFirma" data-bs-toggle="modal" data-bs-target="#modalFirma">Firmar electronicamente</button>
                     </div>
                 </div>
+            </div>
+        </div>
+        <!-- Modal firma -->
+        <div class="modal fade" id="modalFirma" data-bs-backdrop="static" tabindex="-1">
+            <div class="modal-dialog">
+                <form class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="backDropModalTitle">Agrega Firma</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <canvas ref="firmaUsuario" class="signature-pad" width="500px" height="400px" style="background-color: #33b2ff;"></canvas>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="clearFirmaUsuario()">
+                            Limpiar Firma
+                        </button>
+                        <!-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                            Cancelar
+                        </button> -->
+                        <button type="button" class="btn btn-success" @click="agregaFirma()">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
         <br><br>
@@ -820,6 +843,7 @@
 </template>
 <script>
 import axios from 'axios';
+import SignaturePad from 'signature_pad';
 
 export default {
     name: '',
@@ -866,7 +890,8 @@ export default {
             ],
             Archivos:[],
             ContratoFirma:[],
-            InfoContrato:[]
+            InfoContrato:[],
+            buttonFirma:false
         }
     },
     computed: {
@@ -920,6 +945,11 @@ export default {
                 this.DatoBancario = response.data.datoBancario
                 this.Archivos = response.data.documento;
                 this.ContratoFirma = response.data.contrato_firma;
+            });
+
+            this.firmaUsuario = new SignaturePad(this.$refs.firmaUsuario, {
+                backgroundColor: 'rgb(255, 255, 255)',
+                penColor: 'rgb(1, 1, 1)',
             });
         },
 
@@ -1590,7 +1620,14 @@ export default {
                 console.error(error);
                 
             });
-        }
+        },
+        detalleContrato(c){
+            this.InfoContrato = c;
+            this.InfoContrato.confirmacion = false;
+        },
+        clearFirmaUsuario() {
+            this.firmaUsuario.clear();
+        },
     }
 };
 </script>
