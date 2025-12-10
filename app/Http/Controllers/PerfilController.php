@@ -7,8 +7,13 @@ use App\Models\Perfil;
 use App\Models\Sedes;
 use App\Models\Jugadores;
 use App\Models\DatoBancario;
+use App\Models\Documentacion;
+use App\Models\ContratosDigital;
 use DB;
 use Cookie;
+use Carbon\Carbon;
+use PDF;
+use Illuminate\Support\Facades\Crypt; 
 
 class PerfilController extends Controller
 {
@@ -59,6 +64,8 @@ class PerfilController extends Controller
             ->select('roles.name as rol', 'users.id', 'users.name','users.estatus', 'users.email','users.sede','tbl_perfil.*')
             ->where('users.id', $request->id)
             ->first();
+
+        $documento = Documentacion::where('id_perfil',$request->id)->get();
         $datoBancario = DatoBancario::where('id_user',$request->id)->get();
         foreach ($datoBancario as $db) {
             if ($db->banco == 'BBVA BANCOMER') {
@@ -87,8 +94,18 @@ class PerfilController extends Controller
                 $db->imagen_banco = "afirme.png";
             }  
         }
+        $contrato_firma = ContratosDigital::where('id_usuario',$request->id)->where('estatus',2)->get();
+        foreach ($contrato_firma as $value) {
+            // Verifica si el valor no es nulo o una cadena vacía antes de desencriptar
+            if ($value->salario_numero) {
+                $value->salario_numero_1 = Crypt::decryptString($value->salario_numero);
+            }
+            if ($value->salario_texto) {
+                $value->salario_texto_1 = Crypt::decryptString($value->salario_texto);
+            }
+        }
 
-        return response()->json(['perfil'=>$perfil,'datoBancario'=>$datoBancario]);
+        return response()->json(['perfil'=>$perfil,'datoBancario'=>$datoBancario,'documento'=>$documento,'contrato_firma'=>$contrato_firma]);
     }
 
     /**
@@ -155,6 +172,113 @@ class PerfilController extends Controller
     public function deleteDatoBancario(Request $request){
         $delete = DatoBancario::find($request->id_datos_bancarios);
         $delete -> delete();
+    }
+
+
+    /**
+     * funcion que actualizara la documentacion del usuario
+     **/
+    public function newDocumento(Request $request){
+
+        $new = new Documentacion();
+        $new -> id_perfil = $request->id_perfil;
+        $new -> tipo = $request->tipo;
+
+        $file = $request->file('documento');
+        if (isset($file)) {
+
+            // Obtenemos el nombre del archivo
+            $nombre = $file->getClientOriginalName();
+            $urlimagen = $request->id_perfil."/".'Documentacion' . "/" . $nombre;
+            \Storage::disk('perfil')->put($urlimagen, \File::get($file));
+            $new->archivo = $nombre;
+        }
+
+        $new -> save();
+        return $new;
+        
+    }
+
+    /**
+     * funcion que actualizara la documentacion del usuario
+     **/
+    public function updateDocumento(Request $request){
+
+        $update = Documentacion::find($request->id_documentacion);
+        $update -> tipo = $request->tipo;
+
+        $file = $request->file('documento');
+        if (isset($file)) {
+            \Storage::disk('perfil')->delete($update->id_perfil.'/'.'Documentacion'.'/'.$update->archivo);
+            // Obtenemos el nombre del archivo
+            $nombre = $file->getClientOriginalName();
+            $urlimagen = $request->id_perfil."/".'Documentacion' . "/" . $nombre;
+            \Storage::disk('perfil')->put($urlimagen, \File::get($file));
+            $update->archivo = $nombre;
+        }
+
+        $update -> save();
+        return $update;
+        
+    }
+
+    /**
+     * funcion que mostrara el contrato
+     **/
+    public function verContrato(Request $request) {
+        $contrato = ContratosDigital::find($request->id_contrato_digital);
+        if (!$contrato || $contrato->tipo_contrato !== 'honorarios') { // Cambiar a 'honorarios'
+            return response()->json(['message' => 'Contrato no encontrado o no es de tipo honorarios'], 404);
+        }
+        $firmaalvaro = public_path('ArchivosSistema/Perfil/FirmaAlvaro.png');
+        $salario_numero = $contrato->salario_numero ? Crypt::decryptString($contrato->salario_numero) : 0;
+        $salario_texto = $contrato->salario_texto ? Crypt::decryptString($contrato->salario_texto) : '';
+        $actividades_array = explode("\n", $contrato->actividades_realizar);
+        $listado_html = '<ul>';
+        foreach ($actividades_array as $actividad) {
+            $actividad = trim($actividad); // Eliminar espacios en blanco extra al inicio/fin
+            if (!empty($actividad)) { // Asegurarse de que la línea no esté vacía
+                $listado_html .= '<li>' . htmlspecialchars($actividad) . '</li>';
+            }
+        }
+        $listado_html .= '</ul>';
+        // Prepara los datos para la plantilla del contrato de honorarios
+        $data = [
+            'nombre_usuario' => $contrato->nombre_completo,
+            'nacionalidad' => $contrato->nacionalidad,
+            'sexo' => $contrato->sexo,
+            'edad' => $contrato->edad,
+            'estado_civil' => $contrato->estado_civil,
+            'profesion' => $contrato->profesion,
+            'cedula_profesional' => $contrato->cedula_profesional,
+            'domicilio' => $contrato->domicilio,
+            'codigo_postal' => $contrato->codigo_postal,
+            'entidad' => $contrato->entidad,
+            'RFC' => $contrato->RFC,
+            'curp' => $contrato->curp,
+            'puesto' => $contrato->puesto_desempenar,
+            'salario_numero' => "$" . number_format($salario_numero, 2),
+            'salario_texto' => $salario_texto,
+            'fecha_inicio' => mb_strtoupper(Carbon::parse($contrato->fecha_inicio)->translatedFormat('d \d\e F \d\e Y')),
+            'fecha_fin' => mb_strtoupper(Carbon::parse($contrato->fecha_fin)->translatedFormat('d \d\e F \d\e Y')),
+            'fecha_firma_contrato_texto' => mb_strtoupper(Carbon::parse($contrato->fecha_firma_contrato)->translatedFormat('d \d\e F \d\e Y')),
+            'actividades_realizar' => $listado_html,
+            'firma' => $contrato->firma,
+            'firma_alvaro' => $firmaalvaro
+        ];
+
+        // Generar el HTML de la vista Blade con los datos
+        // Asegúrate de que 'Pdf.contratoHonorarios' apunte a la nueva vista Blade: resources/views/Pdf/contratoHonorarios.blade.php
+        $html = view('Pdf.contratoHonorarios', $data)->render();
+
+        // Generar el PDF
+        $pdf = Pdf::loadHtml($html);
+
+        // Opcional: Configurar tamaño de papel y orientación (mantener si es necesario)
+        // $pdf->setPaper('A4', 'portrait');
+
+        // Retornar el PDF para que se muestre en el navegador
+        return $pdf->stream('contrato_honorarios_' . $contrato->nombre_usuario . '.pdf'); 
     }
 
 }

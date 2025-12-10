@@ -150,6 +150,7 @@
     <script src="{{asset('style/assets/js/pages-profile-user.js')}}"></script>
     <script src="{{asset('style/assets/js/form-wizard-icons.js')}}"></script>
     <script src="{{asset('style/assets/js/ui-carousel.js')}}"></script>
+    <script src="{{asset('style/assets/js/ui-popover.js')}}"></script>
     {{-- <script src="{{asset('style/assets/js/app-email.js')}}"></script> --}}
   </body>
 </html>

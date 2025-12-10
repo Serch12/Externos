@@ -108,6 +108,462 @@
             </div>
             <div id="main" v-if="this.vista == 1">
                 <div class="row">
+                     <!-- User Sidebar -->
+                    <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
+                        <!-- User Card -->
+                        <div class="card mb-6">
+                            <div class="card-body pt-12">
+                                <div class="user-avatar-section">
+                                    <div class="d-flex align-items-center flex-column">
+                                        <img class="img-fluid rounded-3 mb-4"
+                                            :src="`ArchivosSistema/Documentacion/${this.detalleUsuario.id}/${this.detalleUsuario.foto}`"
+                                            height="120"
+                                            width="120"
+                                            alt="User avatar" @error="(event)=>onImageError(event)"/>
+                                        <div class="user-info text-center">
+                                            <h5>{{this.detalleUsuario.name}}</h5>
+                                            <span class="badge bg-label-success rounded-pill">{{ this.detalleUsuario.rol_name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-around flex-wrap my-6 gap-0 gap-md-3 gap-lg-4">
+                                    <div class="d-flex align-items-center me-5 gap-4">
+                                        <div class="avatar">
+                                            <div class="avatar-initial bg-label-primary rounded-3">
+                                                <i class="ri-candle-fill ri-24px"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0">{{this.UpdateInformacion.cumpleaños}}</h5>
+                                            <span>Fecha Nacimiento</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-4">
+                                        <div class="avatar">
+                                            <div class="avatar-initial bg-label-primary rounded-3">
+                                                <i class="ri-database-line ri-24px"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0">{{this.UpdateInformacion.fecha_ingreso}}</h5>
+                                            <span>Fecha Ingreso</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h5 class="pb-4 border-bottom mb-4">Detalles</h5>
+                                <div class="info-container">
+                                    <ul class="list-unstyled mb-6">
+                                        <li class="mb-2">
+                                            <span class="fw-medium text-heading me-2">Nombre Usuario:</span>
+                                            <span>{{this.UpdateInformacion.nombre}} </span>
+                                        </li>
+                                        <li class="mb-2">
+                                            <span class="fw-medium text-heading me-2">Email:</span>
+                                            <span>{{this.detalleUsuario.email}}</span>
+                                        </li>
+                                        <li class="mb-2">
+                                            <span class="fw-medium text-heading me-2">Estatus:</span>
+                                            <span :class="`badge ${this.detalleUsuario.color} rounded-pill`">{{this.detalleUsuario.text}}</span>
+                                        </li>
+                                        <li class="mb-2">
+                                            <span class="fw-medium text-heading me-2">Role:</span>
+                                            <span>{{ this.detalleUsuario.rol_name }}</span>
+                                        </li>
+                                        
+                                        <li class="mb-2">
+                                            <span class="fw-medium text-heading me-2">Contacto:</span>
+                                            <span>+(52) {{this.UpdateInformacion.telefono}}</span>
+                                        </li>
+                                        <li class="mb-2">
+                                            <span class="fw-medium text-heading me-2">Dirección:</span>
+                                            <span>{{this.UpdateInformacion.calle}} #{{ this.UpdateInformacion.num_ext }}, CP: {{ this.UpdateInformacion.cp }}, {{ this.UpdateInformacion.colonia }},</span>
+                                        </li>
+                                        <li class="mb-2">
+                                            <span class="fw-medium text-heading me-2">Cedula:</span>
+                                            <span>{{this.UpdateInformacion.cedula_usuario}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- /User Card -->
+                    </div>
+                    <!--/ User Sidebar -->
+
+                    <!-- User Content -->
+                    <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+                        <div class="col-md-12">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="margin-left: 20px;" >
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="cuenta-tab" data-bs-toggle="pill" data-bs-target="#cuenta" type="button" role="tab" aria-controls="cuenta" aria-selected="false">
+                                        <i class="icon-base ri ri-settings-4-line icon-22px me-3"></i>
+                                        Cuenta
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="info-tab" data-bs-toggle="pill" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="false">
+                                        <i class="icon-base ri ri-account-circle-line icon-22px me-3"></i>
+                                        Información Usuario
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="documentacion-tab" data-bs-toggle="pill" data-bs-target="#documentacion" type="button" role="tab" aria-controls="documentacion" aria-selected="false">
+                                        <i class="ri-article-line me-2"></i>Documentación
+                                    </button>
+                                </li>
+                                <!-- <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="seguridad-tab" data-bs-toggle="pill" data-bs-target="#seguridad" type="button" role="tab" aria-controls="seguridad" aria-selected="false">
+                                        <i class="ri-lock-line me-2"></i>Seguridad
+                                    </button>
+                                </li> -->
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="cuenta" role="tabpanel" aria-labelledby="cuenta-tab">
+                                    <!-- User Profile Content -->
+                                    <div class="card mb-6">
+                                        <div class="card-body pt-0">
+                                            <form novalidate>
+                                                <div class="row mt-1 g-5">
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input class="form-control" type="text" 
+                                                            id="nombre456" name="nombre_update" 
+                                                            v-model="detalleUsuario.name" />
+                                                            
+                                                            <label for="usuario456">Nombre Usuario</label>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <select id="roles_update" name="roles_update" class="form-select" v-model="detalleUsuario.rol_name" 
+                                                                data-vv-as="Roles" >
+                                                                <option value="">Selecciona un Role</option>
+                                                                <option v-for="(rol, index) in Roles" :key="index" v-bind:value="rol.name">{{rol.name}}</option>
+                                                            </select>
+                                                            <label for="roles_update">Roles</label>
+
+                                                            
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input class="form-control" type="email" 
+                                                            id="email456" name="email_update" 
+                                                            v-model="detalleUsuario.email"/>
+                                                            <label for="email456">Email</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="form-floating form-floating-outline">
+                                                        <select id="Sedes" name="Sedes" class="form-select" v-model="detalleUsuario.id_sede">
+                                                            <option value="Selecciona una Sede">Selecciona una Sede</option>
+                                                            <option v-for="(sed, index) in Sedes" :key="index" v-bind:value="sed.id_sede">{{sed.nombre}}</option>
+                                                        </select>
+                                                        <label for="Sedes">Sedes</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button type="button" class="btn btn-icon btn-outline-whatsapp waves-effect" data-bs-toggle="modal" data-bs-target="#createSede">
+                                                            <i class="tf-icons ri-checkbox-circle-fill ri-22px"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="text" class="form-control" 
+                                                            id="password123" name="password_update" 
+                                                            v-model="detalleUsuario.new_password"/>
+                                                            <label for="password123">Password</label>
+
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-check m-0">
+                                                            <input type="checkbox" class="form-check-input" v-model="detalleUsuario.estatus">
+                                                            <span class="form-check-label">Activar Usuario?</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-6">
+                                                    <button type="button" class="btn btn-primary me-3" v-if="include('Crear')" @click="CuentaUpdate()">Guardar</button>
+                                                    <!-- <button type="reset" class="btn btn-outline-secondary">Reset</button> -->
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
+                                    <!--/ User Profile Content -->
+                                </div>
+                                <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+                                    <!-- User Profile Content -->
+                                    <div class="card mb-6">
+                                        <div class="card-body">
+                                        <div class="d-flex align-items-start align-items-sm-center gap-6">
+                                            <img :src="`ArchivosSistema/Documentacion/${this.UpdateInformacion.id_user}/${this.UpdateInformacion.foto}`" alt="user-avatar1" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" @error="(event)=>onImageError(event)" v-if="this.backupImageSrc == ''"/>
+                                            <img :src="this.backupImageSrc" alt="user-avatar2" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-else/>
+                                            <div class="button-wrapper">
+                                                <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
+                                                    <span class="d-none d-sm-block">Subir Nueva Foto</span>
+                                                    <i class="ri-upload-2-line d-block d-sm-none"></i>
+                                                    <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" ref="fileFoto" @change="onChangeFoto()"/>
+                                                </label>
+                                                <!-- <button type="button" class="btn btn-outline-danger account-image-reset mb-4">
+                                                    <i class="ri-refresh-line d-block d-sm-none"></i>
+                                                    <span class="d-none d-sm-block">Reset</span>
+                                                </button> -->
+
+                                                <div>Se permiten archivos JPG, JPGE o PNG.</div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <form id="formAccountSettings" onsubmit="return false">
+                                                <div class="row mt-1 g-5">
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input class="form-control" type="text" id="nombre456" name="nombre456" v-model="UpdateInformacion.nombre" />
+                                                            <label for="nombre456">Nombre</label>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input class="form-control" type="text" id="apPaterno456" name="apPaterno456" v-model="UpdateInformacion.paterno"/>
+                                                            <label for="apPaterno456">Apellido Paterno</label>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input class="form-control" type="text" id="apMaterno456" name="apMaterno456" v-model="UpdateInformacion.materno"/>
+                                                            <label for="apMaterno456">Apellido Materno</label>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input class="form-control" type="text" id="Carrera456" name="Carrera456"  v-model="UpdateInformacion.carrera"/>
+                                                            <label for="Carrera456">Carrera</label>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <select class="form-select" id="select_update_civil" name="select_update_civil" v-model="UpdateInformacion.estado_civil">
+                                                                <option value="">Selecciona el Estado Civil</option>
+                                                                <option value="Soltero">Soltero</option>
+                                                                <option value="Casado">Casado</option>
+                                                                <option value="Otro">Otro</option>
+                                                            </select>
+                                                            <label for="select_update_civil">Estado Civil</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <select class="form-select" id="select_update_sexo" name="select_update_sexo" v-model="UpdateInformacion.sexo">
+                                                                <option value="">Selecciona el Sexo</option>
+                                                                <option value="Masculino">Masculino</option>
+                                                                <option value="Femenino">Femenino</option>
+                                                            </select>
+                                                            <label for="select_update_sexo">Sexo</label>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="date" class="form-control flatpickr-validation" placeholder="YYYY-MM-DD" id="fechanacimienot785" v-model="UpdateInformacion.fecha_nacimiento"/>
+                                                            <label for="fechanacimienot785">Fecha Nacimiento</label>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group input-group-merge">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <input type="number" id="phoneNumber" name="phoneNumber" class="form-control" v-model="UpdateInformacion.telefono"/>
+                                                                <label for="phoneNumber">Telefono Empresarial</label>
+                                                            </div>
+                                                            <span class="input-group-text">MEX (+52)</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="text" class="form-control" id="address" name="address" v-model="UpdateInformacion.calle"/>
+                                                            <label for="address">Calle</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="text" class="form-control" id="num_ext" name="num_ext" v-model="UpdateInformacion.num_ext"/>
+                                                            <label for="num_ext">Num Ext</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="text" class="form-control" id="num_int" name="num_int" v-model="UpdateInformacion.num_int"/>
+                                                            <label for="num_int">Num Int</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="text" class="form-control" id="CP12" name="CP12" v-model="UpdateInformacion.cp"/>
+                                                            <label for="CP12">CP</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="text" class="form-control" id="colonia" name="colonia" v-model="UpdateInformacion.colonia"/>
+                                                            <label for="colonia">Colonia</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="text" class="form-control" id="municipio" name="municipio" v-model="UpdateInformacion.municipio"/>
+                                                            <label for="municipio">Municipio</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input class="form-control" type="text" id="state" name="state" value="New York" v-model="UpdateInformacion.estado"/>
+                                                            <label for="state">Estado</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <select id="new_pais" name="new_pais" class="select2 form-select" v-model="UpdateInformacion.pais">
+                                                                <option value="Australia">Australia</option>
+                                                                <option value="Bangladesh">Bangladesh</option>
+                                                                <option value="Belarus">Belarus</option>
+                                                                <option value="Brazil">Brazil</option>
+                                                                <option value="Canada">Canada</option>
+                                                                <option value="China">China</option>
+                                                                <option value="France">France</option>
+                                                                <option value="Germany">Germany</option>
+                                                                <option value="India">India</option>
+                                                                <option value="Indonesia">Indonesia</option>
+                                                                <option value="Israel">Israel</option>
+                                                                <option value="Italy">Italy</option>
+                                                                <option value="Japan">Japan</option>
+                                                                <option value="Korea">Korea, Republic of</option>
+                                                                <option value="México">México</option>
+                                                                <option value="Philippines">Philippines</option>
+                                                                <option value="Russia">Russian Federation</option>
+                                                                <option value="South Africa">South Africa</option>
+                                                                <option value="Thailand">Thailand</option>
+                                                                <option value="Turkey">Turkey</option>
+                                                                <option value="Ukraine">Ukraine</option>
+                                                                <option value="United Arab Emirates">United Arab Emirates</option>
+                                                                <option value="United Kingdom">United Kingdom</option>
+                                                                <option value="Estados Unidos">Estados Unidos</option>
+                                                            </select>
+                                                            <label for="new_pais">Pais</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input class="form-control" type="text" id="cedula" name="cedula" value="New York" v-model="UpdateInformacion.cedula_usuario"/>
+                                                            <label for="cedula">Cédula</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="date" class="form-control flatpickr-validation" placeholder="YYYY-MM-DD" id="bs-validation-dob" v-model="UpdateInformacion.fecha_ingreso"/>
+                                                            <label for="bs-validation-dob">Fecha Ingreso</label>
+                                                        </div>
+                                                    </div>
+                                                
+                                                </div>
+                                                <div class="mt-6">
+                                                    <button type="submit" class="btn btn-primary me-3" @click="updateUsuarios()" v-if="include('Crear')" >Guardar</button>
+                                                    <!-- <button type="reset" class="btn btn-outline-secondary">Reset</button> -->
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
+                                    <!--/ User Profile Content -->
+                                </div>
+                                <div class="tab-pane fade" id="documentacion" role="tabpanel" aria-labelledby="documentacion-tab">
+                                    <div class="row">
+                                        <div class="col-xl-4 col-lg-5 col-md-5">
+                                            <!-- About User -->
+                                        
+                                            <!--/ About User -->
+                                        </div>
+                                        <div class="col-xl-12 col-lg-5 col-md-5">
+                                            <!-- About User -->
+                                            <div class="card mb-6">
+                                                <div class="card-body" style="border-color: #33b2ff;">
+                                                    <div class="row">
+                                                        <div class="col-12 col-md-6">
+                                                            <h5 class="card-header">Documentacion Cargada</h5>
+                                                        </div>
+                                                        <div class="col-12 col-md-6 mt-3">
+                                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                                                <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#basicModal">Agregar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="table-responsive text-nowrap">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Tipo</th>
+                                                                    <th>Archivo</th>
+                                                                    <th>Acciones</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="(d, index) in this.DetalleDocumentacion" :key="index">
+                                                                    <td>
+                                                                        {{index+1}}
+                                                                    </td>
+                                                                    <td>{{d.tipo}}</td>
+                                                                    <td style="font-size: 14px;white-space: normal;word-wrap: break-word;word-break: break-word;"><a href="#" @click="verArch(d.archivo)">{{ d.archivo }}</a></td>
+                                                                    <td>
+                                                                        <a class="dropdown-item waves-effect" type="button" style="color: red;" @click="deleteDoc(d)">
+                                                                            <i class="ri-delete-bin-7-line me-1"></i>Eliminar</a>
+
+                                                                    </td>
+                                                                </tr>
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                   
+                                                </div>
+                                            </div>
+                                            
+                                            <!--/ About User -->
+                                        </div>
+                                       
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-5 col-md-5">
+                        <div class="card mb-6">
+                            <div class="card-body">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="javascript:void(0)" class="btn btn-danger" @click="muestra(0)">
+                                        <i class="ri-arrow-left-long-fill ri-16px me-2"></i>Regresar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+                
+            </div>
+            <div id="main" v-if="this.vista == 2">
+                <div class="row">
                     <div class="col-12">
                         <div class="card mb-6">
                             <div class="user-profile-header-banner">
@@ -170,7 +626,13 @@
                                     Perfil
                                 </button>
                             </li>
-                            <li class="nav-item" role="presentation" v-if="this.detalleUsuario.rol_name == 'Cuerpo Tecnico'">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="perfil-tab" data-bs-toggle="pill" data-bs-target="#perfil" type="button" role="tab" aria-controls="perfil" aria-selected="true">
+                                    <i class="ri-user-3-line me-2"></i>
+                                    E
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="documentacion-tab" data-bs-toggle="pill" data-bs-target="#documentacion" type="button" role="tab" aria-controls="documentacion" aria-selected="false">
                                     <i class="ri-article-line me-2"></i>Documentación
                                 </button>
@@ -408,199 +870,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Modal de editar del usuario -->
-            <div class="modal fade" id="editUser" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-simple modal-add-new-address">
-                    <div class="modal-content">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <div class="modal-body p-0">
-                            <div class="text-center mb-6">
-                                <h4 class="address-title mb-2">Editar Usuario</h4>
-                            </div>
-                            <form id="addNewAddressForm" class="row g-5">
-                                <div class="col-12">
-                                    <div class="row g-5">
-                                        <div class="col-md mb-md-0">
-                                            <div class="form-check custom-option custom-option-basic">
-                                                <label class="form-check-label custom-option-content" for="customRadioHome">
-                                                <input
-                                                    name="customRadioTemp"
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="customRadioHome"
-                                                    checked @click="accionSubmenu()"/>
-                                                <span class="custom-option-header">
-                                                    <span class="h6 mb-0 d-flex align-items-center"><i class="ri-account-box-fill ri-20px me-1"></i>Acceso</span>
-                                                </span>
-                                                <!-- <span class="custom-option-body">
-                                                    <small>Delivery time (9am – 9pm)</small>
-                                                </span> -->
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md mb-md-0">
-                                            <div class="form-check custom-option custom-option-basic">
-                                                <label class="form-check-label custom-option-content" for="customRadioOffice">
-                                                <input
-                                                    name="customRadioTemp"
-                                                    class="form-check-input"
-                                                    type="radio"
-                                                    value=""
-                                                    id="customRadioOffice" @click="accionSubmenu()"/>
-                                                <span class="custom-option-header">
-                                                    <span class="h6 mb-0 d-flex align-items-center"><i class="ri-id-card-fill ri-20px me-1"></i>Información</span>
-                                                </span>
-                                                <!-- <span class="custom-option-body">
-                                                    <small>Delivery time (9am – 5pm) </small>
-                                                </span> -->
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- campos de acceso -->
-                                <div class="col-12 col-md-6" v-if="this.submenu == false">
-                                    <div class="form-floating form-floating-outline">
-                                    <input
-                                        type="text"
-                                        id="nameupdate"
-                                        class="form-control"
-                                        v-model="detalleUsuario.name"
-                                        placeholder="Nombre" disabled/>
-                                    <label for="nameupdate">Nombre</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6" v-if="this.submenu == false">
-                                    <div class="form-floating form-floating-outline">
-                                    <select id="rolesupdate" name="roles" class="form-select" v-model="detalleUsuario.rol_name">
-                                        <option value="Selecciona un Rol">Selecciona un Rol</option>
-                                        <option v-for="(rol, index) in Roles" :key="index" v-bind:value="rol.name">{{rol.name}}</option>
-                                    </select>
-                                    <label for="rolesupdate">Roles</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6" v-if="this.submenu == false">
-                                    <div class="form-floating form-floating-outline">
-                                    <input
-                                        type="email"
-                                        id="emailupdate"
-                                        class="form-control"
-                                        v-model="detalleUsuario.email"
-                                        placeholder="ejemplo@gmail.com" disabled/>
-                                    <label for="emailupdate">Email</label>
-                                    </div>
-                                </div>
-                            
-                                <div class="col-12 col-md-6" v-if="this.submenu == false">
-                                    <div class="form-password-toggle">
-                                        <div class="input-group input-group-merge">
-                                        
-                                        <div class="form-floating form-floating-outline">
-                                            <input
-                                            type="password"
-                                            id="passwordupdate"
-                                            class="form-control @error('password') @enderror"
-                                            v-model="detalleUsuario.password"
-                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                            aria-describedby="password" />
-                                            <label for="passwordupdate">Password</label>
-                                        </div>
-                                        <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-5" v-if="this.submenu == false">
-                                    <div class="form-floating form-floating-outline">
-                                    <select id="Sedes" name="Sedes" class="form-select" v-model="detalleUsuario.id_sede">
-                                        <option value="Selecciona una Sede">Selecciona una Sede</option>
-                                        <option v-for="(sed, index) in Sedes" :key="index" v-bind:value="sed.id_sede">{{sed.nombre}}</option>
-                                    </select>
-                                    <label for="Sedes">Sedes</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-1" v-if="this.submenu == false">
-                                    <button type="button" class="btn btn-icon btn-outline-whatsapp waves-effect" data-bs-toggle="modal" data-bs-target="#createSede">
-                                        <i class="tf-icons ri-checkbox-circle-fill ri-22px"></i>
-                                    </button>
-                                </div>
-                                <div class="col-12" v-if="this.submenu == false">
-                                    <div class="form-check form-switch">
-                                        <input type="checkbox" class="form-check-input" id="editBillingAddressupdate" v-model="detalleUsuario.estatus"/>
-                                        <label for="editBillingAddressupdate" class="text-heading">Activar Usuario?</label>
-                                    </div>
-                                </div>
-                                <!-- campos de informacion -->
-                                <div class="col-12 col-md-6" v-if="this.submenu == true">
-                                    <div class="form-floating form-floating-outline">
-                                    <input
-                                        type="text"
-                                        id="nombreperfil"
-                                        class="form-control"
-                                        v-model="detalleUsuario.perfil.nombre"
-                                        placeholder="Nombre" />
-                                    <label for="nombreperfil">Nombre</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6" v-if="this.submenu == true">
-                                    <div class="form-floating form-floating-outline">
-                                    <input
-                                        type="text"
-                                        id="apellidoPperfil"
-                                        class="form-control"
-                                        v-model="detalleUsuario.perfil.apellido_paterno"
-                                        placeholder="Apellido Paterno" />
-                                    <label for="apellidoPperfil">Apellido Paterno</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6" v-if="this.submenu == true">
-                                    <div class="form-floating form-floating-outline">
-                                    <input
-                                        type="text"
-                                        id="apellido_materno"
-                                        class="form-control"
-                                        v-model="detalleUsuario.perfil.apellido_materno"
-                                        placeholder="Apellido Materno" />
-                                    <label for="apellido_materno">Apellido Materno</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6" v-if="this.submenu == true">
-                                    <div class="form-floating form-floating-outline">
-                                    <input
-                                        type="text"
-                                        id="direccion"
-                                        class="form-control"
-                                        v-model="detalleUsuario.perfil.direccion"
-                                        placeholder="Dirección" />
-                                    <label for="direccion">Dirección</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6" v-if="this.submenu == true">
-                                    <div class="form-floating form-floating-outline">
-                                    <input
-                                        type="text"
-                                        id="telefono"
-                                        class="form-control"
-                                        v-model="detalleUsuario.perfil.telefono"
-                                        placeholder="5455545" />
-                                    <label for="telefono">Telefono</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6" v-if="this.submenu == true">
-                                    <div class="form-floating form-floating-outline mb-6">
-                                        <input type="file"  accept="image/png,image/jpeg" class="form-control" id="bs-validation-upload-file" ref="fileFoto" @change="onChangeFoto()">
-                                        <label for="bs-validation-upload-file">Foto</label>
-                                    </div>
-                                </div>
-                                <div class="col-12 mt-6 d-flex flex-wrap justify-content-center gap-4 row-gap-4">
-                                    <button type="button" class="btn btn-success" @click="updateUsuarios()">Editar</button>
-                                    <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">Cancelar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <!-- Modal para cargar los archivos -->
             <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -792,6 +1062,8 @@
                 table: null,
                 // offset: 2,
                 backupImageSrc: 'style/logos/sinfoto.png',
+                UpdateInformacion:[],
+                UpdateCuenta:{},
             }
         },
         computed: {
@@ -810,7 +1082,7 @@
             muestra(valor){
                 this.vista = valor;
                 if (valor == 0) {
-                    this.location.reload();
+                     window.location.reload();
 
                 }
             },
@@ -1057,14 +1329,7 @@
             include(permiso){
                 return this.permisos.includes(permiso);
             },
-            // changePage: function (page) {
-            //     this.pagination.current_page = page;
-            //     this.getAdministrador(page);
-            // },
-            // buscarUsuario() {               
-            //     clearTimeout(this.tiempoBusqueda)
-            //     this.tiempoBusqueda = setTimeout(this.getAdministrador, 200)
-            // },
+
             agregaUser(){
                 if (this.registro.name == '') {
                     this.$toast.error("Ingresa un Nombre", {
@@ -1113,6 +1378,12 @@
             infoUsuario(u){
                 this.submenu = false;
                 this.detalleUsuario = u;
+                this.detalleUsuario.new_password = '';
+                if (u.estatus == 1) {
+                    this.detalleUsuario.estatus  = true;
+                }else{
+                    this.detalleUsuario.estatus  = false;
+                }
                 this.detalleUsuario.id_sede = this.detalleUsuario.sede[0].id_sede
                 if (this.detalleUsuario.perfil == null) {
                     this.detalleUsuario.bandera = 'activo';
@@ -1136,6 +1407,99 @@
                 } else {
                     this.submenu = false;
                 }
+            },
+            CuentaUpdate(){
+                if (this.detalleUsuario.name == '') {
+                    this.$toast.error("Ingresa un Nombre", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleUsuario.email == '') {
+                    this.$toast.error("Ingresa un Email", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleUsuario.rol_name == '') {
+                    this.$toast.error("Selecciona un Role", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+                if (this.detalleUsuario.id_sede == 'Selecciona una Sede') {
+                    this.$toast.error("Selecciona una Sede", {
+                        position: "top-center",
+                        timeout: 1270,
+                        closeOnClick: true,
+                        pauseOnFocusLoss: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        draggablePercent: 0.6,
+                        showCloseButtonOnHover: false,
+                        hideProgressBar: true,
+                        closeButton: "button",
+                        icon: true,
+                        rtl: false
+                    });
+                    return;
+                }
+
+                let formData = new FormData();
+                    formData.append('id',this.detalleUsuario.id);
+                    formData.append('rol_name',this.detalleUsuario.rol_name);
+                    formData.append('sede',this.detalleUsuario.id_sede);
+                    formData.append('estatus',this.detalleUsuario.estatus);
+                    if (this.detalleUsuario.new_password != '') {
+                        formData.append('new_password',this.detalleUsuario.new_password);
+                    }else{
+                        formData.append('new_password','Sin Cambio');
+                    }
+                axios.post('administrador/CuentaUpdate',formData).then(response =>{
+                    this.getAdministrador();
+                    $('#editUser').modal('hide');
+                    this.submenu = false;
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: "Se Edito correctamente!",
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2500,
+                    });
+                })
             },
             updateUsuarios(){
                 if (this.detalleUsuario.name == '') {

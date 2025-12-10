@@ -78,6 +78,13 @@ class AdministradorController extends Controller
     }
 
     /**
+     * funcion que ediatra la cuenat del usuario
+     **/
+    public function CuentaUpdate(Request $request){
+        return $this->AdministradorRepository->CuentaUpdate($request);
+    }
+
+    /**
      * FUNCION QUE editara LOS USUARIOS CON SU ROL
      **/
     public function updateUsuarios(Request $request){

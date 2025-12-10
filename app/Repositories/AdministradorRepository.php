@@ -72,15 +72,13 @@ class AdministradorRepository
     }
 
     /**
-     * FUNCION QUE EDITARA LOS USUARIOS CON SU ROL
+     * funcion que actualizara el usuario
      **/
-    public function updateUsuarios($request){
+    public function CuentaUpdate($request){
 
         $user = Usuarios::find($request->id);        
-        if ($user['password'] != $request->password) {
-            $user -> password=Hash::make($request->password);            
-        }else{
-            $user -> password=$request->password;
+        if ($request->new_password != 'Sin Cambio') {
+            $user -> password=Hash::make($request->new_password);            
         }
         if ($request->estatus == 'true'||$request->estatus == 1) {
             $user -> estatus = 1;
@@ -100,6 +98,14 @@ class AdministradorRepository
         $rol->removeRole($role->rol_name);
         $rol->assignRole($request->rol_name);
 
+        return $user;
+    }
+
+    /**
+     * FUNCION QUE EDITARA LOS USUARIOS CON SU ROL
+     **/
+    public function updateUsuarios($request){
+
 
         if ($request -> bandera == 'activo') {
             if ($request->nombre != null) {
@@ -108,8 +114,18 @@ class AdministradorRepository
                 $perfil -> nombre = $request->nombre;
                 $perfil -> apellido_paterno = $request->apellido_paterno;
                 $perfil -> apellido_materno = $request->apellido_materno;
-                $perfil -> direccion = $request->direccion;
+                $perfil -> profesion = $request->profesion;
+                $perfil -> estado_civil = $request->estado_civil;
+                $perfil -> sexo = $request->sexo;
+                $perfil -> cumpleaños = $request->cumpleaños;
                 $perfil -> telefono = $request->telefono;
+                $perfil -> codigo_postal = $request->codigo_postal;
+                $perfil -> entidad = $request->entidad;
+                $perfil -> direccion = $request->direccion;
+                $perfil -> curp = $request->curp;
+                $perfil -> rfc = $request->rfc;
+                $perfil -> nacionalidad = $request->nacionalidad;
+                $perfil -> cedula = $request->cedula;
                 $file = $request->file('foto');
                 if (isset($file)) {
                     // \Storage::disk('perfil')->delete($request->foto_eliminar);
@@ -129,8 +145,18 @@ class AdministradorRepository
             $perfil -> nombre = $request->nombre;
             $perfil -> apellido_paterno = $request->apellido_paterno;
             $perfil -> apellido_materno = $request->apellido_materno;
-            $perfil -> direccion = $request->direccion;
+            $perfil -> profesion = $request->profesion;
+            $perfil -> estado_civil = $request->estado_civil;
+            $perfil -> sexo = $request->sexo;
+            $perfil -> cumpleaños = $request->cumpleaños;
             $perfil -> telefono = $request->telefono;
+            $perfil -> codigo_postal = $request->codigo_postal;
+            $perfil -> entidad = $request->entidad;
+            $perfil -> direccion = $request->direccion;
+            $perfil -> curp = $request->curp;
+            $perfil -> rfc = $request->rfc;
+            $perfil -> nacionalidad = $request->nacionalidad;
+            $perfil -> cedula = $request->cedula;
             $file = $request->file('foto');
             if (isset($file)) {
                 \Storage::disk('perfil')->delete($perfil->foto);
@@ -145,7 +171,7 @@ class AdministradorRepository
             $perfil -> save();
         }
 
-        return $user;
+        return $perfil;
     }
 
     /**
