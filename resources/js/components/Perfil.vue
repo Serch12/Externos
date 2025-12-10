@@ -396,10 +396,9 @@
                                                 padding: 15px 20px;
                                                 border-radius: 10px;
                                                 box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                                                text-align: center;
-                                            ">
+                                                text-align: center; ">
                                                 <div style="font-size: 14px; color: #666;">Contratos Vigentes</div>
-                                                <div style="font-size: 26px; font-weight: bold; color: #0055ff;">1</div>
+                                                <div style="font-size: 26px; font-weight: bold; color: #0055ff;">0</div>
                                             </div>
 
                                             <!-- Pendientes de firma -->
@@ -409,10 +408,9 @@
                                                 padding: 15px 20px;
                                                 border-radius: 10px;
                                                 box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                                                text-align: center;
-                                            ">
+                                                text-align: center; ">
                                                 <div style="font-size: 14px; color: #666;">Pendientes de Firma</div>
-                                                <div style="font-size: 26px; font-weight: bold; color: #d98b00;">1</div>
+                                                <div style="font-size: 26px; font-weight: bold; color: #d98b00;">0</div>
                                             </div>
 
                                             <!-- Contratos Históricos -->
@@ -422,10 +420,9 @@
                                                 padding: 15px 20px;
                                                 border-radius: 10px;
                                                 box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                                                text-align: center;
-                                            ">
+                                                text-align: center;">
                                                 <div style="font-size: 14px; color: #666;">Contratos Históricos</div>
-                                                <div style="font-size: 26px; font-weight: bold; color: #333;">3</div>
+                                                <div style="font-size: 26px; font-weight: bold; color: #333;">0</div>
                                             </div>
 
                                             <!-- Próxima Fecha -->
@@ -435,10 +432,9 @@
                                                 padding: 15px 20px;
                                                 border-radius: 10px;
                                                 box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                                                text-align: center;
-                                            ">
+                                                text-align: center;">
                                                 <div style="font-size: 14px; color: #666;">Próxima Fecha de Vencimiento</div>
-                                                <div style="font-size: 26px; font-weight: bold; color: #cc0000;">31/12/2025</div>
+                                                <div style="font-size: 26px; font-weight: bold; color: #cc0000;">00/00/0000</div>
                                             </div>
                                         </div>
 
@@ -478,7 +474,7 @@
                                                                 <a type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver Contrato" @click="verContrato(c.id_contrato_digital)">
                                                                     <i class="ri-file-list-fill bg-label-warning ri-25px me-1"></i>
                                                                 </a>
-                                                                <a type="button" data-bs-toggle="modal" data-bs-placement="bottom" title="Firmar Contrato" data-bs-target="#modalFirma">
+                                                                <a type="button" data-bs-toggle="modal" data-bs-placement="bottom" title="Firmar Contrato" data-bs-target="#modalFirma" @click="detalleContrato()">
                                                                     <i class="ri-edit-box-fill bg-label-info ri-25px me-1"></i>
                                                                 </a>
                                                                 
@@ -869,7 +865,8 @@ export default {
                 { label: 'Comprobante de domicilio', tipo: 'Comprobante de domicilio' }
             ],
             Archivos:[],
-            ContratoFirma:[]
+            ContratoFirma:[],
+            InfoContrato:[]
         }
     },
     computed: {
@@ -1543,9 +1540,11 @@ export default {
                 formData.append('id_perfil',this.id_usuario_logeado);
                 formData.append('documento',file);
                 formData.append('tipo',tipo.tipo);
+                $('#modalloading').modal('show');
             axios.post('perfil/newDocumento',formData).then(response=>{
                 this.getPerfil();
                 this.vista = 0;
+               $('#modalloading').modal('hide');
                 Swal.fire({
                     title: 'Éxito',
                     text: "Se Agrego correctamente!",
@@ -1565,12 +1564,14 @@ export default {
                 formData.append('documento_delete',value.archivo)
                 formData.append('documento',file);
                 formData.append('tipo',value.tipo);
+                $('#modalloading').modal('show');
             axios.post('perfil/updateDocumento',formData).then(response=>{
                 this.getPerfil();
                 this.vista = 0;
+                $('#modalloading').modal('hide');
                 Swal.fire({
                     title: 'Éxito',
-                    text: "Se Agrego correctamente!",
+                    text: "Se Edito correctamente!",
                     icon: 'success',
                     showConfirmButton: false,
                     timer: 2500,
@@ -1583,11 +1584,11 @@ export default {
                 const blob = new Blob([response.data], { type: 'application/pdf' });
                 const url = window.URL.createObjectURL(blob);
                 window.open(url, '_blank');
-                $('#modalloading').modal('close');
+                
             })
             .catch((error) => {
                 console.error(error);
-                $('#modalloading').modal('close');
+                
             });
         }
     }
