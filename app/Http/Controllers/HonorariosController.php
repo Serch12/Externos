@@ -111,7 +111,7 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 18) {
+        if ($hoy->day === 10) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
@@ -190,7 +190,7 @@ class HonorariosController extends Controller
 
         }
 
-        if ($hoy->day === 18) {
+        if ($hoy->day === 10) {
             // Cambiar el estatus si existe
             $mesActual = Carbon::now()->format('m');
             $añoActual = Carbon::now()->format('Y');
