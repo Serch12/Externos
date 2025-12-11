@@ -118,10 +118,10 @@ class PerfilController extends Controller
         }
         $contrato_total = $historial_contrato->count();
         $contrato = ContratosDigital::where('id_usuario', $request->id)->where('estatus', 2)->whereNotNull('firma')->whereDate('fecha_fin', '>=', now()->toDateString())->get();  
-        $contrato_vigente = $contrato->count();
         foreach ($contrato as $c) {
             $prox_fecha = $c->fecha_fin;
         }
+        $contrato_vigente = $contrato->count();
 
         return response()->json(['perfil'=>$perfil,'datoBancario'=>$datoBancario,
         'documento'=>$documento,'contrato_firma'=>$contrato_firma,'contrato_pendiente'=>$contrato_pendiente,'historial_contrato'=>$historial_contrato,'contrato_total'=>$contrato_total,'contrato_vigente'=>$contrato_vigente,'prox_fecha'=>$prox_fecha]);
