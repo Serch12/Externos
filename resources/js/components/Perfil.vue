@@ -98,7 +98,7 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="documentacion-tab" data-bs-toggle="pill" data-bs-target="#documentacion" type="button" role="tab" aria-controls="documentacion" aria-selected="false">
-                                    <i class="ri-article-line me-2"></i>Documentación
+                                    <i class="ri-article-line me-2"></i>Documentación <span class="badge badge-center text-bg-danger ms-1">{{this.totalDocumento}}</span>
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
@@ -943,6 +943,7 @@ export default {
                 { label: 'Acta de nacimiento', tipo: 'Acta de nacimiento' },
                 { label: 'Comprobante de domicilio', tipo: 'Comprobante de domicilio' }
             ],
+
             Archivos:[],
             ContratoFirma:[],
             InfoContrato:[],
@@ -962,6 +963,10 @@ export default {
             //Filtra los archivos pendientes que aún no están en la lista de archivos
             return this.ArchiPendiente.filter((a) => !this.Archivos.find((archivo) => archivo.tipo === a.tipo));
         },
+
+        totalDocumento(){
+            return this.ArchiPendiente.length - this.Archivos.length;
+        }
         
         
     },
