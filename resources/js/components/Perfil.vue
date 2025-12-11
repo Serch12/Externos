@@ -439,13 +439,13 @@
                                                         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
                                                         text-align: center;">
                                                         <div style="font-size: 14px; color: #666;">Próxima Fecha de Vencimiento</div>
-                                                        <div style="font-size: 26px; font-weight: bold; color: #cc0000;">00/00/0000</div>
+                                                        <div style="font-size: 26px; font-weight: bold; color: #cc0000;">{{this.prox_fecha}}</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <!-- Tabla -->
+                                        <!-- Tabla Pendiente de firma -->
                                         <div class="card">
                                             <h5 class="card-header">Contratos Pendientes de Firma</h5>
                                             <div class="table-responsive text-nowrap ">
@@ -491,10 +491,56 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                                        </div>  
+                                        <!-- Tabla Historial -->
+                                        <div class="card mt-2">
+                                            <h5 class="card-header">Historial Contratos</h5>
+                                            <div class="table-responsive text-nowrap ">
+                                                <table class="table" style="font-size: 16px;">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>ID CONTRATO</th>
+                                                            <th>TIPO</th>
+                                                            <th>VIGENCIA</th>
+                                                            <th>MONTO MENSUAL</th>
+                                                            <th>ESTATUS</th>
+                                                            <th>ACCIONES</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-border-bottom-0">
+                                                        <tr v-for="(c, index) in HistorialContrato" :key="index">
+                                                            <td>
+                                                                CI-{{ c.id_contrato_digital }}
+                                                            </td>
+                                                            <td>
+                                                                {{ c.tipo_contrato }}
+                                                            </td>
+                                                            <td>
+                                                                {{c.fecha_inicio}} -- {{ c.fecha_fin }}
+                                                            </td>
+                                                            <td>
+                                                                ${{ formatPrice(c.salario_numero_1) }}
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge rounded-pill bg-label-success me-1">Aprobado</span>
+                                                            </td>
+                                                            <td>
+                                                                <a type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver Contrato" @click="verContrato(c.id_contrato_digital)">
+                                                                    <i class="ri-file-list-fill bg-label-warning ri-25px me-1"></i>
+                                                                </a>
+                                                                <!-- <a type="button" data-bs-toggle="modal" data-bs-placement="bottom" title="Firmar Contrato" data-bs-target="#modalConfirmacion" @click="detalleContrato(c)">
+                                                                    <i class="ri-edit-box-fill bg-label-info ri-25px me-1"></i>
+                                                                </a> -->
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                   
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
 
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -898,10 +944,15 @@ export default {
             Archivos:[],
             ContratoFirma:[],
             InfoContrato:[],
+            HistorialContrato:[],
+
+
+
             buttonFirma:false,
             contrato_vigente:0,
             contrato_pendiente:0,
-            contrato_total:0
+            contrato_total:0,
+            prox_fecha:'00/00/0000'
         }
     },
     computed: {
@@ -955,8 +1006,12 @@ export default {
                 this.DatoBancario = response.data.datoBancario
                 this.Archivos = response.data.documento;
                 this.ContratoFirma = response.data.contrato_firma;
+                this.HistorialContrato = response.data.historial_contrato;
 
+                this.contrato_vigente = response.data.contrato_vigente;
                 this.contrato_pendiente = response.data.contrato_pendiente;
+                this.contrato_total = response.data.contrato_total;
+                this.prox_fecha = response.data.prox_fecha;
             });
 
             this.firmaUsuario = new SignaturePad(this.$refs.firmaUsuario, {
@@ -1621,17 +1676,19 @@ export default {
             })
         },
         verContrato(id_contrato_digital){
+            $('#modalloading').modal('show');
             axios.post('perfil/verContrato', { id_contrato_digital}, { responseType: 'blob' })
             .then((response) => {
                 const blob = new Blob([response.data], { type: 'application/pdf' });
                 const url = window.URL.createObjectURL(blob);
                 window.open(url, '_blank');
-                
+                 $('#modalloading').modal('hide');
             })
             .catch((error) => {
                 console.error(error);
                 
             });
+            
         },
         detalleContrato(c){
             this.InfoContrato = c;
@@ -1640,6 +1697,24 @@ export default {
         clearFirmaUsuario() {
             this.firmaUsuario.clear();
         },
+        agregaFirma(){
+            let formData = new FormData();
+                formData.append('id_contrato_digital',this.InfoContrato.id_contrato_digital);
+                formData.append('firma_contrato',this.firmaUsuario.toDataURL());
+            axios.post('perfil/createFirmaContrato',formData).then(response =>{
+
+                $('#modalFirma').modal('hide');
+                this.clearFirmaUsuario();
+                this.getPerfil();
+                Swal.fire({
+                    title: 'Excelente',
+                    text: "La Firma se a agregado!",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2500,
+                })
+            })
+        }
     }
 };
 </script>

@@ -106,8 +106,25 @@ class PerfilController extends Controller
         }
         $contrato_pendiente = $contrato_firma->count();
 
+        $historial_contrato = ContratosDigital::where('id_usuario',$request->id)->where('estatus',2)->whereNotNull('firma')->get();
+        foreach ($historial_contrato as $value) {
+            // Verifica si el valor no es nulo o una cadena vacía antes de desencriptar
+            if ($value->salario_numero) {
+                $value->salario_numero_1 = Crypt::decryptString($value->salario_numero);
+            }
+            if ($value->salario_texto) {
+                $value->salario_texto_1 = Crypt::decryptString($value->salario_texto);
+            }
+        }
+        $contrato_total = $historial_contrato->count();
+        $contrato = ContratosDigital::where('id_usuario', $request->id)->where('estatus', 2)->whereNotNull('firma')->whereDate('fecha_fin', '>=', now()->toDateString())->get();  
+        $contrato_vigente = $contrato->count();
+        foreach ($contrato as $c) {
+            $prox_fecha = $c->fecha_fin;
+        }
+
         return response()->json(['perfil'=>$perfil,'datoBancario'=>$datoBancario,
-        'documento'=>$documento,'contrato_firma'=>$contrato_firma,'contrato_pendiente'=>$contrato_pendiente]);
+        'documento'=>$documento,'contrato_firma'=>$contrato_firma,'contrato_pendiente'=>$contrato_pendiente,'historial_contrato'=>$historial_contrato,'contrato_total'=>$contrato_total,'contrato_vigente'=>$contrato_vigente,'prox_fecha'=>$prox_fecha]);
     }
 
     /**
@@ -246,6 +263,7 @@ class PerfilController extends Controller
         $listado_html .= '</ul>';
         // Prepara los datos para la plantilla del contrato de honorarios
         $data = [
+            'id_contrato_digital' => $contrato->id_contrato_digital,
             'nombre_usuario' => $contrato->nombre_completo,
             'nacionalidad' => $contrato->nacionalidad,
             'sexo' => $contrato->sexo,
@@ -287,6 +305,7 @@ class PerfilController extends Controller
      * funcion que agregara la firma del contrato digital
      **/
     public function createFirmaContrato(Request $request){
+
         $update = ContratosDigital::find($request->id_contrato_digital);
         // Decodificar la cadena base64 de la firma usuario
         $firmaContrato = $request->input('firma_contrato');
@@ -295,9 +314,9 @@ class PerfilController extends Controller
             $imageusuario = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $firmaContrato));
             //obtenemos el nombre del archivo
 
-            $url = strtoupper(str_replace(' ', '_', $request->usuario)) . '.'. 'png';
+            $url = strtoupper(str_replace(' ', '_', $update->nombre_completo.'_'.'CI'.$update->id_contrato_digital)) . '.'. 'png';
 
-            $nombreUsuario = $request->id."/"."Firmas"."/".$url;
+            $nombreUsuario = $url;
 
 
             //indicamos que queremos guardar un nuevo archivo en el disco local
