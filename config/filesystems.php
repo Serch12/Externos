@@ -99,6 +99,11 @@ return [
             'root' => public_path().'/ArchivosSistema/Honorario',
             'visibility' => 'public', 
         ],
+        'contratos' => [
+            'driver' => 'local',
+            'root' => public_path().'/ArchivosSistema/FirmasContratos',
+            'visibility' => 'public', 
+        ],
 
         's3' => [
             'driver' => 's3',

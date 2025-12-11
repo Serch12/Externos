@@ -11,3 +11,4 @@ Route::post('/perfil/deleteDatoBancario', [PerfilController::class, 'deleteDatoB
 Route::post('/perfil/newDocumento', [PerfilController::class, 'newDocumento'])->name('perfil/newDocumento');
 Route::post('/perfil/updateDocumento', [PerfilController::class, 'updateDocumento'])->name('perfil/updateDocumento');
 Route::post('/perfil/verContrato', [PerfilController::class, 'verContrato'])->name('perfil/verContrato');
+Route::post('/perfil/createFirmaContrato', [PerfilController::class, 'createFirmaContrato'])->name('perfil/createFirmaContrato');

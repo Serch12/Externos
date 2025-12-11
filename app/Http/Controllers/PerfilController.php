@@ -94,7 +94,7 @@ class PerfilController extends Controller
                 $db->imagen_banco = "afirme.png";
             }  
         }
-        $contrato_firma = ContratosDigital::where('id_usuario',$request->id)->where('estatus',2)->get();
+        $contrato_firma = ContratosDigital::where('id_usuario',$request->id)->where('estatus',2)->where('firma',null)->get();
         foreach ($contrato_firma as $value) {
             // Verifica si el valor no es nulo o una cadena vacía antes de desencriptar
             if ($value->salario_numero) {
@@ -104,8 +104,10 @@ class PerfilController extends Controller
                 $value->salario_texto_1 = Crypt::decryptString($value->salario_texto);
             }
         }
+        $contrato_pendiente = $contrato_firma->count();
 
-        return response()->json(['perfil'=>$perfil,'datoBancario'=>$datoBancario,'documento'=>$documento,'contrato_firma'=>$contrato_firma]);
+        return response()->json(['perfil'=>$perfil,'datoBancario'=>$datoBancario,
+        'documento'=>$documento,'contrato_firma'=>$contrato_firma,'contrato_pendiente'=>$contrato_pendiente]);
     }
 
     /**
@@ -279,6 +281,32 @@ class PerfilController extends Controller
 
         // Retornar el PDF para que se muestre en el navegador
         return $pdf->stream('contrato_honorarios_' . $contrato->nombre_usuario . '.pdf'); 
+    }
+
+    /**
+     * funcion que agregara la firma del contrato digital
+     **/
+    public function createFirmaContrato(Request $request){
+        $update = ContratosDigital::find($request->id_contrato_digital);
+        // Decodificar la cadena base64 de la firma usuario
+        $firmaContrato = $request->input('firma_contrato');
+
+        if (preg_match('/^data:image\/\w+;base64,/', $firmaContrato)) {
+            $imageusuario = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $firmaContrato));
+            //obtenemos el nombre del archivo
+
+            $url = strtoupper(str_replace(' ', '_', $request->usuario)) . '.'. 'png';
+
+            $nombreUsuario = $request->id."/"."Firmas"."/".$url;
+
+
+            //indicamos que queremos guardar un nuevo archivo en el disco local
+            \Storage::disk('contratos')->put($nombreUsuario,$imageusuario);
+            $update -> firma = $url;
+        }
+
+        $update -> save();
+        return $update;
     }
 
 }

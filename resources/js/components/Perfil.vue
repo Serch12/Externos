@@ -389,52 +389,59 @@
                                         <!-- Tarjetas superiores -->
                                         <div style="display: flex; gap: 20px; margin-bottom: 25px;">
 
-                                            <!-- Contratos Vigentes -->
-                                            <div style="
-                                                flex: 1;
-                                                background: #fff;
-                                                padding: 15px 20px;
-                                                border-radius: 10px;
-                                                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                                                text-align: center; ">
-                                                <div style="font-size: 14px; color: #666;">Contratos Vigentes</div>
-                                                <div style="font-size: 26px; font-weight: bold; color: #0055ff;">0</div>
-                                            </div>
-
-                                            <!-- Pendientes de firma -->
-                                            <div style="
-                                                flex: 1;
-                                                background: #fff;
-                                                padding: 15px 20px;
-                                                border-radius: 10px;
-                                                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                                                text-align: center; ">
-                                                <div style="font-size: 14px; color: #666;">Pendientes de Firma</div>
-                                                <div style="font-size: 26px; font-weight: bold; color: #d98b00;">0</div>
-                                            </div>
-
-                                            <!-- Contratos Históricos -->
-                                            <div style="
-                                                flex: 1;
-                                                background: #fff;
-                                                padding: 15px 20px;
-                                                border-radius: 10px;
-                                                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                                                text-align: center;">
-                                                <div style="font-size: 14px; color: #666;">Contratos Históricos</div>
-                                                <div style="font-size: 26px; font-weight: bold; color: #333;">0</div>
-                                            </div>
-
-                                            <!-- Próxima Fecha -->
-                                            <div style="
-                                                flex: 1;
-                                                background: #fff;
-                                                padding: 15px 20px;
-                                                border-radius: 10px;
-                                                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-                                                text-align: center;">
-                                                <div style="font-size: 14px; color: #666;">Próxima Fecha de Vencimiento</div>
-                                                <div style="font-size: 26px; font-weight: bold; color: #cc0000;">00/00/0000</div>
+                                            <div class="row">
+                                                <div class="col-xl-3 mt-2">
+                                                    <!-- Contratos Vigentes -->
+                                                    <div style="
+                                                        flex: 1;
+                                                        background: #fff;
+                                                        padding: 15px 20px;
+                                                        border-radius: 10px;
+                                                        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                                                        text-align: center; ">
+                                                        <div style="font-size: 14px; color: #666;">Contratos Vigentes</div>
+                                                        <div style="font-size: 26px; font-weight: bold; color: #0055ff;">{{ this.contrato_vigente }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 mt-2">
+                                                    <!-- Pendientes de firma -->
+                                                    <div style="
+                                                        flex: 1;
+                                                        background: #fff;
+                                                        padding: 15px 20px;
+                                                        border-radius: 10px;
+                                                        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                                                        text-align: center; ">
+                                                        <div style="font-size: 14px; color: #666;">Pendientes de Firma</div>
+                                                        <div style="font-size: 26px; font-weight: bold; color: #d98b00;">{{ this.contrato_pendiente }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 mt-2">
+                                                    <!-- Contratos Históricos -->
+                                                    <div style="
+                                                        flex: 1;
+                                                        background: #fff;
+                                                        padding: 15px 20px;
+                                                        border-radius: 10px;
+                                                        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                                                        text-align: center;">
+                                                        <div style="font-size: 14px; color: #666;">Contratos Históricos</div>
+                                                        <div style="font-size: 26px; font-weight: bold; color: #333;">{{ this.contrato_total }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 mt-2">
+                                                    <!-- Próxima Fecha -->
+                                                    <div style="
+                                                        flex: 1;
+                                                        background: #fff;
+                                                        padding: 15px 20px;
+                                                        border-radius: 10px;
+                                                        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                                                        text-align: center;">
+                                                        <div style="font-size: 14px; color: #666;">Próxima Fecha de Vencimiento</div>
+                                                        <div style="font-size: 26px; font-weight: bold; color: #cc0000;">00/00/0000</div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -499,7 +506,7 @@
                     <div class="card mb-6">
                         <div class="card-body">
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <a href="javascript:void(0)" class="btn btn-danger" @click="muestra(0)">
+                                <a href="home" class="btn btn-danger">
                                     <i class="ri-arrow-left-long-fill ri-16px me-2"></i>Regresar
                                 </a>
                             </div>
@@ -891,7 +898,10 @@ export default {
             Archivos:[],
             ContratoFirma:[],
             InfoContrato:[],
-            buttonFirma:false
+            buttonFirma:false,
+            contrato_vigente:0,
+            contrato_pendiente:0,
+            contrato_total:0
         }
     },
     computed: {
@@ -945,6 +955,8 @@ export default {
                 this.DatoBancario = response.data.datoBancario
                 this.Archivos = response.data.documento;
                 this.ContratoFirma = response.data.contrato_firma;
+
+                this.contrato_pendiente = response.data.contrato_pendiente;
             });
 
             this.firmaUsuario = new SignaturePad(this.$refs.firmaUsuario, {
