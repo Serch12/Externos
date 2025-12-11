@@ -106,7 +106,7 @@ class PerfilController extends Controller
         }
         $contrato_pendiente = $contrato_firma->count();
 
-        $historial_contrato = ContratosDigital::where('id_usuario',$request->id)->where('estatus',2)->whereNotNull('firma')->get();
+        $historial_contrato = ContratosDigital::where('id_usuario',$request->id)->where('estatus',2)->whereNotNull('firma')->orderBy('id_contrato_digital','desc')->get();
         foreach ($historial_contrato as $value) {
             // Verifica si el valor no es nulo o una cadena vacía antes de desencriptar
             if ($value->salario_numero) {

@@ -107,8 +107,10 @@
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
+                                
                                 <button class="nav-link" id="contrato-tab" data-bs-toggle="pill" data-bs-target="#contrato" type="button" role="tab" aria-controls="contrato" aria-selected="false">
                                     <i class="ri-file-edit-fill me-2"></i>Contrato
+                                    <span class="badge badge-center text-bg-danger ms-1">{{this.contrato_pendiente}}</span>
                                 </button>
                             </li>
                         </ul>
