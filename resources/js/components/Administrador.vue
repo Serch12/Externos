@@ -19,91 +19,7 @@
                             </table>
                         </div>
                     </div>
-                    <!-- <div class="card">
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <h5 class="card-header">Usuario</h5>
-                            </div>
-                            <div class="col-12 col-md-6 mt-3">
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Registro" @keyup="buscarUsuario()"/>
-                                    <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createUser">Agregar</button>
-                                </div>
-                            </div>
-                            <div class="table-responsive text-nowrap mt-2">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Foto</th>
-                                            <th>Nombre</th>
-                                            <th>Email</th>
-                                            <th>Rol</th>
-                                            <th>Estatus</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-border-bottom-0">
-                                        <tr v-for="(user, index) in Usuario" :key="index">
-                                            <td>{{ index+1 }}</td>
-                                            <td>
-                                                <div class="d-flex justify-content-start align-items-center" v-if="user.perfil != null">
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar me-2" >
-                                                            <img :src="`ArchivosSistema/Documentacion/${user.perfil.foto}`" alt="Avatar" class="rounded-circle" @error="(event)=>onImageError(event)">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex justify-content-start align-items-center" v-else>
-                                                    <div class="avatar-wrapper">
-                                                        <div class="avatar me-2" >
-                                                            <img src="style/logos/sinfoto.png" alt="Avatar" class="rounded-circle">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                            
-                                            </td>
-                                            <td>{{ user.name }}</td>
-                                            <td>{{ user.email }}</td>
-                                            <td>{{ user.rol_name }}</td>
-                                            <td><span :class="`badge rounded-pill ${user.color} me-1`">{{user.text}}</span></td>
-                                            <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                <i class="ri-more-2-line"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="muestra(1),infoUsuario(user)">
-                                                        <i class="ri-clipboard-line me-1"></i> Vizualizar</a>
-                                                    <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
-                                                        data-bs-toggle="modal" data-bs-target="#editUser" @click="infoUsuario(user)">
-                                                        <i class="ri-pencil-line me-1"></i> Editar</a>
-                                                    <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')" @click="eliminarPerfil(user.id)">
-                                                        <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>
-                                                </div>
-                                            </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <nav aria-label="Page navigation example mt-3">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item disabled" v-if="pagination.current_page > 1">
-                                            <a @click.prevent="changePage(pagination.current_page -1)" class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                        </li>
-                                        <li class="page-item" v-for="(page, index) in pageNumber"
-                                            :key="index" @click.prevent="changePage(page)"
-                                            v-bind:class="[ page == isActived ? 'active' : 'waves-effect']">
-                                            <a class="page-link" href="#">{{ page }}</a>
-                                        </li>
-                                        <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                                            <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link" href="#">Next</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div> -->
+                   
                 </div>
             </div>
             <div id="main" v-if="this.vista == 1">
@@ -134,7 +50,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <h5 class="mb-0">{{this.UpdateInformacion.cumpleaños}}</h5>
+                                            <h5 class="mb-0">{{this.detalleUsuario.perfil.cumpleaños}}</h5>
                                             <span>Fecha Nacimiento</span>
                                         </div>
                                     </div>
@@ -145,7 +61,7 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <h5 class="mb-0">{{this.UpdateInformacion.fecha_ingreso}}</h5>
+                                            <h5 class="mb-0">{{this.detalleUsuario.perfil.fecha_ingreso}}</h5>
                                             <span>Fecha Ingreso</span>
                                         </div>
                                     </div>
@@ -155,7 +71,7 @@
                                     <ul class="list-unstyled mb-6">
                                         <li class="mb-2">
                                             <span class="fw-medium text-heading me-2">Nombre Usuario:</span>
-                                            <span>{{this.UpdateInformacion.nombre}} </span>
+                                            <span>{{this.detalleUsuario.perfil.nombre}} </span>
                                         </li>
                                         <li class="mb-2">
                                             <span class="fw-medium text-heading me-2">Email:</span>
@@ -172,15 +88,15 @@
                                         
                                         <li class="mb-2">
                                             <span class="fw-medium text-heading me-2">Contacto:</span>
-                                            <span>+(52) {{this.UpdateInformacion.telefono}}</span>
+                                            <span>+(52) {{this.detalleUsuario.perfil.telefono}}</span>
                                         </li>
                                         <li class="mb-2">
                                             <span class="fw-medium text-heading me-2">Dirección:</span>
-                                            <span>{{this.UpdateInformacion.calle}} #{{ this.UpdateInformacion.num_ext }}, CP: {{ this.UpdateInformacion.cp }}, {{ this.UpdateInformacion.colonia }},</span>
+                                            <span>{{this.detalleUsuario.perfil.calle}} #{{ this.detalleUsuario.perfil.num_ext }}, CP: {{ this.detalleUsuario.perfil.cp }}, {{ this.detalleUsuario.perfil.colonia }},</span>
                                         </li>
                                         <li class="mb-2">
                                             <span class="fw-medium text-heading me-2">Cedula:</span>
-                                            <span>{{this.UpdateInformacion.cedula_usuario}}</span>
+                                            <span>{{this.detalleUsuario.perfil.cedula}}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -211,11 +127,13 @@
                                         <i class="ri-article-line me-2"></i>Documentación
                                     </button>
                                 </li>
-                                <!-- <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="seguridad-tab" data-bs-toggle="pill" data-bs-target="#seguridad" type="button" role="tab" aria-controls="seguridad" aria-selected="false">
-                                        <i class="ri-lock-line me-2"></i>Seguridad
+                                <li class="nav-item" role="presentation">
+                                
+                                    <button class="nav-link" id="contrato-tab" data-bs-toggle="pill" data-bs-target="#contrato" type="button" role="tab" aria-controls="contrato" aria-selected="false">
+                                        <i class="ri-file-edit-fill me-2"></i>Contrato
+                                        <span class="badge badge-center text-bg-danger ms-1">{{this.contrato_pendiente}}</span>
                                     </button>
-                                </li> -->
+                                </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="cuenta" role="tabpanel" aria-labelledby="cuenta-tab">
@@ -301,7 +219,7 @@
                                     <div class="card mb-6">
                                         <div class="card-body">
                                         <div class="d-flex align-items-start align-items-sm-center gap-6">
-                                            <img :src="`ArchivosSistema/Documentacion/${this.UpdateInformacion.id_user}/${this.UpdateInformacion.foto}`" alt="user-avatar1" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" @error="(event)=>onImageError(event)" v-if="this.backupImageSrc == ''"/>
+                                            <img :src="`ArchivosSistema/Documentacion/${this.detalleUsuario.perfil.id_user}/${this.detalleUsuario.perfil.foto}`" alt="user-avatar1" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" @error="(event)=>onImageError(event)" v-if="this.backupImageSrc == ''"/>
                                             <img :src="this.backupImageSrc" alt="user-avatar2" class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" v-else/>
                                             <div class="button-wrapper">
                                                 <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
@@ -323,152 +241,138 @@
                                                 <div class="row mt-1 g-5">
                                                     <div class="col-md-4">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input class="form-control" type="text" id="nombre456" name="nombre456" v-model="UpdateInformacion.nombre" />
+                                                            <input class="form-control" type="text" id="nombre456" name="nombre456" v-model="detalleUsuario.perfil.nombre"  style="text-transform: uppercase;"/>
                                                             <label for="nombre456">Nombre</label>
-                                                           
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input class="form-control" type="text" id="apPaterno456" name="apPaterno456" v-model="UpdateInformacion.paterno"/>
+                                                            <input class="form-control" type="text" id="apPaterno456" name="apPaterno456" v-model="detalleUsuario.perfil.apellido_paterno" style="text-transform: uppercase;"/>
                                                             <label for="apPaterno456">Apellido Paterno</label>
-                                                            
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input class="form-control" type="text" id="apMaterno456" name="apMaterno456" v-model="UpdateInformacion.materno"/>
+                                                            <input class="form-control" type="text" id="apMaterno456" name="apMaterno456" v-model="detalleUsuario.perfil.apellido_materno" style="text-transform: uppercase;"/>
                                                             <label for="apMaterno456">Apellido Materno</label>
-                                                           
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input class="form-control" type="text" id="Carrera456" name="Carrera456"  v-model="UpdateInformacion.carrera"/>
-                                                            <label for="Carrera456">Carrera</label>
-                                                           
+                                                            <input class="form-control" type="text" id="Profecion456" name="Profecion456"  v-model="detalleUsuario.perfil.profesion" style="text-transform: uppercase;"/>
+                                                            <label for="Profecion456">Profesión</label>
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <select class="form-select" id="select_update_civil" name="select_update_civil" v-model="UpdateInformacion.estado_civil">
+                                                            <select class="form-select" id="select_update_civil" name="select_update_civil" v-model="detalleUsuario.perfil.estado_civil">
                                                                 <option value="">Selecciona el Estado Civil</option>
-                                                                <option value="Soltero">Soltero</option>
-                                                                <option value="Casado">Casado</option>
-                                                                <option value="Otro">Otro</option>
+                                                                <option value="SOLTERO">SOLTERO</option>
+                                                                <option value="CASADO">CASADO</option>
+                                                                <option value="OTRO">OTRO</option>
                                                             </select>
                                                             <label for="select_update_civil">Estado Civil</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <select class="form-select" id="select_update_sexo" name="select_update_sexo" v-model="UpdateInformacion.sexo">
+                                                            <select class="form-select" id="select_update_sexo" name="select_update_sexo" v-model="detalleUsuario.perfil.sexo">
                                                                 <option value="">Selecciona el Sexo</option>
-                                                                <option value="Masculino">Masculino</option>
-                                                                <option value="Femenino">Femenino</option>
+                                                                <option value="MASCULINO">MASCULINO</option>
+                                                                <option value="FEMENNINO">FEMENNINO</option>
                                                             </select>
                                                             <label for="select_update_sexo">Sexo</label>
-                                                            
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input type="date" class="form-control flatpickr-validation" placeholder="YYYY-MM-DD" id="fechanacimienot785" v-model="UpdateInformacion.fecha_nacimiento"/>
+                                                            <input type="date" class="form-control flatpickr-validation" placeholder="YYYY-MM-DD" id="fechanacimienot785" v-model="detalleUsuario.perfil.cumpleaños"/>
                                                             <label for="fechanacimienot785">Fecha Nacimiento</label>
-                                                            
+
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="input-group input-group-merge">
                                                             <div class="form-floating form-floating-outline">
-                                                                <input type="number" id="phoneNumber" name="phoneNumber" class="form-control" v-model="UpdateInformacion.telefono"/>
-                                                                <label for="phoneNumber">Telefono Empresarial</label>
+                                                                <input type="number" id="phoneNumber" name="phoneNumber" class="form-control" v-model="detalleUsuario.perfil.telefono"/>
+                                                                <label for="phoneNumber">Telefono </label>
                                                             </div>
                                                             <span class="input-group-text">MEX (+52)</span>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input type="text" class="form-control" id="address" name="address" v-model="UpdateInformacion.calle"/>
+                                                            <input type="text" class="form-control" id="address" name="address" v-model="detalleUsuario.perfil.calle" style="text-transform: uppercase;"/>
                                                             <label for="address">Calle</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input type="text" class="form-control" id="num_ext" name="num_ext" v-model="UpdateInformacion.num_ext"/>
+                                                            <input type="number" class="form-control" id="num_ext" name="num_ext" v-model="detalleUsuario.perfil.num_ext"/>
                                                             <label for="num_ext">Num Ext</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input type="text" class="form-control" id="num_int" name="num_int" v-model="UpdateInformacion.num_int"/>
+                                                            <input type="number" class="form-control" id="num_int" name="num_int" v-model="detalleUsuario.perfil.num_int"/>
                                                             <label for="num_int">Num Int</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input type="text" class="form-control" id="CP12" name="CP12" v-model="UpdateInformacion.cp"/>
+                                                            <input type="number" class="form-control" id="CP12" name="CP12" v-model="detalleUsuario.perfil.codigo_postal"/>
                                                             <label for="CP12">CP</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input type="text" class="form-control" id="colonia" name="colonia" v-model="UpdateInformacion.colonia"/>
+                                                            <input type="text" class="form-control" id="colonia" name="colonia" v-model="detalleUsuario.perfil.colonia" style="text-transform: uppercase;"/>
                                                             <label for="colonia">Colonia</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input type="text" class="form-control" id="municipio" name="municipio" v-model="UpdateInformacion.municipio"/>
+                                                            <input type="text" class="form-control" id="municipio" name="municipio" v-model="detalleUsuario.perfil.municipio" style="text-transform: uppercase;"/>
                                                             <label for="municipio">Municipio</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input class="form-control" type="text" id="state" name="state" value="New York" v-model="UpdateInformacion.estado"/>
+                                                            <input class="form-control" type="text" id="state" name="state" value="New York" v-model="detalleUsuario.perfil.entidad" style="text-transform: uppercase;"/>
                                                             <label for="state">Estado</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <select id="new_pais" name="new_pais" class="select2 form-select" v-model="UpdateInformacion.pais">
-                                                                <option value="Australia">Australia</option>
-                                                                <option value="Bangladesh">Bangladesh</option>
-                                                                <option value="Belarus">Belarus</option>
-                                                                <option value="Brazil">Brazil</option>
-                                                                <option value="Canada">Canada</option>
-                                                                <option value="China">China</option>
-                                                                <option value="France">France</option>
-                                                                <option value="Germany">Germany</option>
-                                                                <option value="India">India</option>
-                                                                <option value="Indonesia">Indonesia</option>
-                                                                <option value="Israel">Israel</option>
-                                                                <option value="Italy">Italy</option>
-                                                                <option value="Japan">Japan</option>
-                                                                <option value="Korea">Korea, Republic of</option>
-                                                                <option value="México">México</option>
-                                                                <option value="Philippines">Philippines</option>
-                                                                <option value="Russia">Russian Federation</option>
-                                                                <option value="South Africa">South Africa</option>
-                                                                <option value="Thailand">Thailand</option>
-                                                                <option value="Turkey">Turkey</option>
-                                                                <option value="Ukraine">Ukraine</option>
-                                                                <option value="United Arab Emirates">United Arab Emirates</option>
-                                                                <option value="United Kingdom">United Kingdom</option>
-                                                                <option value="Estados Unidos">Estados Unidos</option>
-                                                            </select>
-                                                            <label for="new_pais">Pais</label>
+                                                            <input class="form-control" type="text" id="nacionalidad" name="nacionalidad" value="New York" v-model="detalleUsuario.perfil.nacionalidad" style="text-transform: uppercase;"/>
+                                                            <label for="nacionalidad">Nacionalidad</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input class="form-control" type="text" id="cedula" name="cedula" value="New York" v-model="UpdateInformacion.cedula_usuario"/>
+                                                            <input class="form-control" type="text" id="cedula" name="cedula" value="New York" v-model="detalleUsuario.perfil.cedula" style="text-transform: uppercase;"/>
                                                             <label for="cedula">Cédula</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-floating form-floating-outline">
-                                                            <input type="date" class="form-control flatpickr-validation" placeholder="YYYY-MM-DD" id="bs-validation-dob" v-model="UpdateInformacion.fecha_ingreso"/>
+                                                            <input class="form-control" type="text" id="curp" name="curp" value="New York" v-model="detalleUsuario.perfil.curp" style="text-transform: uppercase;"/>
+                                                            <label for="curp">Curp</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input class="form-control" type="text" id="rfc" name="rfc" value="New York" v-model="detalleUsuario.perfil.rfc" style="text-transform: uppercase;"/>
+                                                            <label for="rfc">RFC</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <input type="date" class="form-control flatpickr-validation" placeholder="YYYY-MM-DD" id="bs-validation-dob" v-model="detalleUsuario.perfil.fecha_ingreso"/>
                                                             <label for="bs-validation-dob">Fecha Ingreso</label>
                                                         </div>
                                                     </div>
@@ -486,280 +390,216 @@
                                 </div>
                                 <div class="tab-pane fade" id="documentacion" role="tabpanel" aria-labelledby="documentacion-tab">
                                     <div class="row">
-                                        <div class="col-xl-4 col-lg-5 col-md-5">
-                                            <!-- About User -->
-                                        
-                                            <!--/ About User -->
-                                        </div>
-                                        <div class="col-xl-12 col-lg-5 col-md-5">
-                                            <!-- About User -->
-                                            <div class="card mb-6">
-                                                <div class="card-body" style="border-color: #33b2ff;">
-                                                    <div class="row">
-                                                        <div class="col-12 col-md-6">
-                                                            <h5 class="card-header">Documentacion Cargada</h5>
+                                        <h6 class="mb-2 text-danger">*Recuerda que la Documentación es en formato PDF*</h6>
+                                        <div class="col-xl-3 col-lg-5 col-md-5 mt-2"  v-for="a in archivosFaltantes" :key="a.tipo">
+                                            <div class="card h-100">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                                        <div class="d-flex align-items-center">
+                                                            <!-- <p class="mb-0 text-success me-1">+38%</p>
+                                                            <i class="ri-arrow-up-s-line text-success"></i>     -->
                                                         </div>
-                                                        <div class="col-12 col-md-6 mt-3">
-                                                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                                                <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#basicModal">Agregar</button>
+                                                        <div class="avatar">
+                                                            <div class="avatar-initial bg-label-success rounded-3 right" :for="`file-pdf${a.tipo}`" :onclick="`document.getElementById('file-pdf${a.tipo}').click()`">
+                                                                <i class="ri-add-circle-fill ri-24px"></i>
+                                                                <input type="file" :id="`file-pdf${a.tipo}`"  accept=".pdf" style="display: none;" @change="archivosPDF($event,a)"/>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
-                                                    <div class="table-responsive text-nowrap">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>#</th>
-                                                                    <th>Tipo</th>
-                                                                    <th>Archivo</th>
-                                                                    <th>Acciones</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr v-for="(d, index) in this.DetalleDocumentacion" :key="index">
-                                                                    <td>
-                                                                        {{index+1}}
-                                                                    </td>
-                                                                    <td>{{d.tipo}}</td>
-                                                                    <td style="font-size: 14px;white-space: normal;word-wrap: break-word;word-break: break-word;"><a href="#" @click="verArch(d.archivo)">{{ d.archivo }}</a></td>
-                                                                    <td>
-                                                                        <a class="dropdown-item waves-effect" type="button" style="color: red;" @click="deleteDoc(d)">
-                                                                            <i class="ri-delete-bin-7-line me-1"></i>Eliminar</a>
-
-                                                                    </td>
-                                                                </tr>
-                                                                
-                                                            </tbody>
-                                                        </table>
+                                                    <div class="card-info mt-5">
+                                                    <img src="style/logos/añade.png" alt="img_carga" style="max-width: 100%;">
+                                                    <div class="badge bg-label-secondary rounded-pill">{{a.tipo}}</div>
                                                     </div>
-
-                                                   
                                                 </div>
                                             </div>
-                                            
-                                            <!--/ About User -->
                                         </div>
-                                       
-                                    </div>
-                                </div> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-12 col-lg-5 col-md-5">
-                        <div class="card mb-6">
-                            <div class="card-body">
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <a href="javascript:void(0)" class="btn btn-danger" @click="muestra(0)">
-                                        <i class="ri-arrow-left-long-fill ri-16px me-2"></i>Regresar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>   
-                    </div>
-                </div>
-                
-            </div>
-            <div id="main" v-if="this.vista == 2">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card mb-6">
-                            <div class="user-profile-header-banner">
-                                <img src="style/logos/fondo5.jpg" alt="Banner image" class="rounded-top" />
-                            </div>
-                            <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-5">
-                                <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                                    <img :src="`ArchivosSistema/Documentacion/${this.detalleUsuario.perfil.foto}`" alt="user image" class="d-block h-auto ms-0 ms-sm-5 rounded-4 user-profile-img" @error="(event)=>onImageError(event)"/>
-                                </div>
-                                <div class="flex-grow-1 mt-4 mt-sm-12">
-                                    <div class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-5 flex-md-row flex-column gap-6">
-                                        <div class="user-profile-info">
-                                            <h4 class="mb-2">{{this.detalleUsuario.name}}</h4>
-                                            <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4">
-                                                <li class="list-inline-item">
-                                                    <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.rol_name}}</span>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <i class="ri-map-pin-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleUsuario.sede[0].nombre}}</span>
-                                                </li>
-                                                <!-- <li class="list-inline-item">
-                                                    <i class="ri-calendar-line me-2 ri-24px"></i
-                                                    ><span class="fw-medium"> Joined April 2021</span>
-                                                </li> -->
-                                            </ul>
-                                        </div>
-                                        <div class="alert alert-solid-success d-flex align-items-center" role="alert" v-if="this.detalleUsuario.estatus == 1">
-                                            <span class="alert-icon rounded">
-                                                <i class="ri-checkbox-circle-line ri-22px"></i>
-                                            </span>
-                                            ACTIVO
-                                        </div>
-
-                                        <div class="alert alert-solid-danger d-flex align-items-center" role="alert" v-if="this.detalleUsuario.estatus == 2">
-                                            <span class="alert-icon rounded">
-                                            <i class="ri-error-warning-line ri-22px"></i>
-                                            </span>
-                                            INACTIVO
-                                        </div>
-
-                                        <div class="alert alert-solid-warning d-flex align-items-center" role="alert" v-if="this.detalleUsuario.estatus == 0">
-                                            <span class="alert-icon rounded">
-                                            <i class="ri-alert-line ri-22px"></i>
-                                            </span>
-                                            INACTIVO
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Navbar pills -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="perfil-tab" data-bs-toggle="pill" data-bs-target="#perfil" type="button" role="tab" aria-controls="perfil" aria-selected="true">
-                                    <i class="ri-user-3-line me-2"></i>
-                                    Perfil
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="perfil-tab" data-bs-toggle="pill" data-bs-target="#perfil" type="button" role="tab" aria-controls="perfil" aria-selected="true">
-                                    <i class="ri-user-3-line me-2"></i>
-                                    E
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="documentacion-tab" data-bs-toggle="pill" data-bs-target="#documentacion" type="button" role="tab" aria-controls="documentacion" aria-selected="false">
-                                    <i class="ri-article-line me-2"></i>Documentación
-                                </button>
-                            </li>
-                            
-                        </ul>
-                        <div class="tab-content" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="perfil" role="tabpanel" aria-labelledby="perfil-tab">
-                                <!-- User Profile Content -->
-                                    <div class="row">
-                                        <div class="col-xl-6 col-lg-5 col-md-5">
-                                            <!-- About User -->
-                                            <div class="card mb-6">
+                                        <div class="col-xl-3 col-lg-5 col-md-5 mt-2"  v-for="a in Archivos" :key="a.tipo">
+                                            <div class="card h-100">
                                                 <div class="card-body">
-                                                    <small class="card-text text-uppercase text-muted small">ACERCA DE</small>
-                                                    <ul class="list-unstyled my-3 py-1" >
-                                                        <li class="d-flex align-items-center mb-4">
-                                                            <i class="ri-user-3-line ri-24px"></i><span class="fw-medium mx-2">NOMBRE COMPLETO:</span>
-                                                            <span>{{this.detalleUsuario.perfil.nombre}} {{ this.detalleUsuario.perfil.apellido_paterno }} {{ this.detalleUsuario.perfil.apellido_materno }}</span>
-                                                        </li>
-                                                        <li class="d-flex align-items-center mb-4">
-                                                            <i class="ri-check-line ri-24px"></i><span class="fw-medium mx-2">Estatus:</span>
-                                                            <span class="badge bg-label-success rounded-pill" v-if="this.detalleUsuario.estatus == 1">Activo</span>
-                                                            <span class="badge bg-label-warning rounded-pill" v-if="this.detalleUsuario.estatus == 0">Pendiente</span>
-                                                            <span class="badge bg-label-danger rounded-pill" v-if="this.detalleUsuario.estatus == 2">Inactivo</span>
-                                                        </li>
-                                                        <li class="d-flex align-items-center mb-4">
-                                                            <i class="ri-football-fill ri-24px"></i><span class="fw-medium mx-2">Role:</span>
-                                                            <span>{{this.detalleUsuario.rol_name}}</span>
-                                                        </li>
-                                                        <!-- <li class="d-flex align-items-center mb-4">
-                                                            <i class="ri-flag-2-line ri-24px"></i><span class="fw-medium mx-2">Country:</span>
-                                                            <span>USA</span>
-                                                        </li>
-                                                        <li class="d-flex align-items-center mb-2">
-                                                            <i class="ri-translate-2 ri-24px"></i><span class="fw-medium mx-2">Languages:</span>
-                                                            <span>English</span>
-                                                        </li> -->
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <!--/ About User -->
-                                        </div>
-                                        <div class="col-xl-6 col-lg-5 col-md-5">
-                                            <!-- About User -->
-                                            <div class="card mb-6">
-                                                <div class="card-body">
-                                                    <small class="card-text text-uppercase text-muted small">CONTACTOS</small>
-                                                    <ul class="list-unstyled my-3 py-1">
-                                                        <li class="d-flex align-items-center mb-4">
-                                                        <i class="ri-phone-line ri-24px"></i><span class="fw-medium mx-2">Tel:</span>
-                                                        <span>{{ this.detalleUsuario.perfil.telefono }}</span>
-                                                        </li>
-                                                        <li class="d-flex align-items-center mb-4">
-                                                        <i class="ri-map-pin-line ri-24px"></i><span class="fw-medium mx-2">Dirección:</span>
-                                                        <span>{{this.detalleUsuario.perfil.direccion}}</span>
-                                                        </li>
-                                                        <li class="d-flex align-items-center mb-2">
-                                                        <i class="ri-mail-open-line ri-24px"></i><span class="fw-medium mx-2">Email:</span>
-                                                        <span>{{this.detalleUsuario.email}}</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <!--/ About User -->
-                                        </div>
-                                    </div>
-                                <!--/ User Profile Content -->
-                            </div>
-                            <div class="tab-pane fade" id="documentacion" role="tabpanel" aria-labelledby="documentacion-tab">
-                                <div class="row">
-                                    <div class="col-xl-4 col-lg-5 col-md-5">
-                                        <!-- About User -->
-                                        <div class="card mb-6">
-                                            <div class="card-body">
-                                                <div class="row" v-for="d in documentacion" :key="d.value">
-                                                    <div class="col-12 col-md-12">
-                                                        <div class="form-check form-switch">
-                                                            <input type="checkbox" class="form-check-input" id="ine" :value="d.value"
-                                                             @click="modalArch(d)"/>
-                                                            <label for="ine" class="text-heading">{{d.label}}</label>
+                                                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                                        <div class="d-flex align-items-center">
+                                                            <!-- <p class="mb-0 text-success me-1">+38%</p>
+                                                            <i class="ri-arrow-up-s-line text-success"></i>     -->
+                                                        </div>
+                                                        <div class="avatar">
+                                                            <div class="avatar-initial bg-label-info rounded-3 right" :for="`file-pdfupdate${a.tipo}`" :onclick="`document.getElementById('file-pdfupdate${a.tipo}').click()`">
+                                                                <i class="ri-file-edit-fill ri-24px"></i>
+                                                                <input type="file" :id="`file-pdfupdate${a.tipo}`"  accept=".pdf" style="display: none;" @change="archivosPDFUpdate($event,a)"/>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div> 
-                                            </div>
-                                        </div>
-                                        <!--/ About User -->
-                                    </div>
-                                    <div class="col-xl-8 col-lg-5 col-md-5">
-                                        <!-- About User -->
-                                        <div class="card mb-6">
-                                            <div class="card-body" style="border-color: #33b2ff;">
-                                                <h5 class="card-header">Documentacion Cargada</h5>
-                                                <div class="table-responsive text-nowrap">
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>#</th>
-                                                                <th>Tipo</th>
-                                                                <th>Archivo</th>
-                                                                <th>Acciones</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr v-for="(d, index) in this.DetalleDocumentacion" :key="index">
-                                                                <td>
-                                                                    {{index+1}}
-                                                                </td>
-                                                                <td>{{d.tipo}}</td>
-                                                                <td>{{d.archivo}}</td>
-                                                                <td>
-                                                                    <a class="dropdown-item waves-effect" type="button" style="color: red;" @click="deleteDoc(d)">
-                                                                        <i class="ri-delete-bin-7-line me-1"></i> Delete</a>
-
-                                                                </td>
-                                                            </tr>
-                                                            
-                                                        </tbody>
-                                                    </table>
+                                                    <div class="card-info mt-5">
+                                                        <a target="_blank" :href="`ArchivosSistema/Documentacion/${a.id_perfil}/Documentacion/${a.archivo}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;" rel="noopener noreferrer">
+                                                            <img src="style/logos/file_save.png" alt="img_carga" style="max-width: 100%;">
+                                                        </a>
+                                                        <div class="badge bg-label-secondary rounded-pill">{{a.tipo}}</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        <!--/ About User -->
+                                    </div>
+                                </div> 
+                                 <div class="tab-pane fade" id="contrato" role="tabpanel" aria-labelledby="contrato-tab">
+                                <div class="row">
+                                    <div style="padding: 20px; font-family: Arial, sans-serif;">
+
+                                        <!-- Tarjetas superiores -->
+                                        <div style="display: flex; gap: 20px; margin-bottom: 25px;">
+
+                                            <div class="row">
+                                                <div class="col-xl-3 mt-2">
+                                                    <!-- Contratos Vigentes -->
+                                                    <div style="
+                                                        flex: 1;
+                                                        background: #fff;
+                                                        padding: 15px 20px;
+                                                        border-radius: 10px;
+                                                        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                                                        text-align: center; ">
+                                                        <div style="font-size: 14px; color: #666;">Contratos Vigentes</div>
+                                                        <div style="font-size: 26px; font-weight: bold; color: #0055ff;">{{ this.contrato_vigente }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 mt-2">
+                                                    <!-- Pendientes de firma -->
+                                                    <div style="
+                                                        flex: 1;
+                                                        background: #fff;
+                                                        padding: 15px 20px;
+                                                        border-radius: 10px;
+                                                        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                                                        text-align: center; ">
+                                                        <div style="font-size: 14px; color: #666;">Pendientes de Firma</div>
+                                                        <div style="font-size: 26px; font-weight: bold; color: #d98b00;">{{ this.contrato_pendiente }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 mt-2">
+                                                    <!-- Contratos Históricos -->
+                                                    <div style="
+                                                        flex: 1;
+                                                        background: #fff;
+                                                        padding: 15px 20px;
+                                                        border-radius: 10px;
+                                                        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                                                        text-align: center;">
+                                                        <div style="font-size: 14px; color: #666;">Contratos Históricos</div>
+                                                        <div style="font-size: 26px; font-weight: bold; color: #333;">{{ this.contrato_total }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3 mt-2">
+                                                    <!-- Próxima Fecha -->
+                                                    <div style="
+                                                        flex: 1;
+                                                        background: #fff;
+                                                        padding: 15px 20px;
+                                                        border-radius: 10px;
+                                                        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                                                        text-align: center;">
+                                                        <div style="font-size: 14px; color: #666;">Próxima Fecha de Vencimiento</div>
+                                                        <div style="font-size: 26px; font-weight: bold; color: #cc0000;">{{this.prox_fecha}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tabla Pendiente de firma -->
+                                        <div class="card">
+                                            <h5 class="card-header">Contratos Pendientes de Firma</h5>
+                                            <div class="table-responsive text-nowrap ">
+                                                <table class="table" style="font-size: 16px;">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>ID CONTRATO</th>
+                                                            <th>TIPO</th>
+                                                            <th>VIGENCIA</th>
+                                                            <th>MONTO MENSUAL</th>
+                                                            <th>ESTATUS</th>
+                                                            <th>ACCIONES</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-border-bottom-0">
+                                                        <tr v-for="(c, index) in ContratoFirma" :key="index">
+                                                            <td>
+                                                                CI-{{ c.id_contrato_digital }}
+                                                            </td>
+                                                            <td>
+                                                                {{ c.tipo_contrato }}
+                                                            </td>
+                                                            <td>
+                                                                {{c.fecha_inicio}} -- {{ c.fecha_fin }}
+                                                            </td>
+                                                            <td>
+                                                                ${{ formatPrice(c.salario_numero_1) }}
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge rounded-pill bg-label-warning me-1">Por Firmar</span>
+                                                            </td>
+                                                            <td>
+                                                                <a type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver Contrato" @click="verContrato(c.id_contrato_digital)">
+                                                                    <i class="ri-file-list-fill bg-label-warning ri-25px me-1"></i>
+                                                                </a>
+                                                                <a type="button" data-bs-toggle="modal" data-bs-placement="bottom" title="Firmar Contrato" data-bs-target="#modalConfirmacion" @click="detalleContrato(c)">
+                                                                    <i class="ri-edit-box-fill bg-label-info ri-25px me-1"></i>
+                                                                </a>
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>  
+                                        <!-- Tabla Historial -->
+                                        <div class="card mt-2">
+                                            <h5 class="card-header">Historial Contratos</h5>
+                                            <div class="table-responsive text-nowrap ">
+                                                <table class="table" style="font-size: 16px;">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th>ID CONTRATO</th>
+                                                            <th>TIPO</th>
+                                                            <th>VIGENCIA</th>
+                                                            <th>MONTO MENSUAL</th>
+                                                            <th>ESTATUS</th>
+                                                            <th>ACCIONES</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="table-border-bottom-0">
+                                                        <tr v-for="(c, index) in HistorialContrato" :key="index">
+                                                            <td>
+                                                                CI-{{ c.id_contrato_digital }}
+                                                            </td>
+                                                            <td>
+                                                                {{ c.tipo_contrato }}
+                                                            </td>
+                                                            <td>
+                                                                {{c.fecha_inicio}} -- {{ c.fecha_fin }}
+                                                            </td>
+                                                            <td>
+                                                                ${{ formatPrice(c.salario_numero_1) }}
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge rounded-pill bg-label-success me-1">Aprobado</span>
+                                                            </td>
+                                                            <td>
+                                                                <a type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver Contrato" @click="verContrato(c.id_contrato_digital)">
+                                                                    <i class="ri-file-list-fill bg-label-warning ri-25px me-1"></i>
+                                                                </a>
+                                                                <!-- <a type="button" data-bs-toggle="modal" data-bs-placement="bottom" title="Firmar Contrato" data-bs-target="#modalConfirmacion" @click="detalleContrato(c)">
+                                                                    <i class="ri-edit-box-fill bg-label-info ri-25px me-1"></i>
+                                                                </a> -->
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
-                                
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -778,8 +618,6 @@
                     </div>
                 </div>
                 
-
-                <!--/ Navbar pills -->
             </div>
             <!-- Moda de alta usuario -->
             <div class="modal fade" id="createUser" tabindex="-1" aria-hidden="true">
@@ -1000,7 +838,8 @@
     export default {
         name: '',
         components: {
-            quillEditor
+            quillEditor,
+           
         },
         mixins: [],
         props: [
@@ -1045,12 +884,17 @@
                     fecha_registro:''
 
                 },
-                documentacion:[
-                    { label: 'INE', value: 'INE' },
-                    { label: 'COMPROBANTE DE ESTUDIOS', value: 'COMPROBANTE DE ESTUDIOS' },
-                    { label: 'COMPROBANTE DE DOMICILIO', value: 'COMPROBANTE DE DOMICILIO' },
-                    { label: 'CONSTANCIA DE SITUACIÓN FISCAL', value: 'CONSTANCIA DE SITUACIÓN FISCAL' },
+                ArchiPendiente:[
+                    { label: 'CV', tipo: 'Cv' },
+                    { label: 'Comprobante de estudios', tipo: 'Comprobante de Estudios' },
+                    { label: 'Opinión de Cumplimiento', tipo: 'Opinión de Cumplimiento' },
+                    { label: 'Rfc', tipo: 'Rfc' },
+                    { label: 'Curp', tipo: 'Curp' },
+                    { label: 'Ine', tipo: 'Ine' },
+                    { label: 'Acta de nacimiento', tipo: 'Acta de nacimiento' },
+                    { label: 'Comprobante de domicilio', tipo: 'Comprobante de domicilio' }
                 ],
+                Archivos:[],
                 documentacionDate:[],
                 DetalleDocumentacion:[],
                 doc:{
@@ -1062,12 +906,21 @@
                 table: null,
                 // offset: 2,
                 backupImageSrc: 'style/logos/sinfoto.png',
-                UpdateInformacion:[],
+                detalleUsuario:[],
                 UpdateCuenta:{},
+
+                contrato_vigente:0,
+                contrato_pendiente:0,
+                contrato_total:0,
+                HistorialContrato:[],
+                ContratoFirma:[]
             }
         },
         computed: {
-            
+            archivosFaltantes() {
+                //Filtra los archivos pendientes que aún no están en la lista de archivos
+                return this.ArchiPendiente.filter((a) => !this.Archivos.find((archivo) => archivo.tipo === a.tipo));
+            },
         },
         watch: {
             
@@ -1229,12 +1082,10 @@
                             orderable: false,
                             render: () => {
                                 return (
-                                   
-                                    '<button class="btn btn-sm btn-icon btn-text-secondary rounded-pill dropdown-toggle hide-arrow waves-effect waves-light" data-bs-toggle="dropdown"><i class="ri-more-2-fill ri-20px"></i></button>' +
-                                    '<div class="dropdown-menu dropdown-menu-end m-0">' +
-                                        '<a type="button" class="btn-vizualizar dropdown-item" style="color: orange;"> <i class="ri-clipboard-line me-1"></i> Vizualizar</a>' +
-                                        '<a type="button" class="btn-eliminar dropdown-item" style="color: red;"> <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>' +
-                                    '</div>'
+                                    '<div class="d-flex align-items-center gap-50">' +
+                                    '<button class="btn btn-vizualizar btn-sm btn-icon btn-text-warning rounded-pill delete-record waves-effect waves-light"><i class="ri-article-fill ri-20px"></i></button>' +
+                                    '<button class="btn btn-eliminar btn-sm btn-icon btn-text-danger rounded-pill delete-record waves-effect waves-light"><i class="ri-delete-bin-7-line ri-20px"></i></button>' 
+                                    
                                 );
                             }
                         }
@@ -1376,6 +1227,7 @@
 
             },
             infoUsuario(u){
+                
                 this.submenu = false;
                 this.detalleUsuario = u;
                 this.detalleUsuario.new_password = '';
@@ -1385,20 +1237,48 @@
                     this.detalleUsuario.estatus  = false;
                 }
                 this.detalleUsuario.id_sede = this.detalleUsuario.sede[0].id_sede
+
+                
                 if (this.detalleUsuario.perfil == null) {
                     this.detalleUsuario.bandera = 'activo';
                     this.detalleUsuario.perfil = {
                         nombre:'',
                         apellido_paterno:'',
                         apellido_materno:'',
+                        profesion:'',
+                        estado_civil:'',
+                        sexo:'',
+                        cumpleaños:'',
+                        telefono:'',
+                        calle:'',
+                        num_ext:'',
+                        num_int:'0',
+                        cp:'',
+                        colonia:'',
+                        municipio:'',
+                        entidad:'',
+                        nacionalidad:'',
+
                         direccion:'',
                         telefono:'',
                         sede:0,
                         foto:''
                     }
                 }
+
+                let partes = this.detalleUsuario.perfil.direccion.split(',');
+                    partes = partes.map(p => p.trim());
+                    
+
+                    this.detalleUsuario.perfil.calle  = partes[0] || '';
+                    this.detalleUsuario.perfil.num_ext = partes[1] || '';
+                    this.detalleUsuario.perfil.num_int = partes[2] || '';
+                    this.detalleUsuario.perfil.colonia = partes[3] || '';
+                    this.detalleUsuario.perfil.municipio = partes[4] || '';
+                    this.detalleUsuario.perfil.entidad = partes[5] || '';
+                
                 axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
-                    this.DetalleDocumentacion = res.data
+                    this.Archivos = res.data
                 })
             },
             accionSubmenu(){
@@ -1502,93 +1382,29 @@
                 })
             },
             updateUsuarios(){
-                if (this.detalleUsuario.name == '') {
-                    this.$toast.error("Ingresa un Nombre", {
-                        position: "top-center",
-                        timeout: 1270,
-                        closeOnClick: true,
-                        pauseOnFocusLoss: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        draggablePercent: 0.6,
-                        showCloseButtonOnHover: false,
-                        hideProgressBar: true,
-                        closeButton: "button",
-                        icon: true,
-                        rtl: false
-                    });
-                    return;
-                }
-                if (this.detalleUsuario.email == '') {
-                    this.$toast.error("Ingresa un Email", {
-                        position: "top-center",
-                        timeout: 1270,
-                        closeOnClick: true,
-                        pauseOnFocusLoss: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        draggablePercent: 0.6,
-                        showCloseButtonOnHover: false,
-                        hideProgressBar: true,
-                        closeButton: "button",
-                        icon: true,
-                        rtl: false
-                    });
-                    return;
-                }
-                if (this.detalleUsuario.rol_name == '') {
-                    this.$toast.error("Selecciona un Role", {
-                        position: "top-center",
-                        timeout: 1270,
-                        closeOnClick: true,
-                        pauseOnFocusLoss: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        draggablePercent: 0.6,
-                        showCloseButtonOnHover: false,
-                        hideProgressBar: true,
-                        closeButton: "button",
-                        icon: true,
-                        rtl: false
-                    });
-                    return;
-                }
-                if (this.detalleUsuario.password == '') {
-                    this.$toast.error("Ingresa una contraseña", {
-                        position: "top-center",
-                        timeout: 1270,
-                        closeOnClick: true,
-                        pauseOnFocusLoss: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        draggablePercent: 0.6,
-                        showCloseButtonOnHover: false,
-                        hideProgressBar: true,
-                        closeButton: "button",
-                        icon: true,
-                        rtl: false
-                    });
-                    return;
-                }
+                
 
                 let formData = new FormData();
+                     formData.append('id_perfil',this.detalleUsuario.perfil.id_perfil);
+                    formData.append('bandera',this.detalleUsuario.perfil.bandera);
                     formData.append('id',this.detalleUsuario.id);
-                    formData.append('rol_name',this.detalleUsuario.rol_name);
-                    formData.append('password',this.detalleUsuario.password);
-                    formData.append('estatus',this.detalleUsuario.estatus);
-                    formData.append('bandera',this.detalleUsuario.bandera);
-                    formData.append('id_perfil',this.detalleUsuario.perfil.id_perfil);
-                    formData.append('nombre',this.detalleUsuario.perfil.nombre);
-                    formData.append('apellido_paterno',this.detalleUsuario.perfil.apellido_paterno);
-                    formData.append('apellido_materno',this.detalleUsuario.perfil.apellido_materno);
-                    formData.append('direccion',this.detalleUsuario.perfil.direccion);
+                    formData.append('nombre',this.detalleUsuario.perfil.nombre.toUpperCase());
+                    formData.append('apellido_paterno',this.detalleUsuario.perfil.apellido_paterno.toUpperCase());
+                    formData.append('apellido_materno',this.detalleUsuario.perfil.apellido_materno.toUpperCase());
+                    formData.append('profesion',this.detalleUsuario.perfil.profesion.toUpperCase());
+                    formData.append('estado_civil',this.detalleUsuario.perfil.estado_civil.toUpperCase());
+                    formData.append('sexo',this.detalleUsuario.perfil.sexo.toUpperCase());
+                    formData.append('cumpleaños',this.detalleUsuario.perfil.cumpleaños);
                     formData.append('telefono',this.detalleUsuario.perfil.telefono);
-                    formData.append('sede',this.detalleUsuario.id_sede);
+                    formData.append('codigo_postal',this.detalleUsuario.perfil.codigo_postal);
+                    formData.append('direccion',this.detalleUsuario.perfil.calle.toUpperCase()+" ,"+this.detalleUsuario.perfil.num_ext+" ,"+this.detalleUsuario.perfil.num_int+" ,"+this.detalleUsuario.perfil.colonia.toUpperCase()+" ,"+this.detalleUsuario.perfil.municipio.toUpperCase()+" ,"+this.detalleUsuario.perfil.entidad.toUpperCase());
+                    formData.append('nacionalidad',this.detalleUsuario.perfil.nacionalidad.toUpperCase());
+                    formData.append('cedula',this.detalleUsuario.perfil.cedula.toUpperCase());
+                    formData.append('curp',this.detalleUsuario.perfil.curp.toUpperCase());
+                    formData.append('rfc',this.detalleUsuario.perfil.rfc.toUpperCase());
                     formData.append('foto',this.detalleUsuario.perfil.foto);
                 axios.post('administrador/updateUsuarios',formData).then(response =>{
                     this.getAdministrador();
-                    $('#editUser').modal('hide');
-                    this.submenu = false;
                     Swal.fire({
                         title: 'Éxito',
                         text: "Se Edito correctamente!",
@@ -1676,34 +1492,7 @@
                     });
                 })
             },
-            deleteDoc(d){
-                this.id = d.id_documentacion;
-                Swal.fire({
-                    title: 'Estas seguro?',
-                    text: "Se eliminara permanentemente!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    cancelButtonText:'Cancelar',
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Eliminar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        axios.post(`administrador/deleteDoc/${this.id}`).then(response => {
-                            axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
-                                this.DetalleDocumentacion = res.data
-                            })
-                            Swal.fire({
-                                title: 'Eliminado',
-                                text: "El Documento ha sido eliminado!",
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2500,
-                            })
-                        });
-                    }
-                })
-            },
+
             agregaSede(){
                 if (this.newSede.nombre == '') {
                     this.$toast.error("Ingresa el nombre de la Sede", {
@@ -1799,6 +1588,56 @@
                         fecha_registro:''
 
                     }
+                })
+            },
+            archivosPDF(event,tipo){
+
+                let file = event.target.files[0];
+
+                let formData = new FormData();
+                    formData.append('id_perfil',this.detalleUsuario.id);
+                    formData.append('documento',file);
+                    formData.append('tipo',tipo.tipo);
+                    $('#modalloading').modal('show');
+                axios.post('perfil/newDocumento',formData).then(response=>{
+                    axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
+                        this.Archivos = res.data
+                        $('#modalloading').modal('hide');
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: "Se Agrego correctamente!",
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2500,
+                        });
+                    });
+               
+                });
+            },
+            archivosPDFUpdate(event,value){
+                
+                let file = event.target.files[0];
+
+                let formData = new FormData();
+                    formData.append('id_documentacion',value.id_documentacion);
+                    formData.append('id_perfil',this.detalleUsuario.id);
+                    formData.append('documento_delete',value.archivo)
+                    formData.append('documento',file);
+                    formData.append('tipo',value.tipo);
+                    $('#modalloading').modal('show');
+                axios.post('perfil/updateDocumento',formData).then(response=>{
+                    axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
+                        this.Archivos = res.data
+                        $('#modalloading').modal('hide');
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: "Se Edito correctamente!",
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2500,
+                        });
+                    })
+                   
                 })
             },
             onEditorReady (editor) {}, // prepara el editor

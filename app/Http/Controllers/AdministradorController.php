@@ -109,7 +109,9 @@ class AdministradorController extends Controller
      * FUNCION QUE MOSTRARA LA DOCUMENTACION DE CADA USUARIO
      **/
     public function detalleDocumentacion($id){
-        return $this->AdministradorRepository->detalleDocumentacion($id);
+        $documentacion = $this->AdministradorRepository->detalleDocumentacion($id);
+        $contrato = $this->AdministradorRepository->ContratoInfo($id);
+        return response()->json(['documentacion'=>$documentacion,'contrato'=>$contrato]);
     }
 
     /**

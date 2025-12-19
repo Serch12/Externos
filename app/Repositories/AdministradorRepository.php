@@ -8,6 +8,7 @@ use App\Models\Usuarios;
 use App\Models\User;
 use App\Models\Documentacion;
 use App\Models\Sedes;
+use App\Model\ContratosDigital;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Crypt;
@@ -221,6 +222,23 @@ class AdministradorRepository
      **/
     public function detalleDocumentacion($id){
         return Documentacion::where('id_perfil',$id)->get();
+    }
+
+    /**
+     * funcion que nos mostrara los resultados de los contratos
+     **/
+    public function ContratoInfo($id){
+        $historial_contrato = ContratosDigital::where('id_usuario',$request->id)->where('estatus',2)->whereNotNull('firma')->orderBy('id_contrato_digital','desc')->get();
+        foreach ($historial_contrato as $value) {
+            // Verifica si el valor no es nulo o una cadena vacía antes de desencriptar
+            if ($value->salario_numero) {
+                $value->salario_numero_1 = Crypt::decryptString($value->salario_numero);
+            }
+            if ($value->salario_texto) {
+                $value->salario_texto_1 = Crypt::decryptString($value->salario_texto);
+            }
+        }
+        $contrato_total = $historial_contrato->count();
     }
 
     /**
