@@ -912,6 +912,7 @@
                 contrato_vigente:0,
                 contrato_pendiente:0,
                 contrato_total:0,
+                prox_fecha:'00/00/0000',
                 HistorialContrato:[],
                 ContratoFirma:[]
             }
@@ -1278,7 +1279,7 @@
                     this.detalleUsuario.perfil.entidad = partes[5] || '';
                 
                 axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
-                    this.Archivos = res.data
+                    this.Archivos = res.data.documentacion
                 })
             },
             accionSubmenu(){
@@ -1601,7 +1602,7 @@
                     $('#modalloading').modal('show');
                 axios.post('perfil/newDocumento',formData).then(response=>{
                     axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
-                        this.Archivos = res.data
+                        this.Archivos = res.data.documentacion
                         $('#modalloading').modal('hide');
                         Swal.fire({
                             title: 'Éxito',
@@ -1627,7 +1628,7 @@
                     $('#modalloading').modal('show');
                 axios.post('perfil/updateDocumento',formData).then(response=>{
                     axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
-                        this.Archivos = res.data
+                        this.Archivos = res.data.documentacion
                         $('#modalloading').modal('hide');
                         Swal.fire({
                             title: 'Éxito',
