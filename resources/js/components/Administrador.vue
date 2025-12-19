@@ -491,7 +491,7 @@
                                                     <div style="
                                                         flex: 1;
                                                         background: #fff;
-                                                        padding: 15px 20px;
+                                                        padding: 5px 30px;
                                                         border-radius: 10px;
                                                         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
                                                         text-align: center;">
@@ -502,53 +502,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Tabla Pendiente de firma -->
-                                        <div class="card">
-                                            <h5 class="card-header">Contratos Pendientes de Firma</h5>
-                                            <div class="table-responsive text-nowrap ">
-                                                <table class="table" style="font-size: 16px;">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>ID CONTRATO</th>
-                                                            <th>TIPO</th>
-                                                            <th>VIGENCIA</th>
-                                                            <th>MONTO MENSUAL</th>
-                                                            <th>ESTATUS</th>
-                                                            <th>ACCIONES</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="table-border-bottom-0">
-                                                        <tr v-for="(c, index) in ContratoFirma" :key="index">
-                                                            <td>
-                                                                CI-{{ c.id_contrato_digital }}
-                                                            </td>
-                                                            <td>
-                                                                {{ c.tipo_contrato }}
-                                                            </td>
-                                                            <td>
-                                                                {{c.fecha_inicio}} -- {{ c.fecha_fin }}
-                                                            </td>
-                                                            <td>
-                                                                ${{ formatPrice(c.salario_numero_1) }}
-                                                            </td>
-                                                            <td>
-                                                                <span class="badge rounded-pill bg-label-warning me-1">Por Firmar</span>
-                                                            </td>
-                                                            <td>
-                                                                <a type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ver Contrato" @click="verContrato(c.id_contrato_digital)">
-                                                                    <i class="ri-file-list-fill bg-label-warning ri-25px me-1"></i>
-                                                                </a>
-                                                                <a type="button" data-bs-toggle="modal" data-bs-placement="bottom" title="Firmar Contrato" data-bs-target="#modalConfirmacion" @click="detalleContrato(c)">
-                                                                    <i class="ri-edit-box-fill bg-label-info ri-25px me-1"></i>
-                                                                </a>
-                                                                
-                                                            </td>
-                                                        </tr>
-                                                   
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>  
                                         <!-- Tabla Historial -->
                                         <div class="card mt-2">
                                             <h5 class="card-header">Historial Contratos</h5>
@@ -940,6 +893,10 @@
 
                 }
             },
+            formatPrice(value) {
+                let val = (value / 1).toFixed(2).replace(',', '.')
+                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            },
             initDataTable() {
                 
                 var statusObj = {
@@ -1280,6 +1237,10 @@
                 
                 axios.get(`administrador/detalleDocumentacion/${this.detalleUsuario.id}`).then(res =>{
                     this.Archivos = res.data.documentacion
+                    this.HistorialContrato = res.data.contrato.historial_contrato
+                    this.contrato_total = res.data.contrato.contrato_total
+                    this.contrato_pendiente = res.data.contrato.contrato_pendiente
+                    
                 })
             },
             accionSubmenu(){
@@ -1640,6 +1601,21 @@
                     })
                    
                 })
+            },
+            verContrato(id_contrato_digital){
+                $('#modalloading').modal('show');
+                axios.post('perfil/verContrato', { id_contrato_digital}, { responseType: 'blob' })
+                .then((response) => {
+                    const blob = new Blob([response.data], { type: 'application/pdf' });
+                    const url = window.URL.createObjectURL(blob);
+                    window.open(url, '_blank');
+                    $('#modalloading').modal('hide');
+                })
+                .catch((error) => {
+                    console.error(error);
+                    
+                });
+                
             },
             onEditorReady (editor) {}, // prepara el editor
             onEditorBlur () {}, // Evento de pérdida de foco

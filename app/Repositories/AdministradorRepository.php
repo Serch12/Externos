@@ -228,6 +228,17 @@ class AdministradorRepository
      * funcion que nos mostrara los resultados de los contratos
      **/
     public function ContratoInfo($id){
+        $contrato_firma = ContratosDigital::where('id_usuario',$id)->where('estatus',2)->where('firma',null)->get();
+        foreach ($contrato_firma as $value) {
+            // Verifica si el valor no es nulo o una cadena vacía antes de desencriptar
+            if ($value->salario_numero) {
+                $value->salario_numero_1 = Crypt::decryptString($value->salario_numero);
+            }
+            if ($value->salario_texto) {
+                $value->salario_texto_1 = Crypt::decryptString($value->salario_texto);
+            }
+        }
+        $contrato_pendiente = $contrato_firma->count();
         $historial_contrato = ContratosDigital::where('id_usuario',$id)->where('estatus',2)->whereNotNull('firma')->orderBy('id_contrato_digital','desc')->get();
         foreach ($historial_contrato as $value) {
             // Verifica si el valor no es nulo o una cadena vacía antes de desencriptar
@@ -239,6 +250,12 @@ class AdministradorRepository
             }
         }
         $contrato_total = $historial_contrato->count();
+
+        return [
+            'historial_contrato'=>$historial_contrato,
+            'contrato_total'=>$contrato_total,
+            'contrato_pendiente'=>$contrato_pendiente
+        ];
     }
 
     /**

@@ -19,7 +19,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{asset('style/logos/icono-blanco1.png')}}" />
+    <link rel="icon" type="image/x-icon" href="{{asset('style/logos/icono-negro1.png')}}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
