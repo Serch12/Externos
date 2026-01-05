@@ -110,7 +110,7 @@
                 C.P. 52004, Municipio de Lerma, Estado de México, México.</p> --}}
             </td>
         <td class="logo-cell">
-            <img src="{{ public_path('estilos_login/images/logo.png') }}" alt="logo" class="logo-img">
+            <img src="{{ public_path('style/logos/logo.png') }}" alt="logo" class="logo-img">
         </td>
     </tr>
 </table>

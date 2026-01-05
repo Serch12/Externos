@@ -1023,7 +1023,9 @@ export default {
 
             this.firmaUsuario = new SignaturePad(this.$refs.firmaUsuario, {
                 backgroundColor: 'rgb(255, 255, 255)',
-                penColor: 'rgb(1, 1, 1)',
+                penColor: 'rgb(15, 18, 152)',
+                minWidth: 2,
+                maxWidth: 4
             });
         },
 

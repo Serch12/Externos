@@ -249,7 +249,7 @@ class PerfilController extends Controller
         if (!$contrato || $contrato->tipo_contrato !== 'honorarios') { // Cambiar a 'honorarios'
             return response()->json(['message' => 'Contrato no encontrado o no es de tipo honorarios'], 404);
         }
-        $firmaalvaro = public_path('ArchivosSistema/Perfil/FirmaAlvaro.png');
+        $firmaalvaro = public_path('style/firmas/firma alvaro_azul.png');
         $salario_numero = $contrato->salario_numero ? Crypt::decryptString($contrato->salario_numero) : 0;
         $salario_texto = $contrato->salario_texto ? Crypt::decryptString($contrato->salario_texto) : '';
         $actividades_array = explode("\n", $contrato->actividades_realizar);
