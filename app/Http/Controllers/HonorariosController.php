@@ -79,12 +79,12 @@ class HonorariosController extends Controller
         ->get();
 
 
-        if ($hoy->day === 1) {
+        if ($hoy->day === 6) {
             $new = new Honorarios();
             $new ->id_usuario = 6;
             $new -> nombre_usuario = 'Angelica Cabrera';
             $new -> fecha_pago = $fecha;
-            $new -> concepto = 'HONORARIOS EXTRAORDINARIOS EXTERNOS' . $mesActual;
+            $new -> concepto = 'HONORARIOS EXTERNOS' . $mesActual;
             $new -> total_honorario = '0.00';
             $new -> modulo = 'Externos';
             $new ->estatus = 0;
