@@ -254,7 +254,7 @@ import Swal from 'sweetalert2';
 
 export default {
   mounted () {
-    this.descargarArchivo();
+    // this.descargarArchivo();
   },
   data() {
     return {
@@ -286,20 +286,20 @@ export default {
     }
   },
   methods: {
-    descargarArchivo() {
-      // Ruta del archivo (Asegúrate de que esté en tu carpeta public de Laravel)
-      const urlArchivo = 'CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf'; 
+    // descargarArchivo() {
+    //   // Ruta del archivo (Asegúrate de que esté en tu carpeta public de Laravel)
+    //   const urlArchivo = 'CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf'; 
       
-      // Creamos un enlace temporal
-      const link = document.createElement('a');
-      link.href = urlArchivo;
-      link.setAttribute('download', 'Deslinde_AMFPRO.pdf'); // Nombre con el que se guardará
-      document.body.appendChild(link);
-      link.click();
+    //   // Creamos un enlace temporal
+    //   const link = document.createElement('a');
+    //   link.href = urlArchivo;
+    //   link.setAttribute('download', 'Deslinde_AMFPRO.pdf'); // Nombre con el que se guardará
+    //   document.body.appendChild(link);
+    //   link.click();
       
-      // Limpiamos el DOM
-      document.body.removeChild(link);
-    },
+    //   // Limpiamos el DOM
+    //   document.body.removeChild(link);
+    // },
     handleFileUpload(event) {
         this.form.formato_firmado = event.target.files[0];
     },
