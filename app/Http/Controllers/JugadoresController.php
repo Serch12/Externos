@@ -8,6 +8,8 @@ use App\Repositories\JugadoresRepository;
 use App\Models\Perfil;
 use App\Models\Sedes;
 use App\Models\Jugadores;
+use App\Models\RegistroJugador;
+use Carbon\Carbon;
 
 class JugadoresController extends Controller
 {
@@ -119,5 +121,51 @@ class JugadoresController extends Controller
      **/
     public function deleteJugador(Request $request){
         return $this->JugadoresRepository->deleteJugador($request);
+    }
+
+    public function registroVisorias(Request $request){
+            $fecha_nacimiento  = $request->fecha_nacimiento;
+            $edad = Carbon::parse($fecha_nacimiento )->age;
+            $registro = new RegistroJugador();
+            $registro->nombre              = $request->nombre;
+            $registro->lugar_visoria       = $request->lugar_visoria;
+            $registro->edad                = $edad;
+            $registro->fecha_nacimiento    = $request->fecha_nacimiento;
+            $registro->posicion            = $request->posicion;
+            $registro->perfil              = $request->perfil;
+            $registro->estatura            = $request->estatura;
+            $registro->peso                = $request->peso;
+            $registro->tiempo_jugando      = $request->tiempo_jugando;
+            $registro->equipos_jugando     = $request->equipos_jugando;
+            $registro->profesional_amateur = $request->profesional_amateur;
+            $registro->domicilio           = $request->domicilio;
+            $registro->telefono            = $request->telefono;
+            $registro->correo              = $request->correo;
+            $registro->escuela             = $request->escuela;
+            $registro->persona_recomienda  = $request->persona_recomienda;
+            $registro->enfermedad          = ($request->enfermedad == 'Si') ? $request->enfermedad_detalle : 'Ninguna';
+            $registro->terminos            = $request->terminos;
+            $registro->solicitud_dinero    = $request->solicitud_dinero;
+            $registro->nombre_quien_pago   = $request->nombre_quien_pago;
+            $file = $request->file('formato_firmado');
+            if (isset($file)) {
+                // \Storage::disk('perfil')->delete($request->foto_eliminar);
+                $file = $request->file('formato_firmado');
+                //obtenemos el nombre del archivo
+                $nombre = $file->getClientOriginalName();
+                $url = $request->id."/".$nombre;
+                //indicamos que queremos guardar un nuevo archivo en el disco local
+                \Storage::disk('perfil')->put($url,  \File::get($file));
+                $registro->formato_firmado = $url; 
+            }
+            
+            $registro->save();
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Registro de visoria guardado correctamente.'
+            ], 200);
+
+       
     }
 }

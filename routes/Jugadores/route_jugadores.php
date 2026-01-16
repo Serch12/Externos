@@ -11,3 +11,4 @@ Route::post('/jugadores/cambioEstatus', [JugadoresController::class, 'cambioEsta
 Route::post('/jugadores/deleteJugador', [JugadoresController::class, 'deleteJugador'])->name('jugadores/deleteJugador');
 Route::post('/jugadores/deleteArchivo/{id}',  [JugadoresController::class, 'deleteArchivo'])->name('jugadores/deleteArchivo/{id}');
 Route::post('/jugadores/verificaDorsal', [JugadoresController::class, 'verificaDorsal'])->name('jugadores/verificaDorsal');
+Route::post('/visorias/registro',[JugadoresController::class,'registroVisorias'])->name('visorias/registro');

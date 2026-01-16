@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/registro', function () {
+    return view('registro');
+});
+
+
 
 
 
