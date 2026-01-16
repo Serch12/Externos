@@ -30,7 +30,7 @@
                             </thead>
                             <tbody class="table-border-bottom-0">
                                 <tr v-for="(jur, index) in Jugadores" :key="index">
-                                    <td>{{ formatFecha(jur.created_at) }}</td>
+                                    <td>{{ jur.fecha_registro_texto }}</td>
                                     <td>
                                         <div class="d-flex justify-content-start align-items-center">
                                             <div class="d-flex flex-column">
