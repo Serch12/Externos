@@ -47,6 +47,7 @@ Vue.component('talentos-component', require('./components/TalentosAMFpro.vue').d
 Vue.component('correo-component', require('./components/Correo.vue').default);
 Vue.component('honorario-component', require('./components/Honorario.vue').default);
 Vue.component('registro-component', require('./components/RegistroJugador.vue').default);
+Vue.component('visorias-component', require('./components/Visorias.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

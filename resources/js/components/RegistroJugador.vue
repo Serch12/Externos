@@ -79,7 +79,7 @@
               <select v-model="form.lugar_visoria" class="form-select">
                 <option value="">Seleccione el lugar...</option>
                 <option value="CDMX">CDMX</option>
-                <option value="León">León</option>
+                <option value="Leon">León</option>
                 <option value="Guadalajara">Guadalajara</option>
               </select>
             </div>

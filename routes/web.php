@@ -55,6 +55,8 @@ require(__DIR__ . '/Talentos/route_talentos.php');
 require(__DIR__ . '/Correo/route_correo.php');
 //require de rutas de Honorario
 require(__DIR__ . '/Honorario/route_honorario.php');
+//require de rutas de Visorias
+require(__DIR__ . '/Visorias/route_visorias.php');
 
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

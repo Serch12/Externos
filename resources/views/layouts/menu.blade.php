@@ -63,6 +63,12 @@
                 <div data-i18n="Jugadores">Jugadores</div>
               </a>
             </li>
+            <li class="menu-item {{ request()->routeIs('visorias') ? 'active' : '' }}">
+              <a href="{{ route('visorias') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-team-line"></i>
+                <div data-i18n="Jugadores Visorías">Jugadores Visorías</div>
+              </a>
+            </li>
             @else
             @endhasanyrole
             @if ($existJugador == true)

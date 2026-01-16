@@ -148,15 +148,24 @@ class JugadoresController extends Controller
             $registro->solicitud_dinero    = $request->solicitud_dinero;
             $registro->nombre_quien_pago   = $request->nombre_quien_pago;
             $file = $request->file('formato_firmado');
-            if (isset($file)) {
-                // \Storage::disk('perfil')->delete($request->foto_eliminar);
+            if ($request->hasFile('formato_firmado')) {
                 $file = $request->file('formato_firmado');
-                //obtenemos el nombre del archivo
-                $nombre = $file->getClientOriginalName();
-                $url = $request->id."/".$nombre;
-                //indicamos que queremos guardar un nuevo archivo en el disco local
-                \Storage::disk('perfil')->put($url,  \File::get($file));
-                $registro->formato_firmado = $url; 
+                
+                // Obtenemos el nombre original y su extensión
+                $extension = $file->getClientOriginalExtension();
+                $nombreLimpio = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                
+                // Creamos el nuevo nombre: nombreOriginal_20260116_161025.pdf
+                $nombreFinal = $nombreLimpio . '_' . date('Ymd_His') . '.' . $extension;
+                
+                // Definimos la ruta: id/nombre_fecha_hora.ext
+                $url = $request->id . "/" . $nombreFinal;
+                
+                // Guardamos en el disco 'perfil'
+                \Storage::disk('perfil')->put($url, \File::get($file));
+                
+                // Guardamos la ruta en la base de datos
+                $registro->formato_firmado = $url;
             }
             
             $registro->save();
