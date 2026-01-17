@@ -98,6 +98,7 @@
                 </div>
             </div>
         </div>
+        <br><br><br><br><br><br>
 <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered"> 
         <div class="modal-content">
