@@ -63,11 +63,11 @@
                                         <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="infoJugador(jur)">
                                             <i class="ri-eye-line me-1"></i> Ver Detalle
                                         </a> 
-                                        <!-- <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
-                                            data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugador(jur)">
+                                        <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
+                                            data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugadorEdit(jur)">
                                             <i class="ri-pencil-line me-1"></i> Editar
                                         </a> 
-                                        <a class="dropdown-item" type="button" :style="jur.estatus == 0 ? 'color: green;' : 'color: red;'" v-if="include('Permisos')" @click="cambioEstatus(jur)">
+                                        <!-- <a class="dropdown-item" type="button" :style="jur.estatus == 0 ? 'color: green;' : 'color: red;'" v-if="include('Permisos')" @click="cambioEstatus(jur)">
                                             <i :class="jur.estatus == 0 ? 'ri-checkbox-circle-fill me-1' : 'ri-close-circle-fill me-1'"></i> 
                                             {{ jur.estatus == 0 ? 'Activar' : 'Desactivar' }}
                                         </a>  
@@ -216,6 +216,42 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="editJugador" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-info py-3">
+        <h5 class="modal-title text-white">Actualizar Documento</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4 text-center">
+        <h6 class="mb-3">Jugador: <span class="text-primary">{{ formEdit.nombre }}</span></h6>
+        
+        <div v-if="formEdit.formato_firmado_actual" class="alert bg-label-secondary mb-4">
+            <i class="ri-file-pdf-fill ri-32px text-danger"></i>
+            <p class="small mb-0 mt-2 text-truncate">Archivo actual: {{ formEdit.formato_firmado_actual }}</p>
+        </div>
+
+        <div class="divider divider-info mt-4">
+            <div class="divider-text text-uppercase">Subir Nuevo Archivo</div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-12">
+                <input type="file" id="fileInput" ref="fileInput" class="form-control" @change="handleFileEdit($event)" accept="image/*,application/pdf">
+                <small class="text-muted d-block mt-2">Solo JPG, PNG o PDF (Máx. 2MB)</small>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-info" @click="updateArchivoOnly" :disabled="loadingEdit || !formEdit.nuevo_archivo">
+            <span v-if="loadingEdit" class="spinner-border spinner-border-sm me-1"></span>
+            Actualizar Archivo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
 </template>
 <script>
@@ -242,7 +278,14 @@ export default {
                 current_page: 1,
                 last_page: 1
             },
-            offset: 3
+            offset: 3,
+            loadingEdit: false,
+            formEdit: {
+                id: '',
+                nombre: '',
+                formato_firmado_actual: '', // Guarda la ruta del archivo que ya existe
+                nuevo_archivo: null         // Almacena el archivo binario seleccionado en el input
+            },
         }
     },
     computed: {
@@ -291,6 +334,44 @@ export default {
                 .catch(error => {
                     console.error('Error fetching jugadores:', error);
                 });
+        },
+        infoJugadorEdit(jur) {
+            this.formEdit.id = jur.id_registro_jugador;
+            this.formEdit.nombre = jur.nombre;
+            this.formEdit.formato_firmado_actual = jur.formato_firmado;
+            this.formEdit.nuevo_archivo = null;
+        },
+
+        handleFileEdit(event) {
+            this.formEdit.nuevo_archivo = event.target.files[0];
+        },
+
+        async updateArchivoOnly() {
+            if (!this.formEdit.nuevo_archivo) return;
+
+            this.loadingEdit = true;
+            let data = new FormData();
+            data.append('nuevo_archivo', this.formEdit.nuevo_archivo);
+
+            try {
+                const response = await axios.post(`visorias/update-archivo/${this.formEdit.id}`, data, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+
+                if (response.data.status === 'success') {
+                    Swal.fire('¡Éxito!', 'Documento actualizado correctamente', 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('editJugador')).hide();
+                    this.formEdit.nuevo_archivo = null; 
+                    if (this.$refs.fileInput) {
+                        this.$refs.fileInput.value = '';
+                    }
+                    this.getJugadores(); // Refrescar la tabla para ver el nuevo link
+                }
+            } catch (error) {
+                Swal.fire('Error', 'No se pudo subir el archivo', 'error');
+            } finally {
+                this.loadingEdit = false;
+            }
         }
 
     }

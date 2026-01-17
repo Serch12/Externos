@@ -59,4 +59,39 @@ class VisoriasController extends Controller
         }
         return response()->json($jugadores);
     }
+
+    public function updateArchivo(Request $request, $id) {
+        // 1. Validar que el archivo sea correcto
+        $request->validate([
+            'nuevo_archivo' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048'
+        ]);
+
+        $registro = RegistroJugador::findOrFail($id);
+
+        if ($request->hasFile('nuevo_archivo')) {
+            // 2. Eliminar el archivo anterior para no llenar el servidor de basura
+            if ($registro->formato_firmado) {
+                \Storage::disk('perfil')->delete($registro->formato_firmado);
+            }
+
+            // 3. Procesar el nuevo archivo
+            $file = $request->file('nuevo_archivo');
+            $nombreLimpio = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $nombreFinal = $nombreLimpio . '_' . date('Ymd_His') . '.' . $file->getClientOriginalExtension();
+            
+            $url = $id . "/" . $nombreFinal;
+            
+            // 4. Guardar en el disco 'perfil'
+            \Storage::disk('perfil')->put($url, \File::get($file));
+            
+            // 5. Actualizar la base de datos
+            $registro->formato_firmado = $url;
+            $registro->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Documento actualizado'
+            ]);
+        }
+    }
 }
