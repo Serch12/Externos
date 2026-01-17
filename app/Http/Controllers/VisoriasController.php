@@ -52,7 +52,7 @@ class VisoriasController extends Controller
      * FUNCION QUE MUESTRA LOS JUGADORES POR SEDE
      **/
     public function listaJugadores($sede,$rol_usuario){
-        if($rol_usuario == 'Administrador'){
+        if($rol_usuario == 'Root'){
             $jugadores = RegistroJugador::get();
         }else{
             $jugadores = RegistroJugador::where('lugar_visoria', $sede)->get();
