@@ -44,7 +44,7 @@
               Acción Obligatoria
             </h6>
             <p class="mb-3 text-dark small">
-              Es indispensable descargar el <strong>Formato de Consentimiento</strong>, imprimirlo, firmarlo y tenerlo listo para tu registro.<strong>Si detectamos que no viene firmado tu registro no se hará válido.</strong>
+              Es indispensable descargar el <strong>Formato de Consentimiento</strong>, imprimirlo, firmarlo y tenerlo listo para tu registro.<strong>En caso de que el formato no esté firmado, tu registro no será válido.</strong>
             </p>
             
             <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-sm-start">

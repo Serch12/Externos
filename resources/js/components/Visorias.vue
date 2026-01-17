@@ -326,7 +326,7 @@ export default {
         },
         getJugadores() {
             let sede = this.sede === 'León' ? 'Leon' : this.sede;
-            axios.get(`visorias/jugadores/${sede}`)
+            axios.get(`visorias/jugadores/${sede}/${this.rol_usuario}`)
                 .then(response => {
                     console.log(response.data);
                     this.Jugadores = response.data;

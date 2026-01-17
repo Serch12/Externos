@@ -51,8 +51,13 @@ class VisoriasController extends Controller
     /**
      * FUNCION QUE MUESTRA LOS JUGADORES POR SEDE
      **/
-    public function listaJugadores($sede){
-        $jugadores = RegistroJugador::where('lugar_visoria', $sede)->get();
+    public function listaJugadores($sede,$rol_usuario){
+        if($rol_usuario == 'Administrador'){
+            $jugadores = RegistroJugador::get();
+        }else{
+            $jugadores = RegistroJugador::where('lugar_visoria', $sede)->get();
+        }
+        
         foreach ($jugadores as $jugador) {
             $jugador->fecha_nacimiento_texto = Carbon::parse($jugador->fecha_nacimiento)->locale('es')->isoFormat('D [de] MMMM [de] Y');
             $jugador->fecha_registro_texto = Carbon::parse($jugador->created_at)->locale('es')->isoFormat('D [de] MMMM [de] Y');
