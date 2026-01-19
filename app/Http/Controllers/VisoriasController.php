@@ -53,16 +53,19 @@ class VisoriasController extends Controller
      **/
     public function listaJugadores($sede,$rol_usuario){
         if($rol_usuario == 'Root'){
-            $jugadores = RegistroJugador::get();
+            $jugadores = RegistroJugador::latest()->get();
         }else{
-            $jugadores = RegistroJugador::where('lugar_visoria', $sede)->get();
+            $jugadores = RegistroJugador::where('lugar_visoria', $sede)->latest()->get();
         }
-        
+        $total = $jugadores->count();
         foreach ($jugadores as $jugador) {
             $jugador->fecha_nacimiento_texto = Carbon::parse($jugador->fecha_nacimiento)->locale('es')->isoFormat('D [de] MMMM [de] Y');
             $jugador->fecha_registro_texto = Carbon::parse($jugador->created_at)->locale('es')->isoFormat('D [de] MMMM [de] Y');
         }
-        return response()->json($jugadores);
+        return response()->json([
+            'total' => $total,
+            'jugadores' => $jugadores
+        ]);
     }
 
     public function updateArchivo(Request $request, $id) {

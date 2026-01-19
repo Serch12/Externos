@@ -4,96 +4,109 @@
             <div class="row g-6">
                 <div class="card">  
                     <div class="row">
-                    <div class="col-12 col-md-6">
-                        <h5 class="card-header">Jugadores Registrados para Visoría</h5>
-                    </div>
-                    <!-- <div class="col-12 col-md-6 mt-3">
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <input type="search" class="form-control" v-model="search" placeholder="Buscar por nombre o correo" />
-                            <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createJugador" v-if="include('Crear')">Agregar Nuevo</button>
+                        <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                            <div class="card-title mb-0">
+                                <h5 class="m-0 me-2 text-primary">
+                                    <i class="ri-team-line me-1"></i> Jugadores Registrados para Visoría
+                                </h5>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="bg-label-primary rounded-pill px-3 py-1">
+                                    <span class="fw-bold me-1">Total:</span>
+                                    <span class="badge badge-center rounded-pill bg-primary">{{ contador }}</span>
+                                </div>
+                            </div>
                         </div>
-                    </div> -->
-                    <div class="table-responsive text-nowrap mt-2" style="font-size: 13px;">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Fecha Reg.</th>
-                                    <th>Nombre</th>
-                                    <th>Sede Visoría</th>
-                                    <th>Posición</th>
-                                    <th>Edad (F. Nac)</th>
-                                    <th>Teléfono</th>
-                                    <th>Documento</th>
-                                    <th>Estatus</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-border-bottom-0">
-                                <tr v-for="(jur, index) in Jugadores" :key="index">
-                                    <td>{{ jur.fecha_registro_texto }}</td>
-                                    <td>
-                                        <div class="d-flex justify-content-start align-items-center">
-                                            <div class="d-flex flex-column">
-                                                <span class="fw-bold">{{ jur.nombre }}</span>
-                                                <small class="text-muted">{{ jur.correo }}</small>
+                        
+                        <!-- <div class="row px-4 mt-3">
+                            <div class="col-12 col-md-4 ms-auto">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i class="ri-search-line"></i></span>
+                                    <input type="text" class="form-control" v-model="search" placeholder="Filtrar por nombre..." />
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="table-responsive text-nowrap mt-2" style="font-size: 13px;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha Reg.</th>
+                                        <th>Nombre</th>
+                                        <th>Sede Visoría</th>
+                                        <th>Posición</th>
+                                        <th>Edad (F. Nac)</th>
+                                        <th>Teléfono</th>
+                                        <th>Documento</th>
+                                        <th>Estatus</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    <tr v-for="(jur, index) in Jugadores" :key="index">
+                                        <td>{{ jur.fecha_registro_texto }}</td>
+                                        <td>
+                                            <div class="d-flex justify-content-start align-items-center">
+                                                <div class="d-flex flex-column">
+                                                    <span class="fw-bold">{{ jur.nombre }}</span>
+                                                    <small class="text-muted">{{ jur.correo }}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-label-primary">{{ jur.lugar_visoria }}</span></td>
+                                        <td>{{ jur.posicion }} ({{ jur.perfil }})</td>
+                                        <td>{{ jur.edad }} años <br><small>{{ jur.fecha_nacimiento }}</small></td>
+                                        <td>{{ jur.telefono }}</td>
+                                        <td>
+                                            <a v-if="jur.formato_firmado" :href="`ArchivosSistema/Documentacion/${jur.formato_firmado}`" target="_blank" class="btn btn-sm btn-icon btn-outline-danger shadow-sm">
+                                                <i class="ri-file-pdf-fill"></i>
+                                            </a>
+                                            <span v-else class="text-danger small">Sin archivo</span>
+                                        </td>
+                                        <td>
+                                            <span :class="`badge rounded-pill ${jur.estatus == 1 ? 'bg-label-success' : 'bg-label-secondary'}`">
+                                                {{ jur.estatus == 0 ? 'Activo' : 'Inactivo' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="ri-more-2-line"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                            <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="infoJugador(jur)">
+                                                <i class="ri-eye-line me-1"></i> Ver Detalle
+                                            </a> 
+                                            <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
+                                                data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugadorEdit(jur)">
+                                                <i class="ri-pencil-line me-1"></i> Editar
+                                            </a> 
+                                            <!-- <a class="dropdown-item" type="button" :style="jur.estatus == 0 ? 'color: green;' : 'color: red;'" v-if="include('Permisos')" @click="cambioEstatus(jur)">
+                                                <i :class="jur.estatus == 0 ? 'ri-checkbox-circle-fill me-1' : 'ri-close-circle-fill me-1'"></i> 
+                                                {{ jur.estatus == 0 ? 'Activar' : 'Desactivar' }}
+                                            </a>  
+                                            <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')" @click="deleteJugador(jur)">
+                                                <i class="ri-delete-bin-7-line me-1"></i> Eliminar
+                                            </a> -->
                                             </div>
                                         </div>
-                                    </td>
-                                    <td><span class="badge bg-label-primary">{{ jur.lugar_visoria }}</span></td>
-                                    <td>{{ jur.posicion }} ({{ jur.perfil }})</td>
-                                    <td>{{ jur.edad }} años <br><small>{{ jur.fecha_nacimiento }}</small></td>
-                                    <td>{{ jur.telefono }}</td>
-                                    <td>
-                                        <a v-if="jur.formato_firmado" :href="`ArchivosSistema/Documentacion/${jur.formato_firmado}`" target="_blank" class="btn btn-sm btn-icon btn-outline-danger shadow-sm">
-                                            <i class="ri-file-pdf-fill"></i>
-                                        </a>
-                                        <span v-else class="text-danger small">Sin archivo</span>
-                                    </td>
-                                    <td>
-                                        <span :class="`badge rounded-pill ${jur.estatus == 1 ? 'bg-label-success' : 'bg-label-secondary'}`">
-                                            {{ jur.estatus == 0 ? 'Activo' : 'Inactivo' }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                        <i class="ri-more-2-line"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                        <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="infoJugador(jur)">
-                                            <i class="ri-eye-line me-1"></i> Ver Detalle
-                                        </a> 
-                                        <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
-                                            data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugadorEdit(jur)">
-                                            <i class="ri-pencil-line me-1"></i> Editar
-                                        </a> 
-                                        <!-- <a class="dropdown-item" type="button" :style="jur.estatus == 0 ? 'color: green;' : 'color: red;'" v-if="include('Permisos')" @click="cambioEstatus(jur)">
-                                            <i :class="jur.estatus == 0 ? 'ri-checkbox-circle-fill me-1' : 'ri-close-circle-fill me-1'"></i> 
-                                            {{ jur.estatus == 0 ? 'Activar' : 'Desactivar' }}
-                                        </a>  
-                                        <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')" @click="deleteJugador(jur)">
-                                            <i class="ri-delete-bin-7-line me-1"></i> Eliminar
-                                        </a> -->
-                                        </div>
-                                    </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <!-- <nav aria-label="Page navigation example mt-3">
-                            <ul class="pagination justify-content-center">
-                                <li :class="['page-item', pagination.current_page > 1 ? '' : 'disabled']">
-                                    <a @click.prevent="changePage(pagination.current_page -1)" class="page-link" href="#">Anterior</a>
-                                </li>
-                                <li class="page-item" v-for="(page, index) in pageNumber" :key="index" @click.prevent="changePage(page)" v-bind:class="[ page == isActived ? 'active' : 'waves-effect']">
-                                    <a class="page-link" href="#">{{ page }}</a>
-                                </li>
-                                <li :class="['page-item', pagination.current_page < pagination.last_page ? '' : 'disabled']">
-                                    <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link" href="#">Siguiente</a>
-                                </li>
-                            </ul>
-                        </nav> -->
-                    </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <nav aria-label="Page navigation example mt-3">
+                                <ul class="pagination justify-content-center">
+                                    <li :class="['page-item', pagination.current_page > 1 ? '' : 'disabled']">
+                                        <a @click.prevent="changePage(pagination.current_page -1)" class="page-link" href="#">Anterior</a>
+                                    </li>
+                                    <li class="page-item" v-for="(page, index) in pageNumber" :key="index" @click.prevent="changePage(page)" v-bind:class="[ page == isActived ? 'active' : 'waves-effect']">
+                                        <a class="page-link" href="#">{{ page }}</a>
+                                    </li>
+                                    <li :class="['page-item', pagination.current_page < pagination.last_page ? '' : 'disabled']">
+                                        <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link" href="#">Siguiente</a>
+                                    </li>
+                                </ul>
+                            </nav> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -287,6 +300,7 @@ export default {
                 formato_firmado_actual: '', // Guarda la ruta del archivo que ya existe
                 nuevo_archivo: null         // Almacena el archivo binario seleccionado en el input
             },
+            contador: 0 
         }
     },
     computed: {
@@ -330,7 +344,8 @@ export default {
             axios.get(`visorias/jugadores/${sede}/${this.rol_usuario}`)
                 .then(response => {
                     console.log(response.data);
-                    this.Jugadores = response.data;
+                    this.Jugadores = response.data.jugadores;
+                    this.contador = response.data.total;
                 })
                 .catch(error => {
                     console.error('Error fetching jugadores:', error);
@@ -378,3 +393,16 @@ export default {
     }
 };
 </script>
+<style scoped>
+    .bg-label-primary {
+        background-color: rgba(105, 108, 255, 0.16) !important;
+        color: #696cff !important;
+    }
+    .badge-center {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+    }
+</style>

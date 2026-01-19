@@ -1,30 +1,35 @@
 <template>
   <div class="container-xxl flex-grow-1 container-p-y" style="padding-top: 4.5rem !important;">
+    <div class="text-center mb-4">
+        <img src="logo_talentos.png" alt="Logo AMFPRO" class="mb-3" style="max-height: 80px; width: auto;">
+        <h4 class="fw-bold mb-0 text-primary">TALENTOS AMFPRO</h4>
+        <p class="text-muted">Asociación Mexicana de Futbolistas Profesionales</p>
+    </div>
     <div class="card">
         <div class="card-header bg-primary text-center">
-            <h5 class="text-white mb-0">REGISTRO DE VISORÍAS - AMFPRO</h5>
+            <h5 class="text-white mb-0">REGISTRO DE VISORÍAS OFICIALES - TALENTOS AMFPRO</h5>
         </div>
         <div class="card-body pt-4">
         <form @submit.prevent="enviarFormulario()">
           <div class="row mb-4">
-  <div class="col-12">
-    <div class="d-flex align-items-center p-3 border-start border-4 border-info bg-label-info rounded-3 shadow-sm position-relative overflow-hidden">
-      <i class="ri-information-line position-absolute" style="right: -10px; bottom: -10px; font-size: 5rem; opacity: 0.1; transform: rotate(-15deg); color: #00cfe8;"></i>
-      
-      <div class="avatar flex-shrink-0 me-3">
-        <span class="avatar-initial rounded-circle shadow-sm bg-info text-white">
-          <i class="ri-information-line ri-24px"></i>
-        </span>
-      </div>
-      <div class="d-flex flex-column z-1">
-        <div class="d-flex align-items-center mb-1">
-          <h6 class="mb-0 fw-bold text-info text-uppercase me-2">Aviso Importante</h6>
-        </div>
-        <span class="text-body">Las visorías en la <strong>AMFPRO</strong> son totalmente gratuitas en todo el territorio nacional.</span>
-      </div>
-    </div>
-  </div>
-</div>
+            <div class="col-12">
+              <div class="d-flex align-items-center p-3 border-start border-4 border-info bg-label-info rounded-3 shadow-sm position-relative overflow-hidden">
+                <i class="ri-information-line position-absolute" style="right: -10px; bottom: -10px; font-size: 5rem; opacity: 0.1; transform: rotate(-15deg); color: #00cfe8;"></i>
+                
+                <div class="avatar flex-shrink-0 me-3">
+                  <span class="avatar-initial rounded-circle shadow-sm bg-info text-white">
+                    <i class="ri-information-line ri-24px"></i>
+                  </span>
+                </div>
+                <div class="d-flex flex-column z-1">
+                  <div class="d-flex align-items-center mb-1">
+                    <h6 class="mb-0 fw-bold text-info text-uppercase me-2">Aviso Importante</h6>
+                  </div>
+                  <span class="text-body">Las visorías en la <strong>AMFPRO</strong> son totalmente gratuitas en todo el territorio nacional.</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
 <div class="row mb-4">
   <div class="col-12">
@@ -356,15 +361,16 @@ export default {
             return;
         }
 
+        if (!this.form.formato_firmado) {
+            this.showError("Es obligatorio adjuntar el formato de consentimiento firmado");
+            return;
+        }
+
         if (!this.form.terminos) {
             this.showError("Debe aceptar el deslinde de responsabilidad");
             return;
         }
 
-        if (!this.form.formato_firmado) {
-            this.showError("Es obligatorio adjuntar el formato de consentimiento firmado");
-            return;
-        }
         let formData = new FormData();
         for (let key in this.form) {
             formData.append(key, this.form[key]);
