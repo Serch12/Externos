@@ -4,28 +4,27 @@
             <div class="row g-6">
                 <div class="card">  
                     <div class="row">
-                        <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                        <div class="card-header d-flex align-items-center justify-content-between py-3">
                             <div class="card-title mb-0">
-                                <h5 class="m-0 me-2 text-primary">
-                                    <i class="ri-team-line me-1"></i> Jugadores Registrados para Visoría
+                                <h5 class="m-0 me-2 text-primary d-flex align-items-center">
+                                    <i class="ri-team-line me-2"></i> 
+                                    Jugadores Registrados
+                                    <span class="badge rounded-pill bg-label-primary ms-2">{{ jugadoresFiltrados.length }}</span>
                                 </h5>
                             </div>
+
                             <div class="d-flex align-items-center">
-                                <div class="bg-label-primary rounded-pill px-3 py-1">
-                                    <span class="fw-bold me-1">Total:</span>
-                                    <span class="badge badge-center rounded-pill bg-primary">{{ jugadoresFiltrados.length }}</span>
+                                <div class="input-group input-group-merge" style="width: 400px;">
+                                    <span class="input-group-text"><i class="ri-search-line"></i></span>
+                                    <input type="text" class="form-control" v-model="search" placeholder="Buscar por nombre..." />
+                                    <button v-if="search" class="btn btn-outline-secondary border-0" @click="search = ''" type="button">
+                                        <i class="ri-close-line"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="row px-4 mt-3">
-                            <div class="col-12 col-md-4 ms-auto">
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text"><i class="ri-search-line"></i></span>
-                                    <input type="text" class="form-control" v-model="search" placeholder="Filtrar por nombre..." />
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="table-responsive text-nowrap mt-2" style="font-size: 13px;">
                             <table class="table">
                                 <thead>
