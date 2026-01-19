@@ -13,19 +13,19 @@
                             <div class="d-flex align-items-center">
                                 <div class="bg-label-primary rounded-pill px-3 py-1">
                                     <span class="fw-bold me-1">Total:</span>
-                                    <span class="badge badge-center rounded-pill bg-primary">{{ contador }}</span>
+                                    <span class="badge badge-center rounded-pill bg-primary">{{ jugadoresFiltrados.length }}</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- <div class="row px-4 mt-3">
+                        <div class="row px-4 mt-3">
                             <div class="col-12 col-md-4 ms-auto">
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text"><i class="ri-search-line"></i></span>
                                     <input type="text" class="form-control" v-model="search" placeholder="Filtrar por nombre..." />
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                         <div class="table-responsive text-nowrap mt-2" style="font-size: 13px;">
                             <table class="table">
                                 <thead>
@@ -42,7 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                                    <tr v-for="(jur, index) in Jugadores" :key="index">
+                                    <tr v-for="(jur, index) in jugadoresPaginados" :key="index">
                                         <td>{{ jur.fecha_registro_texto }}</td>
                                         <td>
                                             <div class="d-flex justify-content-start align-items-center">
@@ -93,19 +93,23 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <!-- <nav aria-label="Page navigation example mt-3">
-                                <ul class="pagination justify-content-center">
-                                    <li :class="['page-item', pagination.current_page > 1 ? '' : 'disabled']">
-                                        <a @click.prevent="changePage(pagination.current_page -1)" class="page-link" href="#">Anterior</a>
+                            <nav aria-label="Page navigation" class="mt-4" v-if="totalPaginas > 1">
+                                <ul class="pagination justify-content-center pagination-sm">
+                                    <li :class="['page-item', paginaActual === 1 ? 'disabled' : '']">
+                                        <a class="page-link shadow-none" href="#" @click.prevent="paginaActual--">
+                                            <i class="ri-arrow-left-s-line"></i>
+                                        </a>
                                     </li>
-                                    <li class="page-item" v-for="(page, index) in pageNumber" :key="index" @click.prevent="changePage(page)" v-bind:class="[ page == isActived ? 'active' : 'waves-effect']">
-                                        <a class="page-link" href="#">{{ page }}</a>
+                                    <li v-for="p in totalPaginas" :key="p" :class="['page-item', paginaActual === p ? 'active' : '']">
+                                        <a class="page-link shadow-none" href="#" @click.prevent="paginaActual = p">{{ p }}</a>
                                     </li>
-                                    <li :class="['page-item', pagination.current_page < pagination.last_page ? '' : 'disabled']">
-                                        <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link" href="#">Siguiente</a>
+                                    <li :class="['page-item', paginaActual === totalPaginas ? 'disabled' : '']">
+                                        <a class="page-link shadow-none" href="#" @click.prevent="paginaActual++">
+                                            <i class="ri-arrow-right-s-line"></i>
+                                        </a>
                                     </li>
                                 </ul>
-                            </nav> -->
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -288,11 +292,8 @@ export default {
             Jugadores: [],
             selectedJugador: null,
             search: '',
-            pagination: {
-                current_page: 1,
-                last_page: 1
-            },
-            offset: 3,
+            paginaActual: 1,
+            elementosPorPagina: 10,
             loadingEdit: false,
             formEdit: {
                 id: '',
@@ -304,20 +305,30 @@ export default {
         }
     },
     computed: {
-        // isActived() { return this.pagination.current_page; },
-        // pageNumber() {
-        //     if (!this.pagination.to) return [];
-        //     let from = this.pagination.current_page - this.offset;
-        //     if (from < 1) from = 1;
-        //     let to = from + (this.offset * 2);
-        //     if (to >= this.pagination.last_page) to = this.pagination.last_page;
-        //     let pagesArray = [];
-        //     while (from <= to) { pagesArray.push(from); from++; }
-        //     return pagesArray;
-        // }
+        // 1. Primero filtramos por búsqueda
+        jugadoresFiltrados() {
+            if (!this.search) return this.Jugadores;
+            const query = this.search.toLowerCase();
+            return this.Jugadores.filter(j => 
+                j.nombre.toLowerCase().includes(query) || 
+                j.correo.toLowerCase().includes(query)
+            );
+        },
+        // 2. Luego paginamos el resultado filtrado
+        jugadoresPaginados() {
+            const inicio = (this.paginaActual - 1) * this.elementosPorPagina;
+            const fin = inicio + this.elementosPorPagina;
+            return this.jugadoresFiltrados.slice(inicio, fin);
+        },
+        // 3. Calculamos el total de páginas
+        totalPaginas() {
+            return Math.ceil(this.jugadoresFiltrados.length / this.elementosPorPagina);
+        }
     },
     watch: {
-        
+        search() {
+            this.paginaActual = 1;
+        }
     },
     mounted() {
         this.getJugadores();
@@ -346,6 +357,7 @@ export default {
                     console.log(response.data);
                     this.Jugadores = response.data.jugadores;
                     this.contador = response.data.total;
+                    this.paginaActual = 1;
                 })
                 .catch(error => {
                     console.error('Error fetching jugadores:', error);
