@@ -9,7 +9,14 @@
                                 <h5 class="m-0 me-2 text-primary d-flex align-items-center">
                                     <i class="ri-team-line me-2"></i> 
                                     Jugadores Registrados
-                                    <span class="badge rounded-pill bg-label-primary ms-2">{{ jugadoresFiltrados.length }}</span>
+                                    <span class="badge rounded-pill bg-label-primary ms-2" title="Total de registros">
+                                        {{ jugadoresFiltrados.length }}
+                                    </span>
+
+                                    <span v-if="totalDuplicados > 0" class="badge rounded-pill bg-label-danger ms-2" 
+                                        data-bs-toggle="tooltip" :title="'Nombres repetidos: ' + registrosDuplicados.join(', ')">
+                                        <i class="ri-alert-line me-1"></i> {{ totalDuplicados }} Duplicados
+                                    </span>
                                 </h5>
                             </div>
 
@@ -41,7 +48,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                                    <tr v-for="(jur, index) in jugadoresPaginados" :key="index">
+                                    <tr v-for="(jur, index) in jugadoresPaginados" :key="index" :class="{'table-warning': registrosDuplicados.includes(jur.nombre.toLowerCase().trim())}">
                                         <td>{{ jur.fecha_registro_texto }}</td>
                                         <td>
                                             <div class="d-flex justify-content-start align-items-center">
@@ -313,15 +320,28 @@ export default {
                 j.correo.toLowerCase().includes(query)
             );
         },
-        // 2. Luego paginamos el resultado filtrado
         jugadoresPaginados() {
             const inicio = (this.paginaActual - 1) * this.elementosPorPagina;
             const fin = inicio + this.elementosPorPagina;
             return this.jugadoresFiltrados.slice(inicio, fin);
         },
-        // 3. Calculamos el total de páginas
         totalPaginas() {
             return Math.ceil(this.jugadoresFiltrados.length / this.elementosPorPagina);
+        },
+        registrosDuplicados() {
+            const conteo = {};
+            // Recorremos todos los jugadores para contar cuántas veces aparece cada nombre
+            this.Jugadores.forEach(j => {
+                const nombre = j.nombre.toLowerCase().trim();
+                conteo[nombre] = (conteo[nombre] || 0) + 1;
+            });
+
+            // Filtramos para quedarnos solo con los nombres que se repiten
+            return Object.keys(conteo).filter(nombre => conteo[nombre] > 1);
+        },
+        
+        totalDuplicados() {
+            return this.registrosDuplicados.length;
         }
     },
     watch: {
