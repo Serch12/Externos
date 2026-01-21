@@ -16,8 +16,8 @@
                                     <span v-if="totalDuplicados > 0" 
                                         @click="mostrarSoloDuplicados = !mostrarSoloDuplicados"
                                         :class="['badge rounded-pill ms-2 cursor-pointer', mostrarSoloDuplicados ? 'bg-danger shadow-sm' : 'bg-label-danger']"
-                                        style="cursor: pointer; transition: all 0.3s ease;"
-                                        title="Click para filtrar solo duplicados">
+                                        :title="mostrarSoloDuplicados ? 'Quitar filtro de duplicados' : 'Ver solo registros duplicados'"
+                                        style="cursor: pointer; transition: all 0.3s ease;">
                                         <i class="ri-alert-line me-1"></i> 
                                         {{ totalDuplicados }} Duplicados 
                                         <i :class="mostrarSoloDuplicados ? 'ri-close-circle-fill ms-1' : 'ri-filter-3-line ms-1'"></i>
