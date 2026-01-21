@@ -4,38 +4,43 @@
             <div class="row g-6">
                 <div class="card">  
                     <div class="row">
-                        <div class="card-header d-flex align-items-center justify-content-between py-3">
-                            <div class="card-title mb-0">
-                                <h5 class="m-0 me-2 text-primary d-flex align-items-center">
-                                    <i class="ri-team-line me-2"></i> 
-                                    Jugadores Registrados
-                                    <span class="badge rounded-pill bg-label-primary ms-2" title="Total de registros">
-                                        {{ jugadoresFiltrados.length }}
-                                    </span>
+                        <div class="card-header py-3">
+                            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                                
+                                <div class="card-title mb-0">
+                                    <h5 class="m-0 me-2 text-primary d-flex align-items-center flex-wrap">
+                                        <i class="ri-team-line me-2"></i> 
+                                        <span class="me-2">Jugadores Registrados</span>
+                                        
+                                        <div class="d-flex gap-2 my-1">
+                                            <span class="badge rounded-pill bg-label-primary" title="Total de registros">
+                                                {{ jugadoresFiltrados.length }}
+                                            </span>
 
-                                    <span v-if="totalDuplicados > 0" 
-                                        @click="mostrarSoloDuplicados = !mostrarSoloDuplicados"
-                                        :class="['badge rounded-pill ms-2 cursor-pointer', mostrarSoloDuplicados ? 'bg-danger shadow-sm' : 'bg-label-danger']"
-                                        :title="mostrarSoloDuplicados ? 'Quitar filtro de duplicados' : 'Ver solo registros duplicados'"
-                                        style="cursor: pointer; transition: all 0.3s ease;">
-                                        <i class="ri-alert-line me-1"></i> 
-                                        {{ totalDuplicados }} Duplicados 
-                                        <i :class="mostrarSoloDuplicados ? 'ri-close-circle-fill ms-1' : 'ri-filter-3-line ms-1'"></i>
-                                    </span>
-                                </h5>
-                            </div>
-
-                            <div class="d-flex align-items-center">
-                                <div class="input-group input-group-merge" style="width: 400px;">
-                                    <span class="input-group-text"><i class="ri-search-line"></i></span>
-                                    <input type="text" class="form-control" v-model="search" placeholder="Buscar por nombre..." />
-                                    <button v-if="search" class="btn btn-outline-secondary border-0" @click="search = ''" type="button">
-                                        <i class="ri-close-line"></i>
-                                    </button>
+                                            <span v-if="totalDuplicados > 0" 
+                                                @click="mostrarSoloDuplicados = !mostrarSoloDuplicados"
+                                                :class="['badge rounded-pill cursor-pointer', mostrarSoloDuplicados ? 'bg-danger shadow-sm' : 'bg-label-danger']"
+                                                style="cursor: pointer; transition: all 0.3s ease;">
+                                                <i class="ri-alert-line me-1"></i> 
+                                                {{ totalDuplicados }} Duplicados 
+                                                <i :class="mostrarSoloDuplicados ? 'ri-close-circle-fill ms-1' : 'ri-filter-3-line ms-1'"></i>
+                                            </span>
+                                        </div>
+                                    </h5>
                                 </div>
+
+                                <div class="w-100" style="max-width: 400px;">
+                                    <div class="input-group input-group-merge">
+                                        <span class="input-group-text"><i class="ri-search-line"></i></span>
+                                        <input type="text" class="form-control" v-model="search" placeholder="Buscar por nombre..." />
+                                        <button v-if="search" class="btn btn-outline-secondary border-0" @click="search = ''" type="button">
+                                            <i class="ri-close-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
-                        
                         
                         <div class="table-responsive text-nowrap mt-2" style="font-size: 13px;">
                             <table class="table">
