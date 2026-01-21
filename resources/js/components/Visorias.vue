@@ -13,9 +13,14 @@
                                         {{ jugadoresFiltrados.length }}
                                     </span>
 
-                                    <span v-if="totalDuplicados > 0" class="badge rounded-pill bg-label-danger ms-2" 
-                                        data-bs-toggle="tooltip" :title="'Nombres repetidos: ' + registrosDuplicados.join(', ')">
-                                        <i class="ri-alert-line me-1"></i> {{ totalDuplicados }} Duplicados
+                                    <span v-if="totalDuplicados > 0" 
+                                        @click="mostrarSoloDuplicados = !mostrarSoloDuplicados"
+                                        :class="['badge rounded-pill ms-2 cursor-pointer', mostrarSoloDuplicados ? 'bg-danger shadow-sm' : 'bg-label-danger']"
+                                        style="cursor: pointer; transition: all 0.3s ease;"
+                                        title="Click para filtrar solo duplicados">
+                                        <i class="ri-alert-line me-1"></i> 
+                                        {{ totalDuplicados }} Duplicados 
+                                        <i :class="mostrarSoloDuplicados ? 'ri-close-circle-fill ms-1' : 'ri-filter-3-line ms-1'"></i>
                                     </span>
                                 </h5>
                             </div>
@@ -307,18 +312,32 @@ export default {
                 formato_firmado_actual: '', // Guarda la ruta del archivo que ya existe
                 nuevo_archivo: null         // Almacena el archivo binario seleccionado en el input
             },
-            contador: 0 
+            contador: 0,
+            mostrarSoloDuplicados: false, 
         }
     },
     computed: {
         // 1. Primero filtramos por búsqueda
         jugadoresFiltrados() {
-            if (!this.search) return this.Jugadores;
-            const query = this.search.toLowerCase();
-            return this.Jugadores.filter(j => 
-                j.nombre.toLowerCase().includes(query) || 
-                j.correo.toLowerCase().includes(query)
-            );
+            let lista = this.Jugadores;
+
+            // Primero filtramos por modo duplicados si está activo
+            if (this.mostrarSoloDuplicados) {
+                lista = lista.filter(j => 
+                    this.registrosDuplicados.includes(j.nombre.toLowerCase().trim())
+                );
+            }
+
+            // Luego aplicamos la búsqueda por texto si existe
+            if (this.search) {
+                const query = this.search.toLowerCase();
+                lista = lista.filter(j => 
+                    j.nombre.toLowerCase().includes(query) || 
+                    j.correo.toLowerCase().includes(query)
+                );
+            }
+
+            return lista;
         },
         jugadoresPaginados() {
             const inicio = (this.paginaActual - 1) * this.elementosPorPagina;
@@ -346,6 +365,9 @@ export default {
     },
     watch: {
         search() {
+            this.paginaActual = 1;
+        },
+        mostrarSoloDuplicados() {
             this.paginaActual = 1;
         }
     },
