@@ -20,7 +20,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 style="margin:0; font-size: 28px;">AMF<span class="text-neon">PRO</span></h1>
+            <h1 style="margin:0; font-size: 28px;">TALENTOS AMF<span class="text-neon">PRO</span></h1>
             <p style="margin:5px 0 0; opacity: 0.8; letter-spacing: 1px;">#UnidosSomosMásFuertes</p>
         </div>
 
@@ -28,7 +28,7 @@
             <h2 style="color: #2b7a3a;">¡Hola, {{ $registro->nombre }}!</h2>
             <p>Tu registro para las <strong>Visorias 2026</strong> se ha completado con éxito. Estamos emocionados de verte en la cancha.</p>
             
-            <div class="badge">ID de Registro: #{{ $registro->id }}</div>
+            <div class="badge">ID de Registro: #{{ $registro->id_registro_jugador }}</div>
 
             <p style="margin-top: 25px;">Presenta el siguiente código QR desde tu celular al momento de llegar para validar tu asistencia:</p>
 

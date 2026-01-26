@@ -385,7 +385,7 @@ export default {
 
             Swal.fire({
                 title: 'Registro Exitoso',
-                text: "¡Tus datos han sido registrados correctamente!",
+                text: "¡Te enviamos un correo con tu código QR!",
                 icon: 'success',
                 showConfirmButton: true,
                 confirmButtonText: 'Ok',
