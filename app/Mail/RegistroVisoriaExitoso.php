@@ -29,7 +29,7 @@ class RegistroVisoriaExitoso extends Mailable
      * @return $this
      */
     public function build() {
-        return $this->view('PDF.pdfRegistroVisorias')
+        return $this->view('Pdf.pdfRegistroVisorias')
                     ->subject('Tu código QR para las Visorias');
     }
 }
