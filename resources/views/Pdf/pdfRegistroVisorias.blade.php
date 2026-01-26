@@ -42,18 +42,12 @@
             </p>
 
             <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
-
-            <p style="font-size: 13px;">Recuerda llevar tu uniforme completo, hidratación y tu formato firmado.</p>
         </div>
 
         <div class="footer">
             <p>© 2026 Asociación Mexicana de Futbolistas Profesionales (AMFpro)</p>
             <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
-            <div style="margin-top: 10px;">
-                <a href="#" style="color: #2b7a3a; text-decoration: none; margin: 0 5px;">Facebook</a> | 
-                <a href="#" style="color: #2b7a3a; text-decoration: none; margin: 0 5px;">Instagram</a> | 
-                <a href="#" style="color: #2b7a3a; text-decoration: none; margin: 0 5px;">Twitter</a>
-            </div>
+           
         </div>
     </div>
 </body>
