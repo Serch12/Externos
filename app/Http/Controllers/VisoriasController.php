@@ -102,4 +102,21 @@ class VisoriasController extends Controller
             ]);
         }
     }
+
+    /**
+     * funcion que valida el estatus del jugador al momento de la visoria
+     */
+    public function validarEstatus($id) {
+        $registro = RegistroJugador::find($id);
+        if (!$registro) {
+            return redirect()->to('/visorias')
+                            ->with('error', 'Registro no encontrado o código QR inválido.');
+        }
+
+        // 3. Actualizar la variable de estatus
+        $registro->estatus = 1;
+        $registro->save();
+        return redirect()->to('/visorias')
+                        ->with('status', "¡Registro actualizado! Asistencia confirmada para: {$registro->nombre}");
+    }
 }

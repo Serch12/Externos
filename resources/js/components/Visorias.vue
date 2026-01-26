@@ -25,6 +25,10 @@
                                                 {{ totalDuplicados }} Duplicados 
                                                 <i :class="mostrarSoloDuplicados ? 'ri-close-circle-fill ms-1' : 'ri-filter-3-line ms-1'"></i>
                                             </span>
+                                            <span class="badge rounded-pill bg-label-success" title="Asistencias confirmadas">
+                                                <i class="ri-user-follow-line me-1"></i>
+                                                {{ totalAsistencias }} Presentes
+                                            </span>
                                         </div>
                                     </h5>
                                 </div>
@@ -58,7 +62,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                                    <tr v-for="(jur, index) in jugadoresPaginados" :key="index" :class="{'table-warning': registrosDuplicados.includes(jur.nombre.toLowerCase().trim())}">
+                                    <tr v-for="(jur, index) in jugadoresPaginados" :key="index" :class="{'table-warning': registrosDuplicados.includes(jur.nombre.toLowerCase().trim()),'table-success': jur.estatus == 1}">
                                         <td>{{ jur.fecha_registro_texto }}</td>
                                         <td>
                                             <div class="d-flex justify-content-start align-items-center">
@@ -79,8 +83,9 @@
                                             <span v-else class="text-danger small">Sin archivo</span>
                                         </td>
                                         <td>
-                                            <span :class="`badge rounded-pill ${jur.estatus == 1 ? 'bg-label-success' : 'bg-label-secondary'}`">
-                                                {{ jur.estatus == 0 ? 'Activo' : 'Inactivo' }}
+                                            <span :class="['badge rounded-pill', jur.estatus == 1 ? 'bg-label-success' : 'bg-label-warning']">
+                                                <i :class="jur.estatus == 1 ? 'ri-checkbox-circle-line' : 'ri-time-line'"></i>
+                                                {{ jur.estatus == 1 ? 'Asistió' : 'Pendiente' }}
                                             </span>
                                         </td>
                                         <td>
@@ -366,6 +371,9 @@ export default {
         
         totalDuplicados() {
             return this.registrosDuplicados.length;
+        },
+        totalAsistencias() {
+            return this.Jugadores.filter(j => j.estatus == 1).length;
         }
     },
     watch: {

@@ -31,45 +31,45 @@
             </div>
           </div>
 
-<div class="row mb-4">
-  <div class="col-12">
-    <div class="card border-0 shadow-none" style="background-color: rgba(234, 134, 143, 0.08); border: 1px dashed #ea868f !important; border-radius: 12px;">
-      <div class="card-body p-4">
-        <div class="row align-items-center">
-          <div class="col-12 col-sm-auto text-center mb-3 mb-sm-0">
-            <div class="position-relative d-inline-block">
-                <div class="bg-danger p-3 rounded-3 shadow">
-                    <i class="tf-icons ri-contract-line ri-22px text-white" style="font-size: 2.5rem;"></i>
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="card border-0 shadow-none" style="background-color: rgba(234, 134, 143, 0.08); border: 1px dashed #ea868f !important; border-radius: 12px;">
+                <div class="card-body p-4">
+                  <div class="row align-items-center">
+                    <div class="col-12 col-sm-auto text-center mb-3 mb-sm-0">
+                      <div class="position-relative d-inline-block">
+                          <div class="bg-danger p-3 rounded-3 shadow">
+                              <i class="tf-icons ri-contract-line ri-22px text-white" style="font-size: 2.5rem;"></i>
+                          </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-12 col-sm">
+                      <h6 class="mb-1 text-danger fw-bold d-flex align-items-center justify-content-center justify-content-sm-start text-uppercase">
+                        Acción Obligatoria
+                      </h6>
+                      <p class="mb-3 text-dark small">
+                        Es indispensable descargar el <strong>Formato de Consentimiento</strong>, imprimirlo, firmarlo y tenerlo listo para tu registro.<strong>En caso de que el formato no esté firmado, tu registro no será válido.</strong>
+                      </p>
+                      
+                      <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-sm-start">
+                          <a href="CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf" download class="btn btn-danger btn-md shadow-sm d-inline-flex align-items-center px-4">
+                            <i class="ri-file-download-line me-2"></i> DESCARGAR FORMATO PDF
+                          </a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- <div class="mt-3 pt-3 border-top border-danger border-opacity-10">
+                    <small class="text-muted">
+                      <i class="ri-question-line me-1"></i> ¿Problemas con la descarga? 
+                      <a href="CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf" download class="text-danger fw-bold">Haz clic aquí manualmente</a>.
+                    </small>
+                  </div> -->
                 </div>
+              </div>
             </div>
           </div>
-          
-          <div class="col-12 col-sm">
-            <h6 class="mb-1 text-danger fw-bold d-flex align-items-center justify-content-center justify-content-sm-start text-uppercase">
-              Acción Obligatoria
-            </h6>
-            <p class="mb-3 text-dark small">
-              Es indispensable descargar el <strong>Formato de Consentimiento</strong>, imprimirlo, firmarlo y tenerlo listo para tu registro.<strong>En caso de que el formato no esté firmado, tu registro no será válido.</strong>
-            </p>
-            
-            <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-sm-start">
-                <a href="CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf" download class="btn btn-danger btn-md shadow-sm d-inline-flex align-items-center px-4">
-                  <i class="ri-file-download-line me-2"></i> DESCARGAR FORMATO PDF
-                </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- <div class="mt-3 pt-3 border-top border-danger border-opacity-10">
-          <small class="text-muted">
-            <i class="ri-question-line me-1"></i> ¿Problemas con la descarga? 
-            <a href="CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf" download class="text-danger fw-bold">Haz clic aquí manualmente</a>.
-          </small>
-        </div> -->
-      </div>
-    </div>
-  </div>
-</div>
           <div class="divider divider-primary">
             <div class="divider-text"><center>DATOS PERSONALES</center></div>
           </div>
