@@ -83,7 +83,7 @@
               <label class="form-label">¿A qué VISORIA vas a asistir? (Lugar) *</label>
               <select v-model="form.lugar_visoria" class="form-select">
                 <option value="">Seleccione el lugar...</option>
-                <option value="CDMX">CDMX</option>
+                <!-- <option value="CDMX">CDMX</option> -->
                 <option value="Leon">León</option>
                 <option value="Guadalajara">Guadalajara</option>
               </select>
