@@ -118,4 +118,23 @@ class VisoriasController extends Controller
         $registro->save();
         return redirect()->to('/visorias?status=success&jugador_id=' . $registro->id_registro_jugador);
     }
+
+    /**
+     * funcion que confirma la asistencia manualmente
+     */
+    public function confirmarManual($id) {
+        $registro = RegistroJugador::find($id);
+
+        if (!$registro) {
+            return response()->json(['status' => 'error', 'message' => 'No se encontró el jugador'], 404);
+        }
+
+        $registro->estatus = 1;
+        $registro->save();
+
+        return response()->json([
+            'status' => 'success', 
+            'message' => 'Asistencia confirmada correctamente'
+        ]);
+    }
 }

@@ -96,13 +96,18 @@
                                             <i class="ri-more-2-line"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                            <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="infoJugador(jur)">
-                                                <i class="ri-eye-line me-1"></i> Ver Detalle
-                                            </a> 
-                                            <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
-                                                data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugadorEdit(jur)">
-                                                <i class="ri-pencil-line me-1"></i> Editar
-                                            </a> 
+                                                <a class="dropdown-item" type="button" style="color: #2b7a3a;" 
+                                                    v-if="jur.estatus == 0 && include('Editar')" 
+                                                    @click="confirmarAsistenciaManual(jur)">
+                                                    <i class="ri-checkbox-circle-line me-1"></i> Confirmar Asistencia
+                                                </a>
+                                                <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="infoJugador(jur)">
+                                                    <i class="ri-eye-line me-1"></i> Ver Detalle
+                                                </a> 
+                                                <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
+                                                    data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugadorEdit(jur)">
+                                                    <i class="ri-pencil-line me-1"></i> Editar
+                                                </a> 
                                             <!-- <a class="dropdown-item" type="button" :style="jur.estatus == 0 ? 'color: green;' : 'color: red;'" v-if="include('Permisos')" @click="cambioEstatus(jur)">
                                                 <i :class="jur.estatus == 0 ? 'ri-checkbox-circle-fill me-1' : 'ri-close-circle-fill me-1'"></i> 
                                                 {{ jur.estatus == 0 ? 'Activar' : 'Desactivar' }}
@@ -552,6 +557,45 @@ export default {
                 });
             } else {
                 bootstrap.Modal.getInstance(document.getElementById('modalQR')).hide();
+            }
+        },
+        async confirmarAsistenciaManual(jugador) {
+            const result = await Swal.fire({
+                title: '¿Confirmar asistencia?',
+                text: `Se marcará a ${jugador.nombre} como presente en la visoria.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#2b7a3a',
+                cancelButtonColor: '#8592a3',
+                confirmButtonText: 'Sí, confirmar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    // Enviamos la petición al servidor
+                    // Usamos el ID del registro que ya tienes en el objeto
+                    const response = await axios.post(`visorias/confirmar-asistencia/${jugador.id_registro_jugador}`);
+
+                    if (response.data.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Hecho!',
+                            text: 'Asistencia registrada correctamente.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        
+                        // Refrescamos la lista para actualizar el estatus visualmente
+                        this.getJugadores(); 
+                        
+                        // Opcional: Abrir el detalle automáticamente como pediste con el QR
+                        this.infoJugador(jugador);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    Swal.fire('Error', 'No se pudo actualizar el estatus.', 'error');
+                }
             }
         },
     }
