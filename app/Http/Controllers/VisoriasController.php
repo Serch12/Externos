@@ -116,7 +116,6 @@ class VisoriasController extends Controller
         // 3. Actualizar la variable de estatus
         $registro->estatus = 1;
         $registro->save();
-        return redirect()->to('/visorias')
-                        ->with('status', "¡Registro actualizado! Asistencia confirmada para: {$registro->nombre}");
+        return redirect()->to('/visorias?status=success&jugador_id=' . $registro->id_registro_jugador);
     }
 }

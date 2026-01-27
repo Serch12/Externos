@@ -34,11 +34,13 @@
                                 </div>
 
                                 <div class="w-100" style="max-width: 400px;">
-                                    <div class="input-group input-group-merge">
-                                        <span class="input-group-text"><i class="ri-search-line"></i></span>
-                                        <input type="text" class="form-control" v-model="search" placeholder="Buscar por nombre..." />
-                                        <button v-if="search" class="btn btn-outline-secondary border-0" @click="search = ''" type="button">
-                                            <i class="ri-close-line"></i>
+                                    <div class="d-flex gap-2">
+                                        <div class="input-group input-group-merge">
+                                            <span class="input-group-text"><i class="ri-search-line"></i></span>
+                                            <input type="text" class="form-control" v-model="search" placeholder="Buscar por nombre..." />
+                                        </div>
+                                        <button class="btn btn-primary d-flex align-items-center" @click="abrirEscanner">
+                                            <i class="ri-qr-scan-2-line me-1"></i> <span class="d-none d-sm-inline">Escanear</span>
                                         </button>
                                     </div>
                                 </div>
@@ -291,10 +293,25 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="modalQR" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white"><i class="ri-camera-line me-2"></i>Escaneo de Asistencia</h5>
+                <button type="button" class="btn-close btn-close-white" @click="cerrarEscanner"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="reader" style="width: 100%; border-radius: 10px; overflow: hidden;"></div>
+                <p class="text-muted mt-3 small">Coloque el código QR frente a la cámara</p>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 </template>
 <script>
 import axios from 'axios';
+import { Html5Qrcode } from "html5-qrcode";
 
 export default {
     name: '',
@@ -324,6 +341,8 @@ export default {
             },
             contador: 0,
             mostrarSoloDuplicados: false, 
+            html5QrCode: null,
+            scannerActivo: false
         }
     },
     computed: {
@@ -384,8 +403,9 @@ export default {
             this.paginaActual = 1;
         }
     },
-    mounted() {
-        this.getJugadores();
+    async mounted() {
+        await this.getJugadores();
+        this.verificarRetornoEscaneo();
     },
     methods: {
         formatFecha(fecha) {
@@ -406,9 +426,9 @@ export default {
         },
         getJugadores() {
             let sede = this.sede === 'León' ? 'Leon' : this.sede;
-            axios.get(`visorias/jugadores/${sede}/${this.rol_usuario}`)
+            // Retornamos la promesa para poder usar await en mounted
+            return axios.get(`visorias/jugadores/${sede}/${this.rol_usuario}`)
                 .then(response => {
-                    console.log(response.data);
                     this.Jugadores = response.data.jugadores;
                     this.contador = response.data.total;
                     this.paginaActual = 1;
@@ -416,6 +436,33 @@ export default {
                 .catch(error => {
                     console.error('Error fetching jugadores:', error);
                 });
+        },
+        verificarRetornoEscaneo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const jugadorId = urlParams.get('jugador_id');
+
+            if (jugadorId) {
+                // Buscamos al jugador en la lista que acabamos de cargar
+                // Nota: Asegúrate de que el nombre de la propiedad coincida (id o id_registro_jugador)
+                const jugadorEncontrado = this.Jugadores.find(j => j.id_registro_jugador == jugadorId);
+
+                if (jugadorEncontrado) {
+                    // 1. Abrimos el modal con la info del jugador
+                    this.infoJugador(jugadorEncontrado);
+
+                    // 2. Mostramos una alerta de éxito limpia
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Asistencia Confirmada!',
+                        text: `El estatus de ${jugadorEncontrado.nombre} ha sido actualizado.`,
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+
+                    // 3. Limpiamos la URL para que no se reabra el modal si refrescan la página
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            }
         },
         infoJugadorEdit(jur) {
             this.formEdit.id = jur.id_registro_jugador;
@@ -454,8 +501,59 @@ export default {
             } finally {
                 this.loadingEdit = false;
             }
-        }
+        },
+        abrirEscanner() {
+            var myModal = new bootstrap.Modal(document.getElementById('modalQR'));
+            myModal.show();
 
+            // Esperar a que el modal se muestre para iniciar la cámara
+            setTimeout(() => {
+                this.iniciarCamara();
+            }, 500);
+        },
+
+        iniciarCamara() {
+            this.html5QrCode = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            this.html5QrCode.start(
+                { facingMode: "environment" }, // Prioriza la cámara trasera en celulares
+                config,
+                (decodedText) => {
+                    // EL ÉXITO: decodedText será la URL que generamos (http://.../validar-visor/ID)
+                    this.procesarLectura(decodedText);
+                },
+                (errorMessage) => {
+                    // Error de escaneo (silencioso para evitar spam de logs)
+                }
+            ).catch((err) => {
+                console.error("Error al iniciar cámara: ", err);
+                Swal.fire('Error', 'No se pudo acceder a la cámara', 'error');
+            });
+        },
+
+        procesarLectura(url) {
+            // Detenemos la cámara de inmediato para procesar
+            this.cerrarEscanner();
+
+            // Como la URL del QR ya apunta a tu backend (validar-visor/id)
+            // Simplemente redirigimos al navegador a esa URL
+            // Laravel hará el login check y el update automáticamente
+            window.location.href = url;
+        },
+
+        cerrarEscanner() {
+            if (this.html5QrCode) {
+                this.html5QrCode.stop().then(() => {
+                    this.html5QrCode.clear();
+                    bootstrap.Modal.getInstance(document.getElementById('modalQR')).hide();
+                }).catch(err => {
+                    bootstrap.Modal.getInstance(document.getElementById('modalQR')).hide();
+                });
+            } else {
+                bootstrap.Modal.getInstance(document.getElementById('modalQR')).hide();
+            }
+        },
     }
 };
 </script>
