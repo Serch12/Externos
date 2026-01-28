@@ -14,7 +14,7 @@
                 <div class="col-sm-6 col-xl-3">
                     <div class="card border-1 border-start-personal border-success h-100">
                         <div class="card-body">
-                            <p class="mb-1 fw-bold text-muted small text-uppercase">Asistencias Hoy</p>
+                            <p class="mb-1 fw-bold text-muted small text-uppercase">Asistencias</p>
                             <h3 class="mb-0 fw-bold">{{ totalAsistencias }}</h3>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                                         <button class="btn btn-outline-danger d-flex align-items-center" @click="exportarPDF" title="Exportar Lista">
                                             <i class="ri-download-cloud-2-line"></i> <span class="d-none d-sm-inline"></span>
                                         </button>
-                                        <button class="btn btn-outline-primary d-flex align-items-center" @click="abrirEscanner" title="Escaner QR Asistencia">
+                                        <button v-show="this.rol_usuario == 'Root'" class="btn btn-outline-primary d-flex align-items-center" @click="abrirEscanner" title="Escaner QR Asistencia">
                                             <i class="ri-qr-scan-2-line"></i> <span class="d-none d-sm-inline"></span>
                                         </button>
                                     </div>
