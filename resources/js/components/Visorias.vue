@@ -6,7 +6,7 @@
                     <div class="card border-1 border-start-personal border-primary h-100">
                         <div class="card-body">
                             <p class="mb-1 fw-bold text-muted small text-uppercase">Total Registrados</p>
-                            <h3 class="mb-0 fw-bold">{{ Jugadores.length }}</h3>
+                            <h3 class="mb-0 fw-bold">{{ jugadoresFiltrados.length }}</h3>
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                     <div class="card border-1 border-start-personal border-info h-100">
                         <div class="card-body">
                             <p class="mb-1 fw-bold text-muted small text-uppercase">Pendientes</p>
-                            <h3 class="mb-0 fw-bold">{{ Jugadores.length - totalAsistencias }}</h3>
+                            <h3 class="mb-0 fw-bold">{{ totalPendientes }}</h3>
                         </div>
                     </div>
                 </div>
@@ -476,13 +476,21 @@ export default {
             return this.registrosDuplicados.length;
         },
         totalAsistencias() {
-            return this.Jugadores.filter(j => j.estatus == 1).length;
+            // Filtramos sobre la lista que ya tiene aplicada la sede y la búsqueda
+            return this.jugadoresFiltrados.filter(j => j.estatus == 1).length;
         },
+
         porcentajeAsistencia() {
-            if (this.Jugadores.length === 0) return 0;
-            let porcentaje = (this.totalAsistencias / this.Jugadores.length) * 100;
+            // Usamos la longitud de jugadoresFiltrados para que el % sea relativo a la sede
+            if (this.jugadoresFiltrados.length === 0) return 0;
+            let porcentaje = (this.totalAsistencias / this.jugadoresFiltrados.length) * 100;
             return Math.round(porcentaje);
-        }
+        },
+
+        totalPendientes() {
+            // Cálculo de pendientes basado solo en la sede/filtro actual
+            return this.jugadoresFiltrados.length - this.totalAsistencias;
+        },
     },
     watch: {
         search() {
