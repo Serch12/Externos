@@ -104,7 +104,7 @@
                                         <th>Edad (F. Nac)</th>
                                         <th>Teléfono</th>
                                         <th>Documento</th>
-                                        <th>Estatus</th>
+                                        <th>Asistencia</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
