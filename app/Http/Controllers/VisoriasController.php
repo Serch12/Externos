@@ -109,15 +109,30 @@ class VisoriasController extends Controller
     public function validarEstatus($id) {
         $registro = RegistroJugador::find($id);
         if (!$registro) {
-            return redirect()->to('/visorias')
-                            ->with('error', 'Registro no encontrado o código QR inválido.');
+            return response()->json(['status' => 'error', 'message' => 'No encontrado'], 404);
         }
 
-        // 3. Actualizar la variable de estatus
         $registro->estatus = 1;
         $registro->save();
-        return redirect()->to('/visorias?status=success&jugador_id=' . $registro->id_registro_jugador);
+
+        return response()->json([
+            'status' => 'success',
+            'jugador' => $registro // Enviamos el objeto completo para mostrar el modal
+        ]);
     }
+
+    // public function validarEstatus($id) {
+    //     $registro = RegistroJugador::find($id);
+    //     if (!$registro) {
+    //         return redirect()->to('/visorias')
+    //                         ->with('error', 'Registro no encontrado o código QR inválido.');
+    //     }
+
+    //     // 3. Actualizar la variable de estatus
+    //     $registro->estatus = 1;
+    //     $registro->save();
+    //     return redirect()->to('/visorias?status=success&jugador_id=' . $registro->id_registro_jugador);
+    // }
 
     /**
      * funcion que confirma la asistencia manualmente

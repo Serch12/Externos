@@ -1,6 +1,44 @@
 <template>
     <div>
         <div id="main">
+            <div class="row g-4 pt-4 pb-4">
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card border-1 border-start-personal border-primary h-100">
+                        <div class="card-body">
+                            <p class="mb-1 fw-bold text-muted small text-uppercase">Total Registrados</p>
+                            <h3 class="mb-0 fw-bold">{{ Jugadores.length }}</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card border-1 border-start-personal border-success h-100">
+                        <div class="card-body">
+                            <p class="mb-1 fw-bold text-muted small text-uppercase">Asistencias Hoy</p>
+                            <h3 class="mb-0 fw-bold">{{ totalAsistencias }}</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card border-1 border-start-personal border-warning h-100">
+                        <div class="card-body">
+                            <p class="mb-1 fw-bold text-muted small text-uppercase">% Asistencia</p>
+                            <h3 class="mb-0 fw-bold">{{ porcentajeAsistencia }}%</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card border-1 border-start-personal border-info h-100">
+                        <div class="card-body">
+                            <p class="mb-1 fw-bold text-muted small text-uppercase">Pendientes</p>
+                            <h3 class="mb-0 fw-bold">{{ Jugadores.length - totalAsistencias }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="m-0">
             <div class="row g-6">
                 <div class="card">  
                     <div class="row">
@@ -9,26 +47,30 @@
                                 
                                 <div class="card-title mb-0">
                                     <h5 class="m-0 me-2 text-primary d-flex align-items-center flex-wrap">
-                                        <i class="ri-team-line me-2"></i> 
-                                        <span class="me-2">Jugadores Registrados</span>
+                                        <!-- <i class="ri-team-line me-2"></i>  -->
+                                        <!-- <span class="me-2">Jugadores Registrados</span> -->
                                         
                                         <div class="d-flex gap-2 my-1">
-                                            <span class="badge rounded-pill bg-label-primary" title="Total de registros">
+                                            <!-- <span class="badge rounded-pill bg-label-primary" title="Total de registros">
                                                 {{ jugadoresFiltrados.length }}
-                                            </span>
-
+                                            </span> -->
+                                            <div class="flex-shrink-0" v-show="this.rol_usuario == 'Root'">
+                                                <select class="form-select border-primary text-primary fw-bold rounded-pill" v-model="sedeSeleccionada">
+                                                    <option v-for="s in sedesDisponibles" :key="s" :value="s">{{ s }}</option>
+                                                </select>
+                                            </div>
                                             <span v-if="totalDuplicados > 0" 
                                                 @click="mostrarSoloDuplicados = !mostrarSoloDuplicados"
                                                 :class="['badge rounded-pill cursor-pointer', mostrarSoloDuplicados ? 'bg-danger shadow-sm' : 'bg-label-danger']"
-                                                style="cursor: pointer; transition: all 0.3s ease;">
+                                                style="cursor: pointer; transition: all 0.3s ease;padding-top: 14px;">
                                                 <i class="ri-alert-line me-1"></i> 
                                                 {{ totalDuplicados }} Duplicados 
                                                 <i :class="mostrarSoloDuplicados ? 'ri-close-circle-fill ms-1' : 'ri-filter-3-line ms-1'"></i>
                                             </span>
-                                            <span class="badge rounded-pill bg-label-success" title="Asistencias confirmadas">
+                                            <!-- <span class="badge rounded-pill bg-label-success" title="Asistencias confirmadas">
                                                 <i class="ri-user-follow-line me-1"></i>
                                                 {{ totalAsistencias }} Presentes
-                                            </span>
+                                            </span> -->
                                         </div>
                                     </h5>
                                 </div>
@@ -39,8 +81,11 @@
                                             <span class="input-group-text"><i class="ri-search-line"></i></span>
                                             <input type="text" class="form-control" v-model="search" placeholder="Buscar por nombre..." />
                                         </div>
-                                        <button class="btn btn-primary d-flex align-items-center" @click="abrirEscanner">
-                                            <i class="ri-qr-scan-2-line me-1"></i> <span class="d-none d-sm-inline">Escanear</span>
+                                        <button class="btn btn-outline-danger d-flex align-items-center" @click="exportarPDF" title="Exportar Lista">
+                                            <i class="ri-download-cloud-2-line"></i> <span class="d-none d-sm-inline"></span>
+                                        </button>
+                                        <button class="btn btn-outline-primary d-flex align-items-center" @click="abrirEscanner" title="Escaner QR Asistencia">
+                                            <i class="ri-qr-scan-2-line"></i> <span class="d-none d-sm-inline"></span>
                                         </button>
                                     </div>
                                 </div>
@@ -312,11 +357,36 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalArchivoQR" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header py-2">
+                <h6 class="modal-title">{{ selectedJugador?.nombre }} - Documento</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div v-if="selectedJugador?.formato_firmado" style="height: 70vh;">
+                    <iframe :src="`ArchivosSistema/Documentacion/${selectedJugador.formato_firmado}`" 
+                            width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+                <div v-else class="text-center p-5">
+                    <i class="ri-file-warning-line ri-4x text-warning"></i>
+                    <p class="mt-2">Este jugador no cuenta con un archivo adjunto.</p>
+                </div>
+            </div>
+            <div class="modal-footer py-1">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Listo para siguiente escaneo</button>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 </template>
 <script>
 import axios from 'axios';
 import { Html5Qrcode } from "html5-qrcode";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export default {
     name: '',
@@ -347,7 +417,9 @@ export default {
             contador: 0,
             mostrarSoloDuplicados: false, 
             html5QrCode: null,
-            scannerActivo: false
+            scannerActivo: false,
+            isProcessing: false,
+            sedeSeleccionada: 'Todas las Sedes',
         }
     },
     computed: {
@@ -355,14 +427,17 @@ export default {
         jugadoresFiltrados() {
             let lista = this.Jugadores;
 
-            // Primero filtramos por modo duplicados si está activo
+            if (this.sedeSeleccionada !== 'Todas las Sedes') {
+                lista = lista.filter(j => j.lugar_visoria === this.sedeSeleccionada);
+            }
+            
             if (this.mostrarSoloDuplicados) {
                 lista = lista.filter(j => 
                     this.registrosDuplicados.includes(j.nombre.toLowerCase().trim())
                 );
             }
 
-            // Luego aplicamos la búsqueda por texto si existe
+            
             if (this.search) {
                 const query = this.search.toLowerCase();
                 lista = lista.filter(j => 
@@ -372,6 +447,10 @@ export default {
             }
 
             return lista;
+        },
+        sedesDisponibles() {
+            const sedes = this.Jugadores.map(j => j.lugar_visoria);
+            return ['Todas las Sedes', ...new Set(sedes)];
         },
         jugadoresPaginados() {
             const inicio = (this.paginaActual - 1) * this.elementosPorPagina;
@@ -398,6 +477,11 @@ export default {
         },
         totalAsistencias() {
             return this.Jugadores.filter(j => j.estatus == 1).length;
+        },
+        porcentajeAsistencia() {
+            if (this.Jugadores.length === 0) return 0;
+            let porcentaje = (this.totalAsistencias / this.Jugadores.length) * 100;
+            return Math.round(porcentaje);
         }
     },
     watch: {
@@ -405,6 +489,9 @@ export default {
             this.paginaActual = 1;
         },
         mostrarSoloDuplicados() {
+            this.paginaActual = 1;
+        },
+        sedeSeleccionada() {
             this.paginaActual = 1;
         }
     },
@@ -421,13 +508,8 @@ export default {
         },
         infoJugador(jugador) {
             this.selectedJugador = jugador;
-            // Si usas Bootstrap nativo en tu proyecto:
             var myModal = new bootstrap.Modal(document.getElementById('modalDetalle'));
             myModal.show();
-        },
-        imprimirFicha(jugador) {
-            // Opción rápida para imprimir los detalles
-            window.print();
         },
         getJugadores() {
             let sede = this.sede === 'León' ? 'Leon' : this.sede;
@@ -447,15 +529,11 @@ export default {
             const jugadorId = urlParams.get('jugador_id');
 
             if (jugadorId) {
-                // Buscamos al jugador en la lista que acabamos de cargar
-                // Nota: Asegúrate de que el nombre de la propiedad coincida (id o id_registro_jugador)
                 const jugadorEncontrado = this.Jugadores.find(j => j.id_registro_jugador == jugadorId);
 
                 if (jugadorEncontrado) {
-                    // 1. Abrimos el modal con la info del jugador
                     this.infoJugador(jugadorEncontrado);
 
-                    // 2. Mostramos una alerta de éxito limpia
                     Swal.fire({
                         icon: 'success',
                         title: '¡Asistencia Confirmada!',
@@ -464,7 +542,7 @@ export default {
                         showConfirmButton: false
                     });
 
-                    // 3. Limpiamos la URL para que no se reabra el modal si refrescan la página
+                    // limpio la URL para que no se reabra el modal si refrescan la página
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
             }
@@ -511,7 +589,6 @@ export default {
             var myModal = new bootstrap.Modal(document.getElementById('modalQR'));
             myModal.show();
 
-            // Esperar a que el modal se muestre para iniciar la cámara
             setTimeout(() => {
                 this.iniciarCamara();
             }, 500);
@@ -525,38 +602,79 @@ export default {
                 { facingMode: "environment" }, // Prioriza la cámara trasera en celulares
                 config,
                 (decodedText) => {
-                    // EL ÉXITO: decodedText será la URL que generamos (http://.../validar-visor/ID)
                     this.procesarLectura(decodedText);
                 },
                 (errorMessage) => {
-                    // Error de escaneo (silencioso para evitar spam de logs)
                 }
             ).catch((err) => {
                 console.error("Error al iniciar cámara: ", err);
                 Swal.fire('Error', 'No se pudo acceder a la cámara', 'error');
             });
         },
+        async procesarLectura(url) {
+            if (this.isProcessing) return; 
+            this.isProcessing = true;
 
-        procesarLectura(url) {
-            // Detenemos la cámara de inmediato para procesar
-            this.cerrarEscanner();
+            try {
+                const response = await axios.get(url, {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
 
-            // Como la URL del QR ya apunta a tu backend (validar-visor/id)
-            // Simplemente redirigimos al navegador a esa URL
-            // Laravel hará el login check y el update automáticamente
-            window.location.href = url;
+                if (response.data.status === 'success') {
+                    const jugador = response.data.jugador;
+                    const yaEstabaRegistrado = this.Jugadores.find(j => 
+                        j.id_registro_jugador === jugador.id_registro_jugador && j.estatus === 1
+                    );
+                    await this.getJugadores();
+                    this.selectedJugador = response.data.jugador;
+                    var myModal = new bootstrap.Modal(document.getElementById('modalArchivoQR'));
+                    myModal.show();
+                    
+                    if (yaEstabaRegistrado) {
+                        Swal.fire({
+                            icon: 'info', // Icono de información
+                            title: 'Asistencia ya registrada',
+                            text: `${jugador.nombre} ya contaba con asistencia previa.`,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 4000,
+                            didOpen: (toast) => { toast.style.zIndex = '100000'; }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Asistencia Confirmada',
+                            text: jugador.nombre,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            didOpen: (toast) => { toast.style.zIndex = '100000'; }
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Error al validar QR", error);
+                Swal.fire({ 
+                    icon: 'error', 
+                    title: 'QR Inválido o Error de conexión', 
+                    timer: 1500, 
+                    toast: true,
+                    position: 'top-end',
+                    didOpen: (toast) => { toast.style.zIndex = '100000'; }
+                });
+            }
+            setTimeout(() => { this.isProcessing = false; }, 3000);
         },
-
         cerrarEscanner() {
             if (this.html5QrCode) {
                 this.html5QrCode.stop().then(() => {
                     this.html5QrCode.clear();
-                    bootstrap.Modal.getInstance(document.getElementById('modalQR')).hide();
-                }).catch(err => {
-                    bootstrap.Modal.getInstance(document.getElementById('modalQR')).hide();
+                    var modalEl = document.getElementById('modalQR');
+                    var modal = bootstrap.Modal.getInstance(modalEl);
+                    modal.hide();
                 });
-            } else {
-                bootstrap.Modal.getInstance(document.getElementById('modalQR')).hide();
             }
         },
         async confirmarAsistenciaManual(jugador) {
@@ -573,8 +691,6 @@ export default {
 
             if (result.isConfirmed) {
                 try {
-                    // Enviamos la petición al servidor
-                    // Usamos el ID del registro que ya tienes en el objeto
                     const response = await axios.post(`visorias/confirmar-asistencia/${jugador.id_registro_jugador}`);
 
                     if (response.data.status === 'success') {
@@ -585,11 +701,7 @@ export default {
                             timer: 2000,
                             showConfirmButton: false
                         });
-                        
-                        // Refrescamos la lista para actualizar el estatus visualmente
                         this.getJugadores(); 
-                        
-                        // Opcional: Abrir el detalle automáticamente como pediste con el QR
                         this.infoJugador(jugador);
                     }
                 } catch (error) {
@@ -598,6 +710,66 @@ export default {
                 }
             }
         },
+        exportarPDF() {
+            const doc = new jsPDF('p', 'pt', 'a4');
+            const esRoot = this.rol_usuario === 'Root';
+
+            doc.setFontSize(18);
+            const titulo = esRoot 
+                ? 'Reporte Global de Jugadores Registrados' 
+                : `Reporte de Jugadores Registrados - Sede ${this.sede}`;
+            doc.text(titulo, 40, 40);
+
+            doc.setFontSize(10);
+            doc.text(`Total: ${this.jugadoresFiltrados.length} | Asistencias: ${this.totalAsistencias} | Porcentaje: ${this.porcentajeAsistencia}%`, 40, 60);
+
+            // 2. Definición dinámica de columnas
+            let columnas = [
+                { header: 'Fecha', dataKey: 'fecha' },
+                { header: 'Nombre', dataKey: 'nombre' },
+                { header: 'Correo', dataKey: 'correo' }
+            ];
+
+            // Agregamos la columna Sede solo si es Root
+            if (esRoot) {
+                columnas.push({ header: 'Sede', dataKey: 'sede' });
+            }
+
+            columnas.push(
+                { header: 'Posición', dataKey: 'posicion' },
+                { header: 'Teléfono', dataKey: 'tel' },
+                { header: 'Estatus', dataKey: 'estatus' }
+            );
+
+            const filas = this.jugadoresFiltrados.map(j => {
+                let fila = {
+                    fecha: j.fecha_registro_texto,
+                    nombre: j.nombre,
+                    correo: j.correo,
+                    posicion: j.posicion,
+                    tel: j.telefono,
+                    estatus: j.estatus == 1 ? 'ASISTIÓ' : 'PENDIENTE'
+                };
+                
+                if (esRoot) {
+                    fila.sede = j.lugar_visoria;
+                }
+                
+                return fila;
+            });
+
+            autoTable(doc, {
+                startY: 80,
+                columns: columnas,
+                body: filas,
+                theme: 'striped',
+                headStyles: { fillColor: [105, 108, 255] }, 
+                styles: { fontSize: esRoot ? 7 : 8, cellPadding: 3 }, // Fuente un poco más pequeña si hay más columnas
+                margin: { left: 40, right: 40 }
+            });
+            const nombreArchivo = esRoot ? 'Reporte_Global_Visorias.pdf' : `Reporte_Visorias_${this.sede}.pdf`;
+            doc.save(nombreArchivo);
+        }
     }
 };
 </script>
@@ -612,5 +784,9 @@ export default {
         justify-content: center;
         width: 2rem;
         height: 2rem;
+    }
+    .border-start-personal {
+        border-left-style: solid !important;
+        border-left-width: 5px !important;
     }
 </style>
