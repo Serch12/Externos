@@ -84,7 +84,7 @@
                                         <button class="btn btn-outline-danger d-flex align-items-center" @click="exportarPDF" title="Exportar Lista">
                                             <i class="ri-download-cloud-2-line"></i> <span class="d-none d-sm-inline"></span>
                                         </button>
-                                        <button v-show="this.rol_usuario == 'Root'" class="btn btn-outline-primary d-flex align-items-center" @click="abrirEscanner" title="Escaner QR Asistencia">
+                                        <button v-if="rol_usuario == 'Root'" class="btn btn-outline-primary d-flex align-items-center" @click="abrirEscanner" title="Escaner QR Asistencia">
                                             <i class="ri-qr-scan-2-line"></i> <span class="d-none d-sm-inline"></span>
                                         </button>
                                     </div>
