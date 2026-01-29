@@ -289,7 +289,29 @@
                                         <input class="form-check-input" type="checkbox" checked disabled>
                                         <label class="form-check-label text-success fw-bold">Términos Aceptados</label>
                                     </div>
-                                    <span v-if="!selectedJugador.formato_firmado" class="text-muted italic small">No se adjuntó archivo.</span>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3"> 
+                                <h6 class="text-primary text-uppercase small fw-bold mb-3 border-bottom pb-1">Visualización de Documento</h6>
+                                <div class="d-flex justify-content-center border rounded bg-light overflow-hidden" style="height: 800px; width: 100%;"> 
+                                    
+                                    <span v-if="!selectedJugador.formato_firmado" class="text-muted d-flex align-items-center justify-content-center w-100">
+                                        <i class="ri-file-warning-line me-2"></i> No se adjuntó archivo.
+                                    </span>
+
+                                    <img v-else-if="esImagen(selectedJugador.formato_firmado)" 
+                                        :src="`ArchivosSistema/Documentacion/${selectedJugador.formato_firmado}`" 
+                                        class="img-fluid" 
+                                        style="object-fit: contain; width: 100%; height: 100%;"
+                                        alt="Documento del jugador">
+
+                                    <iframe v-else 
+                                        :src="`ArchivosSistema/Documentacion/${selectedJugador.formato_firmado}#toolbar=0`" 
+                                        width="100%" 
+                                        height="100%" 
+                                        frameborder="0"
+                                        style="display: block;">
+                                    </iframe>
                                 </div>
                             </div>
                         </div>
@@ -471,7 +493,6 @@ export default {
             // Filtramos para quedarnos solo con los nombres que se repiten
             return Object.keys(conteo).filter(nombre => conteo[nombre] > 1);
         },
-        
         totalDuplicados() {
             return this.registrosDuplicados.length;
         },
@@ -479,7 +500,6 @@ export default {
             // Filtramos sobre la lista que ya tiene aplicada la sede y la búsqueda
             return this.jugadoresFiltrados.filter(j => j.estatus == 1).length;
         },
-
         porcentajeAsistencia() {
             // Usamos la longitud de jugadoresFiltrados para que el % sea relativo a la sede
             if (this.jugadoresFiltrados.length === 0) return 0;
@@ -635,32 +655,23 @@ export default {
                     );
                     await this.getJugadores();
                     this.selectedJugador = response.data.jugador;
-                    var myModal = new bootstrap.Modal(document.getElementById('modalArchivoQR'));
-                    myModal.show();
-                    
-                    if (yaEstabaRegistrado) {
+                    setTimeout(() => {
+                        var modalEl = document.getElementById('modalDetalle');
+                        var myModal = new bootstrap.Modal(modalEl);
+                        myModal.show();
+                        
+                        // Disparamos la alerta Toast
                         Swal.fire({
-                            icon: 'info', // Icono de información
-                            title: 'Asistencia ya registrada',
-                            text: `${jugador.nombre} ya contaba con asistencia previa.`,
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 4000,
-                            didOpen: (toast) => { toast.style.zIndex = '100000'; }
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Asistencia Confirmada',
+                            icon: yaEstabaRegistrado ? 'info' : 'success',
+                            title: yaEstabaRegistrado ? 'Asistencia ya registrada' : 'Asistencia Confirmada',
                             text: jugador.nombre,
                             toast: true,
                             position: 'top-end',
                             showConfirmButton: false,
                             timer: 3000,
-                            didOpen: (toast) => { toast.style.zIndex = '100000'; }
+                            didOpen: (toast) => { toast.style.zIndex = '2010'; }
                         });
-                    }
+                    }, 100);
                 }
             } catch (error) {
                 console.error("Error al validar QR", error);
@@ -670,7 +681,7 @@ export default {
                     timer: 1500, 
                     toast: true,
                     position: 'top-end',
-                    didOpen: (toast) => { toast.style.zIndex = '100000'; }
+                    didOpen: (toast) => { toast.style.zIndex = '2010'; }
                 });
             }
             setTimeout(() => { this.isProcessing = false; }, 3000);
@@ -777,7 +788,13 @@ export default {
             });
             const nombreArchivo = esRoot ? 'Reporte_Global_Visorias.pdf' : `Reporte_Visorias_${this.sede}.pdf`;
             doc.save(nombreArchivo);
-        }
+        },
+        esImagen(nombreArchivo) {
+            if (!nombreArchivo) return false;
+            const extensionesImg = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            const ext = nombreArchivo.split('.').pop().toLowerCase();
+            return extensionesImg.includes(ext);
+        },
     }
 };
 </script>
@@ -796,5 +813,9 @@ export default {
     .border-start-personal {
         border-left-style: solid !important;
         border-left-width: 5px !important;
+    }
+  
+    #modalDetalle {
+        z-index: 2000 !important;
     }
 </style>
