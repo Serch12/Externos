@@ -162,7 +162,6 @@ class TalentosRepository
         $parametro = $request->buscador;
 
         $data = DateIMGBanner::select('*',\DB::raw('DATE(tbl_date_imgbanners.created_at) as created_date'))
-
             ->orderBy('id_imgbanner','DESC')
             ->paginate(10);
         return $data;
