@@ -185,6 +185,7 @@ class TalentosRepository
                 //indicamos que queremos guardar un nuevo archivo en el disco local
                 \Storage::disk('datebanner')->put($urlimagen,  \File::get($value));
                 $imagen->img_banner = $urlimagen;
+                $imagen->estatus = 1;
                 $imagen->save();
             }
         }
