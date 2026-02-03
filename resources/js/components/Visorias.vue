@@ -138,6 +138,7 @@
                                         <td class="text-center">
                                             <div class="form-check form-switch d-flex justify-content-center">
                                                 <input class="form-check-input" type="checkbox" 
+                                                    :id="'switch' + jur.id_registro_jugador"
                                                     :checked="jur.estatus_seleccionado == 1" 
                                                     @change="toggleSeleccionado(jur)">
                                             </div>
@@ -813,7 +814,7 @@ export default {
             return extensionesImg.includes(ext);
         },
         async toggleSeleccionado(jugador) {
-            const nuevoEstado = jugador.seleccionado == 1 ? 0 : 1;
+            const nuevoEstado = jugador.estatus_seleccionado == 1 ? 0 : 1;
             
             try {
                 const response = await axios.post(`visorias/marcar-seleccionado/${jugador.id_registro_jugador}`, {
