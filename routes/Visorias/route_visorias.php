@@ -7,6 +7,7 @@ Route::get('/visorias/jugadores/{sede}/{rol_usuario}', [VisoriasController::clas
 Route::post('/visorias/update-archivo/{id}', [VisoriasController::class, 'updateArchivo'])->name('visorias/update-archivo/{id}');
 Route::get('/validar-visoria/{id}', [VisoriasController::class, 'validarEstatus'])->name('validar.visoria');
 Route::post('/visorias/confirmar-asistencia/{id}', [VisoriasController::class, 'confirmarManual'])->middleware('auth');
+Route::post('/visorias/marcar-seleccionado/{id}', [VisoriasController::class, 'marcarSeleccionado']);
 // Route::get('/sede/busqueda', [VisoriasController::class,'Busqueda'])->name('sede/busqueda');
 // Route::post('/sede/createSede',[VisoriasController::class,'createSede'])->name('sede/createSede');
 // Route::post('/sede/updateSede', [VisoriasController::class,'updateSede'])->name('sede/updateSede');

@@ -152,4 +152,28 @@ class VisoriasController extends Controller
             'message' => 'Asistencia confirmada correctamente'
         ]);
     }
+
+    /**
+     * funcion que marca el estatus de seleccionado o no 
+     */
+    public function marcarSeleccionado(Request $request, $id)
+    {
+        try {
+            $jugador = RegistroJugador::findOrFail($id);
+            $jugador->estatus_seleccionado = $request->input('seleccionado');
+            $jugador->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Estatus de selección actualizado correctamente',
+                'jugador' => $jugador
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se pudo encontrar al jugador o hubo un error en la base de datos'
+            ], 404);
+        }
+    }
 }

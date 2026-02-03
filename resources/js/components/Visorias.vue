@@ -67,6 +67,13 @@
                                                 {{ totalDuplicados }} Duplicados 
                                                 <i :class="mostrarSoloDuplicados ? 'ri-close-circle-fill ms-1' : 'ri-filter-3-line ms-1'"></i>
                                             </span>
+                                            <span @click="mostrarSoloSeleccionados = !mostrarSoloSeleccionados"
+                                                :class="['badge rounded-pill cursor-pointer', mostrarSoloSeleccionados ? 'bg-success shadow-sm' : 'bg-label-success']"
+                                                style="cursor: pointer; transition: all 0.3s ease; padding-top: 14px;">
+                                                <i class="ri-star-fill me-1"></i> 
+                                                Ver Seleccionados
+                                                <i :class="mostrarSoloSeleccionados ? 'ri-close-circle-fill ms-1' : 'ri-filter-3-line ms-1'"></i>
+                                            </span>
                                             <!-- <span class="badge rounded-pill bg-label-success" title="Asistencias confirmadas">
                                                 <i class="ri-user-follow-line me-1"></i>
                                                 {{ totalAsistencias }} Presentes
@@ -104,12 +111,13 @@
                                         <th>Edad (F. Nac)</th>
                                         <th>Teléfono</th>
                                         <th>Documento</th>
+                                        <th class="text-center">Seleccionado</th>
                                         <th>Asistencia</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0">
-                                    <tr v-for="(jur, index) in jugadoresPaginados" :key="index" :class="{'table-warning': registrosDuplicados.includes(jur.nombre.toLowerCase().trim()),'table-success': jur.estatus == 1}">
+                                    <tr v-for="(jur, index) in jugadoresPaginados" :key="index" :class="{'table-warning': registrosDuplicados.includes(jur.nombre.toLowerCase().trim()),'table-info': jur.estatus == 1 && jur.seleccionado == 0,'table-success': jur.estatus_seleccionado == 1}">
                                         <td>{{ jur.fecha_registro_texto }}</td>
                                         <td>
                                             <div class="d-flex justify-content-start align-items-center">
@@ -128,6 +136,13 @@
                                                 <i class="ri-file-pdf-fill"></i>
                                             </a>
                                             <span v-else class="text-danger small">Sin archivo</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="form-check form-switch d-flex justify-content-center">
+                                                <input class="form-check-input" type="checkbox" 
+                                                    :checked="jur.estatus_seleccionado == 1" 
+                                                    @change="toggleSeleccionado(jur)">
+                                            </div>
                                         </td>
                                         <td>
                                             <span :class="['badge rounded-pill', jur.estatus == 1 ? 'bg-label-success' : 'bg-label-warning']">
@@ -424,6 +439,7 @@ export default {
     ],
     data() {
         return {
+            mostrarSoloSeleccionados: false,
             Jugadores: [],
             selectedJugador: null,
             search: '',
@@ -459,7 +475,10 @@ export default {
                 );
             }
 
-            
+            if (this.mostrarSoloSeleccionados) {
+                lista = lista.filter(j => j.estatus_seleccionado == 1);
+            }
+    
             if (this.search) {
                 const query = this.search.toLowerCase();
                 lista = lista.filter(j => 
@@ -795,6 +814,31 @@ export default {
             const ext = nombreArchivo.split('.').pop().toLowerCase();
             return extensionesImg.includes(ext);
         },
+        async toggleSeleccionado(jugador) {
+            const nuevoEstado = jugador.seleccionado == 1 ? 0 : 1;
+            
+            try {
+                const response = await axios.post(`visorias/marcar-seleccionado/${jugador.id_registro_jugador}`, {
+                    seleccionado: nuevoEstado
+                });
+
+                if (response.data.status === 'success') {
+                    jugador.seleccionado = nuevoEstado; 
+                    const Toast = Swal.mixin({
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+
+                    Toast.fire({
+                        icon: nuevoEstado == 1 ? 'success' : 'info',
+                        title: nuevoEstado == 1 ? 'Jugador Seleccionado' : 'Selección removida'
+                    });
+                }
+            } catch (error) {
+                console.error("Error al marcar seleccionado", error);
+                Swal.fire('Error', 'No se pudo actualizar el estatus de selección', 'error');
+            }
+        },
     }
 };
 </script>
@@ -818,4 +862,5 @@ export default {
     #modalDetalle {
         z-index: 2000 !important;
     }
+
 </style>

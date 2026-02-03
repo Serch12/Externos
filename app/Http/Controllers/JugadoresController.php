@@ -168,7 +168,7 @@ class JugadoresController extends Controller
                 // Guardamos la ruta en la base de datos
                 $registro->formato_firmado = $url;
             }
-            
+            $registro->estatus_seleccionado = 0;
             $registro->save();
 
             // 1. Crear la URL que se abrirá al escanear el QR
