@@ -1,70 +1,75 @@
 <template>
   <div class="container-xxl flex-grow-1 container-p-y" style="padding-top: 4.5rem !important;">
+    <div class="text-center mb-4">
+        <img src="logo_talentos.png" alt="Logo AMFPRO" class="mb-3" style="max-height: 80px; width: auto;">
+        <h4 class="fw-bold mb-0 text-primary">TALENTOS AMFPRO</h4>
+        <p class="text-muted">Asociación Mexicana de Futbolistas Profesionales</p>
+    </div>
     <div class="card">
         <div class="card-header bg-primary text-center">
-            <h5 class="text-white mb-0">REGISTRO DE VISORÍAS - AMFPRO</h5>
+            <h5 class="text-white mb-0">REGISTRO DE VISORÍAS OFICIALES - TALENTOS AMFPRO</h5>
         </div>
         <div class="card-body pt-4">
         <form @submit.prevent="enviarFormulario()">
           <div class="row mb-4">
-  <div class="col-12">
-    <div class="d-flex align-items-center p-3 border-start border-4 border-info bg-label-info rounded-3 shadow-sm position-relative overflow-hidden">
-      <i class="ri-information-line position-absolute" style="right: -10px; bottom: -10px; font-size: 5rem; opacity: 0.1; transform: rotate(-15deg); color: #00cfe8;"></i>
-      
-      <div class="avatar flex-shrink-0 me-3">
-        <span class="avatar-initial rounded-circle shadow-sm bg-info text-white">
-          <i class="ri-information-line ri-24px"></i>
-        </span>
-      </div>
-      <div class="d-flex flex-column z-1">
-        <div class="d-flex align-items-center mb-1">
-          <h6 class="mb-0 fw-bold text-info text-uppercase me-2">Aviso Importante</h6>
-        </div>
-        <span class="text-body">Las visorías en la <strong>AMFPRO</strong> son totalmente gratuitas en todo el territorio nacional.</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row mb-4">
-  <div class="col-12">
-    <div class="card border-0 shadow-none" style="background-color: rgba(234, 134, 143, 0.08); border: 1px dashed #ea868f !important; border-radius: 12px;">
-      <div class="card-body p-4">
-        <div class="row align-items-center">
-          <div class="col-12 col-sm-auto text-center mb-3 mb-sm-0">
-            <div class="position-relative d-inline-block">
-                <div class="bg-danger p-3 rounded-3 shadow">
-                    <i class="tf-icons ri-contract-line ri-22px text-white" style="font-size: 2.5rem;"></i>
+            <div class="col-12">
+              <div class="d-flex align-items-center p-3 border-start border-4 border-info bg-label-info rounded-3 shadow-sm position-relative overflow-hidden">
+                <i class="ri-information-line position-absolute" style="right: -10px; bottom: -10px; font-size: 5rem; opacity: 0.1; transform: rotate(-15deg); color: #00cfe8;"></i>
+                
+                <div class="avatar flex-shrink-0 me-3">
+                  <span class="avatar-initial rounded-circle shadow-sm bg-info text-white">
+                    <i class="ri-information-line ri-24px"></i>
+                  </span>
                 </div>
+                <div class="d-flex flex-column z-1">
+                  <div class="d-flex align-items-center mb-1">
+                    <h6 class="mb-0 fw-bold text-info text-uppercase me-2">Aviso Importante</h6>
+                  </div>
+                  <span class="text-body">Las visorías en la <strong>AMFPRO</strong> son totalmente gratuitas en todo el territorio nacional.</span>
+                </div>
+              </div>
             </div>
           </div>
-          
-          <div class="col-12 col-sm">
-            <h6 class="mb-1 text-danger fw-bold d-flex align-items-center justify-content-center justify-content-sm-start text-uppercase">
-              Acción Obligatoria
-            </h6>
-            <p class="mb-3 text-dark small">
-              Es indispensable descargar el <strong>Formato de Consentimiento</strong>, imprimirlo, firmarlo y tenerlo listo para tu registro.<strong>En caso de que el formato no esté firmado, tu registro no será válido.</strong>
-            </p>
-            
-            <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-sm-start">
-                <a href="CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf" download class="btn btn-danger btn-md shadow-sm d-inline-flex align-items-center px-4">
-                  <i class="ri-file-download-line me-2"></i> DESCARGAR FORMATO PDF
-                </a>
+
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="card border-0 shadow-none" style="background-color: rgba(234, 134, 143, 0.08); border: 1px dashed #ea868f !important; border-radius: 12px;">
+                <div class="card-body p-4">
+                  <div class="row align-items-center">
+                    <div class="col-12 col-sm-auto text-center mb-3 mb-sm-0">
+                      <div class="position-relative d-inline-block">
+                          <div class="bg-danger p-3 rounded-3 shadow">
+                              <i class="tf-icons ri-contract-line ri-22px text-white" style="font-size: 2.5rem;"></i>
+                          </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-12 col-sm">
+                      <h6 class="mb-1 text-danger fw-bold d-flex align-items-center justify-content-center justify-content-sm-start text-uppercase">
+                        Acción Obligatoria
+                      </h6>
+                      <p class="mb-3 text-dark small">
+                        Es indispensable descargar el <strong>Formato de Consentimiento</strong>, imprimirlo, firmarlo y tenerlo listo para tu registro.<strong>En caso de que el formato no esté firmado, tu registro no será válido.</strong>
+                      </p>
+                      
+                      <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-sm-start">
+                          <a href="CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf" download class="btn btn-danger btn-md shadow-sm d-inline-flex align-items-center px-4">
+                            <i class="ri-file-download-line me-2"></i> DESCARGAR FORMATO PDF
+                          </a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- <div class="mt-3 pt-3 border-top border-danger border-opacity-10">
+                    <small class="text-muted">
+                      <i class="ri-question-line me-1"></i> ¿Problemas con la descarga? 
+                      <a href="CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf" download class="text-danger fw-bold">Haz clic aquí manualmente</a>.
+                    </small>
+                  </div> -->
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        
-        <!-- <div class="mt-3 pt-3 border-top border-danger border-opacity-10">
-          <small class="text-muted">
-            <i class="ri-question-line me-1"></i> ¿Problemas con la descarga? 
-            <a href="CONSENTIMIENTOS_FIRMADOS_TALENTOS.pdf" download class="text-danger fw-bold">Haz clic aquí manualmente</a>.
-          </small>
-        </div> -->
-      </div>
-    </div>
-  </div>
-</div>
           <div class="divider divider-primary">
             <div class="divider-text"><center>DATOS PERSONALES</center></div>
           </div>
@@ -78,7 +83,7 @@
               <label class="form-label">¿A qué VISORIA vas a asistir? (Lugar) *</label>
               <select v-model="form.lugar_visoria" class="form-select">
                 <option value="">Seleccione el lugar...</option>
-                <option value="CDMX">CDMX</option>
+                <!-- <option value="CDMX">CDMX</option> -->
                 <option value="Leon">León</option>
                 <option value="Guadalajara">Guadalajara</option>
               </select>
@@ -356,15 +361,16 @@ export default {
             return;
         }
 
+        if (!this.form.formato_firmado) {
+            this.showError("Es obligatorio adjuntar el formato de consentimiento firmado");
+            return;
+        }
+
         if (!this.form.terminos) {
             this.showError("Debe aceptar el deslinde de responsabilidad");
             return;
         }
 
-        if (!this.form.formato_firmado) {
-            this.showError("Es obligatorio adjuntar el formato de consentimiento firmado");
-            return;
-        }
         let formData = new FormData();
         for (let key in this.form) {
             formData.append(key, this.form[key]);
@@ -379,7 +385,7 @@ export default {
 
             Swal.fire({
                 title: 'Registro Exitoso',
-                text: "¡Tus datos han sido registrados correctamente!",
+                text: "¡Te enviamos un correo con tu código QR!",
                 icon: 'success',
                 showConfirmButton: true,
                 confirmButtonText: 'Ok',

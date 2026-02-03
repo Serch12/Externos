@@ -10,6 +10,7 @@ use App\Models\Sedes;
 use App\Models\Jugadores;
 use App\Models\RegistroJugador;
 use Carbon\Carbon;
+use Mail;
 
 class JugadoresController extends Controller
 {
@@ -167,14 +168,27 @@ class JugadoresController extends Controller
                 // Guardamos la ruta en la base de datos
                 $registro->formato_firmado = $url;
             }
-            
+            $registro->estatus_seleccionado = 0;
             $registro->save();
+
+            // 1. Crear la URL que se abrirá al escanear el QR
+            $urlValidacion = route('validar.visoria', ['id' => $registro->id_registro_jugador]);
+
+            // 2. Usar la API de GoQR para generar la URL de la imagen
+            // Es gratuita, rápida y no requiere registro
+            $qrCodeUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($urlValidacion);
+
+            // 3. Enviar el correo
+            // Pasamos el objeto $registro y la URL del QR al Mailable
+            \Mail::to($registro->correo)->send(new \App\Mail\RegistroVisoriaExitoso($registro, $qrCodeUrl));
 
             return response()->json([
                 'status'  => 'success',
-                'message' => 'Registro de visoria guardado correctamente.'
+                'message' => 'Registro exitoso. Revisa tu correo para obtener tu QR.',
+                'qr_url'  => $qrCodeUrl // Por si quieres mostrarlo en Vue inmediatamente
             ], 200);
 
        
     }
+
 }

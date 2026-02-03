@@ -53,16 +53,19 @@ class VisoriasController extends Controller
      **/
     public function listaJugadores($sede,$rol_usuario){
         if($rol_usuario == 'Root'){
-            $jugadores = RegistroJugador::get();
+            $jugadores = RegistroJugador::latest()->get();
         }else{
-            $jugadores = RegistroJugador::where('lugar_visoria', $sede)->get();
+            $jugadores = RegistroJugador::where('lugar_visoria', $sede)->latest()->get();
         }
-        
+        $total = $jugadores->count();
         foreach ($jugadores as $jugador) {
             $jugador->fecha_nacimiento_texto = Carbon::parse($jugador->fecha_nacimiento)->locale('es')->isoFormat('D [de] MMMM [de] Y');
             $jugador->fecha_registro_texto = Carbon::parse($jugador->created_at)->locale('es')->isoFormat('D [de] MMMM [de] Y');
         }
-        return response()->json($jugadores);
+        return response()->json([
+            'total' => $total,
+            'jugadores' => $jugadores
+        ]);
     }
 
     public function updateArchivo(Request $request, $id) {
@@ -97,6 +100,80 @@ class VisoriasController extends Controller
                 'status' => 'success',
                 'message' => 'Documento actualizado'
             ]);
+        }
+    }
+
+    /**
+     * funcion que valida el estatus del jugador al momento de la visoria
+     */
+    public function validarEstatus($id) {
+        $registro = RegistroJugador::find($id);
+        if (!$registro) {
+            return response()->json(['status' => 'error', 'message' => 'No encontrado'], 404);
+        }
+
+        $registro->estatus = 1;
+        $registro->save();
+
+        return response()->json([
+            'status' => 'success',
+            'jugador' => $registro // Enviamos el objeto completo para mostrar el modal
+        ]);
+    }
+
+    // public function validarEstatus($id) {
+    //     $registro = RegistroJugador::find($id);
+    //     if (!$registro) {
+    //         return redirect()->to('/visorias')
+    //                         ->with('error', 'Registro no encontrado o código QR inválido.');
+    //     }
+
+    //     // 3. Actualizar la variable de estatus
+    //     $registro->estatus = 1;
+    //     $registro->save();
+    //     return redirect()->to('/visorias?status=success&jugador_id=' . $registro->id_registro_jugador);
+    // }
+
+    /**
+     * funcion que confirma la asistencia manualmente
+     */
+    public function confirmarManual($id) {
+        $registro = RegistroJugador::find($id);
+
+        if (!$registro) {
+            return response()->json(['status' => 'error', 'message' => 'No se encontró el jugador'], 404);
+        }
+
+        $registro->estatus = 1;
+        $registro->save();
+
+        return response()->json([
+            'status' => 'success', 
+            'message' => 'Asistencia confirmada correctamente'
+        ]);
+    }
+
+    /**
+     * funcion que marca el estatus de seleccionado o no 
+     */
+    public function marcarSeleccionado(Request $request, $id)
+    {
+        try {
+            $jugador = RegistroJugador::findOrFail($id);
+            $jugador->estatus_seleccionado = $request->input('seleccionado');
+            $jugador->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Estatus de selección actualizado correctamente',
+                'jugador' => $jugador
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se pudo encontrar al jugador o hubo un error en la base de datos'
+            ], 404);
         }
     }
 }
