@@ -109,7 +109,6 @@
                                         <th>Sede Visoría</th>
                                         <th>Posición</th>
                                         <th>Edad (F. Nac)</th>
-                                        <th>Teléfono</th>
                                         <th>Documento</th>
                                         <th class="text-center">Seleccionado</th>
                                         <th>Asistencia</th>
@@ -130,7 +129,6 @@
                                         <td><span class="badge bg-label-primary">{{ jur.lugar_visoria }}</span></td>
                                         <td>{{ jur.posicion }} ({{ jur.perfil }})</td>
                                         <td>{{ jur.edad }} años <br><small>{{ jur.fecha_nacimiento }}</small></td>
-                                        <td>{{ jur.telefono }}</td>
                                         <td>
                                             <a v-if="jur.formato_firmado" :href="`ArchivosSistema/Documentacion/${jur.formato_firmado}`" target="_blank" class="btn btn-sm btn-icon btn-outline-danger shadow-sm">
                                                 <i class="ri-file-pdf-fill"></i>
