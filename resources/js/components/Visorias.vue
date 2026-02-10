@@ -500,10 +500,17 @@ export default {
         totalPaginas() {
             return Math.ceil(this.jugadoresFiltrados.length / this.elementosPorPagina);
         },
+        jugadoresPorSede() {
+            let lista = this.Jugadores;
+            if (this.sedeSeleccionada !== 'Todas las Sedes') {
+                lista = lista.filter(j => j.lugar_visoria === this.sedeSeleccionada);
+            }
+            return lista;
+        },
         registrosDuplicados() {
             const conteo = {};
             // Recorremos todos los jugadores para contar cuántas veces aparece cada nombre
-            this.Jugadores.forEach(j => {
+            this.jugadoresPorSede.forEach(j => {
                 const nombre = j.nombre.toLowerCase().trim();
                 conteo[nombre] = (conteo[nombre] || 0) + 1;
             });
@@ -512,7 +519,9 @@ export default {
             return Object.keys(conteo).filter(nombre => conteo[nombre] > 1);
         },
         totalDuplicados() {
-            return this.registrosDuplicados.length;
+            return this.jugadoresPorSede.filter(j => 
+                this.registrosDuplicados.includes(j.nombre.toLowerCase().trim())
+            ).length;
         },
         totalAsistencias() {
             // Filtramos sobre la lista que ya tiene aplicada la sede y la búsqueda
