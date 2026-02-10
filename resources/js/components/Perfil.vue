@@ -848,7 +848,7 @@
                             <div class="card shadow-none bg-label-secondary">
                                 <div class="card-body">
                                     <p class="card-text">
-                                        Declaro haber leido y estar de acuerdo con las condiciones establecidas e el presente contrato. Al hacer clic en "Firmar electronicamente", acepto los terminos y condiciones y otorgo mi consentimiento para la formalización de este acuerdo.
+                                        De manera voluntaria manifiesto estar de acuerdo y sujetarme a los términos y condiciones del presente contrato. Asimismo, reconozco que la firma digital inserta en el documento corresponde a mi firma autógrafa, la cual coincide en todos sus trazos y formas con la que aparece en la identificación oficial que se adjunta al presente, para los efectos legales y administrativos a los que haya lugar.
                                     </p>
                                 </div>
                             </div>

@@ -95,6 +95,51 @@
             object-fit: contain; /* Asegura que la imagen se ajuste sin recortarse */
             display: block; /* Asegura que se comporte como un bloque para el espaciado */
             /* No negative margins here */
+        },
+        .signature-box {
+            /* Fuente profesional y legible */
+            font-family: 'Roboto', sans-serif;
+            font-size: 9pt;
+            line-height: 1.6;
+            text-align: justify; /* Justificar texto para mejor legibilidad */
+            margin-bottom: 0.5em; /* Espacio reducido entre párrafos */
+            margin-top: 0.5em; /* Espacio reducido entre párrafos */
+            /* Diseño del contenedor */
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: rgb(247, 247, 247)
+            
+           
+        }
+
+        .signature-box p {
+            margin: 0;
+            text-align: justify;
+        }
+
+        /* Estilo para resaltar conceptos clave */
+        .highlight {
+            font-weight: 600;
+            color: #000;
+        }
+
+        /* Espacio para la firma real si es necesario */
+        .signature-space {
+            margin-top: 60px;       /* Un poco más de espacio para que no choque con el texto */
+            border-top: 1px solid #000;
+            width: 250px;
+            
+            /* ESTO ES LO QUE FALTA PARA CENTRAR EL BLOQUE */
+            margin-left: auto;
+            margin-right: auto;
+            
+            text-align: center;     /* Esto centra el texto DEBAJO de la línea */
+            font-size: 9pt;
+            color: #000;
+            padding-top: 10px;      /* Espacio entre la línea y el texto "Firma..." */
+            text-transform: uppercase; /* Opcional: le da un toque más formal */
+            letter-spacing: 1px;    /* Opcional: mejora la legibilidad */
         }
 
         
@@ -207,6 +252,16 @@
         {{-- {{ $profesion }} --}}
     </div>
 </div>
+
+    <div class="signature-box">
+        <p>
+            DE MANERA VOLUNTARIA MANIFIESTO ESTAR DE ACUERDO Y SUJETARME A LOS TÉRMINOS Y CONDICIONES DEL PRESENTE CONTRATO. ASIMISMO, RECONOZCO QUE LA FIRMA DIGITAL INSERTA EN EL DOCUMENTO CORRESPONDE A MI FIRMA AUTÓGRAFA, LA CUAL COINCIDE EN TODOS SUS TRAZOS Y FORMAS CON LA QUE APARECE EN LA IDENTIFICACIÓN OFICIAL QUE SE ADJUNTA AL PRESENTE Y QUE SE PLASMA EN ESTE ACTO A FIN DE CONVALIDAR LO ANTERIOR, PARA LOS EFECTOS LEGALES Y ADMINISTRATIVOS A LOS QUE HAYA LUGAR.
+        </p>
+        <br>
+        <div class="signature-space">
+            NOMBRE Y FIRMA
+        </div>
+    </div>
 </pre>
 </body>
 </html>
