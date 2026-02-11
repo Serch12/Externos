@@ -169,10 +169,10 @@
                                                         <td>{{ t.fecha_fin_publi }}</td>
                                                         
                                                         <td>
-                                                            <button class="btn btn-outline-primary btn-icon waves-effect" v-if="t.estatus == 0" @click="EstatusBanner(t.id_imgbanner,t.estatus)">
+                                                            <button class="btn btn-outline-primary btn-icon waves-effect" v-if="t.estatus == 0" @click="EstatusBanner(t.id_imgbanner,t.estatus)" title="Activar">
                                                                 <i class="ri-checkbox-circle-fill ri-22px"></i>
                                                             </button>
-                                                            <button class="btn btn-outline-danger btn-icon waves-effect" v-else @click="EstatusBanner(t.id_imgbanner,t.estatus)">
+                                                            <button class="btn btn-outline-danger btn-icon waves-effect" v-else @click="EstatusBanner(t.id_imgbanner,t.estatus)" title="Desactivar">
                                                                 <i class="ri-close-circle-fill ri-22px"></i>
                                                             </button>
                                                             <button class="btn btn-outline-danger btn-icon waves-effect" @click="deleteBanner(t.id_imgbanner)">
