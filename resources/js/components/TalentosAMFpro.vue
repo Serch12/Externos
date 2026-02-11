@@ -12,7 +12,7 @@
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button type="button" class="nav-link waves-effect" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-profile" aria-controls="navs-justified-profile" aria-selected="false" tabindex="-1">
-                                    <span class="d-none d-sm-block"><i class="tf-icons ri-git-repository-line me-2"></i> Banners Talentos</span><i class="ri-git-repository-line ri-20px d-sm-none"></i></button>
+                                    <span class="d-none d-sm-block"><i class="tf-icons ri-git-repository-line me-2"></i> Banners AMFPRO</span><i class="ri-git-repository-line ri-20px d-sm-none"></i></button>
                             </li>
                             <span class="tab-slider" style="left: 0px; width: 165.135px; bottom: 0px;"></span>
                         </ul>
@@ -129,7 +129,7 @@
                             <div class="row g-6 mt-2">
                                 <div class="row">
                                     <div class="col-12 col-md-6">
-                                        <h5 class="card-header">Banners Talento</h5>
+                                        <h5 class="card-header">Banners AMFPRO</h5>
                                     </div>
                                     <div class="col-12 col-md-6 mt-3">
                                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -167,17 +167,14 @@
                                                         </td>
                                                         <td>{{ t.fecha_publicacion }}</td>
                                                         <td>{{ t.fecha_fin_publi }}</td>
-                                                        <!-- <td>
-                                                            <center>
-                                                                <button class="btn btn-outline-primary btn-icon waves-effect" v-if="t.estatus == 0" @click="EstatusBanner(t.id_imgbanner,t.estatus)">
-                                                                    <i class="ri-checkbox-circle-fill ri-22px"></i>
-                                                                </button>
-                                                                <button class="btn btn-outline-danger btn-icon waves-effect" v-else @click="EstatusBanner(t.id_imgbanner,t.estatus)">
-                                                                    <i class="ri-close-circle-fill ri-22px"></i>
-                                                                </button>
-                                                            </center>
-                                                        </td> -->
+                                                        
                                                         <td>
+                                                            <button class="btn btn-outline-primary btn-icon waves-effect" v-if="t.estatus == 0" @click="EstatusBanner(t.id_imgbanner,t.estatus)">
+                                                                <i class="ri-checkbox-circle-fill ri-22px"></i>
+                                                            </button>
+                                                            <button class="btn btn-outline-danger btn-icon waves-effect" v-else @click="EstatusBanner(t.id_imgbanner,t.estatus)">
+                                                                <i class="ri-close-circle-fill ri-22px"></i>
+                                                            </button>
                                                             <button class="btn btn-outline-danger btn-icon waves-effect" @click="deleteBanner(t.id_imgbanner)">
                                                                 <i class="ri-delete-bin-fill ri-22px"></i>
                                                             </button>
