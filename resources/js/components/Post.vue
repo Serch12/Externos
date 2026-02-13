@@ -41,23 +41,11 @@
                                             <button type="button" class="btn btn-icon btn-outline-info waves-effect"  v-if="include('Editar')" @click="muestra(2),infoEditar(p)">
                                                 <i class="tf-icons ri-edit-box-fill ri-22px"></i>
                                             </button>
-                                        </td>
-                                        <!-- <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                            <i class="ri-more-2-line"></i>
+                                            <button type="button" class="btn btn-icon btn-outline-danger waves-effect"  v-if="include('Eliminar')" @click="deletePost(p)">
+                                                <i class="tf-icons ri-delete-bin-7-line ri-22px"></i>
                                             </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="muestra(1),infoUsuario(p)">
-                                                    <i class="ri-clipboard-line me-1"></i> Vizualizar</a>
-                                                <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
-                                                    data-bs-toggle="modal" data-bs-target="#editp" @click="infoUsuario(p)">
-                                                    <i class="ri-pencil-line me-1"></i> Editar</a>
-                                                <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')" @click="eliminarPerfil(p.id)">
-                                                    <i class="ri-delete-bin-7-line me-1"></i> Eliminar</a>
-                                            </div>
-                                        </div>
-                                        </td> -->
+                                        </td>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
@@ -1160,6 +1148,32 @@
                     });
                 })
             },
+            deletePost(p){
+                Swal.fire({
+                    title:"Estas seguro?",
+                    text: "Se eliminara definitivamente",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#E81805",
+                    confirmButtonText: "Eliminar",
+                    cancelButtonColor: "#d33",
+                    cancelButtonText: "Cancelar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        
+                        axios.post('post/deletePost',{id_post:p.id_p}).then(response =>{
+                            Swal.fire({
+                                title: 'Éxito',
+                                text: "Se Elimino el Post!",
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 2500,
+                            });
+                            this.getPost();
+                        })
+                    }
+                });
+            }
         },
     };
 </script>

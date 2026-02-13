@@ -317,4 +317,26 @@ class PostController extends Controller
         }
     }
 
+
+    /**
+     * funcion que eli,imara el póst 
+     **/
+    public function deletePost(Request $request){
+
+        $edc = Post::find($request->id_post);
+            $imagen = ImagenesComunicado::where('id_comunicado',$request->id_post)
+            ->get();
+
+            foreach ($imagen as $img) {
+                
+                // Elimina la imagen del almacenamiento
+                \Storage::disk('post')->delete($img->nombre);
+
+                // Elimina la imagen de la base de datos
+                $img->delete();
+                return response()->json(['mensaje' => 'Imagen eliminada correctamente']);
+            }
+        $edc->delete();
+    }
+
 }

@@ -10,3 +10,4 @@ Route::post('/post/edita/{id}',[PostController::class,'edita'])->name('post/edit
 Route::post('/post/imagenes', [PostController::class,'cargaImagenes'])->name('post/imagenes');
 Route::get('/post/buscaImagenes/{id}', [PostController::class,'muestraImagenes'])->name('post/buscaImagenes/{id}');
 Route::delete('/post/eliminaImagen/{id}', [PostController::class,'eliminaImagen'])->name('post/eliminaImagen/{id}');
+Route::post('/post/deletePost', [PostController::class,'deletePost'])->name('post/deletePost');
