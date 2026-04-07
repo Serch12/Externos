@@ -31,6 +31,7 @@ class CorreoRepository
      * FUNCION QUE CREA EL CORREO ELECTRONICO
      **/
     public function createCorreo($request){
+        dd($request);
 
         $new = new Correos();
         $new -> fecha = $request -> fecha;
@@ -141,8 +142,8 @@ class CorreoRepository
 
                     $counts = Afiliados::select(DB::raw("
                         SUM(CASE WHEN processed = true THEN 1 ELSE 0 END) as enviados,
-                        SUM(CASE WHEN processed = false THEN 1 ELSE 0 END) as pendientes
-                    "))->first();
+                        SUM(CASE WHEN processed = false THEN 1 ELSE 0 END) as pendientes"))
+                        ->first();
 
                     $edit = Correos::find($correo->id_correo);
                     $edit -> enviados = $counts->enviados;
