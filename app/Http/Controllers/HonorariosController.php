@@ -158,7 +158,7 @@ class HonorariosController extends Controller
         ->get();
 
         
-        if ($hoy->day === 1) {
+        if ($hoy->day === 5) {
             $new = new Honorarios();
             $new->id_usuario = 6;
             $new->nombre_usuario = 'Angelica Cabrera';
