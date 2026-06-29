@@ -3,436 +3,401 @@
       <!-- vista de jugadores -->
       <div id="main" v-if="this.vista == 0">
         <div class="row g-6">
-          <div class="card">  
+          <div class="col-12">
+            <div class="card shadow-sm border-0" style="border-radius: 12px; overflow: hidden;">
+
             <div class="row">
+
               <div class="col-12 col-md-6">
-                  <h5 class="card-header">Jugadores</h5>
+
+                <h5 class="card-header">Jugadores</h5>
+
               </div>
+
               <div class="col-12 col-md-6 mt-3">
-                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Jugadores" @keyup="buscarJugador()"/>
-                    <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createJugador" v-if="include('Crear')">Agregar</button>
-                  </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+
+                  <input type="search" id="email"class="form-control"  v-model="search" placeholder="Buscar Jugadores" @keyup="buscarJugador()"/>
+
+                  <button type="button" class="btn btn-outline-success waves-effect" data-bs-toggle="modal" data-bs-target="#createJugador" v-if="include('Crear')">Agregar</button>
+
+                </div>
               </div>
-              <div class="table-responsive text-nowrap mt-2" style="font-size: 13px;">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <!-- <th>#</th> -->
-                            <th>Dorsal</th>
-                            <th>Foto</th>
-                            <th>Nombre</th>
-                            <th>Categoria</th>
-                            <th>Posición</th>
-                            <th>Sexo</th>
-                            <th>Sede</th>
-                            <th>Información</th>
-                            <th>Estatus</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
+            </div>
+              <div class="table-responsive text-nowrap px-0 pb-2">
+                <table class="table table-hover align-middle mb-0" style="font-size: 14px;">
+                  <thead class="table-light">
+                    <tr style="color: #64748b; font-weight: 600; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.5px;">
+                      <th class="ps-4">Dorsal</th>
+                      <th>Foto</th>
+                      <th>Nombre</th>
+                      <th>Categoría</th>
+                      <th>Posición</th>
+                      <th>Sexo</th>
+                      <th>Sede</th>
+                      <th>Información</th>
+                      <th>Estatus</th>
+                      <th class="text-center pe-4">Acciones</th>
+                    </tr>
+                  </thead>
+                    <tbody class="border-top-0">
                         <tr v-for="(jur, index) in Jugadores" :key="index">
-                            <!-- <td>{{ index+1 }}</td> -->
-                            <td>{{ jur.num_dorsal }}</td>
+                            <td class="ps-4 fw-medium text-secondary">{{ jur.num_dorsal }}</td>
+                            
                             <td>
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <div class="avatar-wrapper">
-                                        <div class="avatar me-2" >
-                                          <img :src="`ArchivosSistema/Jugadores/${jur.id_jugador}/${jur.foto}`" alt="Avatar" @error="(event)=>onImageError(event)"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                
+                              <div style="width: 38px; height: 38px; border-radius: 50%; overflow: hidden; border: 2px solid #e2e8f0; background-color: #f8fafc;">
+                                <img :src="`ArchivosSistema/Jugadores/${jur.id_jugador}/${jur.foto}`" alt="Avatar" @error="(event)=>onImageError(event)" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                              </div>
                             </td>
-                            <td>{{ jur.nombre }}</td>
+                            
+                            <td class="fw-bold" style="color: #334155;">{{ jur.nombre }}</td>
                             <td>{{ jur.categoria }}</td>
                             <td>{{ jur.posicion }}</td>
                             <td>{{ jur.sexo }}</td>
                             <td>{{ jur.sede }}</td>
-                            <td><span :class="`badge rounded-pill ${jur.color_info} me-1`">{{jur.text_info}}</span></td>
-                            <td><span :class="`badge rounded-pill ${jur.color} me-1`">{{jur.text}}</span></td>
-                            <td>
-                              <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                  <i class="ri-more-2-line"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                  <a class="dropdown-item" type="button" style="color: orange;" v-if="include('Vizualizar')" @click="infoJugador(jur),muestra(1)">
-                                    <i class="ri-clipboard-line me-1"></i> Vizualizar
-                                  </a>  
-                                  <a class="dropdown-item" type="button" style="color: #33b2ff;" v-if="include('Editar')" 
-                                    data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugador(jur)">
-                                    <i class="ri-pencil-line me-1"></i> Editar
-                                  </a> 
-                                  <a class="dropdown-item" type="button" style="color: green;" v-if="include('Permisos'),jur.estatus == 1" @click="cambioEstatus(jur)">
-                                    <i class="ri-checkbox-circle-fill me-1"></i> Activar
-                                  </a> 
-                                  <a class="dropdown-item" type="button" style="color: red;" v-if="include('Permisos'),jur.estatus == 0" @click="cambioEstatus(jur)">
-                                    <i class="ri-close-circle-fill me-1"></i> Desactivar
-                                  </a>  
-                                  <a class="dropdown-item" type="button" style="color: red;" v-if="include('Eliminar')" @click="deleteJugador(jur)">
-                                    <i class="ri-delete-bin-7-line me-1"></i> Eliminar
-                                  </a>
+                            <td><span :class="`badge rounded-pill ${jur.color_info}`" style="padding: 0.5em 0.85em; font-weight: 500; letter-spacing: 0.3px;">{{ jur.text_info }}</span></td>
+                            <td><span :class="`badge rounded-pill ${jur.color}`" style="padding: 0.5em 0.85em; font-weight: 500; letter-spacing: 0.3px;">{{ jur.text }}</span></td>
+                            
+                            <td class="text-center pe-4">
+                                <div class="d-flex justify-content-center gap-2">
+                                    
+                                    <button type="button" class="btn btn-sm btn-light text-info border-0" title="Visualizar" v-if="include('Vizualizar')" @click="infoJugador(jur); muestra(1)" style="background: #e0f2fe; width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;">
+                                        <i class="ri-clipboard-line" style="font-size: 16px;"></i>
+                                    </button>
+                                    
+                                    <button type="button" class="btn btn-sm btn-light text-primary border-0" title="Editar" v-if="include('Editar')" data-bs-toggle="modal" data-bs-target="#editJugador" @click="infoJugador(jur)" style="background: #e0e7ff; width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;">
+                                        <i class="ri-pencil-line" style="font-size: 16px;"></i>
+                                    </button>
+                                    
+                                    <button type="button" class="btn btn-sm btn-light text-success border-0" title="Activar" v-if="include('Permisos') && jur.estatus == 1" @click="cambioEstatus(jur)" style="background: #dcfce7; width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;">
+                                        <i class="ri-checkbox-circle-fill" style="font-size: 16px;"></i>
+                                    </button>
+                                    
+                                    <button type="button" class="btn btn-sm btn-light text-warning border-0" title="Desactivar" v-if="include('Permisos') && jur.estatus == 0" @click="cambioEstatus(jur)" style="background: #fef3c7; width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;">
+                                        <i class="ri-close-circle-fill" style="font-size: 16px;"></i>
+                                    </button>
+                                    
+                                    <button type="button" class="btn btn-sm btn-light text-danger border-0" title="Eliminar" v-if="include('Eliminar')" @click="deleteJugador(jur)" style="background: #fee2e2; width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px;">
+                                        <i class="ri-delete-bin-7-line" style="font-size: 16px;"></i>
+                                    </button>
+
                                 </div>
-                              </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <nav aria-label="Page navigation example mt-3">
-                  <ul class="pagination justify-content-center">
+              </div>
+
+              <div class="card-footer bg-white border-top-0 pt-2 pb-4">
+                <nav aria-label="Navegación de páginas">
+                  <ul class="pagination justify-content-center mb-0" style="gap: 5px;">
                     <li class="page-item disabled" v-if="pagination.current_page > 1">
-                        <a @click.prevent="changePage(pagination.current_page -1)" class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                      <a @click.prevent="changePage(pagination.current_page - 1)" class="page-link border-0 shadow-sm rounded" href="#" tabindex="-1" aria-disabled="true" style="color: #64748b;">Anterior</a>
                     </li>
-                    <li class="page-item" v-for="(page, index) in pageNumber"
-                        :key="index" @click.prevent="changePage(page)"
-                        v-bind:class="[ page == isActived ? 'active' : 'waves-effect']">
-                        <a class="page-link" href="#">{{ page }}</a>
+                    <li class="page-item" v-for="(page, index) in pageNumber" :key="index" @click.prevent="changePage(page)" v-bind:class="[ page == isActived ? 'active' : 'waves-effect']">
+                      <a class="page-link border-0 shadow-sm rounded" href="#" :style="page == isActived ? 'background-color: #198754; color: white;' : 'color: #334155;'">{{ page }}</a>
                     </li>
                     <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                        <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link" href="#">Siguiente</a>
+                      <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link border-0 shadow-sm rounded" href="#" style="color: #64748b;">Siguiente</a>
                     </li>
                   </ul>
                 </nav>
               </div>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- vista de detalle jugador-->
+      <div id="main" v-if="vista === 1">
+        <div class="container-xxl flex-grow-1 container-p-y">
+          
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-6">
+            <div class="d-flex flex-column justify-content-center">
+              <h4 class="mb-1 mt-3">Perfil del Jugador</h4>
+              <p class="text-muted">Gestiona la información, documentos y tutor del jugador.</p>
+            </div>
+            <div class="d-flex align-content-center flex-wrap gap-2">
+              <button class="btn btn-outline-danger waves-effect" @click="muestra(0)">
+                <i class="ri-arrow-left-line me-2"></i>Regresar
+              </button>
             </div>
           </div>
 
-        </div>
-      </div>
-      <!-- vista de detalle jugador-->
-      <div id="main" v-if="this.vista == 1">
-        <div class="container-xxl flex-grow-1 container-p-y">
           <div class="row gy-6 gy-md-0">
-            <!-- User Sidebar -->
+            
             <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
-              <!-- User Card -->
-              <div class="card mb-6">
+              <div class="card mb-6 shadow-sm border-0">
                 <div class="card-body pt-12">
                   <div class="user-avatar-section">
-                    <div class="d-flex align-items-center flex-column">
+                    <div class="d-flex align-items-center flex-column text-center">
                       <img
-                        class="img-fluid rounded-3 mb-4"
-                       :src="`ArchivosSistema/Jugadores/${detalleJugador.id_jugador}/${detalleJugador.foto}`"
+                        class="img-fluid rounded-circle mb-4 border border-4 border-white shadow-sm"
+                        :src="`ArchivosSistema/Jugadores/${detalleJugador.id_jugador}/${detalleJugador.foto}`"
                         height="120"
                         width="120"
-                        alt="User avatar" style="width: 80px;"/>
-                      <div class="user-info text-center">
-                        <h5>{{this.detalleJugador.nombre}}</h5>
-                        <span class="badge bg-label-dark rounded-pill">{{this.detalleJugador.categoria}}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-around flex-wrap my-6 gap-0 gap-md-3 gap-lg-4">
-                    <div class="d-flex align-items-center me-5 gap-4">
-                      <div class="avatar">
-                        <div class="avatar-initial bg-label-primary rounded-3">
-                          <i class="ri-football-line ri-24px"></i>
-                        </div>
-                      </div>
-                      <div>
-                        <h5 class="mb-0">Posición</h5>
-                        <span>{{ this.detalleJugador.posicion }}</span>
-                      </div>
-                    </div>
-                    <div class="d-flex align-items-center gap-4">
-                      <div class="avatar">
-                        <div class="avatar-initial bg-label-primary rounded-3">
-                          <i class="ri-user-fill ri-24px"></i>
-                        </div>
-                      </div>
-                      <div>
-                        <h5 class="mb-0">Sexo</h5>
-                        <span>{{this.detalleJugador.sexo}}</span>
+                        alt="Avatar del Jugador" 
+                        style="width: 120px; height: 120px; object-fit: cover;"
+                      />
+                      <div class="user-info">
+                        <h4 class="mb-2 fw-bold">{{ detalleJugador.nombre }}</h4>
+                        <span class="badge bg-label-dark rounded-pill px-3 py-2">{{ detalleJugador.categoria }}</span>
                       </div>
                     </div>
                   </div>
                   
+                  <hr class="my-5" />
+                  
+                  <div class="d-flex justify-content-around flex-wrap text-center gap-2">
+                    <div class="px-2">
+                      <div class="avatar avatar-md mx-auto mb-2">
+                        <div class="avatar-initial bg-label-primary rounded-circle">
+                          <i class="ri-football-line ri-24px"></i>
+                        </div>
+                      </div>
+                      <h6 class="mb-0 fw-semibold">{{ detalleJugador.posicion }}</h6>
+                      <small class="text-muted">Posición</small>
+                    </div>
+                    <div class="px-2">
+                      <div class="avatar avatar-md mx-auto mb-2">
+                        <div class="avatar-initial bg-label-info rounded-circle">
+                          <i class="ri-user-smile-line ri-24px"></i>
+                        </div>
+                      </div>
+                      <h6 class="mb-0 fw-semibold">{{ detalleJugador.sexo }}</h6>
+                      <small class="text-muted">Sexo</small>
+                    </div>
+                    <div class="px-2">
+                      <div class="avatar avatar-md mx-auto mb-2">
+                        <div class="avatar-initial bg-label-success rounded-circle">
+                          <i class="ri-calendar-event-line ri-24px"></i>
+                        </div>
+                      </div>
+                      <h6 class="mb-0 fw-semibold">{{ detalleJugador.edad }} años</h6>
+                      <small class="text-muted">Edad</small>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <!-- /User Card -->
             </div>
-            <!--/ User Sidebar -->
-
-            <!-- User Content -->
             <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
-              <!-- User Tabs -->
-              <div class="nav-align-top">
-                <ul class="nav nav-pills flex-column flex-md-row mb-6 row-gap-2">
+              <div class="nav-align-top mb-6">
+                <ul class="nav nav-pills flex-column flex-md-row gap-2 shadow-sm p-2 bg-white rounded-3">
                   <li class="nav-item">
-                    <a class="nav-link" :class="{ 'active': activeView === null }" type="button" @click="showCard(null)"><i class="ri-user-fill me-2"></i>Información</a>
+                    <button class="nav-link w-100 text-start" :class="{ 'active': activeView === null }" @click="showCard(null)">
+                      <i class="ri-user-3-line me-2"></i>Información
+                    </button>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" :class="{ 'active': activeView === 'exp' }" type="button"  @click="showCard('exp')"><i class="ri-book-marked-fill me-2"></i>Documentación</a>
+                    <button class="nav-link w-100 text-start" :class="{ 'active': activeView === 'exp' }" @click="showCard('exp')">
+                      <i class="ri-folder-open-line me-2"></i>Documentación
+                    </button>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" :class="{ 'active': activeView === 'tutor' }" type="button"  @click="showCard('tutor')"><i class="ri-todo-fill me-2"></i>Info Tutor</a>
+                    <button class="nav-link w-100 text-start" :class="{ 'active': activeView === 'tutor' }" @click="showCard('tutor')">
+                      <i class="ri-parent-line me-2"></i>Info Tutor
+                    </button>
                   </li>
                 </ul>
               </div>
-              <!--/ User Tabs -->
-              
-              <!-- informacion -->
-              <div class="card mb-6" v-if="this.activeView == null">
-                <h5 class="card-header">Información del Jugador</h5>
-                <div class="card-body pt-0">
-                  <div class="row">
-                    <div class="col-12 col-md-6 mt-2" style="color: green;">
-                      <i class="ri-hashtag me-2 ri-24px"></i><span class="fw-medium">Folio: {{this.detalleJugador.folio}}</span>
+
+              <div class="card mb-6 shadow-sm border-0" v-if="activeView === null">
+                <div class="card-header bg-transparent border-bottom">
+                  <h5 class="mb-0 fw-bold"><i class="ri-file-info-line me-2 text-primary"></i>Detalles Generales</h5>
+                </div>
+                <div class="card-body pt-4">
+                  <div class="row g-4">
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                      <div class="avatar me-3">
+                        <div class="avatar-initial bg-label-success rounded"><i class="ri-hashtag"></i></div>
+                      </div>
+                      <div>
+                        <small class="text-muted d-block">Folio</small>
+                        <span class="fw-semibold">{{ detalleJugador.folio }}</span>
+                      </div>
                     </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-user-fill me-2 ri-24px"></i><span class="fw-medium">Nombre: {{this.detalleJugador.nombre}}</span>
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                      <div class="avatar me-3">
+                        <div class="avatar-initial bg-label-primary rounded"><i class="ri-calendar-fill"></i></div>
+                      </div>
+                      <div>
+                        <small class="text-muted d-block">Fecha de Nacimiento</small>
+                        <span class="fw-semibold">{{ detalleJugador.fecha_nacimiento }}</span>
+                      </div>
                     </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">Posición: {{this.detalleJugador.posicion}}</span>
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                      <div class="avatar me-3">
+                        <div class="avatar-initial bg-label-primary rounded"><i class="ri-phone-fill"></i></div>
+                      </div>
+                      <div>
+                        <small class="text-muted d-block">Teléfono</small>
+                        <span class="fw-semibold">{{ detalleJugador.telefono }}</span>
+                      </div>
                     </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-football-line me-2 ri-24px"></i><span class="fw-medium">{{this.detalleJugador.categoria}}</span>
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                      <div class="avatar me-3">
+                        <div class="avatar-initial bg-label-primary rounded"><i class="ri-mail-line"></i></div>
+                      </div>
+                      <div>
+                        <small class="text-muted d-block">Correo</small>
+                        <span class="fw-semibold">{{ detalleJugador.correo }}</span>
+                      </div>
                     </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-user-5-fill me-2 ri-24px"></i><span class="fw-medium">Sexo: {{this.detalleJugador.sexo}}</span>
+                    <div class="col-12 d-flex align-items-center">
+                      <div class="avatar me-3">
+                        <div class="avatar-initial bg-label-primary rounded"><i class="ri-map-pin-2-line"></i></div>
+                      </div>
+                      <div>
+                        <small class="text-muted d-block">Dirección</small>
+                        <span class="fw-semibold">{{ detalleJugador.direccion }}</span>
+                      </div>
                     </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-calendar-fill me-2 ri-24px"></i><span class="fw-medium">Fecha de Nacimiento: {{this.detalleJugador.fecha_nacimiento}}</span>
-                    </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-emotion-fill me-2 ri-24px"></i><span class="fw-medium">Edad: {{this.detalleJugador.edad}}</span>
-                    </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-team-fill me-2 ri-24px"></i><span class="fw-medium">Tutor: {{this.detalleJugador.tutor}}</span>
-                    </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-map-pin-2-fill me-2 ri-24px"></i><span class="fw-medium">Dirección: {{this.detalleJugador.direccion}}</span>
-                    </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-mail-check-fill me-2 ri-24px"></i><span class="fw-medium">Correo: {{this.detalleJugador.correo}}</span>
-                    </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-phone-fill me-2 ri-24px"></i><span class="fw-medium">Telefono: {{this.detalleJugador.telefono}}</span>
-                    </div>
-                    <div class="col-12 col-md-6 mt-2">
-                      <i class="ri-open-arm-fill me-2 ri-24px"></i><span class="fw-medium">Prestamo: <b v-if="this.detalleJugador.prestamo == 1">Si</b><b v-else>No</b></span>
+                    <div class="col-12 col-md-6 d-flex align-items-center">
+                      <div class="avatar me-3">
+                        <div class="avatar-initial bg-label-warning rounded"><i class="ri-exchange-funds-line"></i></div>
+                      </div>
+                      <div>
+                        <small class="text-muted d-block">Estatus de Préstamo</small>
+                        <span class="badge bg-label-success" v-if="detalleJugador.prestamo == 1">En Préstamo</span>
+                        <span class="badge bg-label-secondary" v-else>Sin Préstamo</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- Expediente -->
-              <div class="card mb-6" v-if="this.activeView == 'exp'">
-                <h5 class="card-header">Expendiente</h5>
-                <div class="card-body pt-0">
-                  <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Archivo</th>
-                            <th scope="col">Tipo</th>
-                          </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                          <tr v-for="(arch, index) in detalleJugador.documentacion" :key="index">
-                            <td>{{ index + 1 }}</td>
-                            <td >
-                              <a class="btn btn-icon rounded-pill btn-outline-youtube waves-effect"
-                                target="_blank" :href="`ArchivosSistema/Jugadores/${arch.id_jugador}/${arch.archivo}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
-                                <i class="tf-icons ri-contract-line ri-22px"></i>
-                              </a>
-                            </td>
-                            
-                            <td >{{ arch.tipo }}</td>
-                          </tr>
 
-                        </tbody>
-                      </table>
+              <div class="card mb-6 shadow-sm border-0" v-if="activeView === 'exp'">
+                <div class="card-header bg-transparent border-bottom">
+                  <h5 class="mb-0 fw-bold"><i class="ri-folder-shield-2-line me-2 text-primary"></i>Archivos del Jugador</h5>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th scope="col" class="text-center" width="10%">#</th>
+                        <th scope="col" width="60%">Tipo de Documento</th>
+                        <th scope="col" class="text-center" width="30%">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                      <tr v-for="(arch, index) in detalleJugador.documentacion" :key="index">
+                        <td class="text-center fw-medium">{{ index + 1 }}</td>
+                        <td>
+                          <span class="fw-semibold text-dark">{{ arch.tipo }}</span>
+                        </td>
+                        <td class="text-center">
+                          <a class="btn btn-sm btn-outline-primary rounded-pill waves-effect d-inline-flex align-items-center"
+                            target="_blank" 
+                            :href="`ArchivosSistema/Jugadores/${arch.id_jugador}/${arch.archivo}`" 
+                            onclick="window.open(this.href, this.target, 'width=800,height=800');return false;">
+                            <i class="ri-eye-line me-1"></i> Ver PDF
+                          </a>
+                        </td>
+                      </tr>
+                      <tr v-if="!detalleJugador.documentacion || detalleJugador.documentacion.length === 0">
+                        <td colspan="3" class="text-center py-5 text-muted">
+                          <i class="ri-file-unknow-line ri-3x mb-2 d-block text-light"></i>
+                          No hay documentos adjuntos.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
-              <!-- Info Tutor -->
-              <div class="card mb-6" v-if="this.activeView == 'tutor'">
-                <div class="row">
-                  <div class="col-12 col-md-6">
-                    <h5 class="card-header">Expendiente</h5>
-                  </div>
-                  <div class="col-12 col-md-6 mt-3">
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                      <button type="button" class="btn btn-outline-info waves-effect" @click="cambiarModo()">Editar</button>
-                    </div>
-                  </div>
+
+              <div class="card mb-6 shadow-sm border-0" v-if="activeView === 'tutor'">
+                <div class="card-header d-flex flex-wrap justify-content-between align-items-center bg-transparent border-bottom py-3">
+                  <h5 class="mb-0 fw-bold"><i class="ri-shield-user-line me-2 text-primary"></i>Información del Tutor</h5>
+                  
+                  <button v-if="stepTutor === 0" type="button" class="btn btn-primary btn-sm waves-effect shadow-sm" @click="cambiarModo(1)">
+                      <i class="ri-edit-2-line me-1"></i> Editar
+                  </button>
+                  <button v-if="stepTutor === 1" type="button" class="btn btn-outline-secondary btn-sm waves-effect" @click="cambiarModo(0)">
+                    Cancelar
+                  </button>
                 </div>
-                <div class="card-body" v-if="this.stepTutor == 0">
+
+                <div class="card-body pt-4">
                   <form>
-                    <div class="input-group input-group-merge mb-6">
-                      <span id="basic-icon-default-fullname2" class="input-group-text">
-                        <i class="ri-user-line"></i>
-                      </span>
-                      <div class="form-floating form-floating-outline">
-                        <input 
-                          type="text"
-                          id="basic-icon-default-company"
-                          class="form-control"
-                          placeholder="Nombre"
-                          aria-label="Nombre"
-                          v-model="detalleJugador.tutor" 
-                          aria-describedby="basic-icon-default-fullname2" style="color: black;" disabled/>
-                        <label for="basic-icon-default-fullname">Nombre Tutor</label>
-                      </div>
-                    </div>
-                    <div class="input-group input-group-merge mb-6">
-                      <span id="basic-icon-default-company2" class="input-group-text">
-                        <i class="ri-map-pin-line"></i>
-                      </span>
-                      <div class="form-floating form-floating-outline">
-                        <input
-                          type="text"
-                          id="basic-icon-default-company"
-                          class="form-control"
-                          placeholder="Dirección"
-                          aria-label="Dirección"
-                          v-model="detalleJugador.direccion" 
-                          aria-describedby="basic-icon-default-company2" style="color: black;" disabled/>
-                        <label for="basic-icon-default-company">Dirección</label>
-                      </div>
-                    </div>
-                    <div class="mb-6">
-                      <div class="input-group input-group-merge">
-                        <span class="input-group-text"><i class="ri-mail-line"></i></span>
+                    <div class="row g-4">
+                      <div class="col-12 col-md-6">
                         <div class="form-floating form-floating-outline">
-                          <input
-                            type="email"
-                            id="basic-icon-default-email"
-                            class="form-control"
-                            placeholder="john.doe"
-                            aria-label="john.doe"
-                            v-model="detalleJugador.correo"
-                             aria-describedby="basic-icon-default-email2" style="color: black;" disabled/>
-                          <label for="basic-icon-default-email">Email</label>
+                          <input type="text" id="tutor-name" class="form-control" placeholder="Nombre completo" 
+                                v-model="detalleJugador.tutor" 
+                                :disabled="stepTutor === 0" />
+                          <label for="tutor-name">Nombre del Tutor</label>
                         </div>
-                        <span id="basic-icon-default-email2" class="input-group-text">@example.com</span>
                       </div>
-                     
-                    </div>
-                    <div class="input-group input-group-merge mb-6">
-                      <span id="basic-icon-default-phone2" class="input-group-text">
-                        <i class="ri-phone-fill"></i>
-                      </span>
-                      <div class="form-floating form-floating-outline">
-                        <input
-                          type="number"
-                          id="basic-icon-default-phone"
-                          class="form-control phone-mask"
-                          placeholder="658 799 8941"
-                          aria-label="658 799 8941"
-                          v-model="detalleJugador.telefono" 
-                          aria-describedby="basic-icon-default-phone2" style="color: black;" disabled/>
-                        <label for="basic-icon-default-phone">Telefono</label>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-floating form-floating-outline">
+                          <input type="tel" id="tutor-phone" class="form-control phone-mask" placeholder="658 799 8941" 
+                                v-model="detalleJugador.telefono" 
+                                :disabled="stepTutor === 0" />
+                          <label for="tutor-phone">Teléfono</label>
+                        </div>
                       </div>
-                    </div>
-                    <div class="input-group input-group-merge mb-6">
-                      <a class="btn btn-outline-whatsapp waves-effect"
-                        target="_blank" :href="`ArchivosSistema/Jugadores/${this.detalleJugador.id_jugador}/${this.detalleJugador.formato}`" onclick="window.open(this.href, this.target, 'width=650,height=650');return false;">
-                        <i class="tf-icons ri-survey-line ri-16px me-2"></i>Formato de Consentimiento
-                      </a>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-floating form-floating-outline">
+                          <input type="email" id="tutor-email" class="form-control" placeholder="correo@ejemplo.com" 
+                                v-model="detalleJugador.correo" 
+                                :disabled="stepTutor === 0" />
+                          <label for="tutor-email">Email</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 col-md-6">
+                        <div class="form-floating form-floating-outline">
+                          <input type="text" id="tutor-address" class="form-control" placeholder="Dirección completa" 
+                                v-model="detalleJugador.direccion" 
+                                :disabled="stepTutor === 0" />
+                          <label for="tutor-address">Dirección</label>
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-4">
+                        <div v-if="stepTutor === 0">
+                          <label class="d-block fw-semibold mb-2 text-dark">Formato de Consentimiento</label>
+                          <a v-if="detalleJugador.formato" 
+                            class="btn btn-outline-primary waves-effect d-inline-flex align-items-center" 
+                            target="_blank" 
+                            :href="`ArchivosSistema/Jugadores/${detalleJugador.id_jugador}/${detalleJugador.formato}`" 
+                            onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;">
+                              <i class="ri-file-pdf-line me-2 fs-5"></i> Ver Documento
+                          </a>
+                          <div v-else class="alert alert-warning d-inline-flex align-items-center py-2 px-3 mb-0 shadow-none">
+                              <i class="ri-error-warning-line me-2 fs-5"></i> 
+                              <span style="font-size: 0.9rem;">Archivo no adjuntado</span>
+                          </div>
+                        </div>
+
+                        <div v-else class="p-4 bg-label-secondary rounded-3 border-dashed">
+                            <label class="form-label fw-bold text-dark mb-2">Actualizar Formato de Consentimiento</label>
+                            <input type="file" accept=".pdf" class="form-control mb-1" id="upload-acta" ref="carta" @change="onChangeFormato()">
+                            <div class="form-text mt-2">
+                                <i class="ri-information-line me-1"></i> Solo se permiten archivos PDF.
+                            </div>
+                        </div>
+                      </div>
                     </div>
 
-                  </form>
-                </div>
-                <div class="card-body" v-if="this.stepTutor == 1">
-                  <form>
-                    <div class="input-group input-group-merge mb-6">
-                      <span id="basic-icon-default-fullname2" class="input-group-text">
-                        <i class="ri-user-line"></i>
-                      </span>
-                      <div class="form-floating form-floating-outline">
-                        <input 
-                          type="text"
-                          id="basic-icon-default-company"
-                          class="form-control"
-                          placeholder="Nombre"
-                          aria-label="Nombre"
-                          v-model="detalleJugador.tutor"
-                        aria-describedby="basic-icon-default-fullname2" />
-                        <label for="basic-icon-default-fullname">Nombre Tutor</label>
-                      </div>
+                    <div class="mt-5 text-end border-top pt-4" v-if="stepTutor === 1">
+                        <button type="button" class="btn btn-success px-4 waves-effect shadow-sm" @click="newTutor()">
+                            <i class="ri-save-3-line me-2"></i> Guardar Cambios
+                        </button>
                     </div>
-                    <div class="input-group input-group-merge mb-6">
-                      <span id="basic-icon-default-company2" class="input-group-text">
-                        <i class="ri-map-pin-line"></i>
-                      </span>
-                      <div class="form-floating form-floating-outline">
-                        <input
-                          type="text"
-                          id="basic-icon-default-company"
-                          class="form-control"
-                          placeholder="Dirección"
-                          aria-label="Dirección"
-                          v-model="detalleJugador.direccion"
-                          aria-describedby="basic-icon-default-company2" />
-                        <label for="basic-icon-default-company">Dirección</label>
-                      </div>
-                    </div>
-                    <div class="mb-6">
-                      <div class="input-group input-group-merge">
-                        <span class="input-group-text"><i class="ri-mail-line"></i></span>
-                        <div class="form-floating form-floating-outline">
-                          <input
-                            type="email"
-                            id="basic-icon-default-email"
-                            class="form-control"
-                            placeholder="john.doe"
-                            aria-label="john.doe"
-                            v-model="detalleJugador.correo"
-                            aria-describedby="basic-icon-default-email2" />
-                          <label for="basic-icon-default-email">Email</label>
-                        </div>
-                        <span id="basic-icon-default-email2" class="input-group-text">@example.com</span>
-                      </div>
-                     
-                    </div>
-                    <div class="input-group input-group-merge mb-6">
-                      <span id="basic-icon-default-phone2" class="input-group-text">
-                        <i class="ri-phone-fill"></i>
-                      </span>
-                      <div class="form-floating form-floating-outline">
-                        <input
-                          type="number"
-                          id="basic-icon-default-phone"
-                          class="form-control phone-mask"
-                          placeholder="658 799 8941"
-                          aria-label="658 799 8941"
-                          v-model="detalleJugador.telefono"
-                          aria-describedby="basic-icon-default-phone2" />
-                        <label for="basic-icon-default-phone">Telefono</label>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="form-floating form-floating-outline">
-                        <input type="file"  accept=".pdf" class="form-control" id="bs-validation-upload-file_acta" ref="carta" @change="onChangeFormato()">
-                        <label for="bs-validation-upload-file_acta">Formato de Consentimiento</label>
-                      </div>
-                      <p style="color: red;">*** Solo se permiten archivos PDF</p>
-                    </div>
-                    <button type="button" class="btn btn-success" @click="newTutor()">Guardar</button>
                   </form>
                 </div>
               </div>
-              <!-- /Activity Timeline -->
             </div>
-            <!--/ User Content -->
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xl-12 col-lg-5 col-md-5">
-            <div class="card mb-6">
-              <div class="card-body">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                  <a href="javascript:void(0)" class="btn btn-danger" @click="muestra(0)">
-                    <i class="ri-arrow-left-long-fill ri-16px me-2"></i>Regresar
-                  </a>
-                </div>
-              </div>
-            </div>   
-          </div>
+            </div>
         </div>
       </div>
+
+      
       <!-- MODAL QUE CREA EL JUGADOR -->
 
       <div class="modal fade" id="createJugador" tabindex="-1" aria-hidden="true">
@@ -1712,8 +1677,8 @@ export default {
       var fileedit = this.$refs.carta.files[0];
       this.detalleJugador.formato = fileedit
     },
-    cambiarModo(){
-      this.stepTutor = 1;
+    cambiarModo(valor){
+      this.stepTutor = valor;
     }
 
   }
