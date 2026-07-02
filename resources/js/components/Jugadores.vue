@@ -96,7 +96,7 @@
                       <a @click.prevent="changePage(pagination.current_page - 1)" class="page-link border-0 shadow-sm rounded" href="#" tabindex="-1" aria-disabled="true" style="color: #64748b;">Anterior</a>
                     </li>
                     <li class="page-item" v-for="(page, index) in pageNumber" :key="index" @click.prevent="changePage(page)" v-bind:class="[ page == isActived ? 'active' : 'waves-effect']">
-                      <a class="page-link border-0 shadow-sm rounded" href="#" :style="page == isActived ? 'background-color: #198754; color: white;' : 'color: #334155;'">{{ page }}</a>
+                      <a class="page-link border-0 shadow-sm rounded" href="#" :style="page == isActived ? 'background-color: #73c72f; color: white;' : 'color: #334155;'">{{ page }}</a>
                     </li>
                     <li class="page-item" v-if="pagination.current_page < pagination.last_page">
                       <a @click.prevent="changePage(pagination.current_page + 1)" class="page-link border-0 shadow-sm rounded" href="#" style="color: #64748b;">Siguiente</a>
