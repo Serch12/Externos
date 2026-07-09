@@ -153,6 +153,50 @@ class TalentosRepository
        return $delete;
     }
 
+    /**
+     * funcionnque agerga las publicaciones de talentos
+     **/
+    public function createTalento($request){
+       $create = new Talentos();
+
+        $hidder = $request->file('hidder');
+        if (isset($hidder)) {
+            $file = $request->file('hidder');
+            //obtenemos el nombre del archivo
+            $nombre = $file->getClientOriginalName();
+            $url = $request->copa."-".$request->year."-".$nombre;
+            //indicamos que queremos guardar un nuevo archivo en el disco local
+            \Storage::disk('talentos')->put($url,  \File::get($file));
+            $create->hidder = $url;
+        }
+        $create -> fecha = $request -> fecha;
+        $create -> year = $request -> year;
+        $create -> copa = $request -> copa;
+        $create -> fase = $request -> fase; 
+        $create -> categoria = $request -> categoria;
+        $create -> num_jugadores = 0;
+        $create -> descripcion = $request -> descripcion;
+        $create -> estatus = 0;
+        $create -> save();
+
+        $imagenes = $request->file('galeriaNuevo');
+        if (isset($imagenes)) {
+            foreach ($imagenes as $img) {
+                $i = new IMGTalentos();
+                    // Obtener el nombre original del archivo
+                    $nombre = $img->getClientOriginalName();
+                    $url = $request->copa."-".$request->year."-".$nombre;
+                    //indicamos que queremos guardar un nuevo archivo en el disco local
+                    \Storage::disk('talentos')->put($url, \File::get($img));
+                $i ->talento_id = $create -> id_talento;
+                $i ->img = $url;
+                $i -> estatus_img = 0;
+                $i -> save();
+            }
+        }
+        return $create;
+    }
+
     /* FUNCIONES DE BANNERS */
 
     /**

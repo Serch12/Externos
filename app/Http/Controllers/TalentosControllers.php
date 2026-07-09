@@ -104,6 +104,13 @@ class TalentosControllers extends Controller
         return $this->TalentosRepository->Talentodelete($request);
     }
 
+    /**
+     * funcionnque agerga las publicaciones de talentos
+     **/
+    public function createTalento(Request $request){
+        return $this->TalentosRepository->createTalento($request);
+    }
+
     /* FUNCIONES DE BANNERS */
 
     /**

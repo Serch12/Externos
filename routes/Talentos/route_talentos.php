@@ -9,6 +9,7 @@ Route::get('/talentos/galeriaTalento/{id}',  [TalentosControllers::class, 'galer
 Route::post('/talentos/eliminarImagen/{id}', [TalentosControllers::class, 'eliminarImagen'])->name('talentos/eliminarImagen/{id}');
 Route::post('/talentos/updateTalento',  [TalentosControllers::class, 'updateTalento'])->name('talentos/updateTalento');
 Route::post('/talentos/Talentodelete', [TalentosControllers::class, 'Talentodelete'])->name('talentos/Talentodelete');
+Route::post('/talentos/createTalento', [TalentosControllers::class, 'createTalento'])->name('talentos/createTalento');
 
 Route::get('/talentos/getBanner', [TalentosControllers::class, 'getBanner'])->name('talentos/getBanner');
 Route::post('/talentos/createBanner', [TalentosControllers::class, 'createBanner'])->name('talentos/createBanner');
