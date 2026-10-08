@@ -532,6 +532,7 @@
                                   <option value="BANCOPPEL">BANCOPPEL</option>
                                   <option value="AFIRME">AFIRME</option>
                                   <option value="BANBAJIO">BANBAJÍO</option>
+                                  <option value="BANCO PLATA">BANCO PLATA</option>
                               </select>
                               <label for="banco">Banco</label>
                           </div>
